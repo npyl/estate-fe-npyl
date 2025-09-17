@@ -63,6 +63,13 @@ declare module "@tiptap/core" {
              * editor.commands.removeImageByKey('image-123')
              */
             removeImageByKey: (key: string) => ReturnType;
+            /**
+             * Remove all images from a specific container
+             * @param containerPos Position of the container node
+             * @example
+             * editor.commands.removeAllImages(containerPos)
+             */
+            removeAllImages: (containerPos: number) => ReturnType;
         };
     }
 }
@@ -360,6 +367,63 @@ export const Image = Node.create<ImageOptions>({
                         return false;
                     } catch (error) {
                         console.error("Error removing image:", error);
+                        return false;
+                    }
+                },
+
+            removeAllImages:
+                (containerPos) =>
+                ({ state, tr, dispatch }) => {
+                    try {
+                        const containerNode = state.doc.nodeAt(containerPos);
+
+                        if (
+                            !containerNode ||
+                            containerNode.type.name !== CONTAINER_NAME
+                        ) {
+                            console.warn(
+                                "No container found at the specified position"
+                            );
+                            return false;
+                        }
+
+                        if (!dispatch) return false;
+
+                        // Collect all image positions within the container
+                        // We need to collect them in reverse order to avoid position shifts
+                        const imagePositions: { pos: number; size: number }[] =
+                            [];
+
+                        containerNode.descendants((node: any, pos: number) => {
+                            if (node.type.name === "image") {
+                                // Position is relative to container, so we need to add containerPos + 1
+                                // (+1 because we're inside the container)
+                                const absolutePos = containerPos + 1 + pos;
+                                imagePositions.push({
+                                    pos: absolutePos,
+                                    size: node.nodeSize,
+                                });
+                            }
+                        });
+
+                        if (imagePositions.length === 0) {
+                            console.warn("No images found in the container");
+                            return false;
+                        }
+
+                        // Sort positions in descending order to delete from end to beginning
+                        // This prevents position shifts from affecting subsequent deletions
+                        imagePositions.sort((a, b) => b.pos - a.pos);
+
+                        // Remove all images
+                        imagePositions.forEach(({ pos, size }) => {
+                            tr.delete(pos, pos + size);
+                        });
+
+                        dispatch(tr);
+                        return true;
+                    } catch (error) {
+                        console.error("Error removing all images:", error);
                         return false;
                     }
                 },

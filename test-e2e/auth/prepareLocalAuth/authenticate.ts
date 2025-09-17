@@ -3,8 +3,21 @@ import { getLocalCredentials } from "../../_util/getCredentials";
 import login from "./service/login";
 import { Page } from "@playwright/test";
 import { AUTH_FILE } from "./_constant";
+import { tokenKey } from "../../../src/constants";
 
 const localhost = "http://127.0.0.1:3000";
+
+// ------------------------------------------------------------------------
+
+interface ScriptData {
+    tokenKey: string;
+    accessToken: string;
+}
+
+const initScript = ({ tokenKey, accessToken }: ScriptData) =>
+    localStorage.setItem(tokenKey, accessToken);
+
+// ------------------------------------------------------------------------
 
 const authenticate = async (page: Page) => {
     // Get (private) credentials for tester user
@@ -17,9 +30,7 @@ const authenticate = async (page: Page) => {
     await gotoSafe(page, localhost);
 
     // Set the accessToken in localStorage
-    await page.addInitScript((token) => {
-        localStorage.setItem("accessToken", token);
-    }, accessToken);
+    await page.addInitScript(initScript, { accessToken, tokenKey });
 
     // Reload the page to ensure the token is set
     await page.reload();

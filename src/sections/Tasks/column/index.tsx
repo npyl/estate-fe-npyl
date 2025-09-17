@@ -3,6 +3,7 @@ import { IKanbanColumn } from "@/types/tasks";
 import Header from "./Header";
 import Cards from "./Cards";
 import { StyledPaper } from "./styled";
+import { FC } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -13,32 +14,29 @@ type Props = {
 
 export const DroppableTypeTask = "TASK";
 
-export default function Column({ column }: Props) {
-    return (
-        <Droppable
-            droppableId={`section-${column.id}`}
-            type={DroppableTypeTask}
-        >
-            {(provided) => (
-                <StyledPaper
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    variant="outlined"
-                    sx={{
-                        boxShadow: 3,
-                    }}
-                >
-                    <Header
-                        name={column.name}
-                        done={column.done}
-                        columnId={column.id}
-                    />
+const Column: FC<Props> = ({ column }) => (
+    <Droppable droppableId={`section-${column.id}`} type={DroppableTypeTask}>
+        {(provided) => (
+            <StyledPaper
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                variant="outlined"
+                sx={{
+                    boxShadow: 3,
+                }}
+            >
+                <Header
+                    name={column.name}
+                    done={column.done}
+                    columnId={column.id}
+                />
 
-                    <Cards mt={1} spacing={2} ids={column.cardIds} />
+                <Cards mt={1} spacing={2} ids={column.cardIds} />
 
-                    {provided.placeholder}
-                </StyledPaper>
-            )}
-        </Droppable>
-    );
-}
+                {provided.placeholder}
+            </StyledPaper>
+        )}
+    </Droppable>
+);
+
+export default Column;

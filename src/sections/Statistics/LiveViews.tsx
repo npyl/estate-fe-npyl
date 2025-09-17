@@ -175,17 +175,16 @@ export default function ViewsChart() {
                         fontWeight={"bold"}
                         pb={0.5}
                     >
-                        {" "}
                         {data?.totalViews ?? 0}
                     </Typography>
                 </Stack>
 
                 <Stack
                     direction="row"
+                    top={{ xs: -15, md: 0 }}
+                    right={{ xs: -15, md: 0 }}
                     sx={{
                         position: "absolute",
-                        top: 0,
-                        right: 0,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -197,8 +196,6 @@ export default function ViewsChart() {
                         src="/static/liveicon.gif"
                         style={{
                             display: "block",
-                            paddingTop: "auto",
-
                             width: "35px",
                         }}
                     />

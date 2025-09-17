@@ -101,10 +101,12 @@ const Carousel: FC<CarouselProps> = ({
     }, [initialIndex]);
 
     const handlePrev = useCallback((e: MouseEvent) => {
+        e.stopPropagation();
         e.preventDefault();
         carousel1.current?.slickPrev();
     }, []);
     const handleNext = useCallback((e: MouseEvent) => {
+        e.stopPropagation();
         e.preventDefault();
         carousel1.current?.slickNext();
     }, []);

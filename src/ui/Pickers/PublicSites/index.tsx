@@ -1,5 +1,5 @@
 import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@/components/Select";
 import { FC, useCallback } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import { useGetPublicSitesQuery } from "@/services/company";
@@ -58,6 +58,7 @@ const PublicSitesPicker: FC<PublicSitesPickerProps> = ({
             value={sites as any}
             renderValue={renderValue as any}
             onChange={onChange}
+            sx={{ width: "150px" }}
         >
             {data?.map(getOption(sites))}
         </Select>

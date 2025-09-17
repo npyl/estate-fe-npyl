@@ -4,10 +4,16 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Images: "Images",
+            MAKE_THUMBNAIL: "Make thumbnail",
+            DELETE_RECORD: "Do you really want to delete this?",
+            DELETE_RECORDS: "Do you really want to delete these?",
+            CANNOT_BE_UNDONE: "This process cannot be undone",
+
             ERR_PAGE_NOT_FOUND: "Page not found",
             ERR_INTERNAL_SERVER_ERROR: "Internal app error",
 
-            BLOG_MIDDLE_IMAGES_FULL: "You can only upload 2 images",
+            BLOG_MIDDLE_IMAGES_FULL: "You can only upload up to 3 images",
             MainImage: "Main Image",
             MiddleImages: "Middle Images",
 
@@ -1409,11 +1415,19 @@ const resources = {
     },
     el: {
         translation: {
+            Images: "Εικόνες",
+
+            MAKE_THUMBNAIL: "Κάνε την Μικρογραφία",
+
+            DELETE_RECORD: "Επιθυμείτε να γίνει διαγραφή?",
+            DELETE_RECORDS: "Επιθυμείτε να γίνει διαγραφή?",
+            CANNOT_BE_UNDONE: "Η διαγραφή δεν θα μπορεί να αναιρεθεί",
+
             ERR_PAGE_NOT_FOUND: "Η σελίδα δεν βρέθηκε",
             ERR_INTERNAL_SERVER_ERROR: "Εσωτερικό σφάλμα στην εφαρμογή",
 
             BLOG_MIDDLE_IMAGES_FULL:
-                "Μπορείτε να ανεβάσετε μέχρι 2 φωτογραφίες",
+                "Μπορείτε να ανεβάσετε μέχρι 3 φωτογραφίες",
             MainImage: "Κύρια Εικόνα",
             MiddleImages: "Εικόνες Μέσης",
 

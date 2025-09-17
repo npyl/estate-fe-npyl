@@ -1,5 +1,6 @@
 // src/services/location.ts
 
+import { getAccessToken } from "@/contexts/accessToken";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IGeoLocation } from "src/types/geolocation";
 
@@ -14,10 +15,7 @@ export const location = createApi({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/geography/`,
         prepareHeaders: (headers) => {
             // By default, if we have a token in the store, let's use that for authenticated requests
-            headers.set(
-                "Authorization",
-                `Bearer ${localStorage.getItem("accessToken")}`
-            );
+            headers.set("Authorization", `Bearer ${getAccessToken()}`);
             return headers;
         },
     }),

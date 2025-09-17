@@ -11,6 +11,10 @@ import { useTranslation } from "react-i18next";
 import { styled } from "@mui/material/styles";
 import { HighlightOff as HighlightOffIcon } from "@mui/icons-material";
 
+const DELETE_RECORD = "DELETE_RECORD";
+const DELETE_RECORD_PLURAL = "DELETE_RECORDS";
+const CANNOT_BE_UNDONE = "CANNOT_BE_UNDONE";
+
 const DeleteIcon = styled(HighlightOffIcon)(({ theme }) => ({
     fontSize: "100px",
     stroke:
@@ -52,11 +56,9 @@ const DeleteDialog = ({
                 </Typography>
             </DialogContent>
             <DialogContentText ml={3} mr={3} sx={{ textAlign: "center" }}>
-                {multiple
-                    ? t("Do you really want to delete these records?")
-                    : t("Do you really want to delete this record?")}
+                {multiple ? t(DELETE_RECORD) : t(DELETE_RECORD_PLURAL)}
                 <br />
-                {t("This process cannot be undone")}
+                {t(CANNOT_BE_UNDONE)}
             </DialogContentText>
             <DialogContent sx={{ textAlign: "center" }}>
                 <Button

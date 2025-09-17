@@ -1,4 +1,3 @@
-import Avatar from "@/components/Avatar";
 import { useGetDashboardQuery } from "@/services/dashboard";
 import { IDashboardTask } from "@/types/dashboard";
 import Paper from "@mui/material/Paper";
@@ -6,7 +5,6 @@ import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import Item from "../Tasks/ViewAll/List/Item";
-import { Box, Tooltip } from "@mui/material";
 import { IKanbanCardShort } from "@/types/tasks";
 
 // ------------------------------------------------------------------------
@@ -21,35 +19,14 @@ const IDashboardTaskToCardShort = (t: IDashboardTask): IKanbanCardShort => ({
     column: -1,
 });
 
-const getTaskRow = (t: IDashboardTask) => {
-    const fullName = `${t?.reporter?.firstName} ${t?.reporter?.lastName}`;
-    return (
-        <Box key={t.id} position="relative" width={1}>
-            <Item c={IDashboardTaskToCardShort(t)} />
-
-            <Box
-                sx={{
-                    position: "absolute",
-                    right: 9,
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                }}
-            >
-                <Tooltip placement={"top"} title={fullName}>
-                    <Avatar
-                        src={t?.reporter?.avatar}
-                        firstName={t?.reporter?.firstName}
-                        lastName={t?.reporter?.lastName}
-                        sx={{
-                            width: 34,
-                            height: 34,
-                        }}
-                    />
-                </Tooltip>
-            </Box>
-        </Box>
-    );
-};
+const getTaskRow = (t: IDashboardTask) => (
+    <Item
+        key={t.id}
+        assignee={false}
+        reporter
+        c={IDashboardTaskToCardShort(t)}
+    />
+);
 
 // ------------------------------------------------------------------------
 

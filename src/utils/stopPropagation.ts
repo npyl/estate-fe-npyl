@@ -1,5 +1,6 @@
-import { MouseEvent } from "react";
-
-const stopPropagation = (e: MouseEvent<HTMLElement>) => e.stopPropagation();
+const stopPropagation = (e: any) => {
+    if (!("stopPropagation" in e)) return;
+    e.stopPropagation();
+};
 
 export default stopPropagation;

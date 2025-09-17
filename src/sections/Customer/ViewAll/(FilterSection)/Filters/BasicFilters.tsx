@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import FilterLabels from "./Labels";
 import PriceSelect from "./Price";
@@ -7,6 +6,16 @@ import FilterManager from "./ManagedBy";
 import FilterStatus from "./Status";
 import ClearableSection from "@/components/Filters/ClearableSection";
 import { useFiltersContext } from "../Context";
+import { StackProps } from "@mui/material/Stack";
+import { useCallback } from "react";
+
+const ChildrenProps: StackProps = {
+    flexWrap: "wrap",
+    direction: "row",
+    alignItems: "center",
+    pt: 1,
+    gap: 1,
+};
 
 const BasicFilters = () => {
     const {
@@ -19,7 +28,7 @@ const BasicFilters = () => {
         setMaxArea,
     } = useFiltersContext();
     const { t } = useTranslation();
-    const reset = () => {
+    const reset = useCallback(() => {
         setLabels([]);
         setManagerId(undefined);
         setStatus(undefined);
@@ -27,16 +36,19 @@ const BasicFilters = () => {
         setMaxPrice(undefined);
         setMinArea(undefined);
         setMaxArea(undefined);
-    };
+    }, []);
     return (
-        <ClearableSection title={t("Basic")} reset={reset}>
-            <Box display={"flex"} gap={1} pt={1}>
-                <FilterLabels />
-                <PriceSelect />
-                <AreaSelect />
-                <FilterManager />
-                <FilterStatus />
-            </Box>
+        <ClearableSection
+            title={t("Basic")}
+            reset={reset}
+            // ...
+            ChildrenProps={ChildrenProps}
+        >
+            <FilterLabels />
+            <PriceSelect />
+            <AreaSelect />
+            <FilterManager />
+            <FilterStatus />
         </ClearableSection>
     );
 };

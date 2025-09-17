@@ -5,6 +5,7 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { calendar } from "./calendar";
 import { errorToast } from "@/components/Toaster";
+import { getAccessToken } from "@/contexts/accessToken";
 
 type UserId = number;
 
@@ -23,9 +24,7 @@ export const googleOAuth = createApi({
             query: (userId) => ({
                 url: `/${userId}/auth`,
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem(
-                        "accessToken"
-                    )}`,
+                    Authorization: `Bearer ${getAccessToken()}`,
                 },
             }),
             providesTags: ["IsAuthenticated"],

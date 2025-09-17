@@ -8,6 +8,7 @@ import {
 } from "@/types/company";
 import IPage from "@/types/page";
 import { IPropertyFile, IPropertyFileRes } from "@/types/file";
+import { getAccessToken } from "@/contexts/accessToken";
 
 const objectToFormData = (o: object, file: File) => {
     const formData = new FormData();
@@ -44,10 +45,7 @@ export const blog = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/blog`,
         prepareHeaders: (headers) => {
-            headers.set(
-                "Authorization",
-                `Bearer ${localStorage.getItem("accessToken")}`
-            );
+            headers.set("Authorization", `Bearer ${getAccessToken()}`);
             return headers;
         },
     }),
@@ -73,11 +71,12 @@ export const blog = createApi({
             void,
             CreateOrUpdateBlogPostReq
         >({
-            query: ({ id, thumbnail, ...other }) => {
+            query: ({ id, ...other }) => {
                 const isUpdate = Boolean(id);
                 const url = isUpdate ? `/${id}` : ``;
                 const method = isUpdate ? "PUT" : "POST";
-                const body = objectToFormData(other, thumbnail);
+                throw "FIX THIS!";
+                const body = objectToFormData(other, {} as any);
                 return {
                     url,
                     method,

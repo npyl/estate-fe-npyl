@@ -1,5 +1,6 @@
 import fs from "fs";
 import { AUTH_FILE } from "../_constant";
+import { tokenKey } from "../../../../src/constants";
 
 const readToken = async (): Promise<string | undefined> => {
     const credentialsData = fs.readFileSync(AUTH_FILE, "utf8");
@@ -13,7 +14,7 @@ const readToken = async (): Promise<string | undefined> => {
 
     // Find the accessToken in localStorage
     const tokenItem = origin.localStorage.find(
-        (item) => item.name === "accessToken"
+        (item) => item.name === tokenKey
     );
     if (!tokenItem) return;
 

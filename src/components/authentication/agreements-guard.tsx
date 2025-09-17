@@ -3,7 +3,11 @@ import AdminGuard from "./admin-guard";
 import Guard from "./_Guard";
 import { IUser } from "@/types/user";
 
-const allowCb = (u: IUser | null) => Boolean(u?.agreementsEnabled);
+const allowCb = (u: IUser | null, isAuthenticated: boolean) => {
+    // INFO: false-positive; we should offload this to the <AuthGuard />
+    if (!isAuthenticated) return true;
+    return Boolean(u?.agreementsEnabled);
+};
 
 const AgreementsGuard: FC<PropsWithChildren> = ({ children }) => (
     <AdminGuard>

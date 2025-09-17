@@ -5,7 +5,11 @@ import { IUser } from "@/types/user";
 
 const ADMIN_GUARD_TESTID = "admin-guard-testid";
 
-const allowCb = (u: IUser | null) => Boolean(u?.isAdmin);
+const allowCb = (u: IUser | null, isAuthenticated: boolean) => {
+    // INFO: false-positive; we should offload this to the <AuthGuard />
+    if (!isAuthenticated) return true;
+    return Boolean(u?.isAdmin);
+};
 
 const AdminGuard: FC<PropsWithChildren> = ({ children }) => (
     <AuthGuard>

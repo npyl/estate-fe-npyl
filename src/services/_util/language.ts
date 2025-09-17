@@ -1,3 +1,4 @@
+import { getAccessToken } from "@/contexts/accessToken";
 import { reactHooksModule } from "@reduxjs/toolkit/dist/query/react";
 import {
     EndpointDefinitions,
@@ -63,9 +64,7 @@ const acceptLanguageModule = (): Module<AcceptLanguageModule> => ({
                             ...queryObj,
                             headers: {
                                 ...queryObj.headers,
-                                Authorization: `Bearer ${localStorage.getItem(
-                                    "accessToken"
-                                )}`,
+                                Authorization: `Bearer ${getAccessToken()}`,
                             },
                         });
                     };
@@ -102,9 +101,7 @@ const acceptLanguageModule = (): Module<AcceptLanguageModule> => ({
                             ...reworkedQuery,
                             headers: {
                                 ...reworkedQuery.headers,
-                                Authorization: `Bearer  ${localStorage.getItem(
-                                    "accessToken"
-                                )}`,
+                                Authorization: `Bearer  ${getAccessToken()}`,
                             },
                         };
 

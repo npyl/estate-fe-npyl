@@ -1,5 +1,5 @@
 import { CreateOrUpdateBlogPostReq } from "@/services/blog";
-import { BlogPostReq, BlogPostRes } from "@/types/company/blog";
+import { BlogPostRes } from "@/types/company/blog";
 import preventDefault from "@/utils/preventDefault";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FC, PropsWithChildren } from "react";
@@ -11,8 +11,7 @@ const BlogPostResToReq = (d?: BlogPostRes): CreateOrUpdateBlogPostReq => ({
     publicSites: d?.sites?.map(({ id }) => id) ?? [],
     categories: d?.categories?.map(({ key }) => key) || [],
     descriptions: d?.descriptions ?? {},
-    images: d?.images ?? [],
-    thumbnail: undefined as any,
+    images: [], // INFO: will be filled-in by <ImagesPicker />
 });
 
 const schema = z

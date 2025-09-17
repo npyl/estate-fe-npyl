@@ -73,7 +73,7 @@ const FilterBuyerLeaserAndMoreInMore = () => {
                     <Grid
                         key={key}
                         item
-                        xs={6}
+                        xs={12}
                         sm={4}
                         display="flex"
                         alignItems="center"

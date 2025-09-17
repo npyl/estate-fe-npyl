@@ -1,7 +1,7 @@
 import HomeIcon from "@mui/icons-material/Home";
 import LabelImportantIcon from "@mui/icons-material/LabelImportant";
 import TasksIcon from "@mui/icons-material/ConfirmationNumber";
-import HandshakeIcon from "@mui/icons-material/Handshake";
+import AgreementIcon from "@/assets/icons/agreement";
 import CustomersIcon from "@/assets/icons/customers";
 import MessageIcon from "@mui/icons-material/Message";
 import EmailIcon from "@mui/icons-material/Email";
@@ -32,7 +32,7 @@ const MENU_ITEMS = [
     {
         label: "Agreement",
         path: "/agreements/create",
-        icon: <HandshakeIcon />,
+        icon: <AgreementIcon />,
     },
     {
         label: "Label",

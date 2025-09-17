@@ -11,6 +11,8 @@ import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
 import OriginalGoogleLogo from "@/assets/logo/OriginalGoogleLogo";
 import { useAuth } from "@/sections/use-auth";
+import { HideText } from "@/components/styled";
+import DeleteIcon from "@mui/icons-material/Delete";
 const ConfirmationDialog = dynamic(() => import("./ConfirmDialog"));
 
 interface RemoveButtonProps {
@@ -40,6 +42,8 @@ const RemoveButton: FC<RemoveButtonProps> = ({ domain }) => {
                 color="error"
                 loading={isLoading}
                 disabled={isLoading}
+                endIcon={<DeleteIcon />}
+                sx={{ ...HideText }}
                 onClick={openDelete}
             >
                 {t("Delete")}

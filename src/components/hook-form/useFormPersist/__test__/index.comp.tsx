@@ -11,6 +11,7 @@ const SUBMIT_ID = "submit-button-testid";
 const PAYLOAD_TESTID = "payload-testid";
 const DIRTY_TESTID = "dirty-testid";
 const FIELD_TESTID = "field-testid";
+const PERSIST_TESTID = "persist-testid";
 
 const DIRTY_YES = "YES";
 const DIRTY_NO = "NO";
@@ -40,7 +41,7 @@ interface TesterProps {
 const Tester: FC<TesterProps> = ({ formProps, config }) => {
     const { onSubmitRet = false, onSaveSuccess = null } = config ?? {};
 
-    const [methods, { PersistNotice }] = useFormPersist<Values>(
+    const [methods, { PersistNotice, persistChanges }] = useFormPersist<Values>(
         STORAGE_KEY,
         onSaveSuccess,
         formProps
@@ -70,6 +71,8 @@ const Tester: FC<TesterProps> = ({ formProps, config }) => {
                 <button type="submit" data-testid={SUBMIT_ID} />
             </form>
 
+            <button data-testid={PERSIST_TESTID} onClick={persistChanges} />
+
             <div data-testid={DIRTY_TESTID}>
                 {isDirty ? DIRTY_YES : DIRTY_NO}
             </div>
@@ -85,6 +88,7 @@ export {
     PAYLOAD_TESTID,
     DIRTY_TESTID,
     FIELD_TESTID,
+    PERSIST_TESTID,
     // ...
     DIRTY_YES,
     DIRTY_NO,

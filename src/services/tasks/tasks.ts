@@ -30,6 +30,7 @@ import {
 import { errorToast } from "@/components/Toaster";
 import { ILabel } from "@/types/label";
 import { createRemoveTabAwareHook as rt } from "@/services/_util";
+import { getAccessToken } from "@/contexts/accessToken";
 
 export const tasks = createApi({
     reducerPath: "tasks",
@@ -38,10 +39,7 @@ export const tasks = createApi({
         prepareHeaders: (headers) => {
             // By default, if we have a token in the store, let's use that for authenticated requests
 
-            headers.set(
-                "Authorization",
-                `Bearer  ${localStorage.getItem("accessToken")}`
-            );
+            headers.set("Authorization", `Bearer  ${getAccessToken()}`);
 
             return headers;
         },
@@ -221,7 +219,7 @@ const useSetColumnDoneMutation = () => {
         const res = await fetch(`${url}/${columnId}/set-done`, {
             method: "PATCH",
             headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                Authorization: `Bearer ${getAccessToken()}`,
             },
         });
 

@@ -1,5 +1,5 @@
 import { LabelImportant } from "@mui/icons-material";
-import HandshakeIcon from "@mui/icons-material/Handshake";
+import AgreementIcon from "@/assets/icons/agreement";
 import { TFunction } from "i18next";
 import { ReactNode } from "react";
 import HomeIcon from "@/assets/icons/home";
@@ -116,7 +116,7 @@ const getSections = (
                 {
                     title: t("Agreements"),
                     path: "/agreements",
-                    icon: <HandshakeIcon fontSize="small" />,
+                    icon: <AgreementIcon fontSize="small" />,
                 },
                 agreements
             ),

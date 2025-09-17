@@ -3,9 +3,10 @@ import { useGetBoardQuery } from "@/services/tasks";
 import Select from "@/components/hook-form/Select";
 import { FC, useEffect, useMemo } from "react";
 import { KeyValue } from "@/types/KeyValue";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { ICreateOrUpdateTaskReq } from "@/types/tasks";
 import { TASK } from "@/constants/tests";
+import isFalsy from "@/utils/isFalsy";
 
 /**
  * @param s
@@ -46,7 +47,7 @@ interface Props {
 const ToDoAutoSelect: FC<Props> = ({ id }) => {
     const { setValue } = useFormContext<ICreateOrUpdateTaskReq>();
     useEffect(() => {
-        setValue("columnId", id, { shouldDirty: true });
+        setValue("columnId", id);
     }, [id]);
     return null;
 };
@@ -54,9 +55,13 @@ const ToDoAutoSelect: FC<Props> = ({ id }) => {
 const ColumnSelect = () => {
     const { t } = useTranslation();
     const { options, todoId } = useBoardColumns();
+
+    const columnId = useWatch<ICreateOrUpdateTaskReq>({ name: "columnId" });
+    const canAutoSelect = todoId !== -1 && isFalsy(columnId); // INFO: make sure columnId is empty before assigning a default
+
     return (
         <>
-            {todoId !== -1 ? <ToDoAutoSelect id={todoId} /> : null}
+            {canAutoSelect ? <ToDoAutoSelect id={todoId} /> : null}
             <Select
                 data-testid={TASK.COLUMN_ID}
                 name="columnId"

@@ -40,12 +40,15 @@ interface StyledStackProps extends Omit<StackProps, "divider"> {}
 
 export interface ClearableSectionProps extends StyledStackProps {
     title: string;
+    ChildrenProps?: StackProps;
     reset?: VoidFunction;
 }
 
 const ClearableSection: FC<ClearableSectionProps> = ({
     title,
     reset,
+    // ...
+    ChildrenProps,
     children,
     ...props
 }) => (
@@ -58,7 +61,7 @@ const ClearableSection: FC<ClearableSectionProps> = ({
                 <CloseIcon />
             </StyledIconButton>
         </SpaceBetween>
-        {children}
+        <Stack {...ChildrenProps}>{children}</Stack>
     </Stack>
 );
 

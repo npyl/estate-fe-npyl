@@ -2,6 +2,7 @@ import { SpaceBetween } from "@/components/styled";
 import { Stack, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import TasksCount from "./TasksCount";
+import { FC } from "react";
 const Controls = dynamic(() => import("./Controls"));
 const DoneIndicator = dynamic(() => import("./DoneIndicator"));
 
@@ -11,44 +12,44 @@ type Props = {
     done: boolean;
 };
 
-export default function Header({ name, done, columnId }: Props) {
-    return (
-        <SpaceBetween
-            alignItems="center"
+const Header: FC<Props> = ({ name, done, columnId }) => (
+    <SpaceBetween
+        alignItems="center"
+        spacing={1}
+        px={1}
+        // ...
+        position="sticky"
+        top={0}
+        bgcolor="background.default"
+        zIndex={10}
+        // ...
+        boxShadow={5}
+    >
+        <Stack
+            direction="row"
             spacing={1}
-            px={1}
-            // ...
-            position="sticky"
-            top={0}
-            bgcolor="background.default"
-            zIndex={10}
-            // ...
-            boxShadow={5}
+            alignItems="center"
+            overflow="hidden"
+            width={1}
+            height="48px"
         >
-            <Stack
-                direction="row"
-                spacing={1}
-                alignItems="center"
+            <Typography
+                variant="h6"
                 overflow="hidden"
-                width={1}
-                height="48px"
+                textOverflow="ellipsis"
+                maxWidth="80%"
+                noWrap
             >
-                <Typography
-                    variant="h6"
-                    overflow="hidden"
-                    textOverflow="ellipsis"
-                    maxWidth="80%"
-                    noWrap
-                >
-                    {name}
-                </Typography>
+                {name}
+            </Typography>
 
-                <TasksCount columnId={columnId} />
+            <TasksCount columnId={columnId} />
 
-                {done ? <DoneIndicator /> : null}
-            </Stack>
+            {done ? <DoneIndicator /> : null}
+        </Stack>
 
-            <Controls columnId={columnId} makeDone={!done} />
-        </SpaceBetween>
-    );
-}
+        <Controls columnId={columnId} makeDone={!done} />
+    </SpaceBetween>
+);
+
+export default Header;

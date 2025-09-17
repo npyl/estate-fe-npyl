@@ -3,6 +3,7 @@ import { IPropertyReq } from "@/types/properties";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { properties } from "./properties";
+import { getAccessToken } from "@/contexts/accessToken";
 
 const baseUrl = `/api/properties`;
 
@@ -15,9 +16,7 @@ const useEditPropertyMutation = () => {
                 method: "PUT",
                 body: JSON.stringify(body),
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem(
-                        "accessToken"
-                    )}`,
+                    Authorization: `Bearer ${getAccessToken()}`,
                 },
             });
 

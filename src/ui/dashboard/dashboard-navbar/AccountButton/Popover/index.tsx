@@ -36,7 +36,7 @@ const Popover: FC<Props> = ({ anchorEl, onClose }) => (
         onClose={onClose}
     >
         <Header />
-        <Content />
+        <Content onClose={onClose} />
     </MuiPopover>
 );
 

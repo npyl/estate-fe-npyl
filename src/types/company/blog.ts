@@ -19,8 +19,7 @@ interface BlogPostShort {
 
 interface BlogPostReq {
     id?: number;
-    thumbnail?: File;
-    images: string[]; // keys
+    images: File[]; // keys
     descriptions: Record<string, DescriptionEntry>;
     publicSites: number[];
     categories: TCategory[];

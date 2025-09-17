@@ -1,3 +1,4 @@
+import { getAccessToken } from "@/contexts/accessToken";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 interface AddOrRemoveFromPublicSiteReq {
@@ -12,10 +13,7 @@ export const publicListing = createApi({
         prepareHeaders: (headers) => {
             // By default, if we have a token in the store, let's use that for authenticated requests
 
-            headers.set(
-                "Authorization",
-                `Bearer  ${localStorage.getItem("accessToken")}`
-            );
+            headers.set("Authorization", `Bearer  ${getAccessToken()}`);
 
             headers.set(
                 "Accept-Language",

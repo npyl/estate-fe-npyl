@@ -8,6 +8,7 @@ import { calendar } from "@/services/calendar";
 import { properties } from "@/services/properties";
 import { customers } from "@/services/customers";
 import { errorToast } from "@/components/Toaster";
+import { getAccessToken } from "@/contexts/accessToken";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_PROXY_API}/google`;
 
@@ -26,9 +27,7 @@ const useCreateOrUpdateTaskMutation = () => {
             try {
                 const res = await fetch(`${baseUrl}/${userId}/tasks`, {
                     headers: {
-                        Authorization: `Bearer  ${localStorage.getItem(
-                            "accessToken"
-                        )}`,
+                        Authorization: `Bearer  ${getAccessToken()}`,
                     },
                     body: JSON.stringify(b),
                     method: "POST",
