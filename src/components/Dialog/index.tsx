@@ -5,43 +5,29 @@ import {
     DialogProps as MuiDialogProps,
     DialogContent,
     DialogTitle,
-    IconButton as MuiIconButton,
     DialogActionsProps,
     DialogContentProps,
     DialogTitleProps,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { ReactNode, forwardRef } from "react";
-import Iconify from "@/components/iconify";
+import { ComponentType, FC, ReactNode } from "react";
+import DialogForm from "./Form";
 
-const IconButton = styled(MuiIconButton)(({ theme }) => ({
-    position: "absolute",
-    right: theme.spacing(2),
-}));
-
-const DialogForm = forwardRef<HTMLFormElement>((props, ref) => (
-    <form ref={ref} {...props} method="POST" />
-));
-
-DialogForm.displayName = "DialogForm";
-
-export type DialogProps = {
+type DialogProps = {
     title?: ReactNode;
     content?: ReactNode;
     actions?: ReactNode;
+
     submit?: boolean; // support <form> mode
-
     hideTitle?: boolean;
-    closeButton?: boolean;
 
-    DialogTitleComponent?: React.ComponentType<DialogTitleProps>;
-    DialogContentComponent?: React.ComponentType<DialogContentProps>;
-    DialogActionsComponent?: React.ComponentType<DialogActionsProps>;
+    DialogTitleComponent?: ComponentType<DialogTitleProps>;
+    DialogContentComponent?: ComponentType<DialogContentProps>;
+    DialogActionsComponent?: ComponentType<DialogActionsProps>;
 
     onClose?: () => void;
 } & Omit<MuiDialogProps, "title" | "content">;
 
-const Dialog = ({
+const Dialog: FC<DialogProps> = ({
     open,
     submit = false,
     title,
@@ -49,15 +35,18 @@ const Dialog = ({
     content,
 
     hideTitle = false,
-    closeButton = false,
 
     DialogTitleComponent = DialogTitle,
     DialogContentComponent = DialogContent,
     DialogActionsComponent = DialogActions,
+
     onClose,
+
     ...props
-}: DialogProps) =>
-    !open ? null : (
+}) => {
+    if (!open) return null;
+
+    return (
         <MuiDialog
             open={open}
             onClose={onClose}
@@ -70,11 +59,6 @@ const Dialog = ({
         >
             {!hideTitle ? (
                 <DialogTitleComponent>
-                    {onClose && closeButton ? (
-                        <IconButton onClick={onClose}>
-                            <Iconify icon="line-md:close" />
-                        </IconButton>
-                    ) : null}
                     <Stack alignItems="center" mt={1}>
                         {title}
                     </Stack>
@@ -84,5 +68,7 @@ const Dialog = ({
             <DialogActionsComponent>{actions}</DialogActionsComponent>
         </MuiDialog>
     );
+};
 
+export type { DialogProps };
 export default Dialog;
