@@ -1,6 +1,6 @@
 import { forwardRef, useCallback, useImperativeHandle, useState } from "react";
 import { SearchCategory } from "../types";
-import Popover, { PopoverProps } from "../Popover";
+import Popover, { PopoverProps } from "./Popover";
 import SearchHistory from "./SearchHistory";
 import dynamic from "next/dynamic";
 const SearchResults = dynamic(() => import("./SearchResults"));

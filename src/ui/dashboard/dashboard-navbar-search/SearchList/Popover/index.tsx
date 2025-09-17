@@ -2,7 +2,8 @@ import Paper from "@mui/material/Paper";
 import { FC, ReactNode } from "react";
 import { SxProps, Theme } from "@mui/material";
 import { getBorderColor2 } from "@/theme/borderColor";
-import { SearchCategory } from "./types";
+import { SearchCategory } from "../../types";
+import useConsumeScroll from "./useConsumeScroll";
 
 const getPaperSx = (
     historyMode: boolean,
@@ -46,6 +47,8 @@ const Popover: FC<PopoverProps> = ({
     children,
     anchorEl,
 }) => {
+    useConsumeScroll();
+
     // INFO: when in history mode or in single search mode we can show a smaller paper; otherwise show a large
     const shouldInheritWidth = historyMode || searchCategory !== "all";
 
