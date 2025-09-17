@@ -1,5 +1,5 @@
 import { FC, useCallback } from "react";
-import BaseItem from "../BaseItem";
+import BaseItem from "../../BaseItem";
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import {

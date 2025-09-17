@@ -53,6 +53,9 @@ const HideText: SxProps<Theme> = {
     "& .MuiButton-startIcon": {
         mr: { xs: 0, sm: 1 },
     },
+    "& .MuiButton-endIcon": {
+        ml: { xs: 0, sm: 1 },
+    },
     fontSize: { xs: 0, sm: "initial" },
 };
 
