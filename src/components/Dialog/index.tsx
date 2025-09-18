@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { ComponentType, FC, ReactNode } from "react";
 import DialogForm from "./Form";
+import ResponsiveDialog from "./ResponsiveDialog";
 
 type DialogProps = {
     submit?: boolean; // support <form> mode
@@ -44,7 +45,7 @@ const Dialog: FC<DialogProps> = ({
     if (!props.open) return null;
 
     return (
-        <MuiDialog
+        <ResponsiveDialog
             fullWidth
             maxWidth="sm"
             // INFO: make the dialog work as a <form> component
@@ -61,7 +62,7 @@ const Dialog: FC<DialogProps> = ({
             ) : null}
             <DialogContentComponent>{content}</DialogContentComponent>
             <DialogActionsComponent>{actions}</DialogActionsComponent>
-        </MuiDialog>
+        </ResponsiveDialog>
     );
 };
 
