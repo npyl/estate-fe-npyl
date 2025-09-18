@@ -18,7 +18,7 @@ import PrivateButton from "./Buttons/Private";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
 import { FC } from "react";
-import SelectAllButton from "./SelectAllButton";
+import SelectAllButton from "../SelectAllButton";
 const CompareGallery = dynamic(() => import("./CompareGallery"));
 
 interface CRMControlsProps extends StackProps {
