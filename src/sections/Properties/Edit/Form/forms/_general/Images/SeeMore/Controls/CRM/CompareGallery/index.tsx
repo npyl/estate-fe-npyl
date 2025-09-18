@@ -1,99 +1,65 @@
-import { DialogTitle, DialogContent, Button } from "@mui/material";
-import { useMemo, useState } from "react";
-import {
-    ComparisonFrame,
-    ComparisonImage,
-    StyledActions,
-    StyledDialog,
-} from "./styled";
-import usePropertyImages from "../../../../hook";
-import { useReorderPropertyImagesWithSetImageVisibilityMutation } from "@/services/properties/file";
+import { DialogContent, Button, DialogContentProps } from "@mui/material";
+import { FC, useState } from "react";
+import { StyledActions } from "./styled";
 import { useTranslation } from "react-i18next";
+import Dialog, { DialogProps } from "@/components/Dialog";
+import MakeMainButton from "./MakeMainButton";
+import Content from "./Content";
 
-interface ICompareGallery {
-    open: boolean;
+const StyledDialogContent: FC<DialogContentProps> = ({ sx, ...props }) => (
+    <DialogContent sx={{ p: 0, ...sx }} {...props} />
+);
+
+interface ICompareGallery extends DialogProps {
     image1: string;
     image2: string;
-    onClose: VoidFunction;
 }
 
 const CompareGallery: React.FC<ICompareGallery> = ({
-    open,
     image1: image1Key,
     image2: image2Key,
-    onClose,
+    ...props
 }) => {
     const { t } = useTranslation();
 
-    const { images, propertyId } = usePropertyImages();
-
-    const { image1, image2 } = useMemo(
-        () => ({
-            image1: images.find(({ key }) => key === image1Key),
-            image2: images.find(({ key }) => key === image2Key),
-        }),
-        [images, image1Key, image2Key]
-    );
-
-    const [reorderImages] =
-        useReorderPropertyImagesWithSetImageVisibilityMutation();
-
     const [selectedKey, setSelectedKey] = useState("");
 
-    const allKeys = useMemo(() => images.map(({ key }) => key), [images]);
-
-    const handleSetMain = () => {
-        const keyIndex = allKeys.indexOf(selectedKey);
-
-        // Move the selected key to the front and reorder the keys array
-        const reorderedKeys = [
-            selectedKey,
-            ...allKeys.slice(0, keyIndex),
-            ...allKeys.slice(keyIndex + 1),
-        ];
-
-        reorderImages({
-            propertyId,
-            imageKeys: reorderedKeys,
-            imageKey: selectedKey,
-            hidden: false,
-        }).then(onClose);
-    };
-
     return (
-        <StyledDialog open={open} onClose={onClose} closeAfterTransition={true}>
-            <DialogTitle>{t("Compare")}</DialogTitle>
-            <DialogContent sx={{ padding: 0 }}>
-                <ComparisonFrame>
-                    <ComparisonImage
-                        isSelected={selectedKey === image1?.key}
-                        src={image1?.url || ""}
-                        alt="image 1"
-                        onClick={() => setSelectedKey(image1Key)}
-                    />
-                    <ComparisonImage
-                        isSelected={selectedKey === image2?.key}
-                        src={image2?.url || ""}
-                        alt="image 1"
-                        onClick={() => setSelectedKey(image2Key)}
-                    />
-                </ComparisonFrame>
-            </DialogContent>
-            <StyledActions>
-                {!!selectedKey ? (
+        <Dialog
+            title={t("Compare")}
+            maxWidth="xl"
+            closeAfterTransition={true}
+            DialogContentComponent={StyledDialogContent}
+            DialogActionsComponent={StyledActions}
+            // ...
+            content={
+                <Content
+                    selectedKey={selectedKey}
+                    setSelectedKey={setSelectedKey}
+                    image1Key={image1Key}
+                    image2Key={image2Key}
+                />
+            }
+            actions={
+                <>
+                    {selectedKey ? (
+                        <MakeMainButton
+                            selectedKey={selectedKey}
+                            onClose={props.onClose}
+                        />
+                    ) : null}
+
                     <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleSetMain}
+                        variant="outlined"
+                        color="secondary"
+                        onClick={props.onClose}
                     >
-                        {t("Set Main")}
+                        {t("Close")}
                     </Button>
-                ) : null}
-                <Button variant="outlined" color="secondary" onClick={onClose}>
-                    {t("Close")}
-                </Button>
-            </StyledActions>
-        </StyledDialog>
+                </>
+            }
+            {...props}
+        />
     );
 };
 
