@@ -66,7 +66,14 @@ const Content: FC<ContentProps> = ({ currentImageKey, setCurrentImageKey }) => {
                     initialIndex={carouselIndex}
                 />
             </Grid>
-            <Grid xs={12} md={2} display="flex" flexDirection="column" gap={1}>
+            <Grid
+                xs={12}
+                md={2}
+                display="flex"
+                flexDirection="column"
+                gap={1}
+                p={1}
+            >
                 <RHFLanguageButton
                     name="language"
                     updatesGlobalLanguage={false}
