@@ -76,12 +76,11 @@ const getSchema = (t: TranslationType) =>
     });
 
 interface FormProps {
-    open: boolean;
     onClose: () => void;
     initialValues?: ICompany;
 }
 
-const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
+const EditDialog: React.FC<FormProps> = ({ onClose, initialValues }) => {
     const { t } = useTranslation();
 
     const validationSchema = useMemo(() => getSchema(t), [t]);
@@ -121,7 +120,6 @@ const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
     return (
         <FormProvider {...methods}>
             <Dialog
-                open={open}
                 onClose={onClose}
                 maxWidth="lg"
                 fullWidth

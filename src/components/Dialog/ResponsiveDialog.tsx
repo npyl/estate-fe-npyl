@@ -47,4 +47,5 @@ const ResponsiveDialog: FC<ResponsiveDialogProps> = ({ sx, ...props }) => {
     );
 };
 
+export type { ResponsiveDialogProps };
 export default ResponsiveDialog;

@@ -35,7 +35,6 @@ const EditDialog: FC<Props> = ({ onClose }) => {
 
     return (
         <Dialog
-            open
             submit
             onSubmit={methods.handleSubmit(handleSubmit)}
             // ...

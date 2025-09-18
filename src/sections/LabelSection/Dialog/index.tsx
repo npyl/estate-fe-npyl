@@ -24,7 +24,6 @@ const AddLabelDialog = ({
 
     return (
         <Dialog
-            open
             maxWidth="xs"
             onClose={onClose}
             // ...

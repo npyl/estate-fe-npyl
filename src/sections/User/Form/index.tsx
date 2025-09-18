@@ -25,7 +25,6 @@ interface UserFormProps {
 const UserForm: FC<UserFormProps> = ({ user, onClose }) => (
     <Form user={user}>
         <Dialog
-            open
             title={<Title userId={user?.id} />}
             actions={<Actions user={user} onClose={onClose} />}
             content={<Content user={user} />}

@@ -242,7 +242,4 @@ const Gallery: React.FC<GalleryProps> = ({
     );
 };
 
-const RemountWrapper: React.FC<GalleryProps> = (props) =>
-    !props.open ? null : <Gallery {...props} />;
-
-export default RemountWrapper;
+export default Gallery;

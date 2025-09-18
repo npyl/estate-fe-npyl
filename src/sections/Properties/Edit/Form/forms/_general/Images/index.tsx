@@ -46,6 +46,7 @@ const ImagesSection = () => {
 
     // Gallery
     const [galleryImage, setGalleryImage] = useState("");
+    const isGalleryOpen = Boolean(galleryImage) && images.length > 0;
     const closeGallery = () => setGalleryImage("");
 
     // Lightbox
@@ -79,11 +80,12 @@ const ImagesSection = () => {
                     </Panel>
 
                     {/* Gallery */}
-                    <Gallery
-                        open={!!galleryImage && images.length > 0}
-                        openImageKey={galleryImage}
-                        onClose={closeGallery}
-                    />
+                    {isGalleryOpen ? (
+                        <Gallery
+                            openImageKey={galleryImage}
+                            onClose={closeGallery}
+                        />
+                    ) : null}
 
                     {/* SeeMore */}
                     {isSeeMoreOpen ? (

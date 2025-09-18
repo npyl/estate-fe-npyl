@@ -30,7 +30,6 @@ export default function FilterMore({ onClose, totalProperties }: Props) {
 
     return (
         <FilterMoreDialog
-            open
             onClose={onClose}
             onResetFilter={resetState}
             totalProperties={totalProperties}

@@ -1,15 +1,13 @@
-import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogProps,
-    DialogTitle,
-    styled,
-} from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { getBorderColor2 } from "@/theme/borderColor";
 import { StyledDialogContent } from "./styled";
 import { usePathname } from "next/navigation";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogActions from "@mui/material/DialogActions";
+import Dialog, { DialogProps } from "@/components/Dialog";
+import Button from "@mui/material/Button";
+import { styled } from "@mui/material/styles";
+import { FC, PropsWithChildren } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -31,30 +29,19 @@ const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
     justifyContent: "space-between",
 }));
 
-const totalPropertiesButtonSx = {
-    backgroundColor: "primary.main",
-    color: "white",
-    fontWeight: "bold",
-    borderRadius: "8px",
-    textTransform: "none",
-    px: 3,
-};
-
 // ----------------------------------------------------------------------
 
-type Props = DialogProps & {
+type Props = PropsWithChildren<DialogProps> & {
     onResetFilter: VoidFunction;
     totalProperties?: number;
-    onClose: VoidFunction;
 };
 
-export default function FilterMore({
+const FilterMore: FC<Props> = ({
     onResetFilter,
     totalProperties,
-    onClose,
     children,
     ...props
-}: Props) {
+}) => {
     const { t } = useTranslation();
     const pathname = usePathname();
     const isPropertyPage = pathname?.includes("property");
@@ -63,29 +50,31 @@ export default function FilterMore({
     const buttonLabel = isPropertyPage
         ? `${t("See")} ${totalProperties} ${t("properties")}`
         : isCustomerPage
-        ? `${t("See")} ${t("customers")}`
-        : "";
+          ? `${t("See")} ${t("customers")}`
+          : "";
 
     return (
-        <Dialog maxWidth="lg" onClose={onClose} {...props}>
-            <StyledDialogTitle textAlign="center">
-                {t("Filters")}
-            </StyledDialogTitle>
-
-            <StyledDialogContent>{children}</StyledDialogContent>
-
-            <StyledDialogActions>
-                <Button variant="outlined" onClick={onResetFilter}>
-                    {t("Clear all")}
-                </Button>
-                <Button
-                    variant="contained"
-                    onClick={onClose}
-                    sx={totalPropertiesButtonSx}
-                >
-                    {buttonLabel}
-                </Button>
-            </StyledDialogActions>
-        </Dialog>
+        <Dialog
+            maxWidth="lg"
+            DialogTitleComponent={StyledDialogTitle}
+            DialogContentComponent={StyledDialogContent}
+            DialogActionsComponent={StyledDialogActions}
+            // ...
+            title={t("Filters")}
+            content={children}
+            actions={
+                <>
+                    <Button variant="outlined" onClick={onResetFilter}>
+                        {t("Clear all")}
+                    </Button>
+                    <Button variant="contained" onClick={props.onClose}>
+                        {buttonLabel}
+                    </Button>
+                </>
+            }
+            {...props}
+        />
     );
-}
+};
+
+export default FilterMore;

@@ -25,7 +25,6 @@ const DeleteDialog: FC<DeleteDialogProps> = ({ agreementId, onClose }) => {
 
     return (
         <BaseDeleteDialog
-            open
             loading={isLoading}
             onClose={onClose}
             onDelete={handleDelete}

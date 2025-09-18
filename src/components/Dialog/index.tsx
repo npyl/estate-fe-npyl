@@ -1,8 +1,6 @@
 import {
     Stack,
-    Dialog as MuiDialog,
     DialogActions,
-    DialogProps as MuiDialogProps,
     DialogContent,
     DialogTitle,
     DialogActionsProps,
@@ -11,7 +9,7 @@ import {
 } from "@mui/material";
 import { ComponentType, FC, ReactNode } from "react";
 import DialogForm from "./Form";
-import ResponsiveDialog from "./ResponsiveDialog";
+import ResponsiveDialog, { ResponsiveDialogProps } from "./ResponsiveDialog";
 
 type DialogProps = {
     submit?: boolean; // support <form> mode
@@ -26,7 +24,10 @@ type DialogProps = {
     DialogActionsComponent?: ComponentType<DialogActionsProps>;
 
     onClose?: VoidFunction;
-} & Omit<MuiDialogProps, "title" | "content" | "onClose">;
+} & Omit<
+    ResponsiveDialogProps,
+    "open" | "title" | "content" | "onClose" | "children"
+>;
 
 const Dialog: FC<DialogProps> = ({
     submit = false,
@@ -41,30 +42,27 @@ const Dialog: FC<DialogProps> = ({
     DialogActionsComponent = DialogActions,
 
     ...props
-}) => {
-    if (!props.open) return null;
-
-    return (
-        <ResponsiveDialog
-            fullWidth
-            maxWidth="sm"
-            // INFO: make the dialog work as a <form> component
-            component={submit ? DialogForm : undefined}
-            // ...
-            {...props}
-        >
-            {!hideTitle ? (
-                <DialogTitleComponent>
-                    <Stack alignItems="center" mt={1}>
-                        {title}
-                    </Stack>
-                </DialogTitleComponent>
-            ) : null}
-            <DialogContentComponent>{content}</DialogContentComponent>
-            <DialogActionsComponent>{actions}</DialogActionsComponent>
-        </ResponsiveDialog>
-    );
-};
+}) => (
+    <ResponsiveDialog
+        open
+        fullWidth
+        maxWidth="sm"
+        // INFO: make the dialog work as a <form> component
+        component={submit ? DialogForm : undefined}
+        // ...
+        {...props}
+    >
+        {!hideTitle ? (
+            <DialogTitleComponent>
+                <Stack alignItems="center" mt={1}>
+                    {title}
+                </Stack>
+            </DialogTitleComponent>
+        ) : null}
+        <DialogContentComponent>{content}</DialogContentComponent>
+        <DialogActionsComponent>{actions}</DialogActionsComponent>
+    </ResponsiveDialog>
+);
 
 export type { DialogProps };
 export default Dialog;

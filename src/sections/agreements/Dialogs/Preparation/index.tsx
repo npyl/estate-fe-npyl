@@ -124,7 +124,6 @@ const PreparationDialog: React.FC<Props> = ({
             {PersistNotice}
 
             <Dialog
-                open
                 maxWidth="lg"
                 submit
                 onSubmit={methods.handleSubmit(handleSubmit)}

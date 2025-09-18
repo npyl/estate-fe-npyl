@@ -61,7 +61,6 @@ const Details: FC<DetailsProps> = ({ quickCreate = false, task, onClose }) => {
         <FormProvider {...methods}>
             <Dialog
                 data-testid={TASK.DIALOG_ID}
-                open
                 submit
                 onSubmit={methods.handleSubmit(handleSubmit)}
                 onClose={handleClose}

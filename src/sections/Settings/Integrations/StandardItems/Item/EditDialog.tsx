@@ -62,7 +62,6 @@ const EditDialog: React.FC<FormProps> = ({ open, initialValues, onClose }) => {
     return (
         <FormProvider {...methods}>
             <Dialog
-                open={open}
                 onClose={onClose}
                 maxWidth="lg"
                 fullWidth
