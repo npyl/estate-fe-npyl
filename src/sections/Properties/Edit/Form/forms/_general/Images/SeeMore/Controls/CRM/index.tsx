@@ -17,6 +17,8 @@ import PublicButton from "./Buttons/Public";
 import PrivateButton from "./Buttons/Private";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
+import { FC } from "react";
+import SelectAllButton from "./SelectAllButton";
 const CompareGallery = dynamic(() => import("./CompareGallery"));
 
 interface CRMControlsProps extends StackProps {
@@ -28,7 +30,7 @@ interface CRMControlsProps extends StackProps {
     onModeChange: (_: any, m: TMode) => void;
 }
 
-const CRMControls: React.FC<CRMControlsProps> = ({
+const CRMControls: FC<CRMControlsProps> = ({
     mode,
     selectedImages,
     isAllSelected,
@@ -60,14 +62,11 @@ const CRMControls: React.FC<CRMControlsProps> = ({
                 ) : null}
 
                 {mode !== "compare" ? (
-                    <SoftButton
+                    <SelectAllButton
+                        active={isAllSelected}
                         disabled={isLoading}
                         onClick={onToggleAll}
-                        variant="outlined"
-                        color={isAllSelected ? "error" : "primary"}
-                    >
-                        {t(isAllSelected ? "Deselect All" : "Select All")}
-                    </SoftButton>
+                    />
                 ) : null}
 
                 {mode === "compare" && selectedImages.length === 2 ? (
@@ -106,7 +105,6 @@ const CRMControls: React.FC<CRMControlsProps> = ({
 
             {isCompareOpen ? (
                 <CompareGallery
-                    open={isCompareOpen}
                     image1={selectedImages[0]}
                     image2={selectedImages[1]}
                     onClose={handleCloseCompareDialog}

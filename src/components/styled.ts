@@ -50,10 +50,8 @@ export const PPButton = styled(Button, {
  * Apply to buttons to hide text on small displays
  */
 const HideText: SxProps<Theme> = {
-    "& .MuiButton-startIcon": {
-        mr: { xs: 0, sm: 1 },
-    },
-    "& .MuiButton-endIcon": {
+    "& .MuiButton-icon": {
+        mr: { xs: 0 },
         ml: { xs: 0, sm: 1 },
     },
     fontSize: { xs: 0, sm: "initial" },
