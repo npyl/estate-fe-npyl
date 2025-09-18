@@ -1,12 +1,13 @@
-// @mui
 import { Button } from "@mui/material";
-//
-import { ConfirmDialogProps } from "./types";
 import { useTranslation } from "react-i18next";
 import stopPropagation from "@/utils/stopPropagation";
 import { FC } from "react";
-import Dialog from "@/components/Dialog";
-// ----------------------------------------------------------------------
+import Dialog, { DialogProps } from "@/components/Dialog";
+
+interface ConfirmDialogProps extends Omit<DialogProps, "title" | "onClose"> {
+    title: string;
+    onClose: VoidFunction;
+}
 
 const ConfirmDialog: FC<ConfirmDialogProps> = ({ actions, ...other }) => {
     const { t } = useTranslation();
@@ -29,4 +30,5 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({ actions, ...other }) => {
     );
 };
 
+export type { ConfirmDialogProps };
 export default ConfirmDialog;
