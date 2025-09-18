@@ -1,33 +1,13 @@
 import { useTranslation } from "react-i18next";
-import { getBorderColor2 } from "@/theme/borderColor";
-import { StyledDialogContent } from "./styled";
 import { usePathname } from "next/navigation";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogActions from "@mui/material/DialogActions";
 import Dialog, { DialogProps } from "@/components/Dialog";
 import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
 import { FC, PropsWithChildren } from "react";
-
-// ----------------------------------------------------------------------
-
-const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
-    borderBottom: "1px solid",
-    borderBottomColor: getBorderColor2(theme),
-}));
-
-const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
-    borderTop: "1px solid",
-    borderTopColor: getBorderColor2(theme),
-    backgroundColor:
-        theme.palette.mode === "light"
-            ? theme.palette.neutral?.[200]
-            : theme.palette.neutral?.[800],
-
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-}));
+import {
+    StyledDialogActions,
+    StyledDialogContent,
+    StyledDialogTitle,
+} from "./styled";
 
 // ----------------------------------------------------------------------
 
