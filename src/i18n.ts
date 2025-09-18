@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            CLONE_TITLE: "Clone this property?",
             NEW_TEMPLATE: "New Template",
             Column: "Column",
             Images: "Images",
@@ -1393,7 +1394,6 @@ const resources = {
             Document: "Document",
 
             "Are you sure?": "Are you sure?",
-            _UNDONE_: "This action cannot be undone",
 
             ERR_ADMIN_ONLY: "Accessible to admins only",
             ERR_ADMIN_ONLY_0:
@@ -1417,6 +1417,8 @@ const resources = {
     },
     el: {
         translation: {
+            CLONE_TITLE: "Κλωνοποίηση ακινήτου?",
+
             NEW_TEMPLATE: "Νέο Πρότυπο",
 
             Column: "Στήλη",
@@ -1635,7 +1637,6 @@ const resources = {
             ERR_ADMIN_ONLY_0:
                 "Η σελίδα αυτή είναι προσβάσιμη μόνο από λογαριασμό διαχειριστή",
 
-            _UNDONE_: "Η ενέργεια δεν μπορεί να αναιρεθεί",
             "Are you sure?": "Είστε σίγουρος?",
 
             Document: "Έγγραφο",

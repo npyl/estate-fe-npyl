@@ -14,7 +14,6 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({ actions, ...other }) => {
     return (
         <Dialog
             fullWidth
-            maxWidth="xs"
             onClick={stopPropagation}
             actions={
                 <>

@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SoftButton from "@/components/SoftButton";
 import { useTranslation } from "react-i18next";
-const DeleteDialog = dynamic(() => import("@/components/DialogDelete"));
+const DeleteDialog = dynamic(() => import("@/ui/DialogDelete"));
 import useDialog from "@/hooks/useDialog";
 import { FC, useCallback } from "react";
 import dynamic from "next/dynamic";

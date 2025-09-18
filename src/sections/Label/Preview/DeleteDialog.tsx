@@ -1,11 +1,7 @@
 import { useDeleteLabelForResourceMutation } from "@/services/labels";
-import dynamic from "next/dynamic";
 import { FC } from "react";
-import { useTranslation } from "react-i18next";
 import { LabelResourceType } from "@/types/label";
-const ConfirmationDialogBox = dynamic(
-    () => import("@/ui/ConfirmationDialogBox")
-);
+import PPDeleteDialog from "@/ui/DialogDelete";
 
 // --------------------------------------------------------------------------
 
@@ -20,22 +16,19 @@ const DeleteDialog: FC<DeleteDialogProps> = ({
     labelId,
     onClose,
 }) => {
-    const { t } = useTranslation();
+    const [deleteForResource, { isLoading }] =
+        useDeleteLabelForResourceMutation();
 
-    const [deleteForResource] = useDeleteLabelForResourceMutation();
-
-    const handleConfirm = async () => {
+    const onDelete = async () => {
         await deleteForResource({ resource, labelId });
         onClose();
     };
 
     return (
-        <ConfirmationDialogBox
-            open
+        <PPDeleteDialog
+            loading={isLoading}
+            onDelete={onDelete}
             onClose={onClose}
-            text={t("_UNDONE_")}
-            onConfirm={handleConfirm}
-            action={"delete"}
         />
     );
 };

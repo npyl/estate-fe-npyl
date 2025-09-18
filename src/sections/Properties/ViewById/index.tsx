@@ -9,12 +9,7 @@ import {
 
 import TabPanel from "@/components/Tabs/TabPanel";
 
-import ViewHeader from "@/sections/ViewHeader";
-
 import { useTranslation } from "react-i18next";
-const ConfirmationDialogBox = dynamic(
-    () => import("@/ui/ConfirmationDialogBox")
-);
 import dynamic from "next/dynamic";
 
 // Tabs
@@ -45,6 +40,7 @@ import AgreementsLabel from "./TabLabels/Agreements";
 import GreenMapTab from "./GreenMap";
 import IntegrationsLabel from "./TabLabels/Integrations";
 import Tabs, { useCurrentTab } from "@/components/Tabs";
+import ViewHeader from "./ViewHeader";
 
 // -----------------------------------------------------------------
 
@@ -110,26 +106,12 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
     const TABS = useMemo(() => getTABS(t), [t]);
     const GREEN_MAP_INDEX = TABS.length - 1;
 
-    const [cloneProperty] = useClonePropertyMutation();
     const [deleteProperty] = useDeletePropertyMutation();
     const [deletePermanent] = useDeletePermanentPropertyMutation();
 
     const [value] = useCurrentTab();
-    const [cloneConfirmDialogOpen, setCloneConfirmDialogOpen] = useState(false);
 
     const handleEdit = () => router.push(`/property/edit/${propertyId}`);
-
-    const handleClone = () => setCloneConfirmDialogOpen(true);
-    const closeCloneConfirmaionDialog = () => setCloneConfirmDialogOpen(false);
-
-    const handleCloneConfirmation = () => {
-        closeCloneConfirmaionDialog();
-        cloneProperty(+propertyId!)
-            .unwrap()
-            .then((newPropertyId) =>
-                router.push(`/property/edit/${newPropertyId}`)
-            );
-    };
 
     const handleArchive = useCallback(async () => {
         const res = await deleteProperty({
@@ -157,7 +139,6 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
                 onArchive={handleArchive}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
-                onClone={handleClone}
             >
                 <Tabs
                     sx={{
@@ -174,16 +155,6 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
             </ViewHeader>
 
             {TABS.map(getTabView(value))}
-
-            {cloneConfirmDialogOpen ? (
-                <ConfirmationDialogBox
-                    open={cloneConfirmDialogOpen}
-                    onClose={closeCloneConfirmaionDialog}
-                    text={"Are you Sure You want to Clone This Property?"}
-                    onConfirm={handleCloneConfirmation}
-                    action={"clone"}
-                />
-            ) : null}
         </>
     );
 };
