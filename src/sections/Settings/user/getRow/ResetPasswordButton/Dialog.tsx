@@ -24,7 +24,7 @@ const ResetDialog: FC<ResetDialogProps> = ({ userId, onClose }) => {
         onClose();
     }, [userId, newPassword]);
 
-    const Actions = Boolean(newPassword) ? (
+    const Actions = newPassword ? (
         <LoadingButton
             disabled={isLoading}
             loading={isLoading}
@@ -37,7 +37,6 @@ const ResetDialog: FC<ResetDialogProps> = ({ userId, onClose }) => {
 
     return (
         <ConfirmDialog
-            open
             title={t("RESET_USER_PASSWORD")}
             content={
                 <TextField

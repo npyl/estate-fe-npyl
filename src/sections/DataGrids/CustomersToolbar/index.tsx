@@ -56,7 +56,6 @@ const CustomersToolbar: FC<ToolbarProps> = ({ selectedRows }) => {
 
             {isBulkEditOpen ? (
                 <BulkEdit
-                    open={isBulkEditOpen}
                     selectedIds={selectedRows}
                     onSave={bulkEdit}
                     onClose={closeBulkEdit}
@@ -66,7 +65,6 @@ const CustomersToolbar: FC<ToolbarProps> = ({ selectedRows }) => {
             {isBulkDeleteOpen ? (
                 <DeleteDialog
                     multiple
-                    open={isBulkDeleteOpen}
                     onClose={closeBulkDelete}
                     onDelete={handleBulkDelete}
                 />

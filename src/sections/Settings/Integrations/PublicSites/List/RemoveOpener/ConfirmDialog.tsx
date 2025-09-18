@@ -23,7 +23,6 @@ const DeleteButton: FC<DeleteButtonProps> = ({ siteId, onClose }) => {
 
     return (
         <ConfirmDialog
-            open
             title={t("Delete public site?")}
             content={<Typography>{t("DELETE_PUBLIC_0")}</Typography>}
             actions={

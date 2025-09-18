@@ -17,7 +17,6 @@ const initialState: StateType = {
 };
 
 interface BulkEditProps {
-    open: boolean;
     selectedIds: number[];
     onSave: (req: BulkEditRequest) => Promise<any>;
     onClose: () => void;

@@ -16,7 +16,6 @@ const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
     const { t } = useTranslation();
     return (
         <ConfirmDialog
-            open
             title={t("Delete")}
             content={<Typography>{t("_UPDATE_WORKSPACE_EMAILS_")}</Typography>}
             actions={

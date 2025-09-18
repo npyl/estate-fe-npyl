@@ -30,7 +30,6 @@ const DeleteItem: FC<DeleteItemProps> = ({ taskId }) => {
 
             {isOpen ? (
                 <ConfirmDialog
-                    open
                     onClose={closeConfirm}
                     // ...
                     title={t("Delete task?")}

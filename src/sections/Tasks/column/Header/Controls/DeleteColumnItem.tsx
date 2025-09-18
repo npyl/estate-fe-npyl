@@ -26,7 +26,6 @@ const DeleteColumnItem: FC<Props> = ({ columnId }) => {
 
             {isOpen ? (
                 <ConfirmDialog
-                    open
                     onClose={closeConfirm}
                     // ...
                     title={t("Delete column?")}

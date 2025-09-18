@@ -1,12 +1,10 @@
 import { Box, ClickAwayListener, Popover } from "@mui/material";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "src/store";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { DateRange } from "react-date-range";
 import { FilterButton } from "@/components/Filters";
-
 import { addDays } from "date-fns"; // make sure you've installed date-fns as it's a peer dependency
 import "react-date-range/dist/styles.css"; // main CSS file
 import "react-date-range/dist/theme/default.css"; // theme CSS file
@@ -73,7 +71,6 @@ const DateSelect = () => {
         <ClickAwayListener onClickAway={() => setOpen(false)}>
             <Box>
                 <FilterButton
-                    open={open}
                     variant="outlined"
                     endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
                     onClick={handleClick}

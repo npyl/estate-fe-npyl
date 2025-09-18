@@ -68,7 +68,6 @@ const DeleteOrArchiveButton: FC<Props> = ({
 
             {isArchiveOpen ? (
                 <ConfirmDialog
-                    open
                     onClose={closeArchive}
                     title={t("Archive")}
                     actions={
@@ -85,11 +84,7 @@ const DeleteOrArchiveButton: FC<Props> = ({
             ) : null}
 
             {isDeleteOpen ? (
-                <DeleteDialog
-                    open
-                    onClose={closeDelete}
-                    onDelete={handleDelete}
-                />
+                <DeleteDialog onClose={closeDelete} onDelete={handleDelete} />
             ) : null}
         </>
     );

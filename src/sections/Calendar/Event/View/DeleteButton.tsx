@@ -35,7 +35,6 @@ const DeleteButton: FC<DeleteButtonProps> = ({ eventId, onClose }) => {
             {/* Delete */}
             {isDelete ? (
                 <ConfirmDialog
-                    open
                     title={t("Delete Event")}
                     content={
                         <Typography>

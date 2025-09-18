@@ -39,7 +39,6 @@ const DeleteDialog: FC<DeleteDialogProps> = ({ userId, onClose }) => {
 
     return (
         <ConfirmDialog
-            open
             title={t("DELETE_USER_0")}
             content={
                 <Stack spacing={1}>

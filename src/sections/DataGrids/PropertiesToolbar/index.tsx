@@ -90,7 +90,6 @@ const PropertiesToolbar: FC<ToolbarProps> = ({
             {isBulkDeleteOpen ? (
                 <DeleteDialog
                     multiple
-                    open={isBulkDeleteOpen}
                     onClose={closeBulkDelete}
                     onDelete={handleBulkDelete}
                 />
