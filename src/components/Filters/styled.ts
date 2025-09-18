@@ -9,13 +9,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-const getFilterButtonSx = ({
-    theme,
-    open,
-}: {
-    theme: Theme;
-    open?: boolean;
-}) => ({
+const getFilterButtonSx = ({ theme }: { theme: Theme }) => ({
     backgroundColor: theme.palette.background.paper,
     fontWeight: 400,
     color:
@@ -23,14 +17,10 @@ const getFilterButtonSx = ({
             ? theme.palette.neutral?.[400]
             : theme.palette.text.secondary,
     fontSize: "16px",
-    border: open
-        ? `2px solid ${theme.palette.primary.main}`
-        : `1px solid ${theme.palette.divider}`,
+    border: `1px solid ${theme.palette.divider}`,
 
     "&:hover": {
-        border: open
-            ? `2px solid ${theme.palette.primary.main}`
-            : `1px solid ${theme.palette.common.black}`,
+        border: `1px solid ${theme.palette.common.black}`,
         // Look like OutlinedInput
         borderColor:
             theme.palette.mode === "dark"
@@ -40,13 +30,9 @@ const getFilterButtonSx = ({
     },
 });
 
-interface FilterButtonProps extends ButtonProps {
-    open?: boolean;
-}
+interface FilterButtonProps extends ButtonProps {}
 
-export const FilterButton = styled(Button, {
-    shouldForwardProp: (prop) => prop !== "open",
-})<FilterButtonProps>(getFilterButtonSx);
+export const FilterButton = styled(Button)(getFilterButtonSx);
 
 export const FilterBox = styled(Stack)<FilterButtonProps>((props) => ({
     ...getFilterButtonSx(props),
