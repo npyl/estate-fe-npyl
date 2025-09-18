@@ -72,7 +72,7 @@ const Content: FC<ContentProps> = ({ currentImageKey, setCurrentImageKey }) => {
                 display="flex"
                 flexDirection="column"
                 gap={1}
-                p={1}
+                p={{ xs: 2, sm: 1 }}
             >
                 <RHFLanguageButton
                     name="language"
@@ -102,36 +102,41 @@ const Content: FC<ContentProps> = ({ currentImageKey, setCurrentImageKey }) => {
                             rows={5}
                         />
 
-                        <RadioGroup />
+                        <Stack
+                            direction={{ xs: "row", sm: "column" }}
+                            alignItems="center"
+                        >
+                            <RadioGroup />
+
+                            {isDirty ? (
+                                <Stack
+                                    direction="row"
+                                    justifyContent="right"
+                                    spacing={1}
+                                    mt={2}
+                                >
+                                    <Button
+                                        variant="outlined"
+                                        color="secondary"
+                                        onClick={handleClear}
+                                    >
+                                        {t("Clear")}
+                                    </Button>
+
+                                    <LoadingButton
+                                        variant="contained"
+                                        color="secondary"
+                                        loading={isUpdating}
+                                        disabled={isUpdating}
+                                        onClick={handleUpdate}
+                                    >
+                                        {t("Update")}
+                                    </LoadingButton>
+                                </Stack>
+                            ) : null}
+                        </Stack>
                     </>
                 )}
-
-                {isDirty ? (
-                    <Stack
-                        direction="row"
-                        justifyContent="right"
-                        spacing={1}
-                        mt={2}
-                    >
-                        <Button
-                            variant="outlined"
-                            color="secondary"
-                            onClick={handleClear}
-                        >
-                            {t("Clear")}
-                        </Button>
-
-                        <LoadingButton
-                            variant="contained"
-                            color="secondary"
-                            loading={isUpdating}
-                            disabled={isUpdating}
-                            onClick={handleUpdate}
-                        >
-                            {t("Update")}
-                        </LoadingButton>
-                    </Stack>
-                ) : null}
             </Grid>
         </Grid>
     );

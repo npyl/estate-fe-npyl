@@ -19,9 +19,8 @@ const Gallery: FC<GalleryProps> = ({ openImageKey, onClose, ...props }) => {
 
     return (
         <Dialog
-            hideTitle
             maxWidth="xl"
-            closeAfterTransition={true}
+            hideTitle
             currentImageKey={currentImageKey}
             // ...
             content={
