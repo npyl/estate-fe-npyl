@@ -71,6 +71,7 @@ const DateSelect = () => {
         <ClickAwayListener onClickAway={() => setOpen(false)}>
             <Box>
                 <FilterButton
+                    open={open}
                     variant="outlined"
                     endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
                     onClick={handleClick}
