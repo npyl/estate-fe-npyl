@@ -13,15 +13,18 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-const StyledContent = styled(DialogContent)({
+const StyledContent = styled(DialogContent)(({ theme }) => ({
     paddingLeft: 0,
     paddingBottom: 0,
     paddingTop: 0,
     paddingRight: 0,
 
     overflowX: "hidden",
-    overflowY: "auto",
-});
+    overflowY: "hidden",
+    [theme.breakpoints.down("sm")]: {
+        overflowY: "auto",
+    },
+}));
 
 const StyledActions = styled(DialogActions)(({ theme }) => ({
     [theme.breakpoints.up("sm")]: {
