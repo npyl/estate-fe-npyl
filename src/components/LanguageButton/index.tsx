@@ -5,7 +5,7 @@ import {
     Theme,
     Typography,
 } from "@mui/material";
-import { useRef } from "react";
+import { FC, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Language } from "./types";
 import useDialog from "@/hooks/useDialog";
@@ -32,20 +32,20 @@ const IconButtonSx: SxProps<Theme> = {
     height: 20,
 };
 
-interface LanguageButtonProps extends ButtonProps {
+interface LanguageButtonProps extends Omit<ButtonProps, "value"> {
     onLanguageChange?: (language: Language) => void;
     // ...
     updatesGlobalLanguage?: boolean;
     language?: Language;
 }
 
-export const LanguageButton = ({
+const LanguageButton: FC<LanguageButtonProps> = ({
     updatesGlobalLanguage = true, // update by default
     language = "el",
     onLanguageChange,
     sx,
     ...props
-}: LanguageButtonProps) => {
+}) => {
     const { i18n } = useTranslation();
 
     const anchorRef = useRef<HTMLButtonElement | null>(null);
@@ -91,3 +91,6 @@ export const LanguageButton = ({
         </>
     );
 };
+
+export type { LanguageButtonProps };
+export default LanguageButton;
