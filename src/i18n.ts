@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            NEW_TEMPLATE: "New Template",
             Column: "Column",
             Images: "Images",
             MAKE_THUMBNAIL: "Make thumbnail",
@@ -1416,6 +1417,8 @@ const resources = {
     },
     el: {
         translation: {
+            NEW_TEMPLATE: "Νέο Πρότυπο",
+
             Column: "Στήλη",
             Images: "Εικόνες",
             MAKE_THUMBNAIL: "Κάνε την Μικρογραφία",

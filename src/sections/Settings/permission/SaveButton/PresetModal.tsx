@@ -62,7 +62,7 @@ const SavePresetDialog: FC<Props> = (props) => {
 
     return (
         <Dialog
-            title={t("New preset")}
+            title={t("NEW_TEMPLATE")}
             content={
                 <TextField
                     fullWidth
