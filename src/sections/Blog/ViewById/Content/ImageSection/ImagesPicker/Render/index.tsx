@@ -1,18 +1,18 @@
 import { FC } from "react";
 import { ControllerProps } from "react-hook-form";
-import { CreateOrUpdateBlogPostReq } from "@/services/blog";
 import Picker from "./Picker";
 import useInitialise from "./useInitialise";
+import { BlogPostReq } from "@/types/company";
 
 //
 // INFO:
 //
 // 1. During create/edit I am storing the images as File[] using react-hook-form
-// 2. Upon successful POST, these will be converted to whatever the BE wants them to be (TODO: To be decided)
+// 2. Upon successful POST, these will be pushed using a different backend api call
 // 3. The files in the `value` field always take precedence on what is viewed!
 //
 
-type TRender = ControllerProps<CreateOrUpdateBlogPostReq, "images">["render"];
+type TRender = ControllerProps<BlogPostReq, "images">["render"];
 
 type TRenderProps = Parameters<TRender>[0] & {
     postId?: number;

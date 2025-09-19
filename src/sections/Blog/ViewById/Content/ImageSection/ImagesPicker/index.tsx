@@ -1,9 +1,9 @@
 import { FC, RefObject } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { CreateOrUpdateBlogPostReq } from "@/services/blog";
 import { Editor } from "@tiptap/react";
 import Render from "./Render";
 import useEditorControl from "./useEditorControl";
+import { BlogPostReq } from "@/types/company";
 
 interface ImagePickerProps {
     postId?: number;
@@ -11,7 +11,7 @@ interface ImagePickerProps {
 }
 
 const ImagePicker: FC<ImagePickerProps> = ({ editorRef, postId }) => {
-    const { control } = useFormContext<CreateOrUpdateBlogPostReq>();
+    const { control } = useFormContext<BlogPostReq>();
 
     const { setImages } = useEditorControl(editorRef);
 

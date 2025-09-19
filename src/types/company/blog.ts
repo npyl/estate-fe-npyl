@@ -13,13 +13,11 @@ interface BlogPostShort {
     updatedAt: string;
     viewCounter: number;
     sites: IPublicSitesRes[];
-
-    // TODO: title?
 }
 
 interface BlogPostReq {
     id?: number;
-    images: File[]; // keys
+    images: File[];
     descriptions: Record<string, DescriptionEntry>;
     publicSites: number[];
     categories: TCategory[];

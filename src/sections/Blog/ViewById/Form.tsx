@@ -1,12 +1,11 @@
-import { CreateOrUpdateBlogPostReq } from "@/services/blog";
-import { BlogPostRes } from "@/types/company/blog";
+import { BlogPostReq, BlogPostRes } from "@/types/company/blog";
 import preventDefault from "@/utils/preventDefault";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FC, PropsWithChildren } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 
-const BlogPostResToReq = (d?: BlogPostRes): CreateOrUpdateBlogPostReq => ({
+const BlogPostResToReq = (d?: BlogPostRes): BlogPostReq => ({
     id: d?.id,
     publicSites: d?.sites?.map(({ id }) => id) ?? [],
     categories: d?.categories?.map(({ key }) => key) || [],
@@ -27,7 +26,7 @@ interface FormProps extends PropsWithChildren {
 }
 
 const Form: FC<FormProps> = ({ data, children }) => {
-    const methods = useForm<CreateOrUpdateBlogPostReq>({
+    const methods = useForm<BlogPostReq>({
         values: BlogPostResToReq(data),
         resolver: zodResolver(schema),
     });
