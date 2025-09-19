@@ -1,10 +1,11 @@
 import { useCallback, useEffect } from "react";
-import { useGetBlogPostByIdQuery } from "@/services/blog";
+import { useGetImagesQuery } from "@/services/blog";
 import useDialog from "@/hooks/useDialog";
 import isFalsy from "@/utils/isFalsy";
 import uuidv4 from "@/utils/uuidv4";
+import { IPropertyFileMini } from "@/types/file";
 
-const urlToFile = async (url: string) => {
+const urlToFile = async ({ url }: IPropertyFileMini) => {
     const filename = uuidv4();
 
     const response = await fetch(url);
@@ -18,24 +19,21 @@ const useInitialise = (
     postId: number | undefined,
     onChange: (f: File[]) => void
 ) => {
-    const { data, isLoading: isLoading0 } = useGetBlogPostByIdQuery(postId!, {
+    const { data } = useGetImagesQuery(postId!, {
         skip: isFalsy(postId),
     });
-    const [isLoading1, startLoading, stopLoading] = useDialog();
-    const getFiles = useCallback(async () => {
-        const i = data?.images ?? [];
-        if (i.length === 0) return;
-
+    const [isLoading, startLoading, stopLoading] = useDialog();
+    const getFiles = useCallback(async (i: IPropertyFileMini[]) => {
         startLoading();
         const all = await Promise.all(i.map(urlToFile));
         onChange(all);
         stopLoading();
     }, []);
     useEffect(() => {
-        if (isFalsy(postId)) return;
-        getFiles();
-    }, [postId]);
-    const isLoading = isLoading0 || isLoading1;
+        if (isFalsy(data)) return;
+        if (data!.length === 0) return;
+        getFiles(data!);
+    }, [data]);
     return { isLoading };
 };
 
