@@ -19,7 +19,7 @@ interface IImageReq {
 export const blog = createApi({
     reducerPath: "blog",
     baseQuery: fetchBaseQuery({
-        baseUrl: `/api/blog`,
+        baseUrl: "/api/blog",
         prepareHeaders: (headers) => {
             headers.set("Authorization", `Bearer ${getAccessToken()}`);
             return headers;
@@ -58,19 +58,11 @@ export const blog = createApi({
                 const body = new FormData();
                 body.append("file", image);
                 return {
-                    url: `/${postId}/images`,
+                    url: `${baseUrl}/${postId}/images`,
                     body,
                     method: "POST",
                 };
             },
-        }),
-
-        removeImage: builder.mutation<void, RemoveImage>({
-            // INFO: removes BE entry for the specific key
-            query: ({ postId, id }) => ({
-                url: `/${postId}/images/${id}`,
-                method: "DELETE",
-            }),
         }),
     }),
 });
@@ -83,5 +75,4 @@ export const {
     useDeleteBlogPostMutation,
     // ...
     useAddImageMutation,
-    useRemoveImageMutation,
 } = blog;
