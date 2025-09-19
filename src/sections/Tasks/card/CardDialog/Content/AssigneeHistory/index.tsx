@@ -60,20 +60,20 @@ const AssigneeHistory: FC<AssigneeHistoryProps> = ({
                         person={i.assignees?.at(0)}
                         date={i.createdAt}
                         label={t("Assigned to")}
-                        last={index === data.length - 1}
+                        last={index === data.length - 1 && !updatedBy}
                     />
                 ))}
-            </Timeline>
 
-            {/* Updated by */}
-            {updatedAt && updatedBy ? (
-                <HistoryItem
-                    label={t("Updated by")}
-                    date={updatedAt}
-                    person={updatedBy}
-                    last
-                />
-            ) : null}
+                {/* Updated by */}
+                {updatedAt && updatedBy ? (
+                    <HistoryItem
+                        label={t("Updated by")}
+                        date={updatedAt}
+                        person={updatedBy}
+                        last
+                    />
+                ) : null}
+            </Timeline>
         </>
     );
 };

@@ -2,9 +2,9 @@ import { FC } from "react";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
-import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineItem, { TimelineItemProps } from "@mui/lab/TimelineItem";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
-import { Stack, SxProps, Theme, Typography } from "@mui/material";
+import { SxProps, Theme, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import TooltipAvatar from "@/components/Avatar/Group/TooltipAvatar";
 import { IUserMini } from "@/types/user";
@@ -17,10 +17,14 @@ const ConnectorSx: SxProps<Theme> = {
     backgroundColor: "primary.main",
 };
 const TimelineContentSx: SxProps<Theme> = {
-    mt: -1.5,
+    mt: -3.5,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 1,
 };
 
-interface HistoryItemProps {
+interface HistoryItemProps extends TimelineItemProps {
     date: string;
     label: string;
     last?: boolean;
@@ -32,6 +36,8 @@ const HistoryItem: FC<HistoryItemProps> = ({
     last = false,
     date,
     label,
+    sx,
+    ...props
 }) => {
     const { t, i18n } = useTranslation();
 
@@ -54,40 +60,24 @@ const HistoryItem: FC<HistoryItemProps> = ({
     });
 
     return (
-        <TimelineItem sx={{ minHeight: "40px" }}>
+        <TimelineItem sx={{ minHeight: "40px", ...sx }} {...props}>
             <TimelineSeparator>
                 <TimelineDot sx={DotSx} />
-                {!last && <TimelineConnector sx={ConnectorSx} />}
+                {!last ? <TimelineConnector sx={ConnectorSx} /> : null}
             </TimelineSeparator>
             <TimelineContent sx={TimelineContentSx}>
-                <Stack
-                    direction="row"
-                    alignItems="flex-start"
-                    gap={0.5}
-                    position={"relative"}
+                <Typography
+                    variant="body2"
+                    fontWeight="600"
+                    color="primary.main"
+                    noWrap
                 >
-                    <Typography
-                        variant="body2"
-                        fontWeight="600"
-                        color="primary.main"
-                        sx={{ textWrap: "nowrap" }}
-                    >
-                        {formattedDate} - {formattedTime}
-                    </Typography>
-                    <Stack direction="row" gap={0.6} flexWrap="nowrap" mb={1}>
-                        <Typography
-                            variant="body2"
-                            color={"text.secondary"}
-                            sx={{ textWrap: "nowrap" }}
-                        >
-                            {t(label)}
-                        </Typography>
-                        <TooltipAvatar
-                            u={person}
-                            sx={{ width: 10, height: 10 }}
-                        />
-                    </Stack>
-                </Stack>
+                    {formattedDate} - {formattedTime}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" noWrap>
+                    {t(label)}
+                </Typography>
+                <TooltipAvatar u={person} />
             </TimelineContent>
         </TimelineItem>
     );
