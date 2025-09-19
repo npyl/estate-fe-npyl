@@ -1,24 +1,17 @@
 import { ImageProps } from "@/components/image/types";
 import { forwardRef, useCallback, useRef, SyntheticEvent } from "react";
-import NoImageIcon from "@/assets/icons/no-image";
-import { styled, Theme } from "@mui/material";
-
-const StyledImg = styled("img")(({ theme }) => ({
-    backgroundColor: getBgColor(theme),
-    borderRadius: theme.spacing(1),
-}));
-
-const getBgColor = ({ palette: { mode, neutral } }: Theme) =>
-    mode === "light" ? neutral?.[200] : neutral?.[800];
+import StyledImg from "./StyledImg";
+import FallbackImage from "./FallbackImage";
 
 const BaseImage = forwardRef<HTMLImageElement, ImageProps>(
     ({ alt = "", src = "", style, aspectRatio, onLoad, ...props }, ref) => {
         const fallbackRef = useRef<SVGSVGElement>(null);
+        const isSrcValid = Boolean(src);
 
         const handleError = useCallback(
             (e: SyntheticEvent<HTMLImageElement>) => {
                 e.currentTarget.style.display = "none";
-                if (!fallbackRef || !fallbackRef.current) return;
+                if (!fallbackRef.current) return;
                 fallbackRef.current.style.display = "block";
             },
             []
@@ -36,35 +29,31 @@ const BaseImage = forwardRef<HTMLImageElement, ImageProps>(
 
         return (
             <>
-                <NoImageIcon
+                <FallbackImage
                     ref={fallbackRef}
-                    height="100%"
-                    width="100%"
-                    style={{
-                        padding: "10px",
-                        aspectRatio,
-                        display: "none",
-                        width: style?.width,
-                        height: style?.height,
-                    }}
+                    aspectRatio={aspectRatio}
+                    validSrc={isSrcValid}
+                    style={{ width: style?.width, height: style?.height }}
                 />
 
-                <StyledImg
-                    ref={ref}
-                    src={src!}
-                    alt={alt}
-                    loading="lazy"
-                    width="100%"
-                    height="100%"
-                    style={{
-                        visibility: "hidden",
-                        aspectRatio,
-                        ...style,
-                    }}
-                    onLoad={handleLoad}
-                    onError={handleError}
-                    {...props}
-                />
+                {src ? (
+                    <StyledImg
+                        ref={ref}
+                        src={src}
+                        alt={alt}
+                        loading="lazy"
+                        width="100%"
+                        height="100%"
+                        style={{
+                            visibility: "hidden",
+                            aspectRatio,
+                            ...style,
+                        }}
+                        onLoad={handleLoad}
+                        onError={handleError}
+                        {...props}
+                    />
+                ) : null}
             </>
         );
     }
