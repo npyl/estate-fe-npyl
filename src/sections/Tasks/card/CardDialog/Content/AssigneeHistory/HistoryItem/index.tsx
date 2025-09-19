@@ -8,6 +8,7 @@ import { SxProps, Theme, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import TooltipAvatar from "@/components/Avatar/Group/TooltipAvatar";
 import { IUserMini } from "@/types/user";
+import FormattedDate from "./FormattedDate";
 
 const DotSx: SxProps<Theme> = {
     backgroundColor: "primary.main",
@@ -39,25 +40,10 @@ const HistoryItem: FC<HistoryItemProps> = ({
     sx,
     ...props
 }) => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     if (!person) return null;
-
     if (!date) return null;
-
-    const dateObj = new Date(date);
-
-    const loc = i18n.language === "en" ? "en-US" : "el-GR";
-    const formattedDate = dateObj.toLocaleDateString(loc, {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-    });
-    const formattedTime = dateObj.toLocaleTimeString(loc, {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-    });
 
     return (
         <TimelineItem sx={{ minHeight: "40px", ...sx }} {...props}>
@@ -66,14 +52,7 @@ const HistoryItem: FC<HistoryItemProps> = ({
                 {!last ? <TimelineConnector sx={ConnectorSx} /> : null}
             </TimelineSeparator>
             <TimelineContent sx={TimelineContentSx}>
-                <Typography
-                    variant="body2"
-                    fontWeight="600"
-                    color="primary.main"
-                    noWrap
-                >
-                    {formattedDate} - {formattedTime}
-                </Typography>
+                <FormattedDate date={date} />
                 <Typography variant="body2" color="text.secondary" noWrap>
                     {t(label)}
                 </Typography>
