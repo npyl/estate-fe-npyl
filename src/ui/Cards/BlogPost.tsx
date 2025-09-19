@@ -49,7 +49,7 @@ const PropertyCard: FC<PropertyCardProps> = ({
     children,
     ...props
 }) => {
-    const { id, thumbnail, createdAt, user } = item || {};
+    const { id, url, createdAt, user } = item || {};
 
     const title = "TEMP";
 
@@ -62,7 +62,7 @@ const PropertyCard: FC<PropertyCardProps> = ({
             <Image
                 aspectRatio="4/3"
                 style={{ height: "300px", width: "30%", objectFit: "contain" }}
-                src={thumbnail}
+                src={url}
             />
 
             <Stack width={1} p={2} justifyContent="space-between">

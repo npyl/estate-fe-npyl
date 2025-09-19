@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { ControllerProps } from "react-hook-form";
 import Picker from "./Picker";
 import useInitialise from "./useInitialise";
@@ -24,16 +24,25 @@ const Render: FC<TRenderProps> = ({
     field: { value, onChange },
     onSet,
 }) => {
-    const { isLoading } = useInitialise(postId, onChange);
+    /**
+     * Remove 1st element (used as thumbnail); the rest are middlepage images
+     * Call onSet which directly talks to the editor to add images to container after removing any existing ones
+     */
+    const setImages = useCallback(
+        (f: File[]) => {
+            // update hook-form
+            onChange(f);
 
-    return (
-        <Picker
-            loading={isLoading}
-            files={value}
-            onChange={onChange}
-            onSet={onSet}
-        />
+            // set editor's (middlepage) images
+            const newF = f.slice(1);
+            onSet(newF);
+        },
+        [onChange, onSet]
     );
+
+    const { isLoading } = useInitialise(postId, setImages);
+
+    return <Picker loading={isLoading} files={value} onSetImages={setImages} />;
 };
 
 export default Render;

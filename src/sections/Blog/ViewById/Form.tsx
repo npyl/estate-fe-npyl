@@ -15,9 +15,8 @@ const BlogPostResToReq = (d?: BlogPostRes): BlogPostReq => ({
 
 const schema = z
     .object({
-        content: z.string().nonempty(),
-        categories: z.array(z.string()),
-        thumbnail: z.any(),
+        // content: z.string().nonempty(),
+        // categories: z.array(z.string()),
     })
     .passthrough();
 

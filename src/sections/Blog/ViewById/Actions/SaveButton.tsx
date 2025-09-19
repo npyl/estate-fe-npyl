@@ -10,8 +10,7 @@ const useSubmit = () => {
     const router = useRouter();
     const methods = useFormContext<BlogPostReq>();
     const isDirty = methods.formState.isDirty;
-    const isLoading = methods.formState.isLoading;
-    const [submit] = useCreateOrUpdateBlogPostMutation();
+    const [submit, { isLoading }] = useCreateOrUpdateBlogPostMutation();
     const handleSubmit = useCallback(async (d: BlogPostReq) => {
         const res = await submit(d);
         if ("error" in res) return;

@@ -16,36 +16,11 @@ interface PickerProps
     loading: boolean;
     files: File[];
     // ...
-    onChange: (f: File[]) => void;
-    onSet: (f: File[]) => void;
+    onSetImages: (f: File[]) => void;
 }
 
-const Picker: FC<PickerProps> = ({
-    files,
-    onChange,
-    onSet,
-    loading,
-    ...props
-}) => {
+const Picker: FC<PickerProps> = ({ files, onSetImages, loading, ...props }) => {
     const src = useSrc(files);
-
-    // ---------------------------------------------------------------------------
-
-    /**
-     * Remove 1st element (used as thumbnail); the rest are middlepage images
-     * Call onSet which directly talks to the editor to add images to container after removing any existing ones
-     */
-    const setImages = useCallback(
-        (f: File[]) => {
-            // update hook-form
-            onChange(f);
-
-            // set editor's (middlepage) images
-            const newF = f.slice(1);
-            onSet(newF);
-        },
-        [onChange, onSet]
-    );
 
     // ------------------------------------------------------------------------
 
@@ -57,17 +32,17 @@ const Picker: FC<PickerProps> = ({
                 return;
             }
 
-            setImages(f);
+            onSetImages(f);
         },
-        [setImages]
+        [onSetImages]
     );
 
     const onRemove = useCallback(
         (key: string) => {
             const filtered = files.filter(({ name }) => name !== key);
-            setImages(filtered);
+            onSetImages(filtered);
         },
-        [files, setImages]
+        [files, onSetImages]
     );
 
     return (
@@ -82,7 +57,7 @@ const Picker: FC<PickerProps> = ({
                     onClick: _i1,
                     ...itemProps
                 }) => (
-                    <Item files={files} onChange={setImages} {...itemProps} />
+                    <Item files={files} onChange={onSetImages} {...itemProps} />
                 )}
                 // ...
                 files={src}
