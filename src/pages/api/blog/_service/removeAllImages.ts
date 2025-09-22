@@ -3,6 +3,8 @@ import isFalsy from "@/utils/isFalsy";
 import getBlogPostById from "./getBlogPostById";
 import debugLog from "@/_private/debugLog";
 
+// ------------------------------------------------------------------------------------
+
 const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/blog`;
 
 const removeImage = async (
@@ -10,14 +12,20 @@ const removeImage = async (
     postId: number,
     imageId: number
 ) => {
-    debugLog("removing image by id: ", imageId);
+    try {
+        debugLog("removing image by id: ", imageId);
 
-    const res = await fetch(`${baseUrl}/${postId}/image/${imageId}`, {
-        headers: { Authorization },
-        method: "DELETE",
-    });
-    if (!res.ok) throw await res.json();
+        const res = await fetch(`${baseUrl}/${postId}/images/${imageId}`, {
+            headers: { Authorization },
+            method: "DELETE",
+        });
+        if (!res.ok) throw await res.json();
+    } catch (ex) {
+        debugLog("Removal of image by: ", imageId, " gave error: ", ex);
+    }
 };
+
+// ------------------------------------------------------------------------------------
 
 const removeImageCb =
     (Authorization: string, postId: number) =>

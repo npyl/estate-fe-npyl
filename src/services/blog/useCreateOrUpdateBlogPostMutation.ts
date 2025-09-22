@@ -26,16 +26,24 @@ const createOrUpdate = async (d: Omit<BlogPostReq, "images">) => {
     }
 };
 
-const useCreateOrUpdateBlogPostMutation = () => {
-    const dispatch = useDispatch();
-
-    const [isLoading, startLoading, stopLoading] = useDialog();
-
+const useAddImages = () => {
     const [addImage] = useAddImageMutation();
     const addImageCb = useCallback(
         (postId: number) => (image: File) => addImage({ postId, image }),
         []
     );
+    return useCallback(
+        (i: File[], postId: number) => Promise.all(i.map(addImageCb(postId))),
+        []
+    );
+};
+
+const useCreateOrUpdateBlogPostMutation = () => {
+    const dispatch = useDispatch();
+
+    const [isLoading, startLoading, stopLoading] = useDialog();
+
+    const addImages = useAddImages();
 
     const cb = useCallback(async ({ images, ...d }: BlogPostReq) => {
         try {
@@ -44,15 +52,16 @@ const useCreateOrUpdateBlogPostMutation = () => {
             const postId = await createOrUpdate(d);
             if (isFalsy(postId)) throw new Error("res1");
 
-            await Promise.all(images.map(addImageCb(postId!)));
-
-            stopLoading();
+            await addImages(images, postId!);
 
             dispatch(blog.util.invalidateTags(["BlogPosts", "BlogPostById"]));
+
+            stopLoading();
 
             return { data: {} };
         } catch (ex) {
             debugLog(ex);
+            startLoading();
             return { error: "" };
         }
     }, []);

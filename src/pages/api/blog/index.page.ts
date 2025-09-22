@@ -23,9 +23,9 @@ export default async function handler(
         //
         //  Run create or update
         //
-        await createOrUpdate(Authorization, d);
+        const id = await createOrUpdate(Authorization, d);
 
-        res.status(200).json({});
+        res.status(200).send(id);
     } catch (error) {
         console.error("Error:", error);
         res.status(404).json({});
