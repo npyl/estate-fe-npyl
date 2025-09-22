@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import FileThumbnail from "@/components/file-thumbnail";
 import { TUploadFile, UploadVariant } from "@/components/upload/types";
-import LabelCreate from "@/sections/LabelCreate";
+import LabelCreate from "@/ui/LabelCreate";
 import DocumentIcon from "../DocumentIcon";
 import GoogleEarthIcon from "@/assets/logo/GoogleEarth";
 import { SpaceBetween } from "@/components/styled";

@@ -4,9 +4,9 @@ import {
     useAssignLabelToResourceIdMutation,
     useDeleteLabelForResourceIdMutation,
 } from "src/services/labels";
-import LabelSection from "@/sections/LabelSection";
+import LabelSection from "@/ui/LabelSection";
 import useAssignedLabels from "./useAssignedLabels";
-import useInvalidateTags from "@/sections/LabelSection/Form/useInvalidateTags";
+import useInvalidateTags from "@/ui/LabelForm/useInvalidateTags";
 
 interface ILabelCreateProps extends StackProps {
     variant: LabelResourceType;

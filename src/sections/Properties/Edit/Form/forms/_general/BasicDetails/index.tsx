@@ -1,7 +1,7 @@
 import { Grid, Stack } from "@mui/material";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import LabelCreate from "@/sections/LabelCreate";
+import LabelCreate from "@/ui/LabelCreate";
 import Panel from "@/components/Panel";
 import {
     RHFSwitch,

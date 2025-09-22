@@ -1,7 +1,7 @@
 import { ILabelPOST } from "@/types/label";
 import { FC, useCallback, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import LabelSection from "@/sections/LabelSection";
+import LabelSection from "@/ui/LabelSection";
 import { useGetLabelsQuery } from "@/services/labels";
 
 interface CreateAssignProps {

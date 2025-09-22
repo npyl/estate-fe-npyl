@@ -11,7 +11,7 @@ import ListLanguageItem from "@/components/List/Items/language";
 import ViewPanel from "@/components/Panel/View";
 import { TypeLabels } from "@/components/TypeLabels";
 import useGetCustomer from "@/sections/Customer/hooks/useGetCustomer";
-import LabelCreate from "@/sections/LabelCreate";
+import LabelCreate from "@/ui/LabelCreate";
 import LeadSourceListItem from "./LeadSourceListItem";
 import { LeadSource } from "@/types/global";
 import { PreferredLanguageType } from "@/types/enums";

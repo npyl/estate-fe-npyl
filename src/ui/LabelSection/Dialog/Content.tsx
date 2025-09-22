@@ -5,7 +5,7 @@ import { ILabel, LabelResourceType } from "src/types/label";
 import dynamic from "next/dynamic";
 import useAssignedLabels from "../../LabelCreate/useAssignedLabels";
 import useExistingLabels from "./useExistingLabels";
-const LabelForm = dynamic(() => import("../Form"));
+const LabelForm = dynamic(() => import("../../LabelForm"));
 
 interface ContentProps {
     resourceId?: number;

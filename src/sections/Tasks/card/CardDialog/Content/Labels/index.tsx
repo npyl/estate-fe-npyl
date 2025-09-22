@@ -1,4 +1,4 @@
-const LabelCreate = dynamic(() => import("@/sections/LabelCreate"));
+const LabelCreate = dynamic(() => import("@/ui/LabelCreate"));
 const RHFLabelCreate = dynamic(() => import("./RHFCreate"));
 import dynamic from "next/dynamic";
 import { FC } from "react";
