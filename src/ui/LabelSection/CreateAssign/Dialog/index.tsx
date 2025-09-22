@@ -2,6 +2,8 @@ import { useTranslation } from "react-i18next";
 import { ILabel, LabelResourceType } from "@/types/label";
 import Dialog from "@/components/Dialog";
 import Content from "./Content";
+import Typography from "@mui/material/Typography";
+import { FC } from "react";
 
 interface AddLabelDialog {
     resourceId?: number;
@@ -12,24 +14,27 @@ interface AddLabelDialog {
     onClose: () => void;
 }
 
-const AddLabelDialog = ({
+const AddLabelDialog: FC<AddLabelDialog> = ({
     resourceId,
     variant,
 
     onLabelClick,
     onCreate,
     onClose,
-}: AddLabelDialog) => {
+}) => {
     const { t } = useTranslation();
 
     return (
         <Dialog
-            maxWidth="xs"
             onClose={onClose}
             // ...
             submit
             // ...
-            title={t("Add an existing label")}
+            title={
+                <Typography variant="h5" textAlign="left" width={1}>
+                    {t("Add an existing label")}
+                </Typography>
+            }
             content={
                 <Content
                     resourceId={resourceId}

@@ -1,23 +1,19 @@
-import {
-    Controller,
-    ControllerRenderProps,
-    FieldValues,
-    useFormContext,
-} from "react-hook-form";
-import CreateAssign from "@/ui/LabelSection/CreateAssign";
-import { FC, useCallback, useMemo } from "react";
-import { useGetLabelsQuery } from "@/services/labels";
-import { ILabelPOST } from "@/types/label";
-import isFalsy from "@/utils/isFalsy";
+import { Controller, useFormContext } from "react-hook-form";
 import Render from "./Render";
+import { FC } from "react";
+import { SxProps, Theme } from "@mui/material";
 
-const RHFCreate = () => {
+interface RHFCreateProps {
+    sx?: SxProps<Theme>;
+}
+
+const RHFCreate: FC<RHFCreateProps> = ({ sx }) => {
     const { control } = useFormContext();
     return (
         <Controller
             name="labels"
             control={control}
-            render={(props) => <Render {...props} />}
+            render={(renderProps) => <Render {...renderProps} sx={sx} />}
         />
     );
 };

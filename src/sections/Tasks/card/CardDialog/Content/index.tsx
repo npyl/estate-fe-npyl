@@ -19,7 +19,6 @@ const Labels = dynamic(() => import("./Labels"));
 
 interface ContentProps {
     cardId?: number;
-    createdAt?: string;
     updatedAt?: string;
     reporter?: IUserMini;
     updatedBy?: IUserMini;
@@ -27,7 +26,6 @@ interface ContentProps {
 
 const Content: FC<ContentProps> = ({
     cardId,
-    createdAt,
     updatedAt,
     reporter,
     updatedBy,

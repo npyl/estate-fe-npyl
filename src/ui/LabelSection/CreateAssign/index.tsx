@@ -1,16 +1,15 @@
-import { IconButton, Stack, StackProps, Typography } from "@mui/material";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { Stack, StackProps, Typography } from "@mui/material";
 import Label from "@/components/Label/Label";
 import { ILabel, ILabelPOST, LabelResourceType } from "src/types/label";
 import { useTranslation } from "react-i18next";
-import useDialog from "@/hooks/useDialog";
 import { SpaceBetween } from "@/components/styled";
-import dynamic from "next/dynamic";
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import stopPropagation from "@/utils/stopPropagation";
-const AddLabelDialog = dynamic(() => import("./Dialog"));
+import AddButton from "./AddButton";
 
-interface LabelSectionProps extends Omit<StackProps, "onClick"> {
+const LabelSectionTitleClassName = "PPLabelSectionTitle";
+
+interface CreateAssignProps extends Omit<StackProps, "onClick"> {
     assignedLabels: ILabel[];
 
     variant: LabelResourceType;
@@ -23,7 +22,7 @@ interface LabelSectionProps extends Omit<StackProps, "onClick"> {
     onLabelRemove: (id: number) => void;
 }
 
-const LabelSection: FC<LabelSectionProps> = ({
+const CreateAssign: FC<CreateAssignProps> = ({
     assignedLabels,
 
     variant,
@@ -39,16 +38,6 @@ const LabelSection: FC<LabelSectionProps> = ({
 }) => {
     const { t } = useTranslation();
 
-    const [isOpen, openDialog, closeDialog] = useDialog();
-
-    const handleOpenDialog = useCallback(
-        (e: React.MouseEvent<HTMLButtonElement>) => {
-            e.stopPropagation();
-            openDialog();
-        },
-        []
-    );
-
     return (
         <Stack
             border="1px solid"
@@ -59,18 +48,26 @@ const LabelSection: FC<LabelSectionProps> = ({
             onClick={stopPropagation}
             {...props}
         >
-            <SpaceBetween alignItems="center" height="10px">
-                <Typography ml={1}>{t("Labels")}</Typography>
-                <IconButton
-                    size="small"
-                    onClick={handleOpenDialog}
-                    disabled={disabled || loading}
-                >
-                    <AddCircleIcon />
-                </IconButton>
+            <SpaceBetween alignItems="center" height={10}>
+                <Typography className={LabelSectionTitleClassName} ml={1}>
+                    {t("Labels")}
+                </Typography>
+
+                <AddButton
+                    variant={variant}
+                    resourceId={resourceId}
+                    // ...
+                    disabled={disabled}
+                    loading={loading}
+                    // ...
+                    onLabelClick={onLabelClick}
+                    onLabelCreate={onLabelCreate}
+                />
             </SpaceBetween>
 
-            <Stack direction="row" flexWrap="wrap" gap={1} pt={2} px={0.5}>
+            <Stack mt={2} />
+
+            <Stack direction="row" flexWrap="wrap" gap={1} px={0.5}>
                 {assignedLabels.map(({ id, color, name }) => (
                     <Label
                         key={id}
@@ -81,19 +78,10 @@ const LabelSection: FC<LabelSectionProps> = ({
                     />
                 ))}
             </Stack>
-
-            {isOpen ? (
-                <AddLabelDialog
-                    resourceId={resourceId}
-                    variant={variant}
-                    // ...
-                    onLabelClick={onLabelClick}
-                    onCreate={onLabelCreate}
-                    onClose={closeDialog}
-                />
-            ) : null}
         </Stack>
     );
 };
 
-export default LabelSection;
+export { LabelSectionTitleClassName };
+export type { CreateAssignProps };
+export default CreateAssign;

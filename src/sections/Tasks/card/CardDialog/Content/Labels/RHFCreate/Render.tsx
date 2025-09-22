@@ -4,12 +4,14 @@ import { FC, useCallback, useMemo } from "react";
 import { useGetLabelsQuery } from "@/services/labels";
 import { ILabelPOST } from "@/types/label";
 import isFalsy from "@/utils/isFalsy";
+import { SxProps, Theme } from "@mui/material";
 
 type RenderProps = {
+    sx?: SxProps<Theme>;
     field: ControllerRenderProps<FieldValues, string>;
 };
 
-const Render: FC<RenderProps> = ({ field: { value, onChange } }) => {
+const Render: FC<RenderProps> = ({ field: { value, onChange }, sx }) => {
     const { data, isLoading } = useGetLabelsQuery();
 
     const assignedLabels = useMemo(
@@ -44,6 +46,7 @@ const Render: FC<RenderProps> = ({ field: { value, onChange } }) => {
             onLabelClick={onClick}
             onLabelCreate={onAdd}
             onLabelRemove={onRemove}
+            sx={sx}
         />
     );
 };
