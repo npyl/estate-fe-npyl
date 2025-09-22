@@ -3,9 +3,9 @@ import { FC } from "react";
 import Label from "@/components/Label/Label";
 import { ILabel, LabelResourceType } from "src/types/label";
 import dynamic from "next/dynamic";
-import useAssignedLabels from "../../LabelCreate/useAssignedLabels";
+import useAssignedLabels from "@/ui/LabelSection/useAssignedLabels";
 import useExistingLabels from "./useExistingLabels";
-const LabelForm = dynamic(() => import("../../LabelForm"));
+const LabelForm = dynamic(() => import("@/ui/LabelForm"));
 
 interface ContentProps {
     resourceId?: number;

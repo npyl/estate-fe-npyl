@@ -1,5 +1,5 @@
-const LabelCreate = dynamic(() => import("@/ui/LabelCreate"));
-const RHFLabelCreate = dynamic(() => import("./RHFCreate"));
+const LabelSection = dynamic(() => import("@/ui/LabelSection"));
+const RHFLabelSection = dynamic(() => import("./RHFCreate"));
 import dynamic from "next/dynamic";
 import { FC } from "react";
 
@@ -9,10 +9,10 @@ interface LabelsProps {
 
 const Labels: FC<LabelsProps> = ({ cardId }) => {
     if (cardId) {
-        return <LabelCreate variant="ticket" resourceId={cardId} />;
+        return <LabelSection variant="ticket" resourceId={cardId} />;
     }
 
-    return <RHFLabelCreate />;
+    return <RHFLabelSection />;
 };
 
 export default Labels;

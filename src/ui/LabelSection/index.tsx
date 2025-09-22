@@ -4,7 +4,7 @@ import {
     useAssignLabelToResourceIdMutation,
     useDeleteLabelForResourceIdMutation,
 } from "src/services/labels";
-import LabelSection from "@/ui/LabelSection";
+import CreateAssign from "./CreateAssign";
 import useAssignedLabels from "./useAssignedLabels";
 import useInvalidateTags from "@/ui/LabelForm/useInvalidateTags";
 
@@ -52,7 +52,7 @@ const LabelCreate = ({
         }).then(invalidateTags);
 
     return (
-        <LabelSection
+        <CreateAssign
             assignedLabels={assignedLabels}
             resourceId={resourceId}
             variant={variant}

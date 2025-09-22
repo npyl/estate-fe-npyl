@@ -1,5 +1,15 @@
-import { Controller, useFormContext } from "react-hook-form";
-import CreateAssign from "./CreateAssign";
+import {
+    Controller,
+    ControllerRenderProps,
+    FieldValues,
+    useFormContext,
+} from "react-hook-form";
+import CreateAssign from "@/ui/LabelSection/CreateAssign";
+import { FC, useCallback, useMemo } from "react";
+import { useGetLabelsQuery } from "@/services/labels";
+import { ILabelPOST } from "@/types/label";
+import isFalsy from "@/utils/isFalsy";
+import Render from "./Render";
 
 const RHFCreate = () => {
     const { control } = useFormContext();
@@ -7,7 +17,7 @@ const RHFCreate = () => {
         <Controller
             name="labels"
             control={control}
-            render={({ field: { value } }) => <CreateAssign ids={value} />}
+            render={(props) => <Render {...props} />}
         />
     );
 };

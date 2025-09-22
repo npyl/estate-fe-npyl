@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { ILabel, LabelResourceType } from "src/types/label";
+import { ILabel, LabelResourceType } from "@/types/label";
 import Dialog from "@/components/Dialog";
 import Content from "./Content";
 
