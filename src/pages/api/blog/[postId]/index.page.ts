@@ -1,6 +1,28 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import toNumberSafe from "@/utils/toNumberSafe";
 import getBlogPostById from "../_service/getBlogPostById";
+import { BlogPostRes } from "@/types/company";
+import { IPropertyFileMini } from "@/types/file";
+
+// -----------------------------------------------------------------------------------
+
+const getPropertyFileMini = (url: string): IPropertyFileMini => ({
+    id: Math.random(),
+    uploadedAt: "",
+    url,
+});
+
+const addImage = (images: IPropertyFileMini[]) => (f: IPropertyFileMini) =>
+    images.push(f);
+
+const editBlogPostRes = (res: BlogPostRes) => {
+    let images: IPropertyFileMini[] = [];
+    if (res.url) images.push(getPropertyFileMini(res.url));
+    res.images.forEach(addImage(images));
+    return { ...res, images };
+};
+
+// -----------------------------------------------------------------------------------
 
 export default async function handler(
     req: NextApiRequest,
@@ -18,8 +40,11 @@ export default async function handler(
         if (iPostId === -1) throw new Error("Bad postId");
 
         const json = await getBlogPostById(Authorization, iPostId);
+        if (!json) throw new Error("Error!");
 
-        res.status(200).json(json);
+        const ret = editBlogPostRes(json);
+
+        res.status(200).json(ret);
     } catch (error) {
         console.error("Error:", error);
         res.status(404).json({});

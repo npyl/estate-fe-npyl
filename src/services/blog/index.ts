@@ -53,6 +53,18 @@ export const blog = createApi({
 
         // -----------------------------------------------------------------------------
 
+        setThumbnail: builder.mutation<void, IImageReq>({
+            query: ({ postId, image }) => {
+                const body = new FormData();
+                body.append("file", image);
+                return {
+                    url: `${baseUrl}/${postId}/uploadImage`,
+                    body,
+                    method: "POST",
+                };
+            },
+        }),
+
         addImage: builder.mutation<void, IImageReq>({
             query: ({ postId, image }) => {
                 const body = new FormData();
@@ -74,5 +86,6 @@ export const {
     useGetBlogPostByIdQuery,
     useDeleteBlogPostMutation,
     // ...
+    useSetThumbnailMutation,
     useAddImageMutation,
 } = blog;

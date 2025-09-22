@@ -2,7 +2,11 @@ import { BlogPostReq } from "@/types/company";
 import { useCallback } from "react";
 import debugLog from "@/_private/debugLog";
 import isFalsy from "@/utils/isFalsy";
-import { blog, useAddImageMutation } from "@/services/blog";
+import {
+    blog,
+    useAddImageMutation,
+    useSetThumbnailMutation,
+} from "@/services/blog";
 import useDialog from "@/hooks/useDialog";
 import { useDispatch } from "react-redux";
 import { getAccessToken } from "@/contexts/accessToken";
@@ -26,16 +30,29 @@ const createOrUpdate = async (d: Omit<BlogPostReq, "images">) => {
     }
 };
 
-const useAddImages = () => {
-    const [addImage] = useAddImageMutation();
-    const addImageCb = useCallback(
-        (postId: number) => (image: File) => addImage({ postId, image }),
+/**
+ * 1st image:   thumbnail - call thumbnail endpoint
+ * rest:        normal
+ */
+const useSetImages = () => {
+    const [setThumbnail] = useSetThumbnailMutation();
+
+    const [addImageCb] = useAddImageMutation();
+    const addImage = useCallback(
+        (postId: number) => (image: File) => addImageCb({ postId, image }),
         []
     );
-    return useCallback(
-        (i: File[], postId: number) => Promise.all(i.map(addImageCb(postId))),
-        []
-    );
+    return useCallback((i: File[], postId: number) => {
+        const thumbnail = i.at(0);
+        if (!thumbnail) return;
+
+        const rest = i.slice(1);
+
+        const p0 = setThumbnail({ image: thumbnail, postId });
+        const p = rest.map(addImage(postId));
+
+        return Promise.all([p0, ...p]);
+    }, []);
 };
 
 const useCreateOrUpdateBlogPostMutation = () => {
@@ -43,7 +60,7 @@ const useCreateOrUpdateBlogPostMutation = () => {
 
     const [isLoading, startLoading, stopLoading] = useDialog();
 
-    const addImages = useAddImages();
+    const setImages = useSetImages();
 
     const cb = useCallback(async ({ images, ...d }: BlogPostReq) => {
         try {
@@ -52,7 +69,7 @@ const useCreateOrUpdateBlogPostMutation = () => {
             const postId = await createOrUpdate(d);
             if (isFalsy(postId)) throw new Error("res1");
 
-            await addImages(images, postId!);
+            await setImages(images, postId!);
 
             dispatch(blog.util.invalidateTags(["BlogPosts", "BlogPostById"]));
 

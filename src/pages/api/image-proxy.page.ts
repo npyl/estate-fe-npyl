@@ -1,6 +1,16 @@
 import debugLog from "@/_private/debugLog";
 import type { NextApiRequest, NextApiResponse } from "next/types";
 
+/**
+ * @param req Next JS Request Object
+ * @returns a url that definitely starts with "https://"
+ */
+const getNormalisedUrl = (req: NextApiRequest) => {
+    const { url: _url } = req.query;
+    if (!_url || typeof _url !== "string") throw new Error("Bad url");
+    return _url.startsWith("https://") ? _url : `https://${_url}`;
+};
+
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
@@ -8,10 +18,9 @@ export default async function handler(
     try {
         if (req.method !== "GET") throw new Error("Bad method");
 
-        const { url } = req.query;
-        if (!url || typeof url !== "string") throw new Error("Bad url");
+        const url = getNormalisedUrl(req);
 
-        const response = await fetch(`https://${url}`);
+        const response = await fetch(url);
         if (!response.ok) throw await response.json();
 
         const blob = await response.blob();
