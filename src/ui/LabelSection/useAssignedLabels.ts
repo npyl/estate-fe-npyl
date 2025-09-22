@@ -8,6 +8,7 @@ import { useGetCustomerLabelsQuery } from "src/services/customers";
 import { useRouter } from "next/router";
 import { useGetCardLabelsQuery } from "@/services/tasks";
 import useExistingLabels from "./useExistingLabels";
+import getIsControlled from "./getIsControlled";
 
 const usePropertyLabels = (variant: LabelResourceType, resourceId: number) =>
     useGetPropertyLabelsQuery(resourceId, {
@@ -52,7 +53,7 @@ const useAssignedLabels = (
     variant: LabelResourceType,
     assignedLabelIds: number[]
 ) => {
-    const isControlled = resourceId === -1;
+    const isControlled = getIsControlled(resourceId);
 
     //
     // Controlled

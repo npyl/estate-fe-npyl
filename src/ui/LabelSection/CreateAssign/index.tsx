@@ -45,7 +45,6 @@ const CreateAssign: FC<CreateAssignProps> = ({
                 <AddButton
                     variant={variant}
                     resourceId={resourceId}
-                    // ...
                     disabled={disabled}
                 />
             </SpaceBetween>

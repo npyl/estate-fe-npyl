@@ -2,8 +2,8 @@ import { useDeleteLabelForResourceIdMutation } from "@/services/labels";
 import useInvalidateTags from "@/ui/LabelForm/useInvalidateTags";
 import { FC, useCallback } from "react";
 import Labels from "./Labels";
-import isFalsy from "@/utils/isFalsy";
 import { ILabel, LabelResourceType } from "@/types/label";
+import { useSettings } from "../Context";
 
 interface RemovableLabelsProps {
     assignedLabels: ILabel[];
@@ -18,20 +18,25 @@ const RemovableLabels: FC<RemovableLabelsProps> = ({
     assignedLabels,
     disabled,
 }) => {
+    const { isControlled, onLabelRemove: _onLabelRemove } = useSettings();
+
     const [deleteLabel, { isLoading }] = useDeleteLabelForResourceIdMutation();
     const { invalidateTags } = useInvalidateTags(resource);
     const onLabelRemove = useCallback(
         async (labelId: number) => {
-            if (isFalsy(resourceId)) return;
-            const res = await deleteLabel({
-                resource,
-                resourceId: resourceId!,
-                labelId,
-            });
-            if ("error" in res) return;
-            invalidateTags();
+            if (isControlled) {
+                _onLabelRemove?.(labelId);
+            } else {
+                const res = await deleteLabel({
+                    resource,
+                    resourceId: resourceId!,
+                    labelId,
+                });
+                if ("error" in res) return;
+                invalidateTags();
+            }
         },
-        [resource, resourceId, invalidateTags]
+        [isControlled, resource, resourceId, invalidateTags, _onLabelRemove]
     );
 
     return (

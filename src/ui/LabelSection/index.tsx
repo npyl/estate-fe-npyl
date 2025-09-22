@@ -1,3 +1,4 @@
+import { SettingsProvider } from "./Context";
 import CreateAssign, { CreateAssignProps } from "./CreateAssign";
 import useAssignedLabels from "./useAssignedLabels";
 import { FC } from "react";
@@ -12,6 +13,8 @@ interface LabelSectionProps extends Omit<CreateAssignProps, "assignedLabels"> {
 
 const LabelCreate: FC<LabelSectionProps> = ({
     assignedLabels: _assignedLabels = [],
+    onLabelClick,
+    onLabelRemove,
     ...props
 }) => {
     const assignedLabels = useAssignedLabels(
@@ -19,7 +22,15 @@ const LabelCreate: FC<LabelSectionProps> = ({
         props.variant,
         _assignedLabels
     );
-    return <CreateAssign assignedLabels={assignedLabels} {...props} />;
+
+    return (
+        <SettingsProvider
+            onLabelClick={onLabelClick}
+            onLabelRemove={onLabelRemove}
+        >
+            <CreateAssign assignedLabels={assignedLabels} {...props} />
+        </SettingsProvider>
+    );
 };
 
 export type { LabelSectionProps };
