@@ -15,7 +15,7 @@ const useAssignedLabels = (
     const router = useRouter();
     const { propertyId } = router.query;
 
-    const { data: propertyLabels } = useGetPropertyLabelsQuery(resourceId!, {
+    const { data: propertyLabels } = useGetPropertyLabelsQuery(resourceId, {
         skip: variant !== "property" || resourceId === -1,
     });
     const { data: documentLabels } = useGetPropertyDocumentsQuery(
@@ -27,11 +27,11 @@ const useAssignedLabels = (
             }),
         }
     );
-    const { data: customerLabels } = useGetCustomerLabelsQuery(resourceId!, {
+    const { data: customerLabels } = useGetCustomerLabelsQuery(resourceId, {
         skip: variant !== "customer" || resourceId === -1,
     });
 
-    const { data: ticketsLabels } = useGetCardLabelsQuery(resourceId!, {
+    const { data: ticketsLabels } = useGetCardLabelsQuery(resourceId, {
         skip: variant !== "ticket" || resourceId === -1,
     });
 

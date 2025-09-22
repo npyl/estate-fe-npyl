@@ -18,7 +18,6 @@ interface CreateAssignProps extends Omit<StackProps, "onClick"> {
     loading?: boolean;
 
     onLabelClick: (l: ILabelPOST) => void;
-    onLabelCreate?: (id: number) => void;
     onLabelRemove: (id: number) => void;
 }
 
@@ -31,7 +30,6 @@ const CreateAssign: FC<CreateAssignProps> = ({
     loading = false,
 
     onLabelClick,
-    onLabelCreate,
     onLabelRemove,
 
     ...props
@@ -61,7 +59,6 @@ const CreateAssign: FC<CreateAssignProps> = ({
                     loading={loading}
                     // ...
                     onLabelClick={onLabelClick}
-                    onLabelCreate={onLabelCreate}
                 />
             </SpaceBetween>
 

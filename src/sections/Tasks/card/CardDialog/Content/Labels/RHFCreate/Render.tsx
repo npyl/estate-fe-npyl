@@ -19,16 +19,12 @@ const Render: FC<RenderProps> = ({ field: { value, onChange }, sx }) => {
         [data?.ticketLabels, value]
     );
 
-    const onAdd = useCallback(
-        (id: number) => onChange([...value, id]),
-        [value, onChange]
-    );
     const onClick = useCallback(
         (l: ILabelPOST) => {
             if (isFalsy(l.id)) return;
-            onAdd(l.id!);
+            onChange([...value, l.id!]);
         },
-        [onAdd]
+        [value, onChange]
     );
     const onRemove = useCallback(
         (id: number) => {
@@ -44,7 +40,6 @@ const Render: FC<RenderProps> = ({ field: { value, onChange }, sx }) => {
             assignedLabels={assignedLabels}
             variant="ticket"
             onLabelClick={onClick}
-            onLabelCreate={onAdd}
             onLabelRemove={onRemove}
             sx={sx}
         />

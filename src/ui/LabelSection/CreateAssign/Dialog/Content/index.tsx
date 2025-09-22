@@ -16,20 +16,26 @@ type TExpanded = "ADD" | "EXISTING";
 interface OptionsProps {
     resourceId?: number;
     resource: LabelResourceType;
-    onCreate?: (id: number) => void;
+    onLabelCreate: (id: number) => void;
     onLabelClick: (l: ILabel) => void;
     onExisting: VoidFunction;
 }
 
 const getOPTIONS = (
     t: TranslationType,
-    { resource, resourceId, onCreate, onLabelClick, onExisting }: OptionsProps
+    {
+        resource,
+        resourceId,
+        onLabelCreate,
+        onLabelClick,
+        onExisting,
+    }: OptionsProps
 ): IOption<TExpanded>[] => [
     {
         optionKey: "EXISTING",
         label: (
-            <Typography variant="h5" textAlign="left">
-                {t("Add an existing label")}
+            <Typography variant="h6" textAlign="left">
+                {t("Labels")}
             </Typography>
         ),
         content: (
@@ -43,7 +49,7 @@ const getOPTIONS = (
     {
         optionKey: "ADD",
         label: (
-            <Typography variant="h5" textAlign="left">
+            <Typography variant="h6" textAlign="left">
                 {t("Create")}
             </Typography>
         ),
@@ -51,8 +57,7 @@ const getOPTIONS = (
             <LabelForm
                 noTitle
                 resource={resource}
-                resourceId={resourceId}
-                onCreate={onCreate}
+                onCreate={onLabelCreate}
                 onCancel={onExisting}
             />
         ),
@@ -63,15 +68,15 @@ interface ContentProps {
     resourceId?: number;
     resource: LabelResourceType;
 
-    onCreate?: (id: number) => void;
+    onLabelCreate?: (id: number) => void;
     onLabelClick: (l: ILabel) => void;
 }
 
 const Content: FC<ContentProps> = ({
     resourceId,
     resource,
-    onCreate,
     // ...
+    onLabelCreate: _onLabelCreate,
     onLabelClick,
 }) => {
     const accordionRef = useRef<ExclusiveAccordionRef<TExpanded>>();
@@ -80,17 +85,25 @@ const Content: FC<ContentProps> = ({
         []
     );
 
+    const onLabelCreate = useCallback(
+        (id: number) => {
+            _onLabelCreate?.(id);
+            onExisting();
+        },
+        [_onLabelCreate]
+    );
+
     const { t } = useTranslation();
     const OPTIONS = useMemo(
         () =>
             getOPTIONS(t, {
                 resource,
                 resourceId,
-                onCreate,
+                onLabelCreate,
                 onLabelClick,
                 onExisting,
             }),
-        [t, resource, resourceId, onCreate, onLabelClick]
+        [t, resource, resourceId, onLabelCreate, onLabelClick]
     );
 
     return (

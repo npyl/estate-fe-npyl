@@ -12,8 +12,8 @@ interface AddButtonProps {
     disabled?: boolean;
     loading?: boolean;
 
-    onLabelClick: (l: ILabelPOST) => void;
     onLabelCreate?: (id: number) => void;
+    onLabelClick: (l: ILabelPOST) => void;
 }
 
 const AddButton: FC<AddButtonProps> = ({
@@ -52,7 +52,7 @@ const AddButton: FC<AddButtonProps> = ({
                     variant={variant}
                     // ...
                     onLabelClick={onLabelClick}
-                    onCreate={onLabelCreate}
+                    onLabelCreate={onLabelCreate}
                     onClose={closeDialog}
                 />
             ) : null}

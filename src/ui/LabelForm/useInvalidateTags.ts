@@ -4,11 +4,16 @@ import { customers } from "src/services/customers";
 import { tasks } from "@/services/tasks";
 import { useDispatch } from "react-redux";
 import { LabelResourceType } from "@/types/label";
+import { labels } from "@/services/labels";
 
 const useInvalidateTags = (variant: LabelResourceType) => {
     const dispatch = useDispatch();
 
     const invalidateTags = useCallback(() => {
+        // Global
+        dispatch(labels.util.invalidateTags(["Labels"]));
+
+        // By Resource Id
         if (variant === "property")
             dispatch(properties.util.invalidateTags(["PropertyByIdLabels"]));
         else if (variant === "document")

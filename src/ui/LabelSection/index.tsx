@@ -1,25 +1,26 @@
-import { StackProps } from "@mui/material";
-import { ILabelPOST, LabelResourceType } from "src/types/label";
+import { ILabelPOST } from "@/types/label";
 import {
     useAssignLabelToResourceIdMutation,
     useDeleteLabelForResourceIdMutation,
-} from "src/services/labels";
-import CreateAssign from "./CreateAssign";
+} from "@/services/labels";
+import CreateAssign, { CreateAssignProps } from "./CreateAssign";
 import useAssignedLabels from "./useAssignedLabels";
 import useInvalidateTags from "@/ui/LabelForm/useInvalidateTags";
+import { FC, useCallback } from "react";
+import isFalsy from "@/utils/isFalsy";
 
-interface ILabelCreateProps extends StackProps {
-    variant: LabelResourceType;
-    resourceId: number; // > 0 valid, -1 invalid
-    disabled?: boolean;
-}
+interface ILabelCreateProps
+    extends Omit<
+        CreateAssignProps,
+        "assignedLabels" | "onLabelCreate" | "onLabelClick" | "onLabelRemove"
+    > {}
 
-const LabelCreate = ({
+const LabelCreate: FC<ILabelCreateProps> = ({
     variant,
     resourceId,
     disabled = false,
     ...props
-}: ILabelCreateProps) => {
+}) => {
     const assignedLabels = useAssignedLabels(variant, resourceId);
 
     //
@@ -37,19 +38,33 @@ const LabelCreate = ({
     //
     const { invalidateTags } = useInvalidateTags(variant);
 
-    const handleRemoveLabel = (labelId: number) =>
-        deleteLabel({
-            resource: variant,
-            resourceId,
-            labelId,
-        }).then(invalidateTags);
+    const handleRemoveLabel = useCallback(
+        async (labelId: number) => {
+            if (isFalsy(resourceId)) return;
+            const res = await deleteLabel({
+                resource: variant,
+                resourceId: resourceId!,
+                labelId,
+            });
+            if ("error" in res) return;
+            invalidateTags();
+        },
+        [variant, resourceId, invalidateTags]
+    );
 
-    const handleLabelClick = (body: ILabelPOST) =>
-        assignLabel({
-            resource: variant,
-            resourceId,
-            body,
-        }).then(invalidateTags);
+    const handleLabelClick = useCallback(
+        async (body: ILabelPOST) => {
+            if (isFalsy(resourceId)) return;
+            const res = await assignLabel({
+                resource: variant,
+                resourceId: resourceId!,
+                body,
+            });
+            if ("error" in res) return;
+            invalidateTags();
+        },
+        [variant, resourceId, invalidateTags]
+    );
 
     return (
         <CreateAssign
