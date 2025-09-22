@@ -1,9 +1,10 @@
-import { Stack } from "@mui/material";
+import { SxProps, Theme } from "@mui/material";
 import { FC, useMemo } from "react";
-import Label from "@/components/Label/Label";
+import { LabelClassName } from "@/components/Label/Label";
 import { ILabel, LabelResourceType } from "src/types/label";
 import useAssignedLabels from "@/ui/LabelSection/useAssignedLabels";
 import useExistingLabels from "./useExistingLabels";
+import Labels from "../../Labels";
 
 const areIdsEqual =
     (existingId: number) =>
@@ -27,6 +28,12 @@ const useAvailableLabels = (
     );
 };
 
+const LabelsSx: SxProps<Theme> = {
+    [`.${LabelClassName}`]: {
+        cursor: "pointer",
+    },
+};
+
 interface AvailableLabelsProps {
     resourceId?: number;
     resource: LabelResourceType;
@@ -39,23 +46,7 @@ const AvailableLabels: FC<AvailableLabelsProps> = ({
     onLabelClick,
 }) => {
     const labels = useAvailableLabels(resource, resourceId);
-
-    return (
-        <Stack direction={"row"} flexWrap={"wrap"} gap={1}>
-            {labels.map((label) => (
-                <Label
-                    key={label.id}
-                    color={label.color}
-                    name={label.name}
-                    onClick={() => onLabelClick(label)}
-                    sx={{
-                        borderRadius: 7,
-                        "&:hover": { cursor: "pointer" },
-                    }}
-                />
-            ))}
-        </Stack>
-    );
+    return <Labels labels={labels} onLabelClick={onLabelClick} sx={LabelsSx} />;
 };
 
 export default AvailableLabels;

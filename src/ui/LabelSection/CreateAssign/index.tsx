@@ -1,11 +1,11 @@
 import { Stack, StackProps, Typography } from "@mui/material";
-import Label from "@/components/Label/Label";
 import { ILabel, ILabelPOST, LabelResourceType } from "src/types/label";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
 import { FC } from "react";
 import stopPropagation from "@/utils/stopPropagation";
 import AddButton from "./AddButton";
+import Labels from "./Labels";
 
 const LabelSectionTitleClassName = "PPLabelSectionTitle";
 
@@ -67,17 +67,11 @@ const CreateAssign: FC<CreateAssignProps> = ({
 
             <Stack mt={2} />
 
-            <Stack direction="row" flexWrap="wrap" gap={1} px={0.5}>
-                {assignedLabels.map(({ id, color, name }) => (
-                    <Label
-                        key={id}
-                        color={color}
-                        name={name}
-                        disabled={disabled || loading}
-                        onClose={() => onLabelRemove(id)}
-                    />
-                ))}
-            </Stack>
+            <Labels
+                labels={assignedLabels}
+                disabled={disabled || loading}
+                onLabelRemove={onLabelRemove}
+            />
         </Stack>
     );
 };

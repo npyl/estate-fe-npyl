@@ -11,6 +11,7 @@ import { ILabelForm } from "@/sections/Label/Create/types";
 import { SpaceBetween } from "@/components/styled";
 
 interface LabelFormProps {
+    noTitle?: boolean;
     label?: ILabel; // edit mode
 
     // assign mode
@@ -22,6 +23,8 @@ interface LabelFormProps {
 }
 
 const LabelForm: FC<LabelFormProps> = ({
+    noTitle = false,
+
     label,
     resourceId,
     resource = "property",
@@ -44,9 +47,12 @@ const LabelForm: FC<LabelFormProps> = ({
 
     return (
         <FormProvider {...methods}>
-            <Typography variant="h5" mt={2}>
-                {title}
-            </Typography>
+            {!noTitle ? (
+                <Typography variant="h5" mt={2}>
+                    {title}
+                </Typography>
+            ) : null}
+
             <Stack spacing={3} mt={1}>
                 <RHFTextField
                     fullWidth

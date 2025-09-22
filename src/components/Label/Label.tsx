@@ -8,6 +8,8 @@ import { Close as CloseIcon } from "@mui/icons-material";
 
 // ----------------------------------------------------------------------
 
+const LabelClassName = "PPLabelClassName";
+
 const Label = forwardRef<HTMLDivElement, LabelProps>(
     (
         {
@@ -24,6 +26,7 @@ const Label = forwardRef<HTMLDivElement, LabelProps>(
         ref
     ) => (
         <StyledLabel
+            className={LabelClassName}
             color={color}
             name={name}
             ref={ref}
@@ -87,4 +90,5 @@ const Label = forwardRef<HTMLDivElement, LabelProps>(
 
 Label.displayName = "Label";
 
+export { LabelClassName };
 export default Label;

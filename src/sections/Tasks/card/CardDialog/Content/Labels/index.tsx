@@ -39,7 +39,7 @@ interface LabelsProps extends ContentProps {}
 const Labels: FC<LabelsProps> = ({ cardId }) => {
     const { t } = useTranslation();
     return (
-        <Stack spacing={1}>
+        <Stack spacing={0.5}>
             <Typography fontWeight="bold">{t("Labels")}</Typography>
             <Content cardId={cardId} />
         </Stack>

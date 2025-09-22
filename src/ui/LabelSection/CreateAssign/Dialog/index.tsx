@@ -1,9 +1,13 @@
-import { useTranslation } from "react-i18next";
 import { ILabel, LabelResourceType } from "@/types/label";
 import Dialog from "@/components/Dialog";
 import Content from "./Content";
-import Typography from "@mui/material/Typography";
 import { FC } from "react";
+import { DialogContent, DialogContentProps } from "@mui/material";
+import CloseButton from "./CloseButton";
+
+const StyledContent: FC<DialogContentProps> = ({ sx, ...props }) => (
+    <DialogContent sx={{ p: 0, ...sx }} {...props} />
+);
 
 interface AddLabelDialog {
     resourceId?: number;
@@ -21,32 +25,25 @@ const AddLabelDialog: FC<AddLabelDialog> = ({
     onLabelClick,
     onCreate,
     onClose,
-}) => {
-    const { t } = useTranslation();
-
-    return (
-        <Dialog
-            onClose={onClose}
-            // ...
-            submit
-            // ...
-            title={
-                <Typography variant="h5" textAlign="left" width={1}>
-                    {t("Add an existing label")}
-                </Typography>
-            }
-            content={
-                <Content
-                    resourceId={resourceId}
-                    resource={variant}
-                    onCreate={onCreate}
-                    // ...
-                    onLabelClick={onLabelClick}
-                    onClose={onClose}
-                />
-            }
-        />
-    );
-};
+}) => (
+    <Dialog
+        onClose={onClose}
+        DialogContentComponent={StyledContent}
+        // ...
+        submit
+        // ...
+        hideTitle
+        content={
+            <Content
+                resourceId={resourceId}
+                resource={variant}
+                onCreate={onCreate}
+                // ...
+                onLabelClick={onLabelClick}
+            />
+        }
+        actions={<CloseButton onClick={onClose} />}
+    />
+);
 
 export default AddLabelDialog;
