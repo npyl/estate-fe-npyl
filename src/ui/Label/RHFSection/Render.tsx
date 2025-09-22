@@ -1,7 +1,7 @@
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import LabelSection, {
     LabelSectionProps as PPLabelSectionProps,
-} from "@/ui/LabelSection";
+} from "@/ui/Label/Section";
 import { FC, useCallback } from "react";
 
 type SectionProps = Omit<

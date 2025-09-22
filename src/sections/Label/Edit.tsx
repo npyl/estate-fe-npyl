@@ -1,6 +1,6 @@
 import { Paper } from "@mui/material";
 import { IEditProps } from "./Preview/types";
-import LabelForm from "@/ui/LabelForm";
+import LabelForm from "@/ui/Label/Form";
 
 interface EditProps {
     editedLabel: IEditProps;

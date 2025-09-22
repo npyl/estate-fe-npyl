@@ -9,7 +9,7 @@ import ExclusiveAccordion, {
     IOption,
 } from "@/ui/ExclusiveAccordion";
 import { TranslationType } from "@/types/translation";
-const LabelForm = dynamic(() => import("@/ui/LabelForm"));
+const LabelForm = dynamic(() => import("@/ui/Label/Form"));
 
 type TExpanded = "ADD" | "EXISTING";
 

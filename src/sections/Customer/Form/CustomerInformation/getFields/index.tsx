@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 import { MenuItem } from "@mui/material";
 import { Placeholder as LabelPlaceholder } from "@/components/Label";
-import LabelSection from "@/ui/LabelSection";
+import LabelSection from "@/ui/Label/Section";
 import { LeadSource } from "@/types/global";
 import { RHFSelect, RHFOnlyNumbers } from "@/components/hook-form";
 import RHFTextField from "@/components/hook-form/dynamic/RHFTextField";

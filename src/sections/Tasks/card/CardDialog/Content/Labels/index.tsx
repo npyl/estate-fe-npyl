@@ -1,5 +1,5 @@
-import RHFLabelSection from "./RHFCreate";
-import { LabelSectionTitleClassName } from "@/ui/LabelSection/CreateAssign";
+import RHFLabelSection from "@/ui/Label/RHFSection";
+import { LabelSectionTitleClassName } from "@/ui/Label/Section/CreateAssign";
 import { Stack, SxProps, Theme, Typography } from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";

@@ -2,12 +2,12 @@ import { SxProps, Theme } from "@mui/material";
 import { FC, useCallback, useMemo } from "react";
 import { LabelClassName } from "@/components/Label/Label";
 import { ILabel, ILabelPOST, LabelResourceType } from "@/types/label";
-import useAssignedLabels from "@/ui/LabelSection/useAssignedLabels";
+import useAssignedLabels from "@/ui/Label/Section/useAssignedLabels";
 import useExistingLabels from "../../../useExistingLabels";
 import Labels from "../../Labels";
-import useInvalidateTags from "@/ui/LabelForm/useInvalidateTags";
+import useInvalidateTags from "@/ui/Label/Form/useInvalidateTags";
 import { useAssignLabelToResourceIdMutation } from "@/services/labels";
-import { useSettings } from "@/ui/LabelSection/Context";
+import { useSettings } from "@/ui/Label/Section/Context";
 
 const areIdsEqual =
     (existingId: number) =>

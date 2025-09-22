@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import * as React from "react";
-import LabelSection from "@/ui/LabelSection";
+import LabelSection from "@/ui/Label/Section";
 import { useMemo } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";

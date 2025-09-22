@@ -1,5 +1,5 @@
 import { useDeleteLabelForResourceIdMutation } from "@/services/labels";
-import useInvalidateTags from "@/ui/LabelForm/useInvalidateTags";
+import useInvalidateTags from "@/ui/Label/Form/useInvalidateTags";
 import { FC, useCallback } from "react";
 import Labels from "./Labels";
 import { ILabel, LabelResourceType } from "@/types/label";
