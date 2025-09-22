@@ -25,6 +25,7 @@ const LabelCreate: FC<LabelSectionProps> = ({
 
     return (
         <SettingsProvider
+            resourceId={props.resourceId}
             onLabelClick={onLabelClick}
             onLabelRemove={onLabelRemove}
         >
