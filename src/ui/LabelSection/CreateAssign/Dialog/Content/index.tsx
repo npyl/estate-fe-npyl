@@ -1,5 +1,5 @@
 import { FC, useCallback, useMemo, useRef } from "react";
-import { ILabel, LabelResourceType } from "src/types/label";
+import { LabelResourceType } from "src/types/label";
 import dynamic from "next/dynamic";
 import AvailableLabels from "./AvailableLabels";
 import Typography from "@mui/material/Typography";
@@ -16,20 +16,12 @@ type TExpanded = "ADD" | "EXISTING";
 interface OptionsProps {
     resourceId?: number;
     resource: LabelResourceType;
-    onLabelCreate: (id: number) => void;
-    onLabelClick: (l: ILabel) => void;
     onExisting: VoidFunction;
 }
 
 const getOPTIONS = (
     t: TranslationType,
-    {
-        resource,
-        resourceId,
-        onLabelCreate,
-        onLabelClick,
-        onExisting,
-    }: OptionsProps
+    { resource, resourceId, onExisting }: OptionsProps
 ): IOption<TExpanded>[] => [
     {
         optionKey: "EXISTING",
@@ -39,11 +31,7 @@ const getOPTIONS = (
             </Typography>
         ),
         content: (
-            <AvailableLabels
-                resource={resource}
-                resourceId={resourceId}
-                onLabelClick={onLabelClick}
-            />
+            <AvailableLabels resource={resource} resourceId={resourceId} />
         ),
     },
     {
@@ -57,7 +45,7 @@ const getOPTIONS = (
             <LabelForm
                 noTitle
                 resource={resource}
-                onCreate={onLabelCreate}
+                onCreate={onExisting}
                 onCancel={onExisting}
             />
         ),
@@ -67,30 +55,13 @@ const getOPTIONS = (
 interface ContentProps {
     resourceId?: number;
     resource: LabelResourceType;
-
-    onLabelCreate?: (id: number) => void;
-    onLabelClick: (l: ILabel) => void;
 }
 
-const Content: FC<ContentProps> = ({
-    resourceId,
-    resource,
-    // ...
-    onLabelCreate: _onLabelCreate,
-    onLabelClick,
-}) => {
+const Content: FC<ContentProps> = ({ resourceId, resource }) => {
     const accordionRef = useRef<ExclusiveAccordionRef<TExpanded>>();
     const onExisting = useCallback(
         () => accordionRef.current?.setExpanded("EXISTING"),
         []
-    );
-
-    const onLabelCreate = useCallback(
-        (id: number) => {
-            _onLabelCreate?.(id);
-            onExisting();
-        },
-        [_onLabelCreate]
     );
 
     const { t } = useTranslation();
@@ -99,11 +70,9 @@ const Content: FC<ContentProps> = ({
             getOPTIONS(t, {
                 resource,
                 resourceId,
-                onLabelCreate,
-                onLabelClick,
                 onExisting,
             }),
-        [t, resource, resourceId, onLabelCreate, onLabelClick]
+        [t, resource, resourceId]
     );
 
     return (

@@ -1,4 +1,4 @@
-import { ILabel, LabelResourceType } from "@/types/label";
+import { LabelResourceType } from "@/types/label";
 import Dialog from "@/components/Dialog";
 import Content from "./Content";
 import { FC } from "react";
@@ -23,18 +23,12 @@ const StyledActions: FC<DialogActionsProps> = ({ sx, ...props }) => (
 interface AddLabelDialog {
     resourceId?: number;
     variant: LabelResourceType;
-
-    onLabelClick: (l: ILabel) => void;
-    onLabelCreate?: (id: number) => void;
-    onClose: () => void;
+    onClose: VoidFunction;
 }
 
 const AddLabelDialog: FC<AddLabelDialog> = ({
     resourceId,
     variant,
-
-    onLabelClick,
-    onLabelCreate,
     onClose,
 }) => (
     <Dialog
@@ -45,15 +39,7 @@ const AddLabelDialog: FC<AddLabelDialog> = ({
         submit
         // ...
         hideTitle
-        content={
-            <Content
-                resourceId={resourceId}
-                resource={variant}
-                // ...
-                onLabelCreate={onLabelCreate}
-                onLabelClick={onLabelClick}
-            />
-        }
+        content={<Content resourceId={resourceId} resource={variant} />}
         actions={<CloseButton onClick={onClose} />}
     />
 );

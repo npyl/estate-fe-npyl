@@ -1,29 +1,25 @@
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
-import CreateAssign from "@/ui/LabelSection/CreateAssign";
-import { FC, useCallback, useMemo } from "react";
-import { useGetLabelsQuery } from "@/services/labels";
-import { ILabelPOST } from "@/types/label";
-import isFalsy from "@/utils/isFalsy";
-import { SxProps, Theme } from "@mui/material";
+import LabelSection, {
+    LabelSectionProps as PPLabelSectionProps,
+} from "@/ui/LabelSection";
+import { FC, useCallback } from "react";
+
+type SectionProps = Omit<
+    PPLabelSectionProps,
+    "assignedLabels" | "onLabelClick" | "onLabelRemove"
+>;
 
 type RenderProps = {
-    sx?: SxProps<Theme>;
     field: ControllerRenderProps<FieldValues, string>;
+    labelSectionProps: SectionProps;
 };
 
-const Render: FC<RenderProps> = ({ field: { value, onChange }, sx }) => {
-    const { data, isLoading } = useGetLabelsQuery();
-
-    const assignedLabels = useMemo(
-        () => data?.ticketLabels?.filter((l) => value?.includes(l.id)) || [],
-        [data?.ticketLabels, value]
-    );
-
+const Render: FC<RenderProps> = ({
+    field: { value, onChange },
+    labelSectionProps,
+}) => {
     const onClick = useCallback(
-        (l: ILabelPOST) => {
-            if (isFalsy(l.id)) return;
-            onChange([...value, l.id!]);
-        },
+        (id: number) => onChange([...value, id]),
         [value, onChange]
     );
     const onRemove = useCallback(
@@ -35,15 +31,14 @@ const Render: FC<RenderProps> = ({ field: { value, onChange }, sx }) => {
     );
 
     return (
-        <CreateAssign
-            loading={isLoading}
-            assignedLabels={assignedLabels}
-            variant="ticket"
+        <LabelSection
+            assignedLabels={value}
             onLabelClick={onClick}
             onLabelRemove={onRemove}
-            sx={sx}
+            {...labelSectionProps}
         />
     );
 };
 
+export type { SectionProps };
 export default Render;

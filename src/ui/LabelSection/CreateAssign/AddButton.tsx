@@ -1,6 +1,6 @@
 import { IconButton } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { ILabelPOST, LabelResourceType } from "src/types/label";
+import { LabelResourceType } from "src/types/label";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
 import { FC, useCallback } from "react";
@@ -11,9 +11,6 @@ interface AddButtonProps {
     resourceId?: number; // > 0 valid, undefined invalid
     disabled?: boolean;
     loading?: boolean;
-
-    onLabelCreate?: (id: number) => void;
-    onLabelClick: (l: ILabelPOST) => void;
 }
 
 const AddButton: FC<AddButtonProps> = ({
@@ -22,9 +19,6 @@ const AddButton: FC<AddButtonProps> = ({
     // ...
     disabled,
     loading,
-    // ...
-    onLabelClick,
-    onLabelCreate,
 }) => {
     const [isOpen, openDialog, closeDialog] = useDialog();
 
@@ -50,9 +44,6 @@ const AddButton: FC<AddButtonProps> = ({
                 <AddLabelDialog
                     resourceId={resourceId}
                     variant={variant}
-                    // ...
-                    onLabelClick={onLabelClick}
-                    onLabelCreate={onLabelCreate}
                     onClose={closeDialog}
                 />
             ) : null}

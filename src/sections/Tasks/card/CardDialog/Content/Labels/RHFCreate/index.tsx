@@ -1,19 +1,23 @@
 import { Controller, useFormContext } from "react-hook-form";
-import Render from "./Render";
+import Render, { SectionProps } from "./Render";
 import { FC } from "react";
-import { SxProps, Theme } from "@mui/material";
 
-interface RHFCreateProps {
-    sx?: SxProps<Theme>;
+interface RHFCreateProps extends SectionProps {
+    name: string;
 }
 
-const RHFCreate: FC<RHFCreateProps> = ({ sx }) => {
+const RHFCreate: FC<RHFCreateProps> = ({ name, ...labelSectionProps }) => {
     const { control } = useFormContext();
     return (
         <Controller
-            name="labels"
+            name={name}
             control={control}
-            render={(renderProps) => <Render {...renderProps} sx={sx} />}
+            render={(renderProps) => (
+                <Render
+                    {...renderProps}
+                    labelSectionProps={labelSectionProps}
+                />
+            )}
         />
     );
 };
