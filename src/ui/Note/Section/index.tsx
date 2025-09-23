@@ -3,7 +3,6 @@ import NoteCreate, { NoteCreateProps } from "./Create";
 import { SettingsProvider } from "./Context";
 import useNotesControlledUncontrolled from "./useNotesControlledUncontrolled";
 import { INote } from "@/types/note";
-import { LabelResourceType } from "@/types/label";
 
 interface NoteSectionProps extends Omit<NoteCreateProps, "notes"> {
     // -------------- Controlled Start --------------

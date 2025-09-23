@@ -1,6 +1,5 @@
 import {
     Stack,
-    Typography,
     IconButton,
     SxProps,
     Theme,
@@ -10,6 +9,7 @@ import {
 import Iconify from "src/components/iconify/Iconify";
 import { FC } from "react";
 import CreatedAt from "./CreatedAt";
+import Content from "./Content";
 
 const PaperSx: SxProps<Theme> = {
     backgroundColor: ({ palette: { mode, neutral } }) =>
@@ -47,18 +47,7 @@ const Body: FC<BodyProps> = ({
             </IconButton>
         </Stack>
 
-        <Typography
-            variant="body2"
-            color="text.secondary"
-            width={`calc(100% - 110px)`}
-            sx={{
-                wordWrap: "break-word",
-                overflowWrap: "break-word",
-                whiteSpace: "pre-wrap",
-            }}
-        >
-            {content}
-        </Typography>
+        <Content c={content} />
     </Paper>
 );
 

@@ -1,5 +1,5 @@
 import { Stack, Typography, StackProps } from "@mui/material";
-import { INote } from "src/types/note";
+import { INote } from "@/types/note";
 import Avatar from "@/components/Avatar";
 import { PropertyLabel } from "./Extra";
 import { FC } from "react";
