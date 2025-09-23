@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
-import { NoteCreate } from "src/components/Note";
+import { NoteCreate } from "@/ui/Note";
 
 import {
     useAddNoteToCustomerWithIdMutation,

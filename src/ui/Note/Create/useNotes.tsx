@@ -1,4 +1,4 @@
-import { Note } from "@/components/Note";
+import { Note } from "@/ui/Note";
 import { INote } from "src/types/note";
 import { useMemo } from "react";
 import { PROPERTY_CHIP_CLASSNAME } from "../Note/Extra";

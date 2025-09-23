@@ -1,4 +1,4 @@
-import NoteCreate from "@/components/Note/Create";
+import NoteCreate from "@/ui/Note/Create";
 import { useAuth } from "@/sections/use-auth";
 import { INote } from "@/types/note";
 import { useCallback, useMemo } from "react";

@@ -2,7 +2,7 @@ import { SxProps, Theme } from "@mui/material";
 import AddNote from "../AddNote";
 import { INote } from "src/types/note";
 import { useTranslation } from "react-i18next";
-import Panel from "../../Panel";
+import Panel from "../../../components/Panel";
 import { FC, useRef } from "react";
 import ScrollContainer, { ScrollContainerRef } from "./ScrollContainer";
 import { CONTENT_CLASSNAME, NOTE_CLASSNAME } from "../Note";
