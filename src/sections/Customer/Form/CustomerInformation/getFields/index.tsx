@@ -1,7 +1,5 @@
 /* eslint-disable react/jsx-key */
 import { MenuItem } from "@mui/material";
-import { Placeholder as LabelPlaceholder } from "@/components/Label";
-import LabelSection from "@/ui/Label/Section";
 import { LeadSource } from "@/types/global";
 import { RHFSelect, RHFOnlyNumbers } from "@/components/hook-form";
 import RHFTextField from "@/components/hook-form/dynamic/RHFTextField";
@@ -18,6 +16,8 @@ import {
     LASTNAME_ID,
 } from "@/sections/Customer/Form/constants";
 import getIndexMapped from "@/utils/getIndexMapped";
+import RHFLabelSection from "@/ui/Label/RHFSection";
+import toNumberSafe from "@/utils/toNumberSafe";
 
 const WITH = (C: any, onOff: boolean) => (onOff ? [C] : []);
 
@@ -49,7 +49,7 @@ const getFIELDS = (
             data-testid={EMAIL_ID}
             fullWidth
             name="email"
-            label={t("Email")}
+            label={t("Email") + " *"}
         />,
         <RHFOnlyNumbers
             fullWidth
@@ -111,11 +111,11 @@ const getFIELDS = (
 
         <StayUpdated />,
 
-        customerId ? (
-            <LabelSection variant="customer" resourceId={+customerId} />
-        ) : (
-            <LabelPlaceholder />
-        ),
+        <RHFLabelSection
+            name="labelIDs"
+            variant="customer"
+            resourceId={toNumberSafe(customerId)}
+        />,
 
         <Rating />,
     ]);

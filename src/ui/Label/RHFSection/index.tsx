@@ -2,11 +2,14 @@ import { Controller, useFormContext } from "react-hook-form";
 import Render, { SectionProps } from "./Render";
 import { FC } from "react";
 
-interface RHFCreateProps extends SectionProps {
+interface RHFLabelSectionProps extends SectionProps {
     name: string;
 }
 
-const RHFCreate: FC<RHFCreateProps> = ({ name, ...labelSectionProps }) => {
+const RHFLabelSection: FC<RHFLabelSectionProps> = ({
+    name,
+    ...labelSectionProps
+}) => {
     const { control } = useFormContext();
     return (
         <Controller
@@ -22,4 +25,4 @@ const RHFCreate: FC<RHFCreateProps> = ({ name, ...labelSectionProps }) => {
     );
 };
 
-export default RHFCreate;
+export default RHFLabelSection;
