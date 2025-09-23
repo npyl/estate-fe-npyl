@@ -2,7 +2,7 @@ import { TextField } from "@mui/material";
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useResetPasswordMutation } from "@/services/user";
-import ConfirmDialog from "@/ui/confirm-dialog";
+import ConfirmDialog from "@/ui/DialogConfirm";
 import { LoadingButton } from "@mui/lab";
 import useTextField from "@/hooks/useTextField";
 

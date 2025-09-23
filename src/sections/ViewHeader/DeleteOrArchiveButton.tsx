@@ -7,7 +7,7 @@ import useDialog from "@/hooks/useDialog";
 import { FC, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { useAuth } from "@/sections/use-auth";
-import ConfirmDialog from "@/ui/confirm-dialog";
+import ConfirmDialog from "@/ui/DialogConfirm";
 import ArchiveIcon from "@mui/icons-material/Archive";
 
 interface Props {
