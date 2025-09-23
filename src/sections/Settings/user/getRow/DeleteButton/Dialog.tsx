@@ -2,7 +2,7 @@ import { Stack, Typography } from "@mui/material";
 import { FC, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDeleteUserMutation } from "@/services/user";
-import ConfirmDialog from "@/ui/DialogConfirm";
+import ConfirmDialog from "@/ui/Dialog/Confirm";
 import { LoadingButton } from "@mui/lab";
 import AssigneeAutocomplete from "@/ui/Autocompletes/Assignee";
 import isFalsy from "@/utils/isFalsy";

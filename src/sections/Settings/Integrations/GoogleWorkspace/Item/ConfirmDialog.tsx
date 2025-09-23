@@ -1,4 +1,4 @@
-import ConfirmDialog from "@/ui/DialogConfirm";
+import ConfirmDialog from "@/ui/Dialog/Confirm";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";

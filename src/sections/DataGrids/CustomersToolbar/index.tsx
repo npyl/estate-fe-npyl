@@ -8,7 +8,7 @@ import dynamic from "next/dynamic";
 import BaseToolbar from "@/sections/DataGrids/BaseToolbar";
 import ShareButton from "./Share";
 const BulkEdit = dynamic(() => import("./(BulkEdit)"));
-const DeleteDialog = dynamic(() => import("@/ui/DialogDelete"));
+const DeleteDialog = dynamic(() => import("@/ui/Dialog/Delete"));
 
 // --------------------------------------------------------------------------------
 

@@ -3,7 +3,7 @@ import { Button, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-const ConfirmDialog = dynamic(() => import("@/ui/DialogConfirm"));
+const ConfirmDialog = dynamic(() => import("@/ui/Dialog/Confirm"));
 
 interface DeleteButtonProps {
     siteId: number;

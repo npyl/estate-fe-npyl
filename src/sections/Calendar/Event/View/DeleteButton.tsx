@@ -6,7 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import useDialog from "@/hooks/useDialog";
 import { useTranslation } from "react-i18next";
 // ...
-const ConfirmDialog = dynamic(() => import("@/ui/DialogConfirm"));
+const ConfirmDialog = dynamic(() => import("@/ui/Dialog/Confirm"));
 
 interface DeleteButtonProps {
     eventId?: string;

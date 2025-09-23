@@ -1,4 +1,4 @@
-const ConfirmDialog = dynamic(() => import("@/ui/DialogConfirm"));
+const ConfirmDialog = dynamic(() => import("@/ui/Dialog/Confirm"));
 import useDialog from "@/hooks/useDialog";
 import { useDeleteColumnMutation } from "@/services/tasks";
 import Button from "@mui/material/Button";

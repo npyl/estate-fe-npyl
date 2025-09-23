@@ -1,7 +1,7 @@
 import useDialog from "@/hooks/useDialog";
 import { ViewHeaderProps } from "@/sections/ViewHeader";
 import { useClonePropertyMutation } from "@/services/properties";
-import ConfirmDialog from "@/ui/DialogConfirm";
+import ConfirmDialog from "@/ui/Dialog/Confirm";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/router";
 import { ComponentType } from "react";

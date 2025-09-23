@@ -1,7 +1,7 @@
 import { useDeleteLabelForResourceMutation } from "@/services/labels";
 import { FC } from "react";
 import { LabelResourceType } from "@/types/label";
-import PPDeleteDialog from "@/ui/DialogDelete";
+import PPDeleteDialog from "@/ui/Dialog/Delete";
 
 // --------------------------------------------------------------------------
 
