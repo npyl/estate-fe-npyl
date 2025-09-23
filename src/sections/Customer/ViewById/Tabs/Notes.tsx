@@ -3,9 +3,8 @@ import { useRouter } from "next/router";
 
 const Notes = () => {
     const router = useRouter();
-    const { propertyId } = router.query;
-    if (!propertyId) return null;
-    return <NoteSection chip resource="property" resourceId={+propertyId!} />;
+    const { customerId } = router.query;
+    return <NoteSection chip resource="customer" resourceId={+customerId!} />;
 };
 
 export default Notes;

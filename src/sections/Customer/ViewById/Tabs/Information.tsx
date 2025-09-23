@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
 import { Address, Information } from "../sections";
-import NoteSection from "@/ui/Note/Section";
+import Notes from "./Notes";
 
 const CustomerInformation = () => (
     <Grid container spacing={1}>
@@ -17,7 +17,7 @@ const CustomerInformation = () => (
             gap={1}
         >
             <Address />
-            <NoteSection chip resource="customer" />
+            <Notes />
         </Grid>
     </Grid>
 );
