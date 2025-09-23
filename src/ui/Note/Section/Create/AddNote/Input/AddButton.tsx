@@ -9,7 +9,7 @@ const AddButton: FC<AddButtonProps> = (props) => {
     const { t } = useTranslation();
     return (
         <Button size="small" endIcon={<SendIcon />} {...props}>
-            {t("Send")}
+            {t("Add")}
         </Button>
     );
 };

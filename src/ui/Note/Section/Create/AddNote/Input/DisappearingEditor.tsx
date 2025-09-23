@@ -1,11 +1,11 @@
-import Editor, { EditorRef } from "@/components/Editor";
-import { forwardRef, PropsWithChildren, useEffect } from "react";
+import Editor, { EditorProps, EditorRef } from "@/components/Editor";
+import { forwardRef, useEffect } from "react";
 import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
 
-interface DisappearingEditorProps extends PropsWithChildren {}
+interface DisappearingEditorProps extends EditorProps {}
 
 const DisappearingEditor = forwardRef<EditorRef, DisappearingEditorProps>(
-    ({ children, ...props }, ref) => {
+    (props, ref) => {
         const [localRef, { onRef }] = useForwardedLocalRef(ref);
 
         // Focus on editor appear

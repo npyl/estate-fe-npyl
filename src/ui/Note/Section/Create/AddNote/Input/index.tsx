@@ -5,13 +5,14 @@ import { forwardRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import DisappearingEditor from "./DisappearingEditor";
 import AddButton from "./AddButton";
-import Stack from "@mui/material/Stack";
 import { SxProps, Theme } from "@mui/material";
-import CancelButton from "./CancelButton";
+import CloseButton from "./CloseButton";
 import { SpaceBetween } from "@/components/styled";
 
-const ContainerSx: SxProps<Theme> = {
-    gap: 1,
+const ActionsSx: SxProps<Theme> = {
+    bgcolor: "background.neutral",
+    borderBottomLeftRadius: 7,
+    borderBottomRightRadius: 7,
 };
 
 const AddButtonSx: SxProps<Theme> = {
@@ -43,13 +44,12 @@ const Input = forwardRef<EditorRef, InputProps>(({ onAdd: _onAdd }, ref) => {
         );
 
     return (
-        <Stack sx={ContainerSx}>
-            <DisappearingEditor ref={ref} />
-            <SpaceBetween alignItems="center">
-                <CancelButton onClick={disable} />
+        <DisappearingEditor ref={ref}>
+            <SpaceBetween alignItems="center" sx={ActionsSx}>
+                <CloseButton onClick={disable} />
                 <AddButton onClick={onAdd} sx={AddButtonSx} />
             </SpaceBetween>
-        </Stack>
+        </DisappearingEditor>
     );
 });
 

@@ -3,15 +3,15 @@ import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import CancelIcon from "@mui/icons-material/Cancel";
 
-interface CancelButtonProps extends Omit<ButtonProps, "endIcon" | "size"> {}
+interface CloseButtonProps extends Omit<ButtonProps, "endIcon" | "size"> {}
 
-const CancelButton: FC<CancelButtonProps> = (props) => {
+const CloseButton: FC<CloseButtonProps> = (props) => {
     const { t } = useTranslation();
     return (
         <Button size="small" endIcon={<CancelIcon />} {...props}>
-            {t("Cancel")}
+            {t("Close")}
         </Button>
     );
 };
 
-export default CancelButton;
+export default CloseButton;
