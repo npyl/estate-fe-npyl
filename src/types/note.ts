@@ -1,15 +1,15 @@
-import { IUser } from "./user";
+import { IUserMini } from "./user";
 
 export interface INote {
     id: number;
     content: string;
-    creator: IUser;
+    creator: IUserMini;
 
     propertyId?: number;
     propertyCode?: string;
 
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface INotePOST {

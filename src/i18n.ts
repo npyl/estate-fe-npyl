@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            "All labels": "All labels",
             CLONE_TITLE: "Clone this property?",
             NEW_TEMPLATE: "New Template",
             Column: "Column",
@@ -1417,6 +1418,8 @@ const resources = {
     },
     el: {
         translation: {
+            "All labels": "Όλες οι ετικέτες",
+
             CLONE_TITLE: "Κλωνοποίηση ακινήτου?",
 
             NEW_TEMPLATE: "Νέο Πρότυπο",

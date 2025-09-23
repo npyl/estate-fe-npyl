@@ -48,4 +48,6 @@ const Input = forwardRef<EditorRef, InputProps>(({ onAdd }, ref) => {
     );
 });
 
+Input.displayName = "Input";
+
 export default Input;

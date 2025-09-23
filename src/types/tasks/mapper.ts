@@ -1,7 +1,13 @@
 import { CALENDAR_COLOR_FALLBACK } from "@/components/Calendar/types";
-import { ICreateOrUpdateTaskReq, IKanbanCard, IKanbanCardPOST } from ".";
+import {
+    ICreateOrUpdateTaskReq,
+    IKanbanCard,
+    IKanbanCardPOST,
+    IKanbanComment,
+} from "@/types/tasks";
 import { CalendarEventReq } from "@/types/calendar";
 import { getNotSelectedOption } from "@/constants/select";
+import { INote } from "../note";
 
 type ObjectWithId = { id: number };
 
@@ -61,4 +67,18 @@ const KanbanTaskToCalendarEvent = ({
     colorId: CALENDAR_COLOR_FALLBACK,
 });
 
-export { IKanbanCardRes2Req, KanbanTaskToCalendarEvent };
+const TaskCommentToNote = ({
+    id,
+    message,
+    createdAt,
+    updatedAt,
+    creator,
+}: IKanbanComment): INote => ({
+    id,
+    content: message,
+    creator,
+    createdAt,
+    updatedAt,
+});
+
+export { IKanbanCardRes2Req, KanbanTaskToCalendarEvent, TaskCommentToNote };

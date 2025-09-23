@@ -27,7 +27,7 @@ const ButtonSx: SxProps<Theme> = {
 
 interface BodyProps extends PaperProps {
     content: string;
-    createdAt: Date;
+    createdAt: string;
     onRemove: VoidFunction;
 }
 

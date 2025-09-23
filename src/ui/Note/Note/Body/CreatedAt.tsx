@@ -2,7 +2,7 @@ import Typography, { TypographyProps } from "@mui/material/Typography";
 import { FC } from "react";
 
 interface CreatedAtProps extends TypographyProps {
-    createdAt: Date;
+    createdAt: string;
 }
 
 const CreatedAt: FC<CreatedAtProps> = ({ createdAt: _createdAt, ...props }) => {
