@@ -116,6 +116,7 @@ const getFIELDS = (
         ) : (
             <LabelPlaceholder />
         ),
+
         <Rating />,
     ]);
 

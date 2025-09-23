@@ -8,6 +8,7 @@ import ScrollContainer, { ScrollContainerRef } from "./ScrollContainer";
 import { CONTENT_CLASSNAME, NOTE_CLASSNAME } from "@/ui/Note/Note";
 import useNotes from "./useNotes";
 import useOnAddEffect from "./useOnAddEffect";
+import { LabelResourceType } from "@/types/label";
 
 const ContainerSx: SxProps<Theme> = {
     "& > *": { margin: "0 !important" },
@@ -48,6 +49,7 @@ const ContainerSx: SxProps<Theme> = {
 };
 
 interface NoteCreateProps {
+    resource: LabelResourceType;
     resourceId?: number;
     notes: INote[];
     chip?: boolean;
