@@ -1,7 +1,7 @@
 import { EditorRef } from "@/components/Editor";
 import useDialog from "@/hooks/useDialog";
 import TextField from "@mui/material/TextField";
-import { forwardRef } from "react";
+import { forwardRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import DisappearingEditor from "./DisappearingEditor";
 import AddButton from "./AddButton";
@@ -23,9 +23,14 @@ interface InputProps {
     onAdd: VoidFunction;
 }
 
-const Input = forwardRef<EditorRef, InputProps>(({ onAdd }, ref) => {
+const Input = forwardRef<EditorRef, InputProps>(({ onAdd: _onAdd }, ref) => {
     const { t } = useTranslation();
     const [isEnabled, enable, disable] = useDialog();
+
+    const onAdd = useCallback(() => {
+        _onAdd();
+        disable();
+    }, [_onAdd]);
 
     if (!isEnabled)
         return (

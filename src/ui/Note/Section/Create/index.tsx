@@ -64,7 +64,7 @@ const NoteCreate: FC<NoteCreateProps> = ({
 }) => {
     const scrollRef = useRef<ScrollContainerRef>(null);
 
-    const [NOTES, ids] = useNotes(notes, chip);
+    const [NOTES, ids] = useNotes(notes, chip, resource);
     useOnAddEffect(ids, (id) => {
         scrollRef.current?.scroll(id);
     });

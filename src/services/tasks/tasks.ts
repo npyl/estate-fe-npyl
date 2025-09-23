@@ -161,6 +161,13 @@ export const tasks = createApi({
             }),
             invalidatesTags: ["Comments"],
         }),
+        removeComment: builder.mutation<void, number>({
+            query: (id) => ({
+                url: `/comment/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Comments"],
+        }),
 
         // Attachments
         getAttachments: builder.query<IKanbanAttachment[], number>({
@@ -269,6 +276,7 @@ export const {
     //Comments
     useGetCommentsForCardQuery,
     useCreateCommentMutation,
+    useRemoveCommentMutation,
 
     // Attachmetns
     useGetAttachmentsQuery,

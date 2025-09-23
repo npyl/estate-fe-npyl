@@ -4,9 +4,14 @@ import { useMemo } from "react";
 import { PROPERTY_CHIP_CLASSNAME } from "@/ui/Note/Note/Extra";
 import { AVATAR_CLASSNAME, FULLNAME_CLASSNAME } from "@/ui/Note/Note";
 import useOnRemove from "./useOnRemove";
+import { LabelResourceType } from "@/types/label";
 
-const useNotes = (notes: INote[], chip: boolean) => {
-    const onRemove = useOnRemove();
+const useNotes = (
+    notes: INote[],
+    chip: boolean,
+    resource: LabelResourceType
+) => {
+    const onRemove = useOnRemove(resource);
 
     return useMemo(() => {
         const ids: number[] = [];
