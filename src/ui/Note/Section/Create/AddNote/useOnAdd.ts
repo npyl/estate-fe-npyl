@@ -6,15 +6,27 @@ import {
     useAddNoteToPropertyWithIdMutation,
 } from "src/services/note";
 import { LabelResourceType } from "@/types/label";
+import { useCreateCommentMutation } from "@/services/tasks";
+import { AddNoteReq } from "@/types/note";
 
 const useUncontrolledAdd = (resource: LabelResourceType) => {
     const [addPropertyNote] = useAddNoteToPropertyWithIdMutation();
     const [addCustomerNote] = useAddNoteToCustomerWithIdMutation();
+
+    const [_addTaskComment] = useCreateCommentMutation();
+    const addTaskComment = useCallback(
+        ({ id: cardId, body: { content: message } }: AddNoteReq) =>
+            _addTaskComment({ cardId, body: { message } }),
+        []
+    );
+
     switch (resource) {
         case "property":
             return addPropertyNote;
         case "customer":
             return addCustomerNote;
+        case "ticket":
+            return addTaskComment;
     }
 };
 
@@ -33,7 +45,7 @@ const useOnAdd = ({ resource, resourceId }: Config) => {
             } else {
                 onUncontrolledAdd?.({
                     id: resourceId!,
-                    dataToSend: { content },
+                    body: { content },
                 });
             }
         },

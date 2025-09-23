@@ -1,12 +1,6 @@
 import { getAccessToken } from "@/contexts/accessToken";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { INote, INotePOST } from "src/types/note";
-
-interface NoteForPropertyProps {
-    id: number;
-    dataToSend: INotePOST;
-}
-type NoteForCustomerProps = NoteForPropertyProps;
+import { INote, AddNoteReq } from "@/types/note";
 
 export const note = createApi({
     reducerPath: "note",
@@ -35,19 +29,19 @@ export const note = createApi({
             providesTags: ["Notes"],
         }),
 
-        addNoteToPropertyWithId: builder.mutation<any, NoteForPropertyProps>({
-            query: ({ id, dataToSend }) => ({
+        addNoteToPropertyWithId: builder.mutation<any, AddNoteReq>({
+            query: ({ id, body }) => ({
                 url: `/property/${id}`,
                 method: "POST",
-                body: dataToSend,
+                body,
             }),
             invalidatesTags: ["Notes"],
         }),
-        addNoteToCustomerWithId: builder.mutation<any, NoteForCustomerProps>({
-            query: ({ id, dataToSend }) => ({
+        addNoteToCustomerWithId: builder.mutation<any, AddNoteReq>({
+            query: ({ id, body }) => ({
                 url: `/customer/${id}`,
                 method: "POST",
-                body: dataToSend,
+                body,
             }),
             invalidatesTags: ["Notes"],
         }),

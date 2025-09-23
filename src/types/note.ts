@@ -1,6 +1,6 @@
-import { IUserMini } from "./user";
+import { IUserMini } from "@/types/user";
 
-export interface INote {
+interface INote {
     id: number;
     content: string;
     creator: IUserMini;
@@ -12,7 +12,14 @@ export interface INote {
     updatedAt: string;
 }
 
-export interface INotePOST {
+interface INotePOST {
     id?: number;
     content: string;
 }
+
+interface AddNoteReq {
+    id: number; // resourceId
+    body: INotePOST;
+}
+
+export type { AddNoteReq, INote, INotePOST };

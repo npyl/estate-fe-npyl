@@ -3,6 +3,7 @@ import NoteCreate, { NoteCreateProps } from "./Create";
 import { SettingsProvider } from "./Context";
 import useNotesControlledUncontrolled from "./useNotesControlledUncontrolled";
 import { INote } from "@/types/note";
+import WithPanel from "./WithPanel";
 
 interface NoteSectionProps extends Omit<NoteCreateProps, "notes"> {
     // -------------- Controlled Start --------------
@@ -36,5 +37,7 @@ const NoteSection: FC<NoteSectionProps> = ({
     );
 };
 
+// ------------------------------------------------------------------------------------------
+
 export type { NoteSectionProps };
-export default NoteSection;
+export default WithPanel(NoteSection);

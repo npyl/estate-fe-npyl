@@ -1,8 +1,6 @@
 import { SxProps, Theme } from "@mui/material";
 import AddNote from "./AddNote";
 import { INote } from "@/types/note";
-import { useTranslation } from "react-i18next";
-import Panel from "@/components/Panel";
 import { FC, useRef } from "react";
 import ScrollContainer, { ScrollContainerRef } from "./ScrollContainer";
 import { CONTENT_CLASSNAME, NOTE_CLASSNAME } from "@/ui/Note/Note";
@@ -64,7 +62,6 @@ const NoteCreate: FC<NoteCreateProps> = ({
     resourceId,
     sx,
 }) => {
-    const { t } = useTranslation();
     const scrollRef = useRef<ScrollContainerRef>(null);
 
     const [NOTES, ids] = useNotes(notes, chip);
@@ -73,11 +70,11 @@ const NoteCreate: FC<NoteCreateProps> = ({
     });
 
     return (
-        <Panel label={t("Notes")} headerSx={{ boxShadow: 3 }}>
+        <>
             <ScrollContainer
                 ref={scrollRef}
                 overflow="hidden auto"
-                height="400px"
+                height="fit-content"
                 py={1}
                 mb={2}
                 sx={{ ...ContainerSx, ...sx }}
@@ -85,7 +82,7 @@ const NoteCreate: FC<NoteCreateProps> = ({
                 {NOTES}
             </ScrollContainer>
             <AddNote resource={resource} resourceId={resourceId} />
-        </Panel>
+        </>
     );
 };
 
