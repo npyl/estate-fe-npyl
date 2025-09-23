@@ -1,17 +1,45 @@
 import { useCallback } from "react";
 import { useSettings } from "@/ui/Note/Section/Context";
 
-const useOnAdd = () => {
+import {
+    useAddNoteToCustomerWithIdMutation,
+    useAddNoteToPropertyWithIdMutation,
+} from "src/services/note";
+import { LabelResourceType } from "@/types/label";
+
+const useUncontrolledAdd = (resource: LabelResourceType) => {
+    const [addPropertyNote] = useAddNoteToPropertyWithIdMutation();
+    const [addCustomerNote] = useAddNoteToCustomerWithIdMutation();
+    switch (resource) {
+        case "property":
+            return addPropertyNote;
+        case "customer":
+            return addCustomerNote;
+    }
+};
+
+interface Config {
+    resource: LabelResourceType;
+    resourceId?: number;
+}
+
+const useOnAdd = ({ resource, resourceId }: Config) => {
     const { isControlled, onAdd } = useSettings();
+    const onUncontrolledAdd = useUncontrolledAdd(resource);
     return useCallback(
-        (s: string) => {
+        (content: string) => {
             if (isControlled) {
-                onAdd?.(s);
+                onAdd?.(content);
             } else {
+                onUncontrolledAdd?.({
+                    id: resourceId!,
+                    dataToSend: { content },
+                });
             }
         },
-        [isControlled, onAdd]
+        [isControlled, onAdd, onUncontrolledAdd, resourceId]
     );
 };
 
+export type { Config };
 export default useOnAdd;

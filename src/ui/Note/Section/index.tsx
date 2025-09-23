@@ -6,9 +6,6 @@ import { INote } from "@/types/note";
 import { LabelResourceType } from "@/types/label";
 
 interface NoteSectionProps extends Omit<NoteCreateProps, "notes"> {
-    resource: LabelResourceType;
-    resourceId?: number;
-
     // -------------- Controlled Start --------------
 
     notes?: INote[];
@@ -18,19 +15,20 @@ interface NoteSectionProps extends Omit<NoteCreateProps, "notes"> {
 }
 
 const NoteSection: FC<NoteSectionProps> = ({
-    resource,
-    resourceId,
-    // ...
     notes: _notes,
     onAdd,
     onRemove,
     // ...
     ...props
 }) => {
-    const notes = useNotesControlledUncontrolled(_notes, resource, resourceId);
+    const notes = useNotesControlledUncontrolled(
+        _notes,
+        props.resource,
+        props.resourceId
+    );
     return (
         <SettingsProvider
-            resourceId={resourceId}
+            resourceId={props.resourceId}
             onAdd={onAdd}
             onRemove={onRemove}
         >

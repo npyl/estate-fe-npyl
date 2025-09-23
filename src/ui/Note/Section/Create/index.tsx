@@ -8,6 +8,7 @@ import ScrollContainer, { ScrollContainerRef } from "./ScrollContainer";
 import { CONTENT_CLASSNAME, NOTE_CLASSNAME } from "@/ui/Note/Note";
 import useNotes from "./useNotes";
 import useOnAddEffect from "./useOnAddEffect";
+import { LabelResourceType } from "@/types/label";
 
 const ContainerSx: SxProps<Theme> = {
     "& > *": { margin: "0 !important" },
@@ -48,12 +49,21 @@ const ContainerSx: SxProps<Theme> = {
 };
 
 interface NoteCreateProps {
+    resource: LabelResourceType;
+    resourceId?: number;
+
     notes: INote[];
     chip?: boolean;
     sx?: SxProps<Theme>;
 }
 
-const NoteCreate: FC<NoteCreateProps> = ({ notes, chip = false, sx }) => {
+const NoteCreate: FC<NoteCreateProps> = ({
+    notes,
+    chip = false,
+    resource,
+    resourceId,
+    sx,
+}) => {
     const { t } = useTranslation();
     const scrollRef = useRef<ScrollContainerRef>(null);
 
@@ -74,7 +84,7 @@ const NoteCreate: FC<NoteCreateProps> = ({ notes, chip = false, sx }) => {
             >
                 {NOTES}
             </ScrollContainer>
-            <AddNote />
+            <AddNote resource={resource} resourceId={resourceId} />
         </Panel>
     );
 };
