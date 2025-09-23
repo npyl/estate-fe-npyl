@@ -3,9 +3,14 @@ import NoteCreate, { NoteCreateProps } from "./Create";
 import { SettingsProvider } from "./Context";
 import useNotesControlledUncontrolled from "./useNotesControlledUncontrolled";
 import { INote } from "@/types/note";
+import { LabelResourceType } from "@/types/label";
 
 interface NoteSectionProps extends Omit<NoteCreateProps, "notes"> {
+    resource: LabelResourceType;
+    resourceId?: number;
+
     // -------------- Controlled Start --------------
+
     notes?: INote[];
     onAdd?: (message: string) => Promise<boolean>;
     onRemove?: (index: number) => void;
@@ -13,15 +18,19 @@ interface NoteSectionProps extends Omit<NoteCreateProps, "notes"> {
 }
 
 const NoteSection: FC<NoteSectionProps> = ({
+    resource,
+    resourceId,
+    // ...
     notes: _notes,
     onAdd,
     onRemove,
+    // ...
     ...props
 }) => {
-    const notes = useNotesControlledUncontrolled(_notes, props.resourceId);
+    const notes = useNotesControlledUncontrolled(_notes, resource, resourceId);
     return (
         <SettingsProvider
-            resourceId={props.resourceId}
+            resourceId={resourceId}
             onAdd={onAdd}
             onRemove={onRemove}
         >

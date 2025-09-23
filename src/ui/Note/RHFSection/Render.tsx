@@ -29,10 +29,13 @@ const Render: FC<RenderProps> = ({
         [value]
     );
 
-    const handleAdd = useCallback(async (s: string) => {
-        onChange([...value, s]);
-        return true;
-    }, []);
+    const handleAdd = useCallback(
+        async (s: string) => {
+            onChange([...value, s]);
+            return true;
+        },
+        [value]
+    );
 
     const handleRemove = useCallback((i: number) => {
         onChange(value.filter((_: any, ind: number) => ind !== i));

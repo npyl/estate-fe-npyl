@@ -1,22 +1,9 @@
 import { Note } from "@/ui/Note";
 import { INote } from "@/types/note";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { PROPERTY_CHIP_CLASSNAME } from "@/ui/Note/Note/Extra";
 import { AVATAR_CLASSNAME, FULLNAME_CLASSNAME } from "@/ui/Note/Note";
-import { useSettings } from "@/ui/Note/Section/Context";
-
-const useOnRemove = () => {
-    const { isControlled, onRemove } = useSettings();
-    return useCallback(
-        (id: number) => {
-            if (isControlled) {
-                onRemove?.(id);
-            } else {
-            }
-        },
-        [isControlled, onRemove]
-    );
-};
+import useOnRemove from "./useOnRemove";
 
 const useNotes = (notes: INote[], chip: boolean) => {
     const onRemove = useOnRemove();
@@ -48,7 +35,7 @@ const useNotes = (notes: INote[], chip: boolean) => {
             return (
                 <Note
                     key={note.id}
-                    onRemove={() => onRemove(idx)}
+                    onRemove={() => onRemove(note.id)}
                     note={note}
                     sx={{
                         // Property chip display
