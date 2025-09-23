@@ -72,10 +72,6 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     borderColor: getBorderColor(theme),
 }));
 
-const getToggled = <T,>(e: T, isExpanded: boolean, fallback: T): T => {
-    return isExpanded ? e : fallback;
-};
-
 interface IOption<T> {
     optionKey: T;
     label: ReactNode;
@@ -95,8 +91,7 @@ const Option = <T,>({ o, expanded, setExpanded, fallback }: OptionProps<T>) => {
     const isExpanded = o.optionKey === expanded;
 
     const onChange = useCallback(
-        (e: T) => (_: any, b: boolean) =>
-            setExpanded(getToggled(e, b, fallback)),
+        (e: T) => (_: any) => setExpanded(e),
         [fallback]
     );
 
