@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { KeyboardEvent, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import useOnAdd from "./useOnAdd";
 
 const InputSx: SxProps<Theme> = {
     pl: 1.5,
@@ -17,12 +18,10 @@ const InputSx: SxProps<Theme> = {
     border: (theme) => `solid 1px ${alpha(theme.palette.grey[500], 0.32)}`,
 };
 
-interface AddNoteProps {
-    onAdd(message: string): void;
-}
-
-const AddNote = ({ onAdd }: AddNoteProps) => {
+const AddNote = () => {
     const { t } = useTranslation();
+
+    const onAdd = useOnAdd();
 
     const commentInputRef = useRef<HTMLInputElement>(null);
     const onKeyDown = useCallback(

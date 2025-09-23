@@ -48,24 +48,17 @@ const ContainerSx: SxProps<Theme> = {
 };
 
 interface NoteCreateProps {
+    resourceId?: number;
     notes: INote[];
     chip?: boolean;
-    onAdd: (message: string) => Promise<boolean>;
-    onRemove: (index: number) => void;
     sx?: SxProps<Theme>;
 }
 
-const NoteCreate: FC<NoteCreateProps> = ({
-    notes,
-    chip = false,
-    sx,
-    onAdd,
-    onRemove,
-}) => {
+const NoteCreate: FC<NoteCreateProps> = ({ notes, chip = false, sx }) => {
     const { t } = useTranslation();
     const scrollRef = useRef<ScrollContainerRef>(null);
 
-    const [NOTES, ids] = useNotes(notes, chip, onRemove);
+    const [NOTES, ids] = useNotes(notes, chip);
     useOnAddEffect(ids, (id) => {
         scrollRef.current?.scroll(id);
     });
@@ -82,7 +75,7 @@ const NoteCreate: FC<NoteCreateProps> = ({
             >
                 {NOTES}
             </ScrollContainer>
-            <AddNote onAdd={onAdd} />
+            <AddNote />
         </Panel>
     );
 };

@@ -1,14 +1,26 @@
 import { Note } from "@/ui/Note";
 import { INote } from "@/types/note";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { PROPERTY_CHIP_CLASSNAME } from "@/ui/Note/Note/Extra";
 import { AVATAR_CLASSNAME, FULLNAME_CLASSNAME } from "@/ui/Note/Note";
+import { useSettings } from "@/ui/Note/Section/Context";
 
-const useNotes = (
-    notes: INote[],
-    chip: boolean,
-    onRemove: (idx: number) => void
-) => {
+const useOnRemove = () => {
+    const { isControlled, onRemove } = useSettings();
+    return useCallback(
+        (id: number) => {
+            if (isControlled) {
+                onRemove?.(id);
+            } else {
+            }
+        },
+        [isControlled, onRemove]
+    );
+};
+
+const useNotes = (notes: INote[], chip: boolean) => {
+    const onRemove = useOnRemove();
+
     return useMemo(() => {
         const ids: number[] = [];
         const seen = new Set<string>();
