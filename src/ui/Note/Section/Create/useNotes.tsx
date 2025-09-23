@@ -1,8 +1,8 @@
 import { Note } from "@/ui/Note";
-import { INote } from "src/types/note";
+import { INote } from "@/types/note";
 import { useMemo } from "react";
-import { PROPERTY_CHIP_CLASSNAME } from "../Note/Extra";
-import { AVATAR_CLASSNAME, FULLNAME_CLASSNAME } from "../Note";
+import { PROPERTY_CHIP_CLASSNAME } from "@/ui/Note/Note/Extra";
+import { AVATAR_CLASSNAME, FULLNAME_CLASSNAME } from "@/ui/Note/Note";
 
 const useNotes = (
     notes: INote[],

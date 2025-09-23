@@ -1,11 +1,11 @@
 import { SxProps, Theme } from "@mui/material";
-import AddNote from "../AddNote";
-import { INote } from "src/types/note";
+import AddNote from "./AddNote";
+import { INote } from "@/types/note";
 import { useTranslation } from "react-i18next";
-import Panel from "../../../components/Panel";
+import Panel from "@/components/Panel";
 import { FC, useRef } from "react";
 import ScrollContainer, { ScrollContainerRef } from "./ScrollContainer";
-import { CONTENT_CLASSNAME, NOTE_CLASSNAME } from "../Note";
+import { CONTENT_CLASSNAME, NOTE_CLASSNAME } from "@/ui/Note/Note";
 import useNotes from "./useNotes";
 import useOnAddEffect from "./useOnAddEffect";
 
@@ -47,7 +47,7 @@ const ContainerSx: SxProps<Theme> = {
     },
 };
 
-interface INoteCreate {
+interface NoteCreateProps {
     notes: INote[];
     chip?: boolean;
     onAdd: (message: string) => Promise<boolean>;
@@ -55,7 +55,7 @@ interface INoteCreate {
     sx?: SxProps<Theme>;
 }
 
-const NoteCreate: FC<INoteCreate> = ({
+const NoteCreate: FC<NoteCreateProps> = ({
     notes,
     chip = false,
     sx,
@@ -87,4 +87,5 @@ const NoteCreate: FC<INoteCreate> = ({
     );
 };
 
+export type { NoteCreateProps };
 export default NoteCreate;

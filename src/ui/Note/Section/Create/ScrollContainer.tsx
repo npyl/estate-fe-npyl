@@ -1,6 +1,6 @@
 import Stack, { StackProps } from "@mui/material/Stack";
 import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
-import { getNoteId } from "../Note";
+import { getNoteId } from "@/ui/Note/Note";
 
 const CUSHION_OFFSET = 10;
 

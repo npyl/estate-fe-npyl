@@ -1,8 +1,21 @@
 import SendIcon from "@mui/icons-material/Send";
-import { IconButton, InputAdornment, InputBase } from "@mui/material";
-import { alpha } from "@mui/material";
+import {
+    IconButton,
+    InputAdornment,
+    InputBase,
+    SxProps,
+    Theme,
+    alpha,
+} from "@mui/material";
 import { KeyboardEvent, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
+
+const InputSx: SxProps<Theme> = {
+    pl: 1.5,
+    height: 40,
+    borderRadius: 1,
+    border: (theme) => `solid 1px ${alpha(theme.palette.grey[500], 0.32)}`,
+};
 
 interface AddNoteProps {
     onAdd(message: string): void;
@@ -55,13 +68,7 @@ const AddNote = ({ onAdd }: AddNoteProps) => {
                     </IconButton>
                 </InputAdornment>
             }
-            sx={{
-                pl: 1.5,
-                height: 40,
-                borderRadius: 1,
-                border: (theme) =>
-                    `solid 1px ${alpha(theme.palette.grey[500], 0.32)}`,
-            }}
+            sx={InputSx}
         />
     );
 };

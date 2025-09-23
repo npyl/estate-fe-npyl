@@ -1,12 +1,12 @@
 import Normal from "./Normal";
-import RHF from "./RHF";
+import RHFNoteSection from "@/ui/Note/RHFSection";
 
 interface NotesSectionProps {
     isEditMode: boolean;
 }
 
 const NotesSection = ({ isEditMode }: NotesSectionProps) => {
-    return isEditMode ? <Normal /> : <RHF />;
+    return isEditMode ? <Normal /> : <RHFNoteSection name="notes" chip />;
 };
 
 export default NotesSection;
