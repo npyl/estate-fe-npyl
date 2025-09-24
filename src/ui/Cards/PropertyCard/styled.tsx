@@ -19,17 +19,22 @@ const getCss = (theme: Theme) => ({
 });
 
 interface StyledBoxProps extends BoxProps {
+    horizontal?: boolean;
     isActive: boolean;
 }
 export const StyledLink = styled(Link, {
-    shouldForwardProp: (prop) => prop !== "isActive",
-})<StyledBoxProps>(({ isActive, theme }) => ({
-    display: "block", // INFO: without it the onHover css is not applied
+    shouldForwardProp: (prop) => prop !== "isActive" && prop !== "horizontal",
+})<StyledBoxProps>(({ horizontal = false, isActive, theme }) => ({
+    display: "flex",
+    // ...
+    flexDirection: horizontal ? "row" : "column",
+    padding: horizontal ? theme.spacing(1) : 0,
+    border: horizontal ? "1px solid" : 0,
+    borderColor: theme.palette.divider,
+    // ...
     borderRadius: "20px",
     cursor: "pointer",
-    "&:hover": {
-        ...getCss(theme),
-    },
+    "&:hover": getCss(theme),
     backgroundColor: theme.palette.background.paper,
     ...(isActive ? getCss(theme) : {}),
 }));
