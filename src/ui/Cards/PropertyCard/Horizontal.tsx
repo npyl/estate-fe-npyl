@@ -1,13 +1,12 @@
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import { Box, Divider, Stack, Typography } from "@mui/material";
-import { FC, useMemo } from "react";
-import CarouselSimple from "@/components/Carousel";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { SpaceBetween } from "@/components/styled";
-import { DividerSx, NormalBadge, PriceBadge, StyledLink } from "./styled";
-import { getPropertyStatusColor } from "@/theme/colors";
+import { DividerSx, StyledLink } from "./styled";
 import { LinkProps } from "@/components/Link";
-import CodeBadge from "@/ui/Property/CodeBadge";
+import Carousel from "./_shared/Carousel";
+import Badges from "./_shared/Badges";
+import Address from "./_shared/Address";
 
 type PropertyCardProps = {
     item: IPropertyResultResponse | IProperties;
@@ -16,54 +15,11 @@ type PropertyCardProps = {
 // -------------------------------------------------------------
 
 const PropertyCard: FC<PropertyCardProps> = ({ item, ...props }) => {
-    const {
-        id,
-        images = [],
-        details,
-        price,
-        code,
-        state,
-        category,
-        area,
-        plotArea,
-    } = item || {};
+    const { id, images = [], details, area, plotArea } = item || {};
 
     const { bathrooms, bedrooms } = details || {};
 
-    const { regionEN, regionGR, cityEN, cityGR, complexEN, complexGR } =
-        (item as IPropertyResultResponse) || {};
-
-    const { t, i18n } = useTranslation();
-
-    const address = useMemo(() => {
-        const addressParts =
-            i18n.language === "en"
-                ? [regionEN, cityEN, complexEN]
-                : [regionGR, cityGR, complexGR];
-
-        return addressParts.filter((part) => part).join(", ");
-    }, [i18n.language]);
-
-    const convertedImages = useMemo(
-        () =>
-            images.map((url, index) => {
-                let urlString = typeof url === "string" ? url : url?.url;
-
-                urlString =
-                    urlString && urlString.startsWith("https://")
-                        ? urlString
-                        : "https://" + urlString;
-
-                return {
-                    id: index,
-                    url: urlString,
-                    title: "",
-                };
-            }),
-        [images]
-    );
-
-    const stateColor = getPropertyStatusColor(state?.value);
+    const { t } = useTranslation();
 
     return (
         <StyledLink
@@ -77,8 +33,8 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, ...props }) => {
             <Stack direction="row" spacing={1} alignItems="center" p={1}>
                 {/* //do not change the Box width */}
                 <Box width="35%">
-                    <CarouselSimple
-                        data={convertedImages}
+                    <Carousel
+                        images={images}
                         ratio="4/3"
                         isActive={item.active}
                         borderRadius={2}
@@ -92,36 +48,7 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, ...props }) => {
                     minWidth="64%" //do not change
                     height="100%"
                 >
-                    <Stack direction="row" spacing={1} alignItems="center">
-                        <svg
-                            width="16px"
-                            height="16px"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={1.5}
-                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                            />
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={1.5}
-                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                            />
-                        </svg>
-                        <Typography
-                            // variant="body1"
-                            fontSize={15}
-                            color="text.secondary"
-                            fontWeight="500"
-                        >
-                            {address}
-                        </Typography>
-                    </Stack>
+                    <Address item={item} />
 
                     <Divider sx={DividerSx} />
 
@@ -178,24 +105,7 @@ const PropertyCard: FC<PropertyCardProps> = ({ item, ...props }) => {
 
                     <Divider sx={DividerSx} />
 
-                    <Stack direction="row" spacing={1}>
-                        {state?.value ? (
-                            <NormalBadge
-                                name={t(state?.value)}
-                                color={stateColor}
-                            />
-                        ) : null}
-                        {category?.value ? (
-                            <NormalBadge
-                                name={t(category?.value)}
-                                color="#3730a3"
-                            />
-                        ) : null}
-                    </Stack>
-                    <SpaceBetween alignItems="center">
-                        <CodeBadge code={`${t("Code")}: ${code || ""}`} />
-                        <PriceBadge price={price} />
-                    </SpaceBetween>
+                    <Badges item={item} />
                 </Stack>
             </Stack>
         </StyledLink>
