@@ -1,7 +1,7 @@
 import PPOpener, { useOpener } from "@/components/Opener";
 import dynamic from "next/dynamic";
 import AddButton from "./AddButton";
-const AddDrawer = dynamic(() => import("./AddDrawer"));
+const AddDialog = dynamic(() => import("./AddDialog"));
 
 const AddOpener = () => {
     const [openerRef, onClick] = useOpener();
@@ -10,7 +10,7 @@ const AddOpener = () => {
         <PPOpener
             ref={openerRef}
             Clicker={AddButton}
-            Component={AddDrawer}
+            Component={AddDialog}
             onClick={onClick}
         />
     );
