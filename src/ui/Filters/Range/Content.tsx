@@ -1,10 +1,22 @@
-import { Grid, List, ListItemText } from "@mui/material";
-import { FC, useState } from "react";
+import { MenuItem, Stack, SxProps, Theme } from "@mui/material";
+import { FC, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ListItem } from "@/components/Filters/styled";
 import DebouncedInput from "./DebouncedInput";
 import { Props } from "./types";
 import formatNumber from "./formatNumber";
+
+const OptionContainerSx: SxProps<Theme> = {
+    maxHeight: 300,
+    overflowY: "auto",
+};
+
+const getOption =
+    (value: number | undefined, onClick: (o: number) => void) =>
+    (o: number) => (
+        <MenuItem key={o} onClick={() => onClick(o)} selected={value === o}>
+            {formatNumber(o)}
+        </MenuItem>
+    );
 
 const Content: FC<Props> = ({
     type,
@@ -22,9 +34,26 @@ const Content: FC<Props> = ({
 
     const MAX_OPTION = (options?.at(-1) ?? 10000).toString();
 
+    const clearMin = useCallback(() => setMin(undefined), []);
+    const clearMax = useCallback(() => setMax(undefined), []);
+
+    const onClickMin = useCallback(
+        (o: number) => {
+            valueMax && o > valueMax && valueMax !== 0 ? setMax(o) : setMin(o);
+        },
+        [valueMax]
+    );
+
+    const onClickMax = useCallback(
+        (o: number) => {
+            valueMin && o < valueMin ? setMin(o) : setMax(o);
+        },
+        [valueMin]
+    );
+
     return (
-        <Grid container p={1} spacing={3} sx={{ textWrap: "nowrap" }}>
-            <Grid item xs={12} sm={6}>
+        <Stack direction="row" spacing={1}>
+            <Stack spacing={1}>
                 <DebouncedInput
                     label={`${symbol} ${t("from")}`}
                     max={MAX_OPTION}
@@ -32,31 +61,13 @@ const Content: FC<Props> = ({
                     value={valueMin}
                 />
 
-                <List
-                    sx={{
-                        maxHeight: 300,
-                        overflowY: "scroll",
-                    }}
-                >
-                    <ListItem onClick={() => setMin(undefined)}>
-                        <ListItemText primary={t("Indifferent")} />
-                    </ListItem>
-                    {options.map((option) => (
-                        <ListItem
-                            key={option}
-                            onClick={() =>
-                                valueMax && option > valueMax && valueMax !== 0
-                                    ? setMax(option)
-                                    : setMin(option)
-                            }
-                        >
-                            <ListItemText primary={formatNumber(option)} />
-                        </ListItem>
-                    ))}
-                </List>
-            </Grid>
+                <Stack sx={OptionContainerSx}>
+                    <MenuItem onClick={clearMin}>{t("Indifferent")}</MenuItem>
+                    {options.map(getOption(valueMin, onClickMin))}
+                </Stack>
+            </Stack>
 
-            <Grid item xs={12} sm={6}>
+            <Stack spacing={1}>
                 <DebouncedInput
                     label={`${symbol} ${t("to")}`}
                     max={MAX_OPTION}
@@ -64,30 +75,12 @@ const Content: FC<Props> = ({
                     value={valueMax}
                 />
 
-                <List
-                    sx={{
-                        maxHeight: 300,
-                        overflowY: "scroll",
-                    }}
-                >
-                    <ListItem onClick={() => setMax(undefined)}>
-                        <ListItemText primary={t("Indifferent")} />
-                    </ListItem>
-                    {options.map((option) => (
-                        <ListItem
-                            key={option}
-                            onClick={() =>
-                                valueMin && option < valueMin
-                                    ? setMin(option)
-                                    : setMax(option)
-                            }
-                        >
-                            <ListItemText primary={formatNumber(option)} />
-                        </ListItem>
-                    ))}
-                </List>
-            </Grid>
-        </Grid>
+                <Stack sx={OptionContainerSx}>
+                    <MenuItem onClick={clearMax}>{t("Indifferent")}</MenuItem>
+                    {options.map(getOption(valueMax, onClickMax))}
+                </Stack>
+            </Stack>
+        </Stack>
     );
 };
 
