@@ -46,10 +46,19 @@ const baseThemeOptions: ThemeOptions = {
                     paddingLeft: SPACING,
                     paddingRight: SPACING,
                 },
-                list: {
-                    ".MuiMenuItem-root": {
-                        borderRadius: SPACING,
-                    },
+            },
+        },
+        MuiMenuItem: {
+            styleOverrides: {
+                root: {
+                    borderRadius: SPACING,
+                },
+            },
+        },
+        MuiAutocomplete: {
+            styleOverrides: {
+                paper: {
+                    padding: SPACING,
                 },
             },
         },
