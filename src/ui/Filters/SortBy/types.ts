@@ -1,11 +1,15 @@
-export type TSorting = {
+type TSorting = {
     sortBy: string;
     direction: "ASC" | "DESC";
 };
 
-export type TSortByOptions = {
+type TSortByOption = {
     value: string;
     label: string;
     sorting: TSorting;
     icon: string;
-}[];
+};
+
+type TSortByOptions = TSortByOption[];
+
+export type { TSorting, TSortByOption, TSortByOptions };
