@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            "Date Range": "Date Range",
             Sort: "Sort",
             "All labels": "All labels",
             CLONE_TITLE: "Clone this property?",
@@ -797,7 +798,6 @@ const resources = {
             actions: "actions",
             Resource: "Resource",
             resources: "resources",
-            "Date Range": "Date Range",
             Permissions: "Permissions",
             "Create User": "Create User",
             Admin: "Admin",
@@ -1021,7 +1021,6 @@ const resources = {
                 "There are no matching properties",
 
             Custom: "Custom",
-            "Select Date Range": "Select Date Range",
             "Total Views": "Total Views",
             "Monthly Views": "Monthly Views",
             "Weekly Views": "Weekly Views",
@@ -1888,7 +1887,6 @@ const resources = {
             "Weekly Views": "Εβδομαδιαίες Προβολές",
             "Yearly Views": "Ετήσιες Προβολές",
             "Daily Views": "Ημερήσιες Προβολές",
-            "Select Date Range": "Επιλογή Χρονικού Διαστήματος",
             Custom: "Προσαρμοσμένο",
 
             "Edit Integration Details": "Επεξεργασία Λεπτομερειών Σύνδεσης",

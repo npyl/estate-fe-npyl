@@ -1,21 +1,16 @@
-import {
-    RangeKeyDict,
-    DateRangePicker as ReactDateRange,
-    DateRangePickerProps as ReactDateRangeProps,
-} from "react-date-range";
+import { RangeKeyDict, DateRange, DateRangeProps } from "react-date-range";
 import parseISO from "date-fns/parseISO";
 import { FC, useCallback } from "react";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 
-interface DateRangePickerProps
-    extends Omit<ReactDateRangeProps, "ranges" | "onChange"> {
+interface ContentProps extends Omit<DateRangeProps, "ranges" | "onChange"> {
     startDate: string;
     endDate: string;
     onChange: (startDate: string, endDate: string) => void;
 }
 
-const Content: FC<DateRangePickerProps> = ({
+const Content: FC<ContentProps> = ({
     startDate,
     endDate,
     onChange,
@@ -23,16 +18,15 @@ const Content: FC<DateRangePickerProps> = ({
 }) => {
     const handleChange = useCallback((ranges: RangeKeyDict) => {
         const { selection } = ranges;
+        if (!selection.startDate || !selection.endDate) return;
 
-        if (selection.startDate && selection.endDate) {
-            onChange(
-                selection.startDate.toISOString(),
-                selection.endDate.toISOString()
-            );
-        }
+        onChange(
+            selection.startDate.toISOString(),
+            selection.endDate.toISOString()
+        );
     }, []);
     return (
-        <ReactDateRange
+        <DateRange
             ranges={[
                 {
                     startDate: startDate ? parseISO(startDate) : new Date(),
@@ -46,5 +40,5 @@ const Content: FC<DateRangePickerProps> = ({
     );
 };
 
-export type { DateRangePickerProps };
+export type { ContentProps };
 export default Content;
