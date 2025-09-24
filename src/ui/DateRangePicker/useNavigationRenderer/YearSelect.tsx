@@ -1,8 +1,13 @@
 import Select, { SelectProps } from "@/components/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { FC, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
-const YearSelect: FC<SelectProps<number>> = (props) => {
+interface YearSelectProps extends Omit<SelectProps<number>, "label"> {}
+
+const YearSelect: FC<YearSelectProps> = (props) => {
+    const { t } = useTranslation();
+
     const yearOptions = useMemo(() => {
         const options = [];
         const startYear = 1960;
@@ -14,7 +19,7 @@ const YearSelect: FC<SelectProps<number>> = (props) => {
     }, [props.value]);
 
     return (
-        <Select {...props}>
+        <Select label={t("Year")} {...props}>
             {yearOptions.map((year) => (
                 <MenuItem key={year} value={year}>
                     {year}

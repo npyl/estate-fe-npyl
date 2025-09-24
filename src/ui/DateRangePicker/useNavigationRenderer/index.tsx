@@ -1,10 +1,10 @@
 import { SelectChangeEvent } from "@/components/Select";
-import Stack from "@mui/material/Stack";
 import { FC, useCallback } from "react";
 import MonthSelect from "./MonthSelect";
 import YearSelect from "./YearSelect";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
+import { SpaceBetween } from "@/components/styled";
 
 interface NavigatorRendererProps {
     currFocusedDate: Date;
@@ -35,7 +35,7 @@ const NavigatorRenderer: FC<NavigatorRendererProps> = ({
     );
 
     return (
-        <Stack direction="row" alignItems="center" spacing={1} width={1}>
+        <SpaceBetween alignItems="center" gap={1} width={1}>
             <IconButton size="small">
                 <ChevronLeft />
             </IconButton>
@@ -43,21 +43,19 @@ const NavigatorRenderer: FC<NavigatorRendererProps> = ({
             <MonthSelect
                 sx={{ width: "fit-content" }}
                 value={currentMonth}
-                label="Month"
                 onChange={handleMonthChange}
             />
 
             <YearSelect
                 sx={{ width: "fit-content" }}
                 value={currentYear}
-                label="Year"
                 onChange={handleYearChange}
             />
 
             <IconButton size="small">
                 <ChevronRight />
             </IconButton>
-        </Stack>
+        </SpaceBetween>
     );
 };
 

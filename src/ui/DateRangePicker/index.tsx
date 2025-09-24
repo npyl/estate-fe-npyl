@@ -31,6 +31,9 @@ const DateRangePicker: FC<DateRangePickerProps> = (props) => {
             sx={{ width: "240px" }}
             MenuProps={{
                 slotProps: {
+                    paper: {
+                        sx: { p: 1 },
+                    },
                     root: {
                         sx: {
                             top: 0,
