@@ -1,4 +1,4 @@
-import StyledMenu from "@/components/StyledMenu";
+import StyledMenu from "@/ui/dashboard/dashboard-navbar/StyledMenu";
 import { MENU_ITEMS } from "./constants";
 import { useTranslation } from "react-i18next";
 import { FC } from "react";

@@ -1,5 +1,7 @@
 import { ThemeOptions } from "@mui/material";
 
+const SPACING = 8;
+
 const Z_INDEX = {
     NAVIGATION: 1000, // sidebar, topbar, subbar
     BASE: 1500, // everything that goes on top!
@@ -7,6 +9,7 @@ const Z_INDEX = {
 };
 
 const baseThemeOptions: ThemeOptions = {
+    spacing: SPACING,
     breakpoints: {
         values: {
             xs: 0,
@@ -35,6 +38,22 @@ const baseThemeOptions: ThemeOptions = {
                 },
             },
         },
+        // -------------------------------------------------------------
+        // Rounded corners on Select options etc.
+        MuiMenu: {
+            styleOverrides: {
+                paper: {
+                    paddingLeft: SPACING,
+                    paddingRight: SPACING,
+                },
+                list: {
+                    ".MuiMenuItem-root": {
+                        borderRadius: SPACING,
+                    },
+                },
+            },
+        },
+        // -------------------------------------------------------------
         MuiButton: {
             defaultProps: {
                 disableElevation: true,
