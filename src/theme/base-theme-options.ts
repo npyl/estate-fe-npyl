@@ -1,4 +1,6 @@
 import { ThemeOptions } from "@mui/material";
+import AutocompletePaper from "./AutocompletePaper";
+import { POPOVER_ELEVATION } from "./constants";
 
 const SPACING = 8;
 
@@ -56,10 +58,8 @@ const baseThemeOptions: ThemeOptions = {
             },
         },
         MuiAutocomplete: {
-            styleOverrides: {
-                paper: {
-                    padding: SPACING,
-                },
+            defaultProps: {
+                PaperComponent: AutocompletePaper,
             },
         },
         // -------------------------------------------------------------
@@ -266,7 +266,7 @@ const baseThemeOptions: ThemeOptions = {
         },
         MuiPopover: {
             defaultProps: {
-                elevation: 16,
+                elevation: POPOVER_ELEVATION,
                 sx: {
                     zIndex: ({ zIndex }) => zIndex.modal,
                 },

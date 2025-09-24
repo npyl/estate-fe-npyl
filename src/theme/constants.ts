@@ -1,0 +1,3 @@
+const POPOVER_ELEVATION = 16;
+
+export { POPOVER_ELEVATION };
