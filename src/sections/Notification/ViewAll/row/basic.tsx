@@ -20,7 +20,6 @@ import {
     differenceInDays,
 } from "date-fns";
 import { ListingNotification } from "@/types/notification/listing";
-import { NormalBadge } from "@/ui/Cards/PropertyCard/styled";
 import { useTranslation } from "react-i18next";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import PropertyRegion from "./components/PropertyRegion";
@@ -30,6 +29,7 @@ import ExpireIcon from "@mui/icons-material/AccessTime"; // Import an appropriat
 import ExpiredIcon from "@mui/icons-material/Error";
 import { el, enUS } from "date-fns/locale";
 import Link from "@/components/Link";
+import CodeBadge from "@/ui/Property/CodeBadge";
 
 export const getDate = (s?: string, language?: string) => {
     if (!s) return "";
@@ -231,32 +231,12 @@ const BasicRow = ({
                                                         textDecoration: "none",
                                                     }}
                                                 >
-                                                    <NormalBadge
-                                                        name={`${t("Code")}: ${
+                                                    <CodeBadge
+                                                        code={`${t("Code")}: ${
                                                             row?.agreement
                                                                 ?.property
                                                                 ?.code || ""
                                                         }`}
-                                                        color={"#ffcc00"}
-                                                        sx={{
-                                                            color: (theme) =>
-                                                                theme.palette
-                                                                    .mode ===
-                                                                "light"
-                                                                    ? "#854D0E" // Fallback to grey if neutral is undefined
-                                                                    : "null",
-
-                                                            "&:hover": {
-                                                                backgroundColor:
-                                                                    (theme) =>
-                                                                        theme
-                                                                            .palette
-                                                                            .mode ===
-                                                                        "light"
-                                                                            ? "#d4a500" // Subdued color for hover in light mode
-                                                                            : "#b38f00", // Subdued color for hover in dark mode
-                                                            },
-                                                        }}
                                                         onClick={
                                                             handlePropertyCodeClick
                                                         }

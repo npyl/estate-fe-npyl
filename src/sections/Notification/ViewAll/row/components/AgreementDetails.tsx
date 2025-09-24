@@ -6,7 +6,7 @@ import Link from "@/components/Link";
 import Tooltip from "@mui/material/Tooltip";
 import ExpireIcon from "@mui/icons-material/WarningAmber"; // Use appropriate icon
 import ExpiredIcon from "@mui/icons-material/Cancel"; // Use appropriate icon
-import { NormalBadge } from "@/ui/Cards/PropertyCard/styled";
+import CodeBadgeLink from "@/ui/Property/CodeBadgeLink";
 
 // Define the necessary interfaces
 interface OwnerAgreement {
@@ -55,25 +55,12 @@ const AgreementDetails: React.FC<AgreementDetailsProps> = ({ row, t }) => (
 
             <Stack direction="row" mt={0.5} gap={0.5} alignItems="center">
                 <Typography variant="body2">For property with </Typography>
-                <Link
-                    href={`/property/${row?.agreement?.property?.id}`}
-                    passHref
-                    style={{ textDecoration: "none" }}
-                >
-                    <NormalBadge
-                        name={`${t("Code")}: ${
-                            row?.agreement?.property?.code || ""
-                        }`}
-                        color={"#ffcc00"}
-                        sx={{
-                            color: "#854D0E",
-                            width: "100%",
-                            "&:hover": {
-                                backgroundColor: "#e6b800",
-                            },
-                        }}
-                    />
-                </Link>
+                <CodeBadgeLink
+                    propertyId={row?.agreement?.property?.id}
+                    code={`${t("Code")}: ${
+                        row?.agreement?.property?.code || ""
+                    }`}
+                />
             </Stack>
             <Link
                 href={`/customer/${row?.agreement?.owner?.id}`}

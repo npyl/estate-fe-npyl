@@ -72,10 +72,15 @@ const getSx = (color: string): SxProps => ({
 
 interface NormalBadgeProps extends TypographyProps {
     name: string;
-    color: string;
+    color?: string;
 }
 
-const NormalBadge: FC<NormalBadgeProps> = ({ name, color, sx, ...props }) => (
+const NormalBadge: FC<NormalBadgeProps> = ({
+    name,
+    color = "#3730a3",
+    sx,
+    ...props
+}) => (
     <Typography
         variant="body2"
         sx={{ ...(getSx(color) as any), ...sx }}

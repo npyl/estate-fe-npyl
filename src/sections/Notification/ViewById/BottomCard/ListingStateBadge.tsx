@@ -11,14 +11,7 @@ const ListingStateBadge: React.FC<ListingStateBadgeProps> = ({
 }) => {
     return (
         <Stack direction="row" gap={2}>
-            <NormalBadge
-                name={stateValue}
-                color="#3730a3"
-                sx={{
-                    width: "100%",
-                    color: "#3730a3",
-                }}
-            />
+            <NormalBadge name={stateValue} />
         </Stack>
     );
 };
