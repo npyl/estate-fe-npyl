@@ -1,76 +1,75 @@
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import { FC, PropsWithChildren } from "react";
+import { FC } from "react";
+import Entry, { EntryProps } from "../_shared/getEntry";
 
-interface EntryProps extends PropsWithChildren {
-    icon: string;
-    adornment?: string;
-}
+const WITH = (onOff: boolean, C: EntryProps[]) => (onOff ? C : []);
 
-const Entry: FC<EntryProps> = ({ icon, adornment, children }) => (
-    <Stack direction="row" spacing={0.5} alignItems="center">
-        <Typography>
-            <i className={icon} />
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-            {children}
-        </Typography>
-        {adornment ? (
-            <Typography variant="body2" color="text.secondary">
-                {adornment}
-            </Typography>
-        ) : null}
-    </Stack>
+const getEntry = ({ children, ...props }: EntryProps) => (
+    <Entry key={props.icon} {...props}>
+        {children}
+    </Entry>
 );
+
+const getENTRIES = (
+    item: IPropertyResultResponse | IProperties,
+    isLand: boolean
+): EntryProps[] => {
+    const { details, area, plotArea } = item || {};
+    const bathrooms = details?.bathrooms;
+    const bedrooms = details?.bedrooms;
+
+    return [
+        // land & non-land
+        {
+            children: plotArea || "-",
+            icon: "las la-chart-area",
+            adornment: "m²",
+        },
+
+        // land
+        ...WITH(isLand, [
+            {
+                children: details?.setbackCoefficient || "-",
+                icon: "la-divide",
+            },
+            {
+                children: details?.frontage || item?.plotArea || "-",
+                icon: "las la-expand-arrows-alt",
+                adornment: "m²",
+            },
+        ]),
+
+        // non land
+        ...WITH(!isLand, [
+            {
+                children: area || "-",
+                icon: "las la-expand-arrows-alt",
+                adornment: "m²",
+            },
+            {
+                children: bedrooms || item.bedrooms || "-",
+                icon: "las la-bed",
+            },
+            {
+                children: bathrooms || item.bathrooms || "-",
+                icon: "las la-bath",
+            },
+        ]),
+    ];
+};
 
 interface InfoProps {
     item: IPropertyResultResponse | IProperties;
 }
 
-const LandInfo: FC<InfoProps> = ({ item }) => {
-    const { details, plotArea } = item || {};
-
-    return (
-        <Stack spacing={2} direction="row" mt={1} flexWrap="nowrap">
-            <Entry icon="las la-chart-area" adornment="m²">
-                {plotArea || "-"}
-            </Entry>
-            <Entry icon="la-divide">{details?.setbackCoefficient || "-"}</Entry>
-            <Entry icon="las la-expand-arrows-alt" adornment="m²">
-                {details?.frontage || item?.plotArea || "-"}
-            </Entry>
-        </Stack>
-    );
-};
-
-const NonLandInfo: FC<InfoProps> = ({ item }) => {
-    const { details, area, plotArea } = item || {};
-    const bathrooms = details?.bathrooms;
-    const bedrooms = details?.bedrooms;
-
-    return (
-        <Stack spacing={2} direction="row" mt={1} flexWrap="nowrap">
-            <Entry icon="las la-chart-area" adornment="m²">
-                {plotArea || "-"}
-            </Entry>
-            <Entry icon="las la-expand-arrows-alt" adornment="m²">
-                {area || "-"}
-            </Entry>
-            <Entry icon="las la-bed">{bedrooms || item.bedrooms || "-"} </Entry>
-            <Entry icon="las la-bath">
-                {bathrooms || item.bathrooms || "-"}
-            </Entry>
-        </Stack>
-    );
-};
-
 const Info: FC<InfoProps> = ({ item }) => {
     const { parentCategory } = item;
+    const isLand = parentCategory.key === "LAND";
+    const ENTRIES = getENTRIES(item, isLand);
     return (
-        <Stack spacing={1} direction="row" mt={1} flexWrap="wrap">
-            {parentCategory.key !== "LAND" ? <NonLandInfo item={item} /> : null}
-            {parentCategory.key === "LAND" ? <LandInfo item={item} /> : null}
+        <Stack spacing={2} direction="row" flexWrap="nowrap">
+            {ENTRIES.map(getEntry)}
         </Stack>
     );
 };

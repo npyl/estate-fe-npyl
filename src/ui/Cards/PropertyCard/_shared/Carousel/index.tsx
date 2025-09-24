@@ -10,7 +10,9 @@ interface CarouselProps extends Omit<CarouselSimpleProps, "data"> {
 
 const Carousel: FC<CarouselProps> = ({ images, ...props }) => {
     const data = useCarouselImages(images);
-    return <CarouselSimple data={data} {...props} />;
+    return (
+        <CarouselSimple ratio="4/3" borderRadius={2} data={data} {...props} />
+    );
 };
 
 export default Carousel;
