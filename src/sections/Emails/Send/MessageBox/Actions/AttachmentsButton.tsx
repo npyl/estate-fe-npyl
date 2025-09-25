@@ -3,7 +3,7 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import FileInput, { OpenerBaseProps } from "@/components/FileInput";
 import { ChangeEvent, FC, useCallback } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { TMessageBoxValues } from "../../types";
+import { TMessageBoxValues } from "../types";
 import { infoToast } from "@/components/Toaster";
 
 const LITERAL_0 = "EMAILS_REMOVED_DUPLICATES_0";
