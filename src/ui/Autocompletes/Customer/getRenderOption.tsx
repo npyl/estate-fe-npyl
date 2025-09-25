@@ -1,5 +1,4 @@
-import { SxProps, Theme } from "@mui/material";
-import ListItem from "@mui/material/ListItem";
+import { MenuItem, SxProps, Theme } from "@mui/material";
 import { FC } from "react";
 import { ICustomerMini } from "@/types/customer";
 import PlaceholderAvatar from "./PlaceholderAvatar";
@@ -20,10 +19,10 @@ const RenderOption: FC<RenderOptionProps> = (props) => {
     const { option, ...otherProps } = props;
 
     return (
-        <ListItem sx={OptionSx} {...otherProps}>
+        <MenuItem sx={OptionSx} {...otherProps}>
             <PlaceholderAvatar />
             {option?.firstName || ""} {option?.lastName || ""}
-        </ListItem>
+        </MenuItem>
     );
 };
 
