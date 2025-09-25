@@ -1,18 +1,28 @@
 import { Grid } from "@mui/material";
 import RHFCustomer from "@/ui/Autocompletes/RHFCustomer";
-import CreateTooltip from "@/sections/Customer/CreateTooltip";
-import { useCallback } from "react";
-import { useFormContext } from "react-hook-form";
+import PPCreateTooltip from "@/sections/Customer/CreateTooltip";
+import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+
+// ---------------------------------------------------------------
+
+const RHFCreateTooltip = () => {
+    const { control } = useFormContext();
+    return (
+        <Controller
+            name="ownerId"
+            control={control}
+            render={({ field: { onChange } }) => (
+                <PPCreateTooltip onCreate={onChange} />
+            )}
+        />
+    );
+};
+
+// ---------------------------------------------------------------
 
 const OwnerSelect = () => {
     const { t } = useTranslation();
-
-    const { setValue } = useFormContext();
-
-    const handleCreate = useCallback((id: number) => {
-        setValue("ownerId", id, { shouldDirty: true });
-    }, []);
 
     return (
         <Grid
@@ -27,7 +37,7 @@ const OwnerSelect = () => {
             gap={1.5}
         >
             <RHFCustomer fullWidth label={t<string>("Owner")} name="ownerId" />
-            <CreateTooltip onCreate={handleCreate} />
+            <RHFCreateTooltip />
         </Grid>
     );
 };
