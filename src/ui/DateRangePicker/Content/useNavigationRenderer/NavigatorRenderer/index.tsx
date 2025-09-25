@@ -2,7 +2,7 @@ import { FC } from "react";
 import { TMode } from "./types";
 import { SpaceBetween } from "@/components/styled";
 import PreviousButton from "./PreviousButton";
-import MonthSelect from "./MonthSelect";
+import MonthSelect from "@/ui/Pickers/MonthSelect";
 import YearSelect from "./YearSelect";
 import NextButton from "./NextButton";
 
@@ -16,16 +16,15 @@ const NavigatorRenderer: FC<NavigatorRendererProps> = ({
     changeShownDate,
 }) => {
     const currentYear = currFocusedDate.getFullYear();
-    const currentMonth = currFocusedDate.getMonth();
 
     return (
-        <SpaceBetween alignItems="center" gap={1} width={1}>
+        <SpaceBetween alignItems="center" gap={1} width={1} p={1}>
             <PreviousButton changeShownDate={changeShownDate} />
 
             <MonthSelect
                 sx={{ width: "fit-content" }}
-                value={currentMonth}
-                onChange={changeShownDate}
+                date={currFocusedDate}
+                onDateChange={changeShownDate}
             />
 
             <YearSelect

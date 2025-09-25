@@ -1,8 +1,7 @@
 import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectChangeEvent } from "@/components/Select";
+import Select, { SelectChangeEvent, SelectProps } from "@/components/Select";
 import { useTranslation } from "react-i18next";
 import { FC, useCallback, useMemo } from "react";
-import { Props } from "./types";
 
 interface Option {
     key: number;
@@ -24,7 +23,17 @@ const getOPTIONS = (locale: "en-US" | "el-GR") =>
         };
     });
 
-const MonthSelect: FC<Props> = ({ date, onDateChange }) => {
+interface MonthSelectProps
+    extends Omit<SelectProps<number>, "value" | "onChange"> {
+    date: Date;
+    onDateChange: (d: Date) => void;
+}
+
+const MonthSelect: FC<MonthSelectProps> = ({
+    date,
+    onDateChange,
+    ...props
+}) => {
     const { i18n } = useTranslation();
     const locale = i18n.language === "en" ? "en-US" : "el-GR";
     const OPTIONS = useMemo(() => getOPTIONS(locale), [locale]);
@@ -32,14 +41,14 @@ const MonthSelect: FC<Props> = ({ date, onDateChange }) => {
     const handleChange = useCallback(
         (e: SelectChangeEvent<number>) => {
             const newDate = new Date(date);
-            newDate.setMonth(+e.target.value!);
+            newDate.setMonth(e.target.value as unknown as number);
             onDateChange(newDate);
         },
         [date, onDateChange]
     );
 
     return (
-        <Select value={date.getMonth()} onChange={handleChange}>
+        <Select value={date.getMonth()} onChange={handleChange} {...props}>
             {OPTIONS.map(getOption)}
         </Select>
     );

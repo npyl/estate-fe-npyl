@@ -1,7 +1,7 @@
 import IsAuthenticatedIndicator from "@/sections/Google/WorkspaceIndicator";
 import Stack from "@mui/material/Stack";
 import { FC } from "react";
-import MonthSelect from "./MonthSelect";
+import MonthSelect from "@/ui/Pickers/MonthSelect";
 import { Props } from "./types";
 import YearSelect from "./YearSelect";
 

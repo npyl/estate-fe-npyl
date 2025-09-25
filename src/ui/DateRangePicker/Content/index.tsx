@@ -1,9 +1,9 @@
-import { RangeKeyDict, DateRange, DateRangeProps } from "react-date-range";
+import { RangeKeyDict, DateRangeProps } from "react-date-range";
 import parseISO from "date-fns/parseISO";
 import { FC, useCallback, useMemo } from "react";
 import useNavigationRenderer from "./useNavigationRenderer";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
+import { primary } from "@/theme/light-theme-options";
+import StyledDateRange from "./styled";
 
 interface ContentProps extends Omit<DateRangeProps, "ranges" | "onChange"> {
     startDate: string;
@@ -41,7 +41,8 @@ const Content: FC<ContentProps> = ({
     }, []);
 
     return (
-        <DateRange
+        <StyledDateRange
+            rangeColors={[primary.main]}
             showDateDisplay={false}
             navigatorRenderer={navigationRenderer}
             ranges={ranges}

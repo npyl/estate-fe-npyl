@@ -2,6 +2,25 @@ import { useTranslation } from "react-i18next";
 import { FC, useCallback, useMemo } from "react";
 import Content, { ContentProps } from "./Content";
 import Select from "@/components/Select";
+import { MenuProps } from "@mui/material";
+
+const MenuContentProps: Partial<MenuProps> = {
+    MenuListProps: {
+        sx: {
+            p: 0,
+        },
+    },
+    slotProps: {
+        paper: {
+            sx: { p: 0 },
+        },
+        root: {
+            sx: {
+                top: 0,
+            },
+        },
+    },
+};
 
 interface DateRangePickerProps extends ContentProps {}
 
@@ -28,19 +47,8 @@ const DateRangePicker: FC<DateRangePickerProps> = (props) => {
             label={t("Date Range")}
             value={value}
             renderValue={renderValue}
+            MenuProps={MenuContentProps}
             sx={{ width: "240px" }}
-            MenuProps={{
-                slotProps: {
-                    paper: {
-                        sx: { p: 1 },
-                    },
-                    root: {
-                        sx: {
-                            top: 0,
-                        },
-                    },
-                },
-            }}
         >
             <Content {...props} />
         </Select>
