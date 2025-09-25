@@ -3,16 +3,13 @@ import { FC, useRef } from "react";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
-import { EmojiPickerProps } from "./types";
-import { PopperProps } from "@mui/material";
-const EmojiPickerPopper = dynamic(() => import("./popper"));
+import { EmojiPickerPopoverProps } from "./Popover";
+const EmojiPickerPopover = dynamic(() => import("./Popover"));
 
-interface Props {
-    PickerProps?: EmojiPickerProps;
-    PopperProps?: Omit<PopperProps, "open">;
-}
+interface EmojiPickerButtonProps
+    extends Omit<EmojiPickerPopoverProps, "anchorEl" | "onClose"> {}
 
-const EmojiPickerButton: FC<Props> = ({ PickerProps, PopperProps }) => {
+const EmojiPickerButton: FC<EmojiPickerButtonProps> = (props) => {
     const [isOpen, openPopover, closePopover] = useDialog();
     const anchorRef = useRef<HTMLButtonElement>(null);
 
@@ -23,11 +20,10 @@ const EmojiPickerButton: FC<Props> = ({ PickerProps, PopperProps }) => {
             </IconButton>
 
             {isOpen && anchorRef.current ? (
-                <EmojiPickerPopper
+                <EmojiPickerPopover
                     anchorEl={anchorRef.current}
-                    PickerProps={PickerProps}
-                    PopperProps={PopperProps}
                     onClose={closePopover}
+                    {...props}
                 />
             ) : null}
         </>
