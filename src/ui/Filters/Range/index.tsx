@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Content from "./Content";
 import { Props } from "./types";
@@ -37,11 +37,13 @@ const PriceSelect: FC<Props> = (props) => {
 
         return formatNumber(valueMin) + "-" + formatNumber(valueMax) + symbol;
     }, [valueMax, valueMin, t]);
+    const renderValue = useCallback(() => value, [value]);
 
     return (
         <Select
             label={t(label)}
             value={value}
+            renderValue={renderValue}
             formControlProps={{
                 sx: {
                     minWidth: "175px",
