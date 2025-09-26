@@ -7,7 +7,7 @@ const Div = styled("div")(({ theme }) => ({
     top: 0,
     padding: theme.spacing(1),
     boxShadow: theme.shadows[15],
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.default,
 }));
 
 const CategoryHeader: FC<EmojiPickerListCategoryHeaderProps> = ({
