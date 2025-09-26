@@ -1,5 +1,5 @@
 import { useFormContext, useWatch } from "react-hook-form";
-import TypeSelect from "../TypeSelect";
+import TypeSelect from "../../TypeSelect";
 import { TCalendarEventType } from "@/components/Calendar/types";
 import Stack from "@mui/material/Stack";
 

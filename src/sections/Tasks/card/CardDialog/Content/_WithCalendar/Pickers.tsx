@@ -1,6 +1,6 @@
 import { useWatch } from "react-hook-form";
-import useEventDates from "@/sections/Calendar/Event/form/EventDates/useEventDates";
-import EventDates from "@/sections/Calendar/Event/form/EventDates";
+import useEventDates from "@/sections/Calendar/Event/form/Content/EventDates/useEventDates";
+import EventDates from "@/sections/Calendar/Event/form/Content/EventDates";
 import { endDateKey, startDateKey } from "./constants";
 
 const Pickers = () => {

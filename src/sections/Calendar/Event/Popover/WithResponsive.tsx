@@ -8,6 +8,10 @@ type PopperProps = Omit<MuiPopperProps, "children"> & {
     children: ReactNode;
 };
 
+/**
+ * This wrapper ignores all props and opens a Drawer when below sm
+ * @param Popper The MUI Popper that will be converted to Drawer below sm
+ */
 const WithResponsive = (Popper: AnyPopper) => {
     const Wrapper = (props: PopperProps) => {
         const { children } = props;
