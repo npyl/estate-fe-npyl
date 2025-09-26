@@ -1,6 +1,4 @@
-import { PopperProps } from "@mui/material/Popper";
 import { styled } from "@mui/material/styles";
-import Tooltip from "@mui/material/Tooltip";
 import { EmojiPickerListEmojiProps } from "frimousse";
 import { FC } from "react";
 
@@ -21,18 +19,11 @@ const Button = styled("button")(({ theme }) => ({
     cursor: "pointer",
 }));
 
-// INFO: prevent tooltip from consuming scrolling events
-const TooltipPopperProps: Partial<PopperProps> = {
-    sx: { pointerEvents: "none" },
-};
+interface EmojiProps extends EmojiPickerListEmojiProps {}
 
-const Emoji: FC<EmojiPickerListEmojiProps> = ({
-    emoji: { emoji, isActive, label },
-    ...props
-}) => (
-    <Tooltip title={label} PopperProps={TooltipPopperProps}>
-        <Button {...props}>{emoji}</Button>
-    </Tooltip>
+const Emoji: FC<EmojiProps> = ({ emoji: { emoji }, ...props }) => (
+    <Button {...props}>{emoji}</Button>
 );
 
+export type { EmojiProps };
 export default Emoji;
