@@ -3,6 +3,7 @@ import {
     TCalendarEvent,
 } from "@/components/Calendar/types";
 import { CalendarEventReq } from "@/types/calendar";
+import { styled, SxProps, Theme } from "@mui/material";
 import dayjs from "dayjs";
 import {
     forwardRef,
@@ -27,11 +28,15 @@ const getDefault = (startDate?: string): CalendarEventReq => ({
 
 // ------------------------------------------------------------------------
 
+const StyledForm = styled("form")({});
+
 interface FormProps extends PropsWithChildren {
     startDate?: string; // INFO: on Create mode, this dialog always needs a startDate!
     event?: TCalendarEvent; // INFO: on Edit mode, we use this
     onSubmit: (e: CalendarEventReq) => Promise<any>;
     onClose: VoidFunction;
+
+    sx?: SxProps<Theme>;
 }
 
 interface FormRef {
@@ -39,7 +44,7 @@ interface FormRef {
 }
 
 const Form = forwardRef<FormRef, FormProps>(
-    ({ startDate, event, onClose, onSubmit, children }, ref) => {
+    ({ startDate, event, onClose, onSubmit, sx, children }, ref) => {
         const methods = useForm<CalendarEventReq>({
             values: event || getDefault(startDate),
         });
@@ -62,9 +67,9 @@ const Form = forwardRef<FormRef, FormProps>(
         );
 
         return (
-            <form onSubmit={methods.handleSubmit(handleSubmit)}>
+            <StyledForm onSubmit={methods.handleSubmit(handleSubmit)} sx={sx}>
                 <FormProvider {...methods}>{children}</FormProvider>
-            </form>
+            </StyledForm>
         );
     }
 );
