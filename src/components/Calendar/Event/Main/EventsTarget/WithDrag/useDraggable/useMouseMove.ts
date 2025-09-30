@@ -1,6 +1,13 @@
-import { MutableRefObject, RefObject, useCallback } from "react";
+import {
+    MutableRefObject,
+    RefObject,
+    useCallback,
+    useLayoutEffect,
+    useRef,
+} from "react";
 import { CellPosition } from "../../types";
 import { CELL_HOUR_HEIGHT } from "@/constants/calendar";
+import { BASE_VIEW_ID } from "@/components/BaseCalendar/View";
 
 const INTERVAL_HEIGHT = CELL_HOUR_HEIGHT / 4; // 4 * 15min intervals per hour (15px each)
 
@@ -16,12 +23,24 @@ interface DragInfo {
     };
 }
 
+const useGridRef = () => {
+    const gridRef = useRef<HTMLElement>();
+    useLayoutEffect(() => {
+        const el = document.getElementById(BASE_VIEW_ID);
+        if (!el) return;
+        gridRef.current = el;
+    }, []);
+    return gridRef;
+};
+
 const useMouseMove = (
     eventRef: RefObject<HTMLDivElement | null>,
     cellsRef: RefObject<CellPosition[]>,
     dragInfo: MutableRefObject<DragInfo>,
     onPositionUpdate: VoidFunction
 ) => {
+    const gridRef = useGridRef();
+
     const moveHorizontally = useCallback(
         (clientX: number, eventElement: HTMLDivElement) => {
             // Get cell width information
@@ -80,8 +99,9 @@ const useMouseMove = (
         async (e: globalThis.MouseEvent) => {
             if (!dragInfo.current.isDragging) return;
 
+            const grid = gridRef.current;
             const eventElement = eventRef.current;
-            if (!eventElement) return;
+            if (!grid || !eventElement) return;
 
             // Calculate new position with snapping
             moveHorizontally(e.clientX, eventElement);
