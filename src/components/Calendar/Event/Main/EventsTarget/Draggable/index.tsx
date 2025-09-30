@@ -3,8 +3,10 @@ import Container, { EventContainerProps } from "../../../Container";
 import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
 import { TCalendarEvent } from "../../../../types";
 import useDraggable from "./useDraggable";
-import useNoDragClick from "../../../../useNoDragClick";
 import { CellPosition } from "../types";
+import WithNoDragClick from "@/components/Calendar/WithNoDragClick";
+
+const SafeContainer = WithNoDragClick(Container);
 
 interface DraggableProps
     extends Omit<EventContainerProps, "onClick" | "onMouseDown"> {
@@ -53,9 +55,17 @@ const Draggable = forwardRef<HTMLDivElement, DraggableProps>(
             [onEventClick, event]
         );
 
-        const methods = useNoDragClick(handleClick, onMouseDown, onMouseMove);
-
-        return <Container ref={onRef} {...methods} {...props} />;
+        return (
+            <SafeContainer
+                ref={onRef}
+                // ...
+                onClick={handleClick}
+                onMouseDown={onMouseDown}
+                onMouseMove={onMouseMove}
+                // ...
+                {...props}
+            />
+        );
     }
 );
 
