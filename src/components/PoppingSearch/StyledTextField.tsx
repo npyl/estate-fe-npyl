@@ -5,6 +5,8 @@ const getMobileOpenSx = (theme: Theme): SxProps<Theme> => ({
     position: "absolute",
 
     left: 0,
+    top: "50%",
+    transform: "translateY(-50%)",
 
     minWidth: `calc(100vw - ${theme.spacing(2)})`,
     width: `calc(100vw - ${theme.spacing(2)})`,
@@ -42,7 +44,7 @@ const StyledTextField = styled(TextField)<StyledSearchProps>(
 
         [theme.breakpoints.down("sm")]: getMobileSx(open, theme),
 
-        transition: "all 0.2s ease-out",
+        transition: "min-width 0.2s ease-out",
     })
 );
 

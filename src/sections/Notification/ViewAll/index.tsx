@@ -1,13 +1,4 @@
-import {
-    Box,
-    Stack,
-    MenuItem,
-    TextField,
-    InputAdornment,
-    SxProps,
-    Theme,
-    IconButton,
-} from "@mui/material";
+import { Box, Stack, MenuItem } from "@mui/material";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import TabPanel from "@/components/Tabs/TabPanel";
@@ -21,38 +12,10 @@ import dynamic from "next/dynamic";
 import { INotificationTab, TViewFilter } from "./types";
 import getTabOption from "./getTabOption";
 import { useDebounce } from "use-debounce";
-import SearchIcon from "@mui/icons-material/Search";
-import CloseIcon from "@mui/icons-material/Close";
-import getBorderColor from "@/theme/borderColor";
 import ManagerSelect from "./ManagerSelect";
 import Tabs, { useCurrentTab } from "@/components/Tabs";
 import Select from "@/components/Select";
-
-const SearchInputSx: SxProps<Theme> = {
-    minWidth: 350,
-    "& .MuiOutlinedInput-root": {
-        borderRadius: "25px",
-        backgroundColor: "white",
-        "&.Mui-focused": {
-            borderColor: "primary.main",
-        },
-        "&:hover": {
-            borderColor: "primary.light",
-        },
-    },
-};
-
-const ClearButtonSx: SxProps<Theme> = {
-    width: 24,
-    height: 24,
-    borderRadius: "50%",
-    border: "1px solid",
-    borderColor: getBorderColor,
-    "& svg": {
-        fontSize: "1.1rem",
-        transform: "scale(0.8)",
-    },
-};
+import PoppingSearch from "@/components/PoppingSearch";
 
 const TABS: INotificationTab[] = [
     { label: "Tours", type: "TOUR" },
@@ -109,43 +72,11 @@ const ViewAllNotifications = () => {
                         <MenuItem value="notViewed">{t(`Not Viewed`)}</MenuItem>
                     </Select>
                 </Stack>
-                <Box mt={1} mb={1}>
-                    <TextField
-                        variant="outlined"
-                        size="small"
-                        placeholder={t<string>(
-                            `Search for ${TABS[tab]?.label}`
-                        )}
+                <Box my={1} position="relative">
+                    <PoppingSearch
                         value={searchText}
                         onChange={handleSearchTextChange}
-                        sx={SearchInputSx}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment
-                                    position="start"
-                                    sx={{ ml: 0.5 }}
-                                >
-                                    <SearchIcon sx={{ color: "gray" }} />
-                                </InputAdornment>
-                            ),
-                            endAdornment: (
-                                <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    alignItems="center"
-                                    mr={0.5}
-                                >
-                                    {searchText ? (
-                                        <IconButton
-                                            onClick={handleClearSearch}
-                                            sx={ClearButtonSx}
-                                        >
-                                            <CloseIcon />
-                                        </IconButton>
-                                    ) : null}
-                                </Stack>
-                            ),
-                        }}
+                        onClear={handleClearSearch}
                     />
                     {tab === 0 && <ManagerSelect />}
                 </Box>
