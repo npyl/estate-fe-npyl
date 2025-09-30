@@ -8,7 +8,11 @@ import {
     TOnEventResizeEnd,
     TOnEventResizeStart,
 } from "../../../types";
-import Draggable, { DraggableProps } from "./Draggable";
+import WithNoDragClick from "@/components/Calendar/WithNoDragClick";
+import WithDragging, { DraggableProps } from "./WithDragging";
+import Container from "../../Container";
+
+const Draggable = WithDragging(WithNoDragClick(Container) as any);
 
 interface EventsTargetProps extends DraggableProps {
     event: TCalendarEvent;
@@ -22,14 +26,9 @@ interface EventsTargetProps extends DraggableProps {
 const EventsTarget = forwardRef<HTMLDivElement, EventsTargetProps>(
     (
         {
-            event,
-            cellsRef,
-            onPositionUpdate,
             onEventResizeStart,
             onEventResizeEnd,
             onEventDragEnd,
-            onGhostAdd,
-            onGhostRemove,
             // ...
             children,
             ...props
@@ -40,28 +39,19 @@ const EventsTarget = forwardRef<HTMLDivElement, EventsTargetProps>(
             useForwardedLocalRef<HTMLDivElement>(ref);
 
         return (
-            <Draggable
-                ref={onRef}
-                event={event}
-                cellsRef={cellsRef}
-                onPositionUpdate={onPositionUpdate}
-                onGhostAdd={onGhostAdd}
-                onGhostRemove={onGhostRemove}
-                onEventDragEnd={onEventDragEnd}
-                {...props}
-            >
+            <Draggable ref={onRef} onEventDragEnd={onEventDragEnd} {...props}>
                 {children}
 
                 {onEventResizeEnd ? (
                     <VerticalResize
-                        event={event}
+                        event={props.event}
                         targetRef={elementRef}
                         // ...
-                        onResizeEarlyStart={onGhostAdd}
+                        onResizeEarlyStart={props.onGhostAdd}
                         onResizeStart={onEventResizeStart}
                         onResizeEnd={onEventResizeEnd}
                         // ...
-                        onPositionUpdate={onPositionUpdate}
+                        onPositionUpdate={props.onPositionUpdate}
                     />
                 ) : null}
             </Draggable>

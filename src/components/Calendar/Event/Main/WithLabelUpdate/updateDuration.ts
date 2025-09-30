@@ -2,8 +2,8 @@ import { RefObject } from "react";
 import { getText } from "../../_shared/Duration";
 import { CellPosition } from "../EventsTarget/types";
 import sleep from "@/utils/sleep";
-import getOverlapRatio from "../EventsTarget/Draggable/useDraggable/getOverlapRatio";
-import calculateNewDates from "../EventsTarget/Draggable/useDraggable/calculateNewDates";
+import getOverlapRatio from "../EventsTarget/WithDragging/useDraggable/getOverlapRatio";
+import calculateNewDates from "../EventsTarget/WithDragging/useDraggable/calculateNewDates";
 
 const NO_OP = ((s: string) => s) as any;
 
