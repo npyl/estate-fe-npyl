@@ -3,7 +3,6 @@ import { CellPosition } from "../../types";
 import { CELL_HOUR_HEIGHT } from "@/constants/calendar";
 
 const INTERVAL_HEIGHT = CELL_HOUR_HEIGHT / 4; // 4 * 15min intervals per hour (15px each)
-const SMALL_OFFSET = 10;
 
 interface DragInfo {
     isDragging: boolean;
@@ -57,8 +56,7 @@ const useMouseMove = (
             const verticalMovement = clientY - dragInfo.current.startPosition.y;
 
             // INFO: allow mouse to make minor movements before actually changing position!
-            if (Math.abs(verticalMovement) <= INTERVAL_HEIGHT + SMALL_OFFSET)
-                return;
+            if (Math.abs(verticalMovement) < INTERVAL_HEIGHT) return;
 
             const rawY = dragInfo.current.initialTransform.y + verticalMovement;
 
