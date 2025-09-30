@@ -2,6 +2,7 @@ import React, { CSSProperties } from "react";
 import { BaseCalendarWeekViewProps } from "../types";
 import { EmptyCell, NoNumbering } from "./Empty";
 import useWeekUtils from "../useWeekUtils";
+import { GRID_VIEW_ID } from "../constants";
 
 // ------------------------------------------------------------
 
@@ -45,7 +46,7 @@ const WeekView: React.FC<BaseCalendarWeekViewProps> = ({
         >
             <Numbering />
 
-            <div style={gridStyle}>
+            <div id={GRID_VIEW_ID} style={gridStyle}>
                 {weekDays.map((day) => (
                     <Cell key={day.toISOString()} date={day} />
                 ))}

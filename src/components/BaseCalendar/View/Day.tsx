@@ -1,6 +1,7 @@
 import { CSSProperties, FC } from "react";
 import { BaseCalendarDayViewProps } from "../types";
 import { EmptyCell, NoNumbering } from "./Empty";
+import { GRID_VIEW_ID } from "../constants";
 
 // INFO: Here, Cell is responsible for rendering the whole content below BaseHeader
 
@@ -31,7 +32,7 @@ const DayView: FC<BaseCalendarDayViewProps> = ({
     >
         <Numbering />
 
-        <div style={contentStyle}>
+        <div id={GRID_VIEW_ID} style={contentStyle}>
             <Cell date={date} />
         </div>
     </div>

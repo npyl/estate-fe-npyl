@@ -7,7 +7,7 @@ import {
 } from "react";
 import { CellPosition } from "../../types";
 import { CELL_HOUR_HEIGHT } from "@/constants/calendar";
-import { BASE_VIEW_ID } from "@/components/BaseCalendar/View";
+import { GRID_VIEW_ID } from "@/components/BaseCalendar/constants";
 
 const INTERVAL_HEIGHT = CELL_HOUR_HEIGHT / 4; // 4 * 15min intervals per hour (15px each)
 
@@ -23,14 +23,28 @@ interface DragInfo {
     };
 }
 
-const useGridRef = () => {
-    const gridRef = useRef<HTMLElement>();
+const useGuards = (dragInfo: MutableRefObject<DragInfo>) => {
+    const rectRef = useRef<DOMRect>();
     useLayoutEffect(() => {
-        const el = document.getElementById(BASE_VIEW_ID);
+        const el = document.getElementById(GRID_VIEW_ID);
         if (!el) return;
-        gridRef.current = el;
+        rectRef.current = el.getBoundingClientRect();
     }, []);
-    return gridRef;
+
+    const isOutsideHorizontalBounds = useCallback((newLeft: number) => {
+        const r = rectRef.current;
+        if (!r) return true;
+        const calc = dragInfo.current.startPosition.x + newLeft;
+        return calc < r.x || calc > r.x + r.width;
+    }, []);
+    const isOutsideVerticalBounds = useCallback((newTop: number) => {
+        const r = rectRef.current;
+        if (!r) return true;
+        const calc = dragInfo.current.startPosition.y + newTop;
+        return calc < r.y || calc > r.y + r.height;
+    }, []);
+
+    return { isOutsideHorizontalBounds, isOutsideVerticalBounds };
 };
 
 const useMouseMove = (
@@ -39,7 +53,8 @@ const useMouseMove = (
     dragInfo: MutableRefObject<DragInfo>,
     onPositionUpdate: VoidFunction
 ) => {
-    const gridRef = useGridRef();
+    const { isOutsideHorizontalBounds, isOutsideVerticalBounds } =
+        useGuards(dragInfo);
 
     const moveHorizontally = useCallback(
         (clientX: number, eventElement: HTMLDivElement) => {
@@ -62,6 +77,8 @@ const useMouseMove = (
 
             const newLeft =
                 dragInfo.current.initialTransform.x + dayOffset * dayWidth;
+
+            if (isOutsideHorizontalBounds(newLeft)) return;
 
             // Update DOM element position
             eventElement.style.left = `${newLeft}px`;
@@ -86,6 +103,8 @@ const useMouseMove = (
             // Calculate exact snapped position
             const snappedTop = targetInterval * INTERVAL_HEIGHT;
 
+            if (isOutsideVerticalBounds(snappedTop)) return;
+
             // Update DOM element position with hard snap
             eventElement.style.top = `${snappedTop}px`;
 
@@ -99,9 +118,8 @@ const useMouseMove = (
         async (e: globalThis.MouseEvent) => {
             if (!dragInfo.current.isDragging) return;
 
-            const grid = gridRef.current;
             const eventElement = eventRef.current;
-            if (!grid || !eventElement) return;
+            if (!eventElement) return;
 
             // Calculate new position with snapping
             moveHorizontally(e.clientX, eventElement);
