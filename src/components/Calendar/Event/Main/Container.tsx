@@ -1,8 +1,8 @@
 import { forwardRef } from "react";
 import { Stack, SxProps, Theme } from "@mui/material";
 import { alpha } from "@mui/material/styles";
-import { EventProps } from "./types";
-import { LF } from "./constants";
+import { EventProps } from "@/components/Calendar/Event/types";
+import { LF } from "@/components/Calendar/Event/constants";
 import { Z_INDEX } from "@/constants/calendar";
 
 const getEventSx = (overlapCount?: number): SxProps<Theme> => {

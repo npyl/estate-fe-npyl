@@ -1,6 +1,3 @@
-import { forwardRef } from "react";
-import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
-import VerticalResize from "./VerticalResize";
 import {
     TCalendarEvent,
     TOnEventClick,
@@ -9,10 +6,9 @@ import {
     TOnEventResizeStart,
 } from "../../../types";
 import WithNoDragClick from "@/components/Calendar/WithNoDragClick";
-import WithDragging, { DraggableProps } from "./WithDragging";
-import Container from "../../Container";
-
-const Draggable = WithDragging(WithNoDragClick(Container) as any);
+import WithDrag, { DraggableProps } from "./WithDrag";
+import Container from "../Container";
+import WithResize from "./WithResize";
 
 interface EventsTargetProps extends DraggableProps {
     event: TCalendarEvent;
@@ -23,40 +19,8 @@ interface EventsTargetProps extends DraggableProps {
     onEventResizeEnd?: TOnEventResizeEnd;
 }
 
-const EventsTarget = forwardRef<HTMLDivElement, EventsTargetProps>(
-    (
-        {
-            onEventResizeStart,
-            onEventResizeEnd,
-            onEventDragEnd,
-            // ...
-            children,
-            ...props
-        },
-        ref
-    ) => {
-        const [elementRef, { onRef }] =
-            useForwardedLocalRef<HTMLDivElement>(ref);
-
-        return (
-            <Draggable ref={onRef} onEventDragEnd={onEventDragEnd} {...props}>
-                {children}
-
-                {onEventResizeEnd ? (
-                    <VerticalResize
-                        event={props.event}
-                        targetRef={elementRef}
-                        // ...
-                        onResizeEarlyStart={props.onGhostAdd}
-                        onResizeStart={onEventResizeStart}
-                        onResizeEnd={onEventResizeEnd}
-                        // ...
-                        onPositionUpdate={props.onPositionUpdate}
-                    />
-                ) : null}
-            </Draggable>
-        );
-    }
+const EventsTarget = WithResize(
+    WithDrag(WithNoDragClick(Container) as any) as any
 );
 
 export type { EventsTargetProps };

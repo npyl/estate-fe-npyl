@@ -3,7 +3,6 @@ import { CELL_HOUR_HEIGHT } from "@/constants/calendar";
 import dynamic from "next/dynamic";
 import useWidthObserver from "@/hooks/useWidthObserver";
 import calculateTimePosition from "@/components/Calendar/calculateTimePosition";
-import { EventContainerProps } from "./Container";
 import {
     TCalendarEvent,
     TOnEventClick,
@@ -14,6 +13,7 @@ import {
 } from "../types";
 import Main from "./Main";
 import { EVENT_CLASSNAME, getEventId, getEventTestId } from "./constants";
+import { EventContainerProps } from "./Main/Container";
 const Bullet = dynamic(() => import("./Bullet"));
 
 // ------------------------------------------------------------------------------------

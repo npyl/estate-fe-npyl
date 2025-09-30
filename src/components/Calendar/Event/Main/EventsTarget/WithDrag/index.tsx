@@ -7,7 +7,7 @@ import {
     RefObject,
     useCallback,
 } from "react";
-import { EventContainerProps } from "../../../Container";
+import { EventContainerProps } from "../../Container";
 import { TCalendarEvent } from "@/components/Calendar/types";
 import { CellPosition } from "../types";
 
@@ -22,7 +22,7 @@ interface DraggableProps
 
 type AnyContainer = ComponentType<EventContainerProps>;
 
-const WithDragging = (Container: AnyContainer) => {
+const WithDrag = (Container: AnyContainer) => {
     const Wrapped = forwardRef<HTMLDivElement, DraggableProps>(
         (
             {
@@ -81,4 +81,4 @@ const WithDragging = (Container: AnyContainer) => {
 };
 
 export type { DraggableProps };
-export default WithDragging;
+export default WithDrag;
