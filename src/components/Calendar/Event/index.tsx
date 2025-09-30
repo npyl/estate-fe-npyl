@@ -47,10 +47,10 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
         const maxHeight = Math.max(height, CELL_HOUR_HEIGHT);
         const isMinimumHeight = maxHeight === CELL_HOUR_HEIGHT;
 
-        const [isBullet, setBullet] = useState(false);
+        const [isBullet, setIsBullet] = useState(false);
 
         const handleWidth = useCallback(
-            (width: number) => setBullet(width <= 60),
+            (width: number) => setIsBullet(width <= 60),
             []
         );
 
