@@ -6,6 +6,7 @@ type AnyPopper = ComponentType<MuiPopperProps>;
 
 type PopperProps = Omit<MuiPopperProps, "children"> & {
     children: ReactNode;
+    onClose?: VoidFunction;
 };
 
 /**
@@ -14,13 +15,13 @@ type PopperProps = Omit<MuiPopperProps, "children"> & {
  */
 const WithResponsive = (Popper: AnyPopper) => {
     const Wrapper = (props: PopperProps) => {
-        const { children } = props;
+        const { children, onClose } = props;
 
         const isDrawer = useResponsive("down", "sm");
 
         if (isDrawer)
             return (
-                <Drawer open anchor="bottom">
+                <Drawer open anchor="bottom" onClose={onClose}>
                     <div>{children}</div>
                 </Drawer>
             );
@@ -33,4 +34,5 @@ const WithResponsive = (Popper: AnyPopper) => {
     return Wrapper;
 };
 
+export type { PopperProps };
 export default WithResponsive;

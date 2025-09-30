@@ -1,15 +1,10 @@
 import { forwardRef, ReactNode, useCallback, useImperativeHandle } from "react";
 import usePopoverPosition from "./usePopperControl";
-import {
-    Popper as MuiPopper,
-    PopperProps,
-    SxProps,
-    Theme,
-} from "@mui/material";
+import { Popper as MuiPopper, SxProps, Theme } from "@mui/material";
 import { Z_INDEX } from "@/constants/calendar";
 import { State } from "@popperjs/core";
 import { getPopoverTestId } from "./constants";
-import WithResponsive from "./WithResponsive";
+import WithResponsive, { PopperProps } from "./WithResponsive";
 import StyledPaper from "./StyledPaper";
 
 const Popper = WithResponsive(MuiPopper);
@@ -30,8 +25,7 @@ interface EventPopperRef {
     updatePosition: () => Promise<Partial<State> | undefined>;
 }
 
-interface EventPopperProps
-    extends Omit<PopperProps, "placement" | "children" | "onClose"> {
+interface EventPopperProps extends Omit<PopperProps, "placement" | "children"> {
     eventId: string;
     children: ReactNode;
 }
