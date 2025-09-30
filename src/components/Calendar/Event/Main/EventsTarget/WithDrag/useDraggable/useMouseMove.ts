@@ -6,14 +6,11 @@ import {
     useRef,
 } from "react";
 import { CellPosition } from "../../types";
-import { CELL_HOUR_HEIGHT, END_HOUR, START_HOUR } from "@/constants/calendar";
+import { CELL_HOUR_HEIGHT } from "@/constants/calendar";
 import { BASE_VIEW_ID } from "@/components/BaseCalendar/View";
 
-const hoursTotal = END_HOUR - START_HOUR;
-const intervalsPerHour = 4; // 15-minute intervals in an hour
-
 const INTERVAL_HEIGHT = CELL_HOUR_HEIGHT / 4; // 4 * 15min intervals per hour (15px each)
-const totalIntervals = hoursTotal * intervalsPerHour;
+const SMALL_OFFSET = 10;
 
 interface DragInfo {
     isDragging: boolean;
@@ -78,33 +75,26 @@ const useMouseMove = (
             // Calculate Y movement from start position
             const verticalMovement = clientY - dragInfo.current.startPosition.y;
 
-            // Ignore small vertical movements; only accept multiples of INTERVAL_HEIGHT
-            const shouldIgnore =
-                Math.abs(verticalMovement) % INTERVAL_HEIGHT !== 0;
-            if (shouldIgnore) return;
+            // INFO: allow mouse to make minor movements before actually changing position!
+            if (Math.abs(verticalMovement) <= INTERVAL_HEIGHT + SMALL_OFFSET)
+                return;
 
             const rawY = dragInfo.current.initialTransform.y + verticalMovement;
 
             // HARD SNAP: Calculate which interval we're in based on raw mouse position
             // Round to nearest interval for immediate snapping
-            const targetInterval = Math.round(rawY / INTERVAL_HEIGHT);
-
-            // Clamp to valid range
-            const clampedInterval = Math.max(
-                0,
-                Math.min(totalIntervals - 1, targetInterval)
-            );
+            const targetInterval = Math.floor(rawY / INTERVAL_HEIGHT);
 
             // Calculate exact snapped position
-            const snappedTop = clampedInterval * INTERVAL_HEIGHT;
+            const snappedTop = targetInterval * INTERVAL_HEIGHT;
 
             // Update DOM element position with hard snap
             eventElement.style.top = `${snappedTop}px`;
 
             // Notify that position has changed
-            onPositionUpdate();
+            setTimeout(onPositionUpdate, 150);
         },
-        [onPositionUpdate]
+        []
     );
 
     return useCallback(
