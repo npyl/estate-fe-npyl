@@ -1,7 +1,6 @@
 import { forwardRef, ReactNode, useCallback, useImperativeHandle } from "react";
 import usePopoverPosition from "./usePopperControl";
 import { Popper as MuiPopper, SxProps, Theme } from "@mui/material";
-import { Z_INDEX } from "@/constants/calendar";
 import { State } from "@popperjs/core";
 import { getPopoverTestId } from "./constants";
 import WithResponsive, { PopperProps } from "./WithResponsive";
@@ -13,10 +12,7 @@ const Popper = WithResponsive(MuiPopper);
 
 const PopperSx: SxProps<Theme> = {
     m: 1,
-    zIndex: {
-        xs: ({ zIndex }) => zIndex.modal + 10000,
-        sm: Z_INDEX.HEADER + 1,
-    },
+    zIndex: ({ zIndex }) => zIndex.modal,
 };
 
 interface EventPopperRef {
