@@ -1,51 +1,10 @@
-import {
-    MutableRefObject,
-    RefObject,
-    useCallback,
-    useLayoutEffect,
-    useRef,
-} from "react";
-import { CellPosition } from "../../types";
+import { MutableRefObject, RefObject, useCallback } from "react";
+import { CellPosition } from "../../../types";
 import { CELL_HOUR_HEIGHT } from "@/constants/calendar";
-import { GRID_VIEW_ID } from "@/components/BaseCalendar/constants";
+import { DragInfo } from "./types";
+import useGuards from "./useGuards";
 
 const INTERVAL_HEIGHT = CELL_HOUR_HEIGHT / 4; // 4 * 15min intervals per hour (15px each)
-
-interface DragInfo {
-    isDragging: boolean;
-    startPosition: {
-        x: number;
-        y: number;
-    };
-    initialTransform: {
-        x: number;
-        y: number;
-    };
-}
-
-const useGuards = (dragInfo: MutableRefObject<DragInfo>) => {
-    const rectRef = useRef<DOMRect>();
-    useLayoutEffect(() => {
-        const el = document.getElementById(GRID_VIEW_ID);
-        if (!el) return;
-        rectRef.current = el.getBoundingClientRect();
-    }, []);
-
-    const isOutsideHorizontalBounds = useCallback((newLeft: number) => {
-        const r = rectRef.current;
-        if (!r) return true;
-        const calc = dragInfo.current.startPosition.x + newLeft;
-        return calc < r.x || calc > r.x + r.width;
-    }, []);
-    const isOutsideVerticalBounds = useCallback((newTop: number) => {
-        const r = rectRef.current;
-        if (!r) return true;
-        const calc = dragInfo.current.startPosition.y + newTop;
-        return calc < r.y || calc > r.y + r.height;
-    }, []);
-
-    return { isOutsideHorizontalBounds, isOutsideVerticalBounds };
-};
 
 const useMouseMove = (
     eventRef: RefObject<HTMLDivElement | null>,
@@ -53,8 +12,10 @@ const useMouseMove = (
     dragInfo: MutableRefObject<DragInfo>,
     onPositionUpdate: VoidFunction
 ) => {
-    const { isOutsideHorizontalBounds, isOutsideVerticalBounds } =
-        useGuards(dragInfo);
+    const { isOutsideHorizontalBounds, isOutsideVerticalBounds } = useGuards(
+        cellsRef,
+        dragInfo
+    );
 
     const moveHorizontally = useCallback(
         (clientX: number, eventElement: HTMLDivElement) => {
