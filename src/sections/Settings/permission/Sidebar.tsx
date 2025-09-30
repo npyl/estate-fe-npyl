@@ -11,18 +11,21 @@ import {
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Select from "@/components/Select";
-import Stack from "@mui/material/Stack";
+import Stack, { StackProps } from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import { useSecurityContext } from "@/sections/Settings/permission/Context";
 import {
     useDeletePresetMutation,
     useGetPresetsQuery,
-} from "src/services/security";
-import { useAllUsersQuery } from "src/services/user";
+    useSaveRelationshipMutation,
+} from "@/services/security";
+import { useAllUsersQuery } from "@/services/user";
 import SaveButton from "./SaveButton";
+import { FC } from "react";
+import ApplyButton from "./ApplyButton";
 
-const Sidebar = () => {
+const Sidebar: FC<StackProps> = (props) => {
     const { t } = useTranslation();
 
     const { data: users } = useAllUsersQuery();
@@ -41,7 +44,7 @@ const Sidebar = () => {
     } = useSecurityContext();
 
     return (
-        <Stack gap={2}>
+        <Stack gap={1} {...props}>
             <Select
                 label={t("Source User")}
                 value={selectedUser !== -1 ? selectedUser : ""}
@@ -61,13 +64,11 @@ const Sidebar = () => {
                     </Typography>
                 )}
             >
-                {users &&
-                    users.length > 0 &&
-                    users.map((user: any) => (
-                        <MenuItem key={user.id} value={user.id}>
-                            <Typography>{user.username}</Typography>
-                        </MenuItem>
-                    ))}
+                {users?.map((user) => (
+                    <MenuItem key={user.id} value={user.id}>
+                        <Typography>{user.username}</Typography>
+                    </MenuItem>
+                ))}
             </Select>
 
             <Divider />
@@ -78,7 +79,6 @@ const Sidebar = () => {
                     </Typography>
                 </FormLabel>
                 <RadioGroup
-                    name="controlled-radio-buttons-group"
                     value={targetUser}
                     onChange={(e) => {
                         selectedPreset !== -1 && setSelectedPreset(-1);
@@ -181,6 +181,8 @@ const Sidebar = () => {
                     </Button>
                 </Stack>
             </FormControl>
+
+            <ApplyButton />
         </Stack>
     );
 };
