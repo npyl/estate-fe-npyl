@@ -1,24 +1,10 @@
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
-import { styled } from "@mui/material/styles";
-import TextField, { TextFieldProps } from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import { forwardRef, useCallback } from "react";
 import useDialog from "@/hooks/useDialog";
-
-// --------------------------------------------------------------------
-
-interface StyledSearchProps
-    extends Omit<TextFieldProps<"outlined">, "variant"> {
-    open: boolean;
-}
-
-const StyledTextField = styled(TextField)<StyledSearchProps>(({ open }) => ({
-    minWidth: open ? "200px" : "50px",
-    width: open ? "200px" : "50px",
-    transition: "all 0.2s ease-out",
-}));
+import StyledTextField, { StyledSearchProps } from "./StyledTextField";
 
 // --------------------------------------------------------------------
 
