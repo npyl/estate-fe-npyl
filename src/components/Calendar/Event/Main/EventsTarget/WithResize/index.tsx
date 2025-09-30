@@ -1,18 +1,14 @@
 import { ComponentType, forwardRef } from "react";
 import VerticalResize from "./VerticalResize";
-import { EventContainerProps } from "../../Container";
 import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
-import { EventsTargetProps } from "..";
+import { DraggableProps, ResizableProps } from "../types";
 
-type PropsWithResize = EventsTargetProps;
-type AnyContainer = ComponentType<EventContainerProps>;
+type AnyContainer = ComponentType<DraggableProps>;
 
 const WithResize = (Container: AnyContainer) => {
-    const Wrapped = forwardRef<HTMLDivElement, PropsWithResize>(
+    const Wrapped = forwardRef<HTMLDivElement, ResizableProps>(
         (
             {
-                event,
-                // ...
                 onEventResizeStart,
                 onEventResizeEnd,
                 onEventDragEnd,
@@ -31,7 +27,7 @@ const WithResize = (Container: AnyContainer) => {
 
                     {onEventResizeEnd ? (
                         <VerticalResize
-                            event={event}
+                            event={props.event}
                             targetRef={elementRef}
                             // ...
                             onResizeEarlyStart={props.onGhostAdd}
@@ -51,4 +47,5 @@ const WithResize = (Container: AnyContainer) => {
     return Wrapped;
 };
 
+export type { ResizableProps };
 export default WithResize;

@@ -1,24 +1,7 @@
 import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
 import useDraggable from "./useDraggable";
-import {
-    MouseEvent,
-    ComponentType,
-    forwardRef,
-    RefObject,
-    useCallback,
-} from "react";
-import { EventContainerProps } from "../../Container";
-import { TCalendarEvent } from "@/components/Calendar/types";
-import { CellPosition } from "../types";
-
-interface DraggableProps
-    extends Omit<EventContainerProps, "onClick" | "onMouseDown"> {
-    event: TCalendarEvent;
-    cellsRef: RefObject<CellPosition[]>;
-    onPositionUpdate: VoidFunction;
-    onGhostAdd: VoidFunction;
-    onGhostRemove: VoidFunction;
-}
+import { MouseEvent, ComponentType, forwardRef, useCallback } from "react";
+import { DraggableProps, EventContainerProps } from "../types";
 
 type AnyContainer = ComponentType<EventContainerProps>;
 
@@ -80,5 +63,4 @@ const WithDrag = (Container: AnyContainer) => {
     return Wrapped;
 };
 
-export type { DraggableProps };
 export default WithDrag;

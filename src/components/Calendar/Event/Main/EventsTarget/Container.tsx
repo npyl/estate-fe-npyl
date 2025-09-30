@@ -1,9 +1,9 @@
 import { forwardRef } from "react";
 import { Stack, SxProps, Theme } from "@mui/material";
 import { alpha } from "@mui/material/styles";
-import { EventProps } from "@/components/Calendar/Event/types";
 import { LF } from "@/components/Calendar/Event/constants";
 import { Z_INDEX } from "@/constants/calendar";
+import { EventContainerProps } from "./types";
 
 const getEventSx = (overlapCount?: number): SxProps<Theme> => {
     const c = overlapCount ?? 0;
@@ -45,10 +45,6 @@ const getEventSx = (overlapCount?: number): SxProps<Theme> => {
     };
 };
 
-interface EventContainerProps extends Omit<EventProps, "bgcolor" | "event"> {
-    bgcolor: string;
-}
-
 const EventContainer = forwardRef<HTMLDivElement, EventContainerProps>(
     ({ bgcolor, overlapCount, sx, children, ...props }, ref) => (
         <Stack
@@ -68,5 +64,4 @@ const EventContainer = forwardRef<HTMLDivElement, EventContainerProps>(
 
 EventContainer.displayName = "EventContainer";
 
-export type { EventContainerProps };
 export default EventContainer;
