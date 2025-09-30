@@ -11,7 +11,6 @@ const WithResize = (Container: AnyContainer) => {
             {
                 onEventResizeStart,
                 onEventResizeEnd,
-                onEventDragEnd,
                 // ...
                 children,
                 ...props

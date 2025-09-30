@@ -35,7 +35,7 @@ const getEventSx = (overlapCount?: number): SxProps<Theme> => {
 
         // Prevent text selection during drag
         "&:active": {
-            cursor: "grabbing",
+            cursor: "all-scroll",
         },
 
         "&:hover": {
