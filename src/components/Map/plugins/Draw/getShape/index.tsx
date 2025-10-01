@@ -39,7 +39,8 @@ const Shape: FC<ShapeProps> = ({ s, onShapeChange: _onShapeChange }) => {
         // Support shape drag/change
         let listeners: google.maps.MapsEventListener[] = [];
 
-        if (isChangeable) listeners = setShapeEvents(res, onShapeChange(res));
+        if (isChangeable)
+            listeners = setShapeEvents(res, () => onShapeChange(res));
 
         return () => {
             listeners.forEach(removeListener);

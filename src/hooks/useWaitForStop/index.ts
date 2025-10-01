@@ -29,11 +29,14 @@ const useWaitForStop = <T extends (...args: any[]) => any>(
     CHANGE_DELAY: number
 ) => {
     const { clear, set } = useTimeout(CHANGE_DELAY);
-    return useCallback((...args: Parameters<T>) => {
-        clear();
-        const res = cb(...args);
-        set(onStop(res));
-    }, []);
+    return useCallback(
+        (...args: Parameters<T>) => {
+            clear();
+            const res = cb(...args);
+            set(onStop(res));
+        },
+        [cb, onStop]
+    );
 };
 
 export default useWaitForStop;
