@@ -1,6 +1,5 @@
 import Typography from "@mui/material/Typography";
 import { FC, forwardRef, useState } from "react";
-import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { RHFTextField } from "@/components/hook-form";
 import TabbedBox, { TabbedBoxProps } from "./TabbedBox";
@@ -9,19 +8,16 @@ import {
     OperationsProvider,
     useOperationsContext,
 } from "./context/OperationsContext";
-import RHFEditor from "@/components/hook-form/dynamic/RHFEditor";
 import useNames from "./useNames";
 import UpperRightButtons from "./UpperRightButtons";
-import {
-    EditorHandleProvider,
-    useEditorHandleContext,
-} from "./context/EditorHandle";
+import { EditorHandleProvider } from "./context/EditorHandle";
 import { Language } from "@/components/LanguageButton/types";
 import Box from "@mui/material/Box";
 import GenerateTitleButton from "./GenerateTitleButton";
 import Stack from "@mui/material/Stack";
 import { SpaceBetween } from "@/components/styled";
-import { Editor } from "@tiptap/react";
+import { EditorRef } from "@/components/Editor";
+import Editor from "./Editor";
 
 interface TitleDescriptionEditorProps
     extends Omit<
@@ -32,16 +28,10 @@ interface TitleDescriptionEditorProps
 const TitleDescriptionEditor: FC<TitleDescriptionEditorProps> = (props) => {
     const { t } = useTranslation();
 
-    const { onRef } = useEditorHandleContext();
-
     const [lang, setLang] = useState<Language>("el");
     const { title, descriptionName, descriptionTextName } = useNames(lang);
 
     const { isLoading } = useOperationsContext();
-
-    const { setValue } = useFormContext();
-    const handlePlainTextChange = (plain: string) =>
-        setValue(descriptionTextName, plain);
 
     return (
         <TabbedBox<Language>
@@ -70,17 +60,16 @@ const TitleDescriptionEditor: FC<TitleDescriptionEditorProps> = (props) => {
                     </Typography>
                     <UpperRightButtons lang={lang} />
                 </SpaceBetween>
-                <RHFEditor
-                    ref={onRef}
-                    name={descriptionName}
-                    onPlainTextChange={handlePlainTextChange}
+                <Editor
+                    name={descriptionTextName}
+                    descriptionName={descriptionName}
                 />
             </Stack>
         </TabbedBox>
     );
 };
 
-const WithProvider = forwardRef<Editor, TitleDescriptionEditorProps>(
+const WithProvider = forwardRef<EditorRef, TitleDescriptionEditorProps>(
     (props, ref) => (
         <EditorHandleProvider ref={ref}>
             <OperationsProvider>
