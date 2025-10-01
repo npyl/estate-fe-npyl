@@ -1,7 +1,7 @@
 import { useSaveRelationshipMutation } from "@/services/security";
 import SendIcon from "@mui/icons-material/Send";
 import { useTranslation } from "react-i18next";
-import { useSecurityContext } from "./Context";
+import { useSecurityContext } from "../Context";
 import Button from "@mui/material/Button";
 
 const ApplyButton = () => {

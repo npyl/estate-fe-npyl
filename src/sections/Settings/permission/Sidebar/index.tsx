@@ -18,12 +18,11 @@ import { useSecurityContext } from "@/sections/Settings/permission/Context";
 import {
     useDeletePresetMutation,
     useGetPresetsQuery,
-    useSaveRelationshipMutation,
 } from "@/services/security";
 import { useAllUsersQuery } from "@/services/user";
 import SaveButton from "./SaveButton";
-import { FC } from "react";
 import ApplyButton from "./ApplyButton";
+import { FC } from "react";
 
 const Sidebar: FC<StackProps> = (props) => {
     const { t } = useTranslation();
