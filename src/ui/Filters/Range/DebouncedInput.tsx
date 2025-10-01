@@ -1,8 +1,8 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import OnlyNumbersInput, {
     OnlyNumbersInputProps,
 } from "@/components/OnlyNumbers";
-import { useDebouncedCallback } from "use-debounce";
+import useWaitForStop from "@/hooks/useWaitForStop";
 
 interface DebouncedInputProps
     extends Omit<OnlyNumbersInputProps, "value" | "onChange"> {
@@ -15,31 +15,18 @@ const DebouncedInput: FC<DebouncedInputProps> = ({
     setter,
     ...props
 }) => {
-    const [value, setValue] = useState("");
+    const [value, setValue] = useState(_value?.toString() ?? "");
 
-    useEffect(() => {
-        setValue(_value ? _value.toString() : "");
-    }, [_value]);
-
-    const debouncedChange = useDebouncedCallback((v: string) => {
-        setter(v);
-    }, 300);
-
-    const handleChange = useCallback((v: string) => {
-        let newValue = v;
-
-        if (!newValue) {
-            debouncedChange("");
-            setValue("");
-        } else {
-            debouncedChange(newValue);
-            setValue(newValue);
-        }
+    const onLocalChange = useCallback((v: string) => {
+        setValue(v ?? "");
+        return v;
     }, []);
 
-    return (
-        <OnlyNumbersInput value={value} onChange={handleChange} {...props} />
-    );
+    const onStop = useCallback((v: string) => () => setter(v ?? ""), [setter]);
+
+    const onChange = useWaitForStop(onLocalChange, onStop, 300);
+
+    return <OnlyNumbersInput value={value} onChange={onChange} {...props} />;
 };
 
 export default DebouncedInput;
