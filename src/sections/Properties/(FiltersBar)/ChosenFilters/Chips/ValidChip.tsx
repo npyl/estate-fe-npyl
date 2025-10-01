@@ -18,6 +18,8 @@ const MaxFloorChip = dynamic(() => import("./MaxFloor"));
 const ActiveChip = dynamic(() => import("./Active"));
 const MinPriceChip = dynamic(() => import("./MinPrice"));
 const MaxPriceChip = dynamic(() => import("./MaxPrice"));
+const MinAreaChip = dynamic(() => import("./MinArea"));
+const MaxAreaChip = dynamic(() => import("./MaxArea"));
 const LabelsChip = dynamic(() => import("./Labels"));
 const ManagerChip = dynamic(() => import("./Manager"));
 const Regions = dynamic(() => import("./Regions"));
@@ -64,6 +66,8 @@ const getSuffix = (_filterKey: keyof IPropertyFilter) => {
 const SINGLE_CHIP_MAP = new Map<keyof IPropertyFilter, ComponentType>([
     ["integrationSites", IntegrationsChip],
     ["locationSearch", LocationChip],
+    ["minArea", MinAreaChip],
+    ["maxArea", MaxAreaChip],
     ["minFloor", MinFloorChip],
     ["maxFloor", MaxFloorChip],
     ["minPrice", MinPriceChip],

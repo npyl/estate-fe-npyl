@@ -1,25 +1,26 @@
+import Chip from "@mui/material/Chip";
 import { useTranslation } from "react-i18next";
 import ChipLabel from "@/ui/Filters/ChipLabel";
-import Chip from "@mui/material/Chip";
 import {
     useFiltersContext,
-    useMinPrice,
+    useMinArea,
 } from "@/sections/Properties/FiltersContext";
 
-const MinPriceChip = () => {
+const MinAreaChip = () => {
     const { t } = useTranslation();
-    const minValue = useMinPrice();
+
+    const maxValue = useMinArea();
 
     const { deleteFilter } = useFiltersContext();
-    const handleClear = () => deleteFilter("minPrice");
+    const handleClear = () => deleteFilter("minArea");
 
     return (
         <Chip
             label={
                 <ChipLabel
                     separateThousands
-                    title={`${t("Minimum Price")} (€)`}
-                    value={minValue}
+                    title={`${t("Minimum Area")} (m²)`}
+                    value={maxValue}
                 />
             }
             onDelete={handleClear}
@@ -27,4 +28,4 @@ const MinPriceChip = () => {
     );
 };
 
-export default MinPriceChip;
+export default MinAreaChip;
