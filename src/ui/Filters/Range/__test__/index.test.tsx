@@ -163,8 +163,8 @@ describe("RangeSelect", () => {
             expect(onSetMax).toHaveBeenCalledWith(TEST_VALUE_MIN);
 
             // TODO: this does not work
-            // expect(onSetMin).toHaveBeenCalledTimes(2);
-            // expect(onSetMin).toHaveBeenLastCalledWith(undefined);
+            expect(onSetMin).toHaveBeenCalledTimes(2);
+            expect(onSetMin).toHaveBeenLastCalledWith(undefined);
         });
         it("setMax -> setMin", () => {
             mountTester();
@@ -179,8 +179,8 @@ describe("RangeSelect", () => {
             expect(onSetMin).toHaveBeenCalledWith(TEST_VALUE_MAX);
 
             // TODO: this does not work
-            // expect(onSetMax).toHaveBeenCalledTimes(2);
-            // expect(onSetMax).toHaveBeenLastCalledWith(undefined);
+            expect(onSetMax).toHaveBeenCalledTimes(2);
+            expect(onSetMax).toHaveBeenLastCalledWith(undefined);
         });
         it("typeMin", () => {});
         it("typeMax", () => {});

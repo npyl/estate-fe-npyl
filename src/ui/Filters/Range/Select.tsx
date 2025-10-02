@@ -1,9 +1,9 @@
 import useDialog from "@/hooks/useDialog";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import Popover from "@mui/material/Popover";
+import Popover, { PopoverProps } from "@mui/material/Popover";
 import { styled } from "@mui/material/styles";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
-import { FC, useRef } from "react";
+import { FC, RefObject, useRef } from "react";
 
 //
 //  INFO: Why use this custom select instead of MUI's?
@@ -24,6 +24,19 @@ const StyledPopover = styled(Popover)(({ theme }) => ({
     },
 }));
 
+// INFO: provide a fallback for when inputRef.current is falsy (e.g. during jest with `open` set to true)
+const useSafeAnchor = (
+    inputRef: RefObject<HTMLInputElement>
+): Partial<PopoverProps> =>
+    inputRef.current
+        ? {
+              anchorEl: inputRef.current,
+          }
+        : {
+              anchorReference: "anchorPosition",
+              anchorPosition: { top: 0, left: 0 }, // Arbitrary position for tests
+          };
+
 interface SelectProps
     extends Omit<TextFieldProps<"outlined">, "variant" | "onClick"> {
     open?: boolean;
@@ -32,6 +45,8 @@ interface SelectProps
 const Select: FC<SelectProps> = ({ open = false, children, ...props }) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const [isOpen, openPopover, closePopover] = useDialog(open);
+
+    const safeAnchor = useSafeAnchor(inputRef);
 
     return (
         <>
@@ -58,7 +73,7 @@ const Select: FC<SelectProps> = ({ open = false, children, ...props }) => {
                     vertical: "top",
                     horizontal: "center",
                 }}
-                anchorEl={inputRef.current}
+                {...safeAnchor}
                 onClose={closePopover}
             >
                 {children}
