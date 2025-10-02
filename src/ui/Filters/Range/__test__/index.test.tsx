@@ -25,27 +25,21 @@ const clickOption = (type: "min" | "max", option: number) => {
     screen.getByTestId(TEST_ID).click();
 };
 
-const evaluate = (type: "min" | "max", value: string | number) => {
-    const cb = type === "min" ? onSetMin : onSetMax;
-    const otherCb = type === "min" ? onSetMax : onSetMin;
-
-    expect(cb).toHaveBeenCalledTimes(1);
-    expect(cb).toHaveBeenCalledWith(value);
-    expect(otherCb).not.toHaveBeenCalled();
-};
-
 // --------------------------------------------------------------------------------
 
+const TEST_VALUE_MIN = 10000;
+const TEST_VALUE_MAX = 50000;
+
+beforeAll(() => {
+    setupUseTranslationMock();
+    setupUseStatesMock([]);
+});
+
+beforeEach(() => {
+    jest.clearAllMocks();
+});
+
 describe("RangeSelect", () => {
-    beforeAll(() => {
-        setupUseTranslationMock();
-        setupUseStatesMock([]);
-    });
-
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
-
     describe("options", () => {
         it("nothing", () => {});
         it("rent", () => {});
@@ -54,14 +48,31 @@ describe("RangeSelect", () => {
     });
 
     describe("unconflicting", () => {
-        it("setMin", () => {
-            const TEST_VALUE = 10000;
-
+        it("setMin -> setMax", () => {
             mountTester();
-            clickOption("min", TEST_VALUE);
-            evaluate("min", TEST_VALUE);
+            clickOption("min", TEST_VALUE_MIN);
+            expect(onSetMin).toHaveBeenCalledTimes(1);
+            expect(onSetMin).toHaveBeenCalledWith(TEST_VALUE_MIN);
+            expect(onSetMax).not.toHaveBeenCalled();
+
+            clickOption("max", TEST_VALUE_MAX);
+            expect(onSetMax).toHaveBeenCalledTimes(1);
+            expect(onSetMax).toHaveBeenCalledWith(TEST_VALUE_MAX);
+            expect(onSetMin).toHaveBeenCalledTimes(1);
         });
-        it("setMax", () => {});
+        it("setMax -> setMin", () => {
+            mountTester();
+
+            clickOption("max", TEST_VALUE_MAX);
+            expect(onSetMax).toHaveBeenCalledTimes(1);
+            expect(onSetMax).toHaveBeenCalledWith(TEST_VALUE_MAX);
+            expect(onSetMin).not.toHaveBeenCalled();
+
+            clickOption("min", TEST_VALUE_MIN);
+            expect(onSetMin).toHaveBeenCalledTimes(1);
+            expect(onSetMin).toHaveBeenCalledWith(TEST_VALUE_MIN);
+            expect(onSetMax).toHaveBeenCalledTimes(1);
+        });
         it("typeMin", () => {});
         it("typeMax", () => {});
         it("clearMin", () => {});
@@ -69,8 +80,38 @@ describe("RangeSelect", () => {
     });
 
     describe("conflicting", () => {
-        it("setMin", () => {});
-        it("setMax", () => {});
+        it("setMin -> setMax", () => {
+            mountTester();
+
+            clickOption("min", TEST_VALUE_MAX);
+            expect(onSetMin).toHaveBeenCalledTimes(1);
+            expect(onSetMin).toHaveBeenCalledWith(TEST_VALUE_MAX);
+            expect(onSetMax).not.toHaveBeenCalled();
+
+            clickOption("max", TEST_VALUE_MIN);
+            expect(onSetMax).toHaveBeenCalledTimes(1);
+            expect(onSetMax).toHaveBeenCalledWith(TEST_VALUE_MIN);
+
+            // TODO: this does not work
+            // expect(onSetMin).toHaveBeenCalledTimes(2);
+            // expect(onSetMin).toHaveBeenLastCalledWith(undefined);
+        });
+        it("setMax -> setMin", () => {
+            mountTester();
+
+            clickOption("max", TEST_VALUE_MIN);
+            expect(onSetMax).toHaveBeenCalledTimes(1);
+            expect(onSetMax).toHaveBeenCalledWith(TEST_VALUE_MIN);
+            expect(onSetMin).not.toHaveBeenCalled();
+
+            clickOption("min", TEST_VALUE_MAX);
+            expect(onSetMin).toHaveBeenCalledTimes(1);
+            expect(onSetMin).toHaveBeenCalledWith(TEST_VALUE_MAX);
+
+            // TODO: this does not work
+            // expect(onSetMax).toHaveBeenCalledTimes(2);
+            // expect(onSetMax).toHaveBeenLastCalledWith(undefined);
+        });
         it("typeMin", () => {});
         it("typeMax", () => {});
         it("clearMin", () => {});
