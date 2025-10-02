@@ -8,8 +8,8 @@ import { setupUseTranslationMock } from "@/test/mock/useTranslation";
 import Tester from "./Tester";
 import { render } from "@testing-library/react";
 import { act } from "react";
-import "@testing-library/jest-dom";
 import { formatThousands } from "@/utils/formatNumber";
+import "@testing-library/jest-dom";
 
 // --------------------------------------------------------------------------------
 
@@ -161,8 +161,6 @@ describe("RangeSelect", () => {
             clickOption("max", TEST_VALUE_MIN);
             expect(onSetMax).toHaveBeenCalledTimes(1);
             expect(onSetMax).toHaveBeenCalledWith(TEST_VALUE_MIN);
-
-            // TODO: this does not work
             expect(onSetMin).toHaveBeenCalledTimes(2);
             expect(onSetMin).toHaveBeenLastCalledWith(undefined);
         });
@@ -177,8 +175,6 @@ describe("RangeSelect", () => {
             clickOption("min", TEST_VALUE_MAX);
             expect(onSetMin).toHaveBeenCalledTimes(1);
             expect(onSetMin).toHaveBeenCalledWith(TEST_VALUE_MAX);
-
-            // TODO: this does not work
             expect(onSetMax).toHaveBeenCalledTimes(2);
             expect(onSetMax).toHaveBeenLastCalledWith(undefined);
         });
