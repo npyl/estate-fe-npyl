@@ -1,28 +1,24 @@
 import { FC, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import Content from "./Content";
-import { Props } from "./types";
+import Content, { ContentProps } from "./Content";
 import Select from "@/components/Select";
 import { formatThousands } from "@/utils/formatNumber";
 
-const PriceSelect: FC<Props> = (props) => {
+const PRICE_CEILING = (1000 * 1000 * 1000).toString(); // 1B euros
+const AREA_CEILING = (1000 * 1000).toString(); // 1M m^2
+
+interface RangeSelectProps extends Omit<ContentProps, "symbol" | "ceiling"> {
+    type: "price" | "area";
+}
+
+const RangeSelect: FC<RangeSelectProps> = (props) => {
     const { type, valueMin = 0, valueMax = 0 } = props;
 
     const { t } = useTranslation();
 
-    const { symbol, label } = useMemo(
-        () =>
-            type === "price"
-                ? {
-                      symbol: "€",
-                      label: "Price",
-                  }
-                : {
-                      symbol: "m²",
-                      label: "Area",
-                  },
-        [type]
-    );
+    const symbol = type === "price" ? "€" : "m²";
+    const label = type === "price" ? "Price" : "Area";
+    const ceiling = type === "price" ? PRICE_CEILING : AREA_CEILING;
 
     const value = useMemo(() => {
         if (valueMin === 0 && valueMax === 0) {
@@ -54,9 +50,9 @@ const PriceSelect: FC<Props> = (props) => {
                 },
             }}
         >
-            <Content {...props} />
+            <Content symbol={symbol} ceiling={ceiling} {...props} />
         </Select>
     );
 };
 
-export default PriceSelect;
+export default RangeSelect;

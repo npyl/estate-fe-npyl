@@ -1,13 +1,25 @@
 import { Stack } from "@mui/material";
 import { FC, useRef, useState } from "react";
-import { Props } from "./types";
 import Pane, { PaneRef } from "./Pane";
 import useMinMaxControl from "./useMinMaxControl";
 
 // --------------------------------------------------------------------------------------
 
-const Content: FC<Props> = ({
-    type,
+interface ContentProps {
+    symbol: string;
+    ceiling: string;
+
+    valueMin?: number;
+    valueMax?: number;
+    setMin: (v?: number) => void;
+    setMax: (v?: number) => void;
+
+    generateNumbers: () => number[];
+}
+
+const Content: FC<ContentProps> = ({
+    ceiling,
+    symbol,
     // ...
     valueMin,
     valueMax,
@@ -20,6 +32,7 @@ const Content: FC<Props> = ({
     const toRef = useRef<PaneRef>(null);
 
     const [options] = useState(generateNumbers());
+    const genericProps = { symbol, ceiling, options };
 
     const { setMin, setMax, clearMin, clearMax } = useMinMaxControl(
         valueMin,
@@ -34,18 +47,20 @@ const Content: FC<Props> = ({
         <Stack direction="row" spacing={1}>
             <Pane
                 ref={fromRef}
-                type={type}
-                options={options}
                 label="from"
+                // ...
+                {...genericProps}
+                // ...
                 value={valueMin}
                 setter={setMin}
                 clear={clearMin}
             />
             <Pane
                 ref={toRef}
-                type={type}
-                options={options}
                 label="to"
+                // ...
+                {...genericProps}
+                // ...
                 value={valueMax}
                 setter={setMax}
                 clear={clearMax}
@@ -54,4 +69,5 @@ const Content: FC<Props> = ({
     );
 };
 
+export type { ContentProps };
 export default Content;

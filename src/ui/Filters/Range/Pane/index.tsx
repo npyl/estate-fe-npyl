@@ -4,9 +4,6 @@ import { useTranslation } from "react-i18next";
 import DebouncedInput, { DebouncedInputRef } from "./DebouncedInput";
 import { formatThousands } from "@/utils/formatNumber";
 
-const PRICE_CEILING = (1000 * 1000 * 1000).toString(); // 1B euros
-const AREA_CEILING = (1000 * 1000).toString(); // 1M m^2
-
 const OptionContainerSx: SxProps<Theme> = {
     maxHeight: 300,
     overflowY: "auto",
@@ -28,7 +25,8 @@ interface PaneRef extends DebouncedInputRef {}
 
 interface PaneProps {
     label: "from" | "to";
-    type: "price" | "area";
+    symbol: string;
+    ceiling: string;
     options: number[];
 
     value?: number;
@@ -40,7 +38,8 @@ const Pane = forwardRef<PaneRef, PaneProps>(
     (
         {
             label: _label,
-            type,
+            symbol,
+            ceiling,
             options,
             // ...
             value,
@@ -51,9 +50,7 @@ const Pane = forwardRef<PaneRef, PaneProps>(
     ) => {
         const { t } = useTranslation();
 
-        const symbol = type === "price" ? "€" : "m²";
         const label = `${symbol} ${t(_label)}`;
-        const ceiling = type === "price" ? PRICE_CEILING : AREA_CEILING;
 
         return (
             <Stack spacing={1}>
