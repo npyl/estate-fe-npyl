@@ -1,6 +1,6 @@
 import { Stack } from "@mui/material";
 import { FC, useRef, useState } from "react";
-import Pane, { PaneRef } from "./Pane";
+import Pane, { PaneRef, getOptionTestId } from "./Pane";
 import useMinMaxControl from "./useMinMaxControl";
 
 // --------------------------------------------------------------------------------------
@@ -47,7 +47,7 @@ const Content: FC<ContentProps> = ({
         <Stack direction="row" spacing={1}>
             <Pane
                 ref={fromRef}
-                label="from"
+                type="min"
                 // ...
                 {...genericProps}
                 // ...
@@ -57,7 +57,7 @@ const Content: FC<ContentProps> = ({
             />
             <Pane
                 ref={toRef}
-                label="to"
+                type="max"
                 // ...
                 {...genericProps}
                 // ...
@@ -69,5 +69,6 @@ const Content: FC<ContentProps> = ({
     );
 };
 
+export { getOptionTestId };
 export type { ContentProps };
 export default Content;

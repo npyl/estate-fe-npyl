@@ -4,16 +4,26 @@ import { useTranslation } from "react-i18next";
 import DebouncedInput, { DebouncedInputRef } from "./DebouncedInput";
 import { formatThousands } from "@/utils/formatNumber";
 
+// --------------------------------------------------------------------------------------
+
+const getOptionTestId = (type: "min" | "max", value: string | number) =>
+    `RangeSelect-Pane-Option-${type}-${value}`;
+
 const OptionContainerSx: SxProps<Theme> = {
     maxHeight: 300,
     overflowY: "auto",
 };
 
 const getOption =
-    (value: number | undefined, onClick: (o: string) => void) =>
+    (
+        type: "min" | "max",
+        value: number | undefined,
+        onClick: (o: string) => void
+    ) =>
     (o: number) => (
         <MenuItem
             key={o}
+            data-testid={getOptionTestId(type, o)}
             onClick={() => onClick(o.toString())}
             selected={value === o}
         >
@@ -21,10 +31,12 @@ const getOption =
         </MenuItem>
     );
 
+// --------------------------------------------------------------------------------------
+
 interface PaneRef extends DebouncedInputRef {}
 
 interface PaneProps {
-    label: "from" | "to";
+    type: "min" | "max";
     symbol: string;
     ceiling: string;
     options: number[];
@@ -37,7 +49,7 @@ interface PaneProps {
 const Pane = forwardRef<PaneRef, PaneProps>(
     (
         {
-            label: _label,
+            type,
             symbol,
             ceiling,
             options,
@@ -50,6 +62,7 @@ const Pane = forwardRef<PaneRef, PaneProps>(
     ) => {
         const { t } = useTranslation();
 
+        const _label = type === "min" ? "from" : "to";
         const label = `${symbol} ${t(_label)}`;
 
         return (
@@ -63,8 +76,13 @@ const Pane = forwardRef<PaneRef, PaneProps>(
                 />
 
                 <Stack sx={OptionContainerSx}>
-                    <MenuItem onClick={clear}>{t("Indifferent")}</MenuItem>
-                    {options.map(getOption(value, setter))}
+                    <MenuItem
+                        data-testid={getOptionTestId(type, -1)}
+                        onClick={clear}
+                    >
+                        {t("Indifferent")}
+                    </MenuItem>
+                    {options.map(getOption(type, value, setter))}
                 </Stack>
             </Stack>
         );
@@ -73,5 +91,6 @@ const Pane = forwardRef<PaneRef, PaneProps>(
 
 Pane.displayName = "Pane";
 
+export { getOptionTestId };
 export type { PaneRef };
 export default Pane;

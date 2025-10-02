@@ -1,6 +1,6 @@
 import { FC, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import Content, { ContentProps } from "./Content";
+import Content, { ContentProps, getOptionTestId } from "./Content";
 import Select from "@/components/Select";
 import { formatThousands } from "@/utils/formatNumber";
 
@@ -9,10 +9,11 @@ const AREA_CEILING = (1000 * 1000).toString(); // 1M m^2
 
 interface RangeSelectProps extends Omit<ContentProps, "symbol" | "ceiling"> {
     type: "price" | "area";
+    open?: boolean; // INFO: jest
 }
 
-const RangeSelect: FC<RangeSelectProps> = (props) => {
-    const { type, valueMin = 0, valueMax = 0 } = props;
+const RangeSelect: FC<RangeSelectProps> = ({ type, open, ...props }) => {
+    const { valueMin = 0, valueMax = 0 } = props;
 
     const { t } = useTranslation();
 
@@ -39,6 +40,7 @@ const RangeSelect: FC<RangeSelectProps> = (props) => {
 
     return (
         <Select
+            open={open}
             label={t(label)}
             value={value}
             renderValue={renderValue}
@@ -55,4 +57,6 @@ const RangeSelect: FC<RangeSelectProps> = (props) => {
     );
 };
 
+export { getOptionTestId };
+export type { RangeSelectProps };
 export default RangeSelect;
