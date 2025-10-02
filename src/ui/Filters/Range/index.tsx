@@ -2,8 +2,8 @@ import { FC, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Content from "./Content";
 import { Props } from "./types";
-import formatNumber from "./formatNumber";
 import Select from "@/components/Select";
+import { formatThousands } from "@/utils/formatNumber";
 
 const PriceSelect: FC<Props> = (props) => {
     const { type, valueMin = 0, valueMax = 0 } = props;
@@ -29,13 +29,15 @@ const PriceSelect: FC<Props> = (props) => {
             return "";
         }
         if (valueMin && valueMax === 0) {
-            return t("From") + " " + formatNumber(valueMin) + symbol;
+            return t("From") + " " + formatThousands(valueMin) + symbol;
         }
         if (valueMin === 0 && valueMax) {
-            return t("Until") + " " + formatNumber(valueMax) + symbol;
+            return t("Until") + " " + formatThousands(valueMax) + symbol;
         }
 
-        return formatNumber(valueMin) + "-" + formatNumber(valueMax) + symbol;
+        return (
+            formatThousands(valueMin) + "-" + formatThousands(valueMax) + symbol
+        );
     }, [valueMax, valueMin, t]);
     const renderValue = useCallback(() => value, [value]);
 
