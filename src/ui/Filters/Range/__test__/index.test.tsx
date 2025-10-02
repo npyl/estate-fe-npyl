@@ -11,6 +11,7 @@ import { setupUseStatesMock } from "./mock/useStates";
 import { setupUseTranslationMock } from "@/test/mock/useTranslation";
 import Tester from "./Tester";
 import { render } from "@testing-library/react";
+import "@testing-library/jest-dom";
 
 // --------------------------------------------------------------------------------
 
@@ -23,6 +24,28 @@ const mountTester = () =>
 const clickOption = (type: "min" | "max", option: number) => {
     const TEST_ID = getOptionTestId(type, option);
     screen.getByTestId(TEST_ID).click();
+};
+
+// --------------------------------------------------------------------------------
+
+const expectOptions = (INITIAL_VALUE: number, STEP: number) => {
+    const OPTION0 = getOptionTestId("min", INITIAL_VALUE);
+    const OPTION1 = getOptionTestId("min", INITIAL_VALUE + STEP);
+    expect(screen.getByTestId(OPTION0)).toBeInTheDocument();
+    expect(screen.getByTestId(OPTION1)).toBeInTheDocument();
+};
+
+const expectRentOptions = () => {
+    const INITIAL_VALUE = 100;
+    const STEP = 100;
+    expectOptions(INITIAL_VALUE, STEP);
+};
+
+// +10.000, +20.000, etc.
+const expectSaleOptions = () => {
+    const INITIAL_VALUE = 10000;
+    const STEP = 10000;
+    expectOptions(INITIAL_VALUE, STEP);
 };
 
 // --------------------------------------------------------------------------------
@@ -41,10 +64,38 @@ beforeEach(() => {
 
 describe("RangeSelect", () => {
     describe("options", () => {
-        it("nothing", () => {});
-        it("rent", () => {});
-        it("sale", () => {});
-        it("sale & rent", () => {});
+        it("nothing", () => {
+            mountTester();
+            // INFO: sale by default
+            expectSaleOptions();
+        });
+
+        describe("rent", () => {
+            it("rent", () => {
+                setupUseStatesMock(["RENT"]);
+                mountTester();
+                expectRentOptions();
+            });
+
+            it("rented", () => {
+                setupUseStatesMock(["RENTED"]);
+                mountTester();
+                expectRentOptions();
+            });
+        });
+
+        it("sale", () => {
+            setupUseStatesMock(["SOLD"]);
+            mountTester();
+            expectSaleOptions();
+        });
+
+        it("sale & rent", () => {
+            setupUseStatesMock(["RENT", "SOLD"]);
+            mountTester();
+            expectRentOptions();
+            expectSaleOptions();
+        });
     });
 
     describe("unconflicting", () => {
@@ -73,10 +124,9 @@ describe("RangeSelect", () => {
             expect(onSetMin).toHaveBeenCalledWith(TEST_VALUE_MIN);
             expect(onSetMax).toHaveBeenCalledTimes(1);
         });
+
         it("typeMin", () => {});
         it("typeMax", () => {});
-        it("clearMin", () => {});
-        it("clearMax", () => {});
     });
 
     describe("conflicting", () => {
@@ -114,8 +164,6 @@ describe("RangeSelect", () => {
         });
         it("typeMin", () => {});
         it("typeMax", () => {});
-        it("clearMin", () => {});
-        it("clearMax", () => {});
     });
 
     describe("safety", () => {
