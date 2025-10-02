@@ -7,7 +7,7 @@ import { formatThousands } from "@/utils/formatNumber";
 // --------------------------------------------------------------------------------------
 
 const getOptionTestId = (type: "min" | "max", value: string | number) =>
-    `RangeSelect-Pane-Option-${type}-${value}`;
+    `PPRangeSelect-Pane-Option-${type}-${value}`;
 
 const OptionContainerSx: SxProps<Theme> = {
     maxHeight: 300,
@@ -32,6 +32,9 @@ const getOption =
     );
 
 // --------------------------------------------------------------------------------------
+
+const getInputTestId = (type: "min" | "max") =>
+    `PPRangeSelect-Pane-Input-${type}`;
 
 interface PaneRef extends DebouncedInputRef {}
 
@@ -69,6 +72,7 @@ const Pane = forwardRef<PaneRef, PaneProps>(
             <Stack spacing={1}>
                 <DebouncedInput
                     ref={ref}
+                    data-testid={getInputTestId(type)}
                     label={label}
                     max={ceiling}
                     setter={setter}
@@ -91,6 +95,6 @@ const Pane = forwardRef<PaneRef, PaneProps>(
 
 Pane.displayName = "Pane";
 
-export { getOptionTestId };
+export { getInputTestId, getOptionTestId };
 export type { PaneRef };
 export default Pane;

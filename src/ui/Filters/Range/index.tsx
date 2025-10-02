@@ -1,6 +1,10 @@
 import { FC, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import Content, { ContentProps, getOptionTestId } from "./Content";
+import Content, {
+    ContentProps,
+    getInputTestId,
+    getOptionTestId,
+} from "./Content";
 import Select from "@/components/Select";
 import { formatThousands } from "@/utils/formatNumber";
 
@@ -13,7 +17,7 @@ interface RangeSelectProps extends Omit<ContentProps, "symbol" | "ceiling"> {
 }
 
 const RangeSelect: FC<RangeSelectProps> = ({ type, open, ...props }) => {
-    const { valueMin = 0, valueMax = 0 } = props;
+    const { valueMin, valueMax } = props;
 
     const { t } = useTranslation();
 
@@ -21,14 +25,20 @@ const RangeSelect: FC<RangeSelectProps> = ({ type, open, ...props }) => {
     const label = type === "price" ? "Price" : "Area";
     const ceiling = type === "price" ? PRICE_CEILING : AREA_CEILING;
 
-    const value = useMemo(() => {
-        if (valueMin === 0 && valueMax === 0) {
+    // INFO: we have two lists of `MenuItem`s inside a single `Select`. Make sure we get a value that corresponds to a `MenuItem` (we don't care which) to prevent out-of-range warnings
+    const value = useMemo(
+        () => valueMax ?? valueMin ?? "",
+        [valueMax, valueMin]
+    );
+
+    const renderValue = useCallback(() => {
+        if (valueMin === undefined && valueMax === undefined) {
             return "";
         }
-        if (valueMin && valueMax === 0) {
+        if (valueMin && valueMax === undefined) {
             return t("From") + " " + formatThousands(valueMin) + symbol;
         }
-        if (valueMin === 0 && valueMax) {
+        if (valueMin === undefined && valueMax) {
             return t("Until") + " " + formatThousands(valueMax) + symbol;
         }
 
@@ -36,7 +46,6 @@ const RangeSelect: FC<RangeSelectProps> = ({ type, open, ...props }) => {
             formatThousands(valueMin) + "-" + formatThousands(valueMax) + symbol
         );
     }, [valueMax, valueMin, t]);
-    const renderValue = useCallback(() => value, [value]);
 
     return (
         <Select
@@ -57,6 +66,6 @@ const RangeSelect: FC<RangeSelectProps> = ({ type, open, ...props }) => {
     );
 };
 
-export { getOptionTestId };
+export { getInputTestId, getOptionTestId, PRICE_CEILING };
 export type { RangeSelectProps };
 export default RangeSelect;

@@ -5,6 +5,7 @@ import OnlyNumbersInput, {
 import useWaitForStop from "@/hooks/useWaitForStop";
 
 interface DebouncedInputRef {
+    setValue: (s: string) => void;
     clear: VoidFunction;
 }
 
@@ -16,9 +17,7 @@ interface DebouncedInputProps
 
 const DebouncedInput = forwardRef<DebouncedInputRef, DebouncedInputProps>(
     ({ value: _value, setter, ...props }, ref) => {
-        const [value, setValue] = useState("");
-
-        const evaluatedValue = value ?? _value?.toString() ?? "";
+        const [value, setValue] = useState(_value?.toString() ?? "");
 
         // ----------------------------------------------------------------------------------
 
@@ -37,14 +36,10 @@ const DebouncedInput = forwardRef<DebouncedInputRef, DebouncedInputProps>(
         // ----------------------------------------------------------------------------------
 
         const clear = useCallback(() => setValue(""), []);
-        useImperativeHandle(ref, () => ({ clear }), []);
+        useImperativeHandle(ref, () => ({ setValue, clear }), []);
 
         return (
-            <OnlyNumbersInput
-                value={evaluatedValue}
-                onChange={onChange}
-                {...props}
-            />
+            <OnlyNumbersInput value={value} onChange={onChange} {...props} />
         );
     }
 );

@@ -1,6 +1,6 @@
 import { Stack } from "@mui/material";
 import { FC, useRef, useState } from "react";
-import Pane, { PaneRef, getOptionTestId } from "./Pane";
+import Pane, { PaneRef, getInputTestId, getOptionTestId } from "./Pane";
 import useMinMaxControl from "./useMinMaxControl";
 
 // --------------------------------------------------------------------------------------
@@ -69,6 +69,6 @@ const Content: FC<ContentProps> = ({
     );
 };
 
-export { getOptionTestId };
+export { getInputTestId, getOptionTestId };
 export type { ContentProps };
 export default Content;
