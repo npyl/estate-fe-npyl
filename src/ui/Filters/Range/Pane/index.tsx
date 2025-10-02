@@ -24,8 +24,8 @@ const getOption =
         <MenuItem
             key={o}
             data-testid={getOptionTestId(type, o)}
-            onClick={() => onClick(o.toString())}
             selected={value === o}
+            onClick={() => onClick(o.toString())}
         >
             {formatThousands(o)}
         </MenuItem>

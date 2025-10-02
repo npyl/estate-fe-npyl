@@ -1,11 +1,11 @@
-import { FC, useCallback, useMemo } from "react";
+import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Content, {
     ContentProps,
     getInputTestId,
     getOptionTestId,
 } from "./Content";
-import Select from "@/components/Select";
+import Select from "./Select";
 import { formatThousands } from "@/utils/formatNumber";
 
 const PRICE_CEILING = (1000 * 1000 * 1000).toString(); // 1B euros
@@ -25,13 +25,7 @@ const RangeSelect: FC<RangeSelectProps> = ({ type, open, ...props }) => {
     const label = type === "price" ? "Price" : "Area";
     const ceiling = type === "price" ? PRICE_CEILING : AREA_CEILING;
 
-    // INFO: we have two lists of `MenuItem`s inside a single `Select`. Make sure we get a value that corresponds to a `MenuItem` (we don't care which) to prevent out-of-range warnings
-    const value = useMemo(
-        () => valueMax ?? valueMin ?? "",
-        [valueMax, valueMin]
-    );
-
-    const renderValue = useCallback(() => {
+    const value = useMemo(() => {
         if (valueMin === undefined && valueMax === undefined) {
             return "";
         }
@@ -52,14 +46,7 @@ const RangeSelect: FC<RangeSelectProps> = ({ type, open, ...props }) => {
             open={open}
             label={t(label)}
             value={value}
-            renderValue={renderValue}
-            formControlProps={{
-                sx: {
-                    minWidth: "175px",
-                    maxWidth: "175px",
-                    textWrap: "nowrap",
-                },
-            }}
+            sx={{ minWidth: "175px", maxWidth: "175px", textWrap: "nowrap" }}
         >
             <Content symbol={symbol} ceiling={ceiling} {...props} />
         </Select>

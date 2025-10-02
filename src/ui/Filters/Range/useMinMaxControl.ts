@@ -34,6 +34,7 @@ const useMinMaxControl = (
             if (shouldClear) clearMax();
 
             _setMin(o);
+            fromRef.current?.setValue(o.toString());
         },
         [valueMax, _setMin, clearMax]
     );
@@ -47,6 +48,7 @@ const useMinMaxControl = (
             if (shouldClear) clearMin();
 
             _setMax(o);
+            toRef.current?.setValue(o.toString());
         },
         [valueMin, _setMax, clearMin]
     );

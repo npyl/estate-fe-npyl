@@ -1,17 +1,15 @@
 // Things to test:
 // 1. writing on textfield doesn't kill the whole thing
-// 2. isNothing -> show SALE-related
-//    isRent -> show RENT(or RENTED)-related
-//    isSale -> show SALE-related
-//    isRent & isSale -> show RENT,SALE-related
 
 import { screen } from "@testing-library/dom";
-import { getOptionTestId } from "@/ui/Filters/Range";
+import { getInputTestId, getOptionTestId } from "@/ui/Filters/Range";
 import { setupUseStatesMock } from "./mock/useStates";
 import { setupUseTranslationMock } from "@/test/mock/useTranslation";
 import Tester from "./Tester";
 import { render } from "@testing-library/react";
+import { act } from "react";
 import "@testing-library/jest-dom";
+import { formatThousands } from "@/utils/formatNumber";
 
 // --------------------------------------------------------------------------------
 
@@ -23,10 +21,14 @@ const mountTester = () =>
 
 const clickOption = (type: "min" | "max", option: number) => {
     const TEST_ID = getOptionTestId(type, option);
-    screen.getByTestId(TEST_ID).click();
+    act(() => {
+        screen.getByTestId(TEST_ID).click();
+    });
 };
 
 // --------------------------------------------------------------------------------
+
+// Methods to check whether options belong in Rent, Sale categories.
 
 const expectOptions = (INITIAL_VALUE: number, STEP: number) => {
     const OPTION0 = getOptionTestId("min", INITIAL_VALUE);
@@ -47,6 +49,19 @@ const expectSaleOptions = () => {
     const STEP = 10000;
     expectOptions(INITIAL_VALUE, STEP);
 };
+
+// --------------------------------------------------------------------------------
+
+const expectInputValue = (INPUT_TESTID: string, value: string) => {
+    const container = screen.getByTestId(INPUT_TESTID);
+    const input = container.querySelector("input") as HTMLInputElement;
+    expect(input?.value).toBe(value);
+};
+
+const expectFromInputValue = (value: number) =>
+    expectInputValue(getInputTestId("min"), formatThousands(value));
+const expectToInputValue = (value: number) =>
+    expectInputValue(getInputTestId("max"), formatThousands(value));
 
 // --------------------------------------------------------------------------------
 
@@ -101,15 +116,18 @@ describe("RangeSelect", () => {
     describe("unconflicting", () => {
         it("setMin -> setMax", () => {
             mountTester();
+
             clickOption("min", TEST_VALUE_MIN);
             expect(onSetMin).toHaveBeenCalledTimes(1);
             expect(onSetMin).toHaveBeenCalledWith(TEST_VALUE_MIN);
             expect(onSetMax).not.toHaveBeenCalled();
+            expectFromInputValue(TEST_VALUE_MIN);
 
             clickOption("max", TEST_VALUE_MAX);
             expect(onSetMax).toHaveBeenCalledTimes(1);
             expect(onSetMax).toHaveBeenCalledWith(TEST_VALUE_MAX);
             expect(onSetMin).toHaveBeenCalledTimes(1);
+            expectToInputValue(TEST_VALUE_MAX);
         });
         it("setMax -> setMin", () => {
             mountTester();
@@ -118,11 +136,13 @@ describe("RangeSelect", () => {
             expect(onSetMax).toHaveBeenCalledTimes(1);
             expect(onSetMax).toHaveBeenCalledWith(TEST_VALUE_MAX);
             expect(onSetMin).not.toHaveBeenCalled();
+            expectToInputValue(TEST_VALUE_MAX);
 
             clickOption("min", TEST_VALUE_MIN);
             expect(onSetMin).toHaveBeenCalledTimes(1);
             expect(onSetMin).toHaveBeenCalledWith(TEST_VALUE_MIN);
             expect(onSetMax).toHaveBeenCalledTimes(1);
+            expectFromInputValue(TEST_VALUE_MIN);
         });
 
         it("typeMin", () => {});
@@ -167,6 +187,11 @@ describe("RangeSelect", () => {
     });
 
     describe("safety", () => {
-        it("above max value", () => {});
+        it("below max value", () => {
+            mountTester();
+        });
+        it("above max value", () => {
+            mountTester();
+        });
     });
 });
