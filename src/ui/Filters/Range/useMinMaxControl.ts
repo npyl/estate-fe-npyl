@@ -30,13 +30,14 @@ const useMinMaxControl = (
             const o = toNumberSafe(s);
             if (o === -1) return;
 
-            const shouldClear = valueMax && o > valueMax && valueMax !== 0;
+            const shouldClear = valueMax && o > valueMax;
             if (shouldClear) clearMax();
 
             _setMin(o);
         },
         [valueMax, _setMin, clearMax]
     );
+
     const setMax = useCallback(
         (s: string) => {
             const o = toNumberSafe(s);
@@ -47,7 +48,7 @@ const useMinMaxControl = (
 
             _setMax(o);
         },
-        [valueMin, _setMin, clearMin]
+        [valueMin, _setMax, clearMin]
     );
 
     return { setMin, setMax, clearMin, clearMax };
