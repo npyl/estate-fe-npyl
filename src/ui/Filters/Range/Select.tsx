@@ -5,8 +5,15 @@ import { styled } from "@mui/material/styles";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { FC, useRef } from "react";
 
+//
+//  INFO: Why use this custom select instead of MUI's?
+//
+//  Since we wrap our MenuItems with a container (see Select's <Content />), MUI's select looses the ability to match `value` with a `MenuItem`
+//  This polutes jest's console with warnings; plus its wrong anyway!
+//
+
 const StyledTextField = styled(TextField)({
-    ".MuiBaseInput-root": {
+    "& .MuiInputBase-input": {
         cursor: "pointer",
     },
 });
