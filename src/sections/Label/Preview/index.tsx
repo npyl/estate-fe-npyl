@@ -2,7 +2,6 @@ import { Grid, Paper, Stack, Typography } from "@mui/material";
 import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useGetLabelsQuery } from "src/services/labels";
-import { IEditProps } from "./types";
 import HoverableLabel from "./HoverableLabel";
 import { ILabels, LabelResourceType } from "@/types/label";
 import { TranslationType } from "@/types/translation";
@@ -31,10 +30,9 @@ const getSections = (t: TranslationType): Record<keyof ILabels, TSection> => ({
 interface SectionProps {
     sectionKey: keyof ILabels;
     section: TSection;
-    onEdit: (label: IEditProps) => void;
 }
 
-const Section: FC<SectionProps> = ({ sectionKey, section, onEdit }) => {
+const Section: FC<SectionProps> = ({ sectionKey, section }) => {
     const { data: labels } = useGetLabelsQuery();
 
     const data = labels?.[sectionKey] || [];
@@ -59,11 +57,12 @@ const Section: FC<SectionProps> = ({ sectionKey, section, onEdit }) => {
                             color={label.color}
                             name={label.name}
                             // ...
-                            onEdit={() =>
-                                onEdit({
-                                    ...label,
-                                    resource: variant,
-                                })
+                            onEdit={
+                                () => {}
+                                // onEdit({
+                                //     ...label,
+                                //     resource: variant,
+                                // })
                             }
                         />
                     </Grid>
@@ -73,25 +72,12 @@ const Section: FC<SectionProps> = ({ sectionKey, section, onEdit }) => {
     );
 };
 
-const getSection =
-    (onEdit: (label: IEditProps) => void) =>
-    (entry: [keyof ILabels, TSection]) => {
-        const [key, section] = entry;
-        return (
-            <Section
-                key={key}
-                sectionKey={key}
-                section={section}
-                onEdit={onEdit}
-            />
-        );
-    };
+const getSection = (entry: [keyof ILabels, TSection]) => {
+    const [key, section] = entry;
+    return <Section key={key} sectionKey={key} section={section} />;
+};
 
-interface PreviewProps {
-    onEdit: (label: IEditProps) => void;
-}
-
-const Preview: FC<PreviewProps> = ({ onEdit }) => {
+const Preview = () => {
     const { t } = useTranslation();
 
     const sections = useMemo(() => {
@@ -109,7 +95,7 @@ const Preview: FC<PreviewProps> = ({ onEdit }) => {
             }}
         >
             <Typography variant="h5">{t("My labels")}</Typography>
-            {sections.map(getSection(onEdit))}
+            {sections.map(getSection)}
         </Paper>
     );
 };

@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { Label } from "@/components/Label";
 import { useWatch } from "react-hook-form";

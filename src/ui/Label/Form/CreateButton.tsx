@@ -6,9 +6,9 @@ import {
     useCreateLabelForResourceMutation,
 } from "@/services/labels";
 import { FC, useCallback } from "react";
-import { ILabelForm } from "@/sections/Label/Create/types";
 import { LabelResourceType } from "@/types/label";
 import useInvalidateTags from "./useInvalidateTags";
+import { ILabelForm } from "./types";
 
 interface CreateButtonProps {
     edit: boolean;

@@ -1,39 +1,9 @@
-import { Box, Grid } from "@mui/material";
 import type { NextPage } from "next";
-import { useState } from "react";
 import AuthGuard from "@/components/authentication/auth-guard";
 import { DashboardLayout } from "@/ui/dashboard/dashboard-layout";
-import Create from "@/sections/Label/Create";
-import Preview from "@/sections/Label/Preview";
-import { IEditProps } from "@/sections/Label/Preview/types";
-import dynamic from "next/dynamic";
-const Edit = dynamic(() => import("@/sections/Label/Edit"));
+import LabelSection from "@/sections/Label";
 
-const LabelsPage: NextPage = () => {
-    const [editedLabel, setEditedLabel] = useState<IEditProps>();
-    const cancelEdit = () => setEditedLabel(undefined);
-
-    return (
-        <Grid container spacing={1}>
-            <Grid item xs={12} lg={3} position="relative">
-                <Box position="sticky" top={73}>
-                    {editedLabel ? (
-                        <Edit
-                            editedLabel={editedLabel}
-                            cancelEdit={cancelEdit}
-                        />
-                    ) : (
-                        <Create />
-                    )}
-                </Box>
-            </Grid>
-
-            <Grid item xs={12} lg={9}>
-                <Preview onEdit={setEditedLabel} />
-            </Grid>
-        </Grid>
-    );
-};
+const LabelsPage: NextPage = () => <LabelSection />;
 
 LabelsPage.getLayout = (page) => (
     <AuthGuard>
