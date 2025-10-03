@@ -1,18 +1,29 @@
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import ClearIcon from "@mui/icons-material/Clear";
-import { FC } from "react";
+import { FC, MouseEvent, useCallback } from "react";
 
 interface Props {
-    onClick: VoidFunction;
+    onClose: VoidFunction;
+    onClear: VoidFunction;
 }
 
-const AdornmentRight: FC<Props> = ({ onClick }) => (
-    <InputAdornment position="end">
-        <IconButton onClick={onClick}>
-            <ClearIcon />
-        </IconButton>
-    </InputAdornment>
-);
+const AdornmentRight: FC<Props> = ({ onClear, onClose }) => {
+    const onClick = useCallback(
+        (e: MouseEvent<HTMLDivElement>) => {
+            e.stopPropagation();
+            onClear();
+            onClose();
+        },
+        [onClear, onClose]
+    );
+    return (
+        <InputAdornment position="end" onClick={onClick}>
+            <IconButton>
+                <ClearIcon />
+            </IconButton>
+        </InputAdornment>
+    );
+};
 
 export default AdornmentRight;

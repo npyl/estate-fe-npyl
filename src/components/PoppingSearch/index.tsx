@@ -7,7 +7,8 @@ import AdornmentRight from "./AdornmentRight";
 
 // --------------------------------------------------------------------
 
-interface PoppingSearchProps extends Omit<StyledSearchProps, "open"> {
+interface PoppingSearchProps
+    extends Omit<StyledSearchProps, "open" | "onClick"> {
     onClear: VoidFunction;
 }
 
@@ -17,11 +18,6 @@ const PoppingSearch = forwardRef<HTMLDivElement, PoppingSearchProps>(
 
         const label = isOpen ? _label : "";
 
-        const handleClear = useCallback(() => {
-            onClear();
-            closeSearch();
-        }, [onClear]);
-
         return (
             <ClickAwayListener onClickAway={closeSearch}>
                 <StyledTextField
@@ -30,11 +26,15 @@ const PoppingSearch = forwardRef<HTMLDivElement, PoppingSearchProps>(
                     label={label}
                     InputProps={{
                         ...InputProps,
-                        startAdornment: <AdornmentLeft onClick={openSearch} />,
+                        startAdornment: <AdornmentLeft />,
                         endAdornment: isOpen ? (
-                            <AdornmentRight onClick={handleClear} />
+                            <AdornmentRight
+                                onClear={onClear}
+                                onClose={closeSearch}
+                            />
                         ) : null,
                     }}
+                    onClick={openSearch}
                     {...props}
                 />
             </ClickAwayListener>
