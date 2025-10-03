@@ -1,10 +1,12 @@
 // Things to test:
 // 1. writing on textfield doesn't kill the whole thing
 
+import { setupUseTranslationMock } from "@/test/mock/useTranslation";
+setupUseTranslationMock();
+
 import { screen } from "@testing-library/dom";
 import { getInputTestId, getOptionTestId } from "@/ui/Filters/Range";
 import { setupUseStatesMock } from "./mock/useStates";
-import { setupUseTranslationMock } from "@/test/mock/useTranslation";
 import Tester from "./Tester";
 import { render } from "@testing-library/react";
 import { act } from "react";
@@ -115,7 +117,6 @@ const setConflicting = (
 // --------------------------------------------------------------------------------
 
 beforeAll(() => {
-    setupUseTranslationMock();
     setupUseStatesMock([]);
 });
 
