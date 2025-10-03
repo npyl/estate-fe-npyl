@@ -4,6 +4,8 @@ import OnlyNumbersInput, {
 } from "@/components/OnlyNumbers";
 import useWaitForStop from "@/hooks/useWaitForStop";
 
+const CHANGE_DELAY = 300;
+
 interface DebouncedInputRef {
     setValue: (s: string) => void;
     clear: VoidFunction;
@@ -31,7 +33,7 @@ const DebouncedInput = forwardRef<DebouncedInputRef, DebouncedInputProps>(
             [setter]
         );
 
-        const onChange = useWaitForStop(onLocalChange, onStop, 300);
+        const onChange = useWaitForStop(onLocalChange, onStop, CHANGE_DELAY);
 
         // ----------------------------------------------------------------------------------
 
@@ -46,5 +48,6 @@ const DebouncedInput = forwardRef<DebouncedInputRef, DebouncedInputProps>(
 
 DebouncedInput.displayName = "DebouncedInput";
 
+export { CHANGE_DELAY };
 export type { DebouncedInputRef };
 export default DebouncedInput;

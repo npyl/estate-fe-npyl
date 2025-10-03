@@ -4,6 +4,8 @@
 import { setupUseTranslationMock } from "@/test/mock/useTranslation";
 setupUseTranslationMock();
 
+jest.useFakeTimers();
+
 import { fireEvent, screen } from "@testing-library/dom";
 import {
     getInputTestId,
@@ -16,6 +18,7 @@ import { render } from "@testing-library/react";
 import { act } from "react";
 import { formatThousands } from "@/utils/formatNumber";
 import toNumberSafe from "@/utils/toNumberSafe";
+import { CHANGE_DELAY } from "../Pane/DebouncedInput";
 import "@testing-library/jest-dom";
 
 // --------------------------------------------------------------------------------
@@ -84,29 +87,54 @@ const typeStep = (input: HTMLInputElement) => (stepValue: number) => {
     fireEvent.change(input, { target: { value: stepValue } });
 };
 
-const typeValue = (type: "min" | "max", value: number) => {
+/**
+ * Helper to type a value to a specific input of the Range
+ * @param type 'min' or 'max' input
+ * @param value value to type
+ * @param inSteps whether to directly type the value or type in steps (a.k.a. each digit sequentially)
+ */
+const typeValue = (
+    type: "min" | "max",
+    value: number,
+    inSteps: boolean = true
+) => {
     const container = screen.getByTestId(getInputTestId(type));
     const input = container.querySelector("input") as HTMLInputElement;
 
     const steps = getTypeSteps(value);
 
-    // Type each step by appending to existing value
-    steps.forEach(typeStep(input));
+    if (inSteps) {
+        // Type each step by appending to existing value
+        steps.forEach(typeStep(input));
+    } else {
+        // INFO: cleaner
+        const directlyType = (value: number) => typeStep(input)(value);
+
+        // Type!
+        directlyType(value);
+    }
+
+    // INFO: This is *REALLY* important
+    act(() => {
+        jest.advanceTimersByTime(CHANGE_DELAY);
+    });
 };
 
 // --------------------------------------------------------------------------------
-//                                  setters
+//                                  setters/typers
 // --------------------------------------------------------------------------------
 
 const TEST_VALUE_MIN = 10000;
 const TEST_VALUE_MAX = 50000;
 
-const setUnconflicting = (
+const doUnconflicting = (
+    mode: "type" | "set",
     type: "min" | "max",
     value: number,
     isLast: boolean = false
 ) => {
-    clickOption(type, value);
+    const method = mode === "type" ? typeValue : clickOption;
+    method(type, value);
 
     const cb = type === "min" ? onSetMin : onSetMax;
     const otherCb = type !== "min" ? onSetMin : onSetMax;
@@ -123,12 +151,14 @@ const setUnconflicting = (
     expectInputValue(type, value);
 };
 
-const setConflicting = (
+const doConflicting = (
+    mode: "type" | "set",
     type: "min" | "max",
     value: number,
     isLast: boolean = false
 ) => {
-    clickOption(type, value);
+    const method = mode === "type" ? typeValue : clickOption;
+    method(type, value);
 
     const cb = type === "min" ? onSetMin : onSetMax;
     const otherCb = type !== "min" ? onSetMin : onSetMax;
@@ -144,6 +174,30 @@ const setConflicting = (
     }
 };
 
+const setUnconflicting = (
+    type: "min" | "max",
+    value: number,
+    isLast: boolean = false
+) => doUnconflicting("set", type, value, isLast);
+
+const setConflicting = (
+    type: "min" | "max",
+    value: number,
+    isLast: boolean = false
+) => doConflicting("set", type, value, isLast);
+
+const typeUnconflicting = (
+    type: "min" | "max",
+    value: number,
+    isLast: boolean = false
+) => doUnconflicting("type", type, value, isLast);
+
+const typeConflicting = (
+    type: "min" | "max",
+    value: number,
+    isLast: boolean = false
+) => doConflicting("type", type, value, isLast);
+
 // --------------------------------------------------------------------------------
 
 beforeAll(() => {
@@ -151,6 +205,7 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
+    jest.clearAllTimers();
     jest.clearAllMocks();
 });
 
@@ -210,8 +265,24 @@ describe("RangeSelect", () => {
             setUnconflicting("min", TEST_VALUE_MIN, true);
         });
 
-        it("typeMin -> typeMax", () => {});
-        it("typeMax -> typeMin", () => {});
+        it("typeMin -> typeMax", () => {
+            mountTester();
+
+            // click a min option which is *actually* smaller than the max
+            typeUnconflicting("min", TEST_VALUE_MIN);
+
+            // click a max option which is *actually* bigger than the min
+            typeUnconflicting("max", TEST_VALUE_MAX, true);
+        });
+        it("typeMax -> typeMin", () => {
+            mountTester();
+
+            // click a max option which is *actually* bigger than the min
+            typeUnconflicting("max", TEST_VALUE_MAX);
+
+            // click a min option which is *actually* smaller than the max
+            typeUnconflicting("min", TEST_VALUE_MIN, true);
+        });
     });
 
     describe("conflicting", () => {
@@ -234,8 +305,24 @@ describe("RangeSelect", () => {
             setConflicting("min", TEST_VALUE_MAX, true);
         });
 
-        it("typeMin -> typeMax", () => {});
-        it("typeMax -> typeMin", () => {});
+        it("typeMin -> typeMax", () => {
+            mountTester();
+
+            // click a min option which is bigger than the max; conflict!
+            typeConflicting("min", TEST_VALUE_MAX);
+
+            // click a max option which is smaller than the min; conflict!
+            typeConflicting("max", TEST_VALUE_MIN, true);
+        });
+        it("typeMax -> typeMin", () => {
+            mountTester();
+
+            // click a max option which is smaller than the min; conflict!
+            typeConflicting("max", TEST_VALUE_MIN);
+
+            // click a min option which is bigger than the max; conflict!
+            typeConflicting("min", TEST_VALUE_MAX, true);
+        });
     });
 
     describe("safety", () => {
