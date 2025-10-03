@@ -4,13 +4,18 @@
 import { setupUseTranslationMock } from "@/test/mock/useTranslation";
 setupUseTranslationMock();
 
-import { screen } from "@testing-library/dom";
-import { getInputTestId, getOptionTestId } from "@/ui/Filters/Range";
+import { fireEvent, screen } from "@testing-library/dom";
+import {
+    getInputTestId,
+    getOptionTestId,
+    PRICE_CEILING,
+} from "@/ui/Filters/Range";
 import { setupUseStatesMock } from "./mock/useStates";
 import Tester from "./Tester";
 import { render } from "@testing-library/react";
 import { act } from "react";
 import { formatThousands } from "@/utils/formatNumber";
+import toNumberSafe from "@/utils/toNumberSafe";
 import "@testing-library/jest-dom";
 
 // --------------------------------------------------------------------------------
@@ -62,6 +67,31 @@ const expectInputValue = (type: "min" | "max", value: number) => {
     const container = screen.getByTestId(getInputTestId(type));
     const input = container.querySelector("input") as HTMLInputElement;
     expect(input?.value).toBe(formatThousands(value));
+};
+
+const getTypeSteps = (value: number) => {
+    const valueStr = value.toString();
+    const steps: number[] = [];
+
+    for (let i = 1; i <= valueStr.length; i++) {
+        steps.push(parseInt(valueStr.substring(0, i)));
+    }
+
+    return steps;
+};
+
+const typeStep = (input: HTMLInputElement) => (stepValue: number) => {
+    fireEvent.change(input, { target: { value: stepValue } });
+};
+
+const typeValue = (type: "min" | "max", value: number) => {
+    const container = screen.getByTestId(getInputTestId(type));
+    const input = container.querySelector("input") as HTMLInputElement;
+
+    const steps = getTypeSteps(value);
+
+    // Type each step by appending to existing value
+    steps.forEach(typeStep(input));
 };
 
 // --------------------------------------------------------------------------------
@@ -180,8 +210,8 @@ describe("RangeSelect", () => {
             setUnconflicting("min", TEST_VALUE_MIN, true);
         });
 
-        it("typeMin", () => {});
-        it("typeMax", () => {});
+        it("typeMin -> typeMax", () => {});
+        it("typeMax -> typeMin", () => {});
     });
 
     describe("conflicting", () => {
@@ -203,16 +233,23 @@ describe("RangeSelect", () => {
             // click a min option which is bigger than the max; conflict!
             setConflicting("min", TEST_VALUE_MAX, true);
         });
-        it("typeMin", () => {});
-        it("typeMax", () => {});
+
+        it("typeMin -> typeMax", () => {});
+        it("typeMax -> typeMin", () => {});
     });
 
     describe("safety", () => {
+        const iPRICE_CEILING = toNumberSafe(PRICE_CEILING);
+
         it("below max value", () => {
             mountTester();
+            typeValue("min", iPRICE_CEILING);
+            expectInputValue("min", iPRICE_CEILING);
         });
         it("above max value", () => {
             mountTester();
+            typeValue("min", iPRICE_CEILING * 1000);
+            expectInputValue("min", iPRICE_CEILING);
         });
     });
 });

@@ -38,7 +38,10 @@ const useSafeAnchor = (
           };
 
 interface SelectProps
-    extends Omit<TextFieldProps<"outlined">, "variant" | "onClick"> {
+    extends Omit<
+        TextFieldProps<"outlined">,
+        "variant" | "onClick" | "InputProps"
+    > {
     open?: boolean;
 }
 
