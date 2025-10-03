@@ -59,10 +59,12 @@ const getMobileOpenSx = (theme: Theme): SxProps<Theme> => ({
     },
 });
 
+const INITIAL_SIZE = "50px";
+
 const getMobileClosedSx = (): SxProps<Theme> => ({
     position: "default",
-    minWidth: "50px",
-    width: "50px",
+    minWidth: INITIAL_SIZE,
+    width: INITIAL_SIZE,
 });
 
 const getMobileSx = (open: boolean, theme: Theme) =>
@@ -70,14 +72,18 @@ const getMobileSx = (open: boolean, theme: Theme) =>
 
 const StyledTextField = styled(SelectableTextField)<Props>(
     ({ theme, open }) => ({
-        minWidth: open ? "200px" : "50px",
-        width: open ? "200px" : "50px",
-
+        [theme.breakpoints.up("sm")]: {
+            minWidth: open ? "200px" : INITIAL_SIZE,
+            width: open ? "200px" : INITIAL_SIZE,
+        },
         [theme.breakpoints.down("sm")]: getMobileSx(open, theme),
 
-        transition: "min-width 0.2s ease-out, width 0.2s ease-out",
+        transition: open
+            ? "min-width 0.2s ease-out, width 0.2s ease-out"
+            : undefined,
     })
 );
 
+export { INITIAL_SIZE };
 export type { Props as StyledSearchProps };
 export default StyledTextField;
