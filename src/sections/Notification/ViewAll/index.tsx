@@ -1,5 +1,5 @@
 import { Box, Stack, MenuItem } from "@mui/material";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import TabPanel from "@/components/Tabs/TabPanel";
 const Listings = dynamic(() => import("./tabs/listings"));
@@ -11,7 +11,6 @@ const StayUpdated = dynamic(() => import("./tabs/StayUpdated"));
 import dynamic from "next/dynamic";
 import { INotificationTab, TViewFilter } from "./types";
 import getTabOption from "./getTabOption";
-import { useDebounce } from "use-debounce";
 import ManagerSelect from "./ManagerSelect";
 import Tabs, { useCurrentTab } from "@/components/Tabs";
 import Select from "@/components/Select";
@@ -31,24 +30,14 @@ const ViewAllNotifications = () => {
 
     const [tab] = useCurrentTab();
     const [filter, setFilter] = useState<TViewFilter>("all");
-    const [searchText, setSearchText] = useState("");
 
-    const [debouncedSearchText] = useDebounce(searchText, 400);
+    const [searchText, setSearchText] = useState("");
 
     const handleFilterChange = (event: any) => {
         setFilter(event.target.value);
     };
 
-    const handleSearchTextChange = useCallback(
-        (event: React.ChangeEvent<HTMLInputElement>) => {
-            setSearchText(event.target.value);
-        },
-        []
-    );
-
-    const handleClearSearch = () => {
-        setSearchText("");
-    };
+    const handleClearSearch = () => setSearchText("");
 
     return (
         <>
@@ -75,7 +64,7 @@ const ViewAllNotifications = () => {
                 <Box my={1} position="relative">
                     <PoppingSearch
                         value={searchText}
-                        onChange={handleSearchTextChange}
+                        onChange={setSearchText}
                         onClear={handleClearSearch}
                     />
                     {tab === 0 && <ManagerSelect />}
@@ -83,25 +72,22 @@ const ViewAllNotifications = () => {
             </Box>
             {/* ------------------------------------------------ */}
             <TabPanel value={tab} index={0}>
-                <Tours filter={filter} searchText={debouncedSearchText} />
+                <Tours filter={filter} searchText={searchText} />
             </TabPanel>
             <TabPanel value={tab} index={1}>
-                <Listings filter={filter} searchText={debouncedSearchText} />
+                <Listings filter={filter} searchText={searchText} />
             </TabPanel>
             <TabPanel value={tab} index={2}>
-                <WorkApplications
-                    filter={filter}
-                    searchText={debouncedSearchText}
-                />
+                <WorkApplications filter={filter} searchText={searchText} />
             </TabPanel>
             <TabPanel value={tab} index={3}>
-                <Reviews filter={filter} searchText={debouncedSearchText} />
+                <Reviews filter={filter} searchText={searchText} />
             </TabPanel>
             <TabPanel value={tab} index={4}>
-                <Agreements filter={filter} searchText={debouncedSearchText} />
+                <Agreements filter={filter} searchText={searchText} />
             </TabPanel>
             <TabPanel value={tab} index={5}>
-                <StayUpdated filter={filter} searchText={debouncedSearchText} />
+                <StayUpdated filter={filter} searchText={searchText} />
             </TabPanel>
         </>
     );

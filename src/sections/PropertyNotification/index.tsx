@@ -1,7 +1,6 @@
 import { Box, Stack, MenuItem, Typography } from "@mui/material";
-import { useCallback, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useDebounce } from "use-debounce";
 import { useFilterNotificationsQuery } from "@/services/notification";
 import { NotificationType } from "@/types/notification";
 import Table from "../Notification/ViewAll/table";
@@ -20,18 +19,9 @@ const PropertyNotification: React.FC<PropertyNotificationProps> = ({
     const [filter, setFilter] = useState<string>("all");
     const [searchText, setSearchText] = useState("");
 
-    const [debouncedSearchText] = useDebounce(searchText, 400);
-
     const handleFilterChange = (event: any) => {
         setFilter(event.target.value);
     };
-
-    const handleSearchTextChange = useCallback(
-        (event: React.ChangeEvent<HTMLInputElement>) => {
-            setSearchText(event.target.value);
-        },
-        []
-    );
 
     const onClear = () => setSearchText("");
 
@@ -39,7 +29,7 @@ const PropertyNotification: React.FC<PropertyNotificationProps> = ({
         return {
             fromDate: null,
             toDate: null,
-            search: debouncedSearchText || "",
+            search: searchText || "",
             types: ["TOUR"] as NotificationType[],
             property: propertyId ? Number(propertyId) : undefined,
             viewed:
@@ -49,7 +39,7 @@ const PropertyNotification: React.FC<PropertyNotificationProps> = ({
                       ? false
                       : undefined,
         };
-    }, [filter, debouncedSearchText, propertyId]);
+    }, [filter, searchText, propertyId]);
 
     const { data: notifications } = useFilterNotificationsQuery({
         filter: filterBody,
@@ -69,7 +59,7 @@ const PropertyNotification: React.FC<PropertyNotificationProps> = ({
             >
                 <PoppingSearch
                     value={searchText}
-                    onChange={handleSearchTextChange}
+                    onChange={setSearchText}
                     onClear={onClear}
                 />
 

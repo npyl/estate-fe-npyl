@@ -70,19 +70,25 @@ const getMobileClosedSx = (): SxProps<Theme> => ({
 const getMobileSx = (open: boolean, theme: Theme) =>
     open ? getMobileOpenSx(theme) : getMobileClosedSx();
 
-const StyledTextField = styled(SelectableTextField)<Props>(
-    ({ theme, open }) => ({
-        [theme.breakpoints.up("sm")]: {
-            minWidth: open ? "200px" : INITIAL_SIZE,
-            width: open ? "200px" : INITIAL_SIZE,
-        },
-        [theme.breakpoints.down("sm")]: getMobileSx(open, theme),
+/**
+ * Make sure we prevent the textfield from being "controlled" (ignore `value`)
+ * @param prop Any prop is acceptable except of `value`
+ */
+const shouldForwardProp = (prop: string) => prop !== "value";
 
-        transition: open
-            ? "min-width 0.2s ease-out, width 0.2s ease-out"
-            : undefined,
-    })
-);
+const StyledTextField = styled(SelectableTextField, {
+    shouldForwardProp,
+})<Props>(({ theme, open }) => ({
+    [theme.breakpoints.up("sm")]: {
+        minWidth: open ? "200px" : INITIAL_SIZE,
+        width: open ? "200px" : INITIAL_SIZE,
+    },
+    [theme.breakpoints.down("sm")]: getMobileSx(open, theme),
+
+    transition: open
+        ? "min-width 0.2s ease-out, width 0.2s ease-out"
+        : undefined,
+}));
 
 export { INITIAL_SIZE };
 export type { Props as StyledSearchProps };
