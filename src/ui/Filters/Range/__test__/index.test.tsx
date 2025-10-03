@@ -12,6 +12,8 @@ import { formatThousands } from "@/utils/formatNumber";
 import "@testing-library/jest-dom";
 
 // --------------------------------------------------------------------------------
+//                              Basics
+// --------------------------------------------------------------------------------
 
 const onSetMin = jest.fn();
 const onSetMax = jest.fn();
@@ -27,8 +29,8 @@ const clickOption = (type: "min" | "max", option: number) => {
 };
 
 // --------------------------------------------------------------------------------
-
-// Methods to check whether options belong in Rent, Sale categories.
+//                Options checks (e.g. is Rent, Sale or both)
+// --------------------------------------------------------------------------------
 
 const expectOptions = (INITIAL_VALUE: number, STEP: number) => {
     const OPTION0 = getOptionTestId("min", INITIAL_VALUE);
@@ -51,22 +53,66 @@ const expectSaleOptions = () => {
 };
 
 // --------------------------------------------------------------------------------
+//                              INPUTS
+// --------------------------------------------------------------------------------
 
-const expectInputValue = (INPUT_TESTID: string, value: string) => {
-    const container = screen.getByTestId(INPUT_TESTID);
+const expectInputValue = (type: "min" | "max", value: number) => {
+    const container = screen.getByTestId(getInputTestId(type));
     const input = container.querySelector("input") as HTMLInputElement;
-    expect(input?.value).toBe(value);
+    expect(input?.value).toBe(formatThousands(value));
 };
 
-const expectFromInputValue = (value: number) =>
-    expectInputValue(getInputTestId("min"), formatThousands(value));
-const expectToInputValue = (value: number) =>
-    expectInputValue(getInputTestId("max"), formatThousands(value));
-
+// --------------------------------------------------------------------------------
+//                                  setters
 // --------------------------------------------------------------------------------
 
 const TEST_VALUE_MIN = 10000;
 const TEST_VALUE_MAX = 50000;
+
+const setUnconflicting = (
+    type: "min" | "max",
+    value: number,
+    isLast: boolean = false
+) => {
+    clickOption(type, value);
+
+    const cb = type === "min" ? onSetMin : onSetMax;
+    const otherCb = type !== "min" ? onSetMin : onSetMax;
+
+    expect(cb).toHaveBeenCalledTimes(1);
+    expect(cb).toHaveBeenCalledWith(value);
+
+    if (isLast) {
+        expect(otherCb).toHaveBeenCalledTimes(1);
+    } else {
+        expect(otherCb).not.toHaveBeenCalled();
+    }
+
+    expectInputValue(type, value);
+};
+
+const setConflicting = (
+    type: "min" | "max",
+    value: number,
+    isLast: boolean = false
+) => {
+    clickOption(type, value);
+
+    const cb = type === "min" ? onSetMin : onSetMax;
+    const otherCb = type !== "min" ? onSetMin : onSetMax;
+
+    expect(cb).toHaveBeenCalledTimes(1);
+    expect(cb).toHaveBeenCalledWith(value);
+
+    if (isLast) {
+        expect(otherCb).toHaveBeenCalledTimes(2);
+        expect(otherCb).toHaveBeenLastCalledWith(undefined);
+    } else {
+        expect(otherCb).not.toHaveBeenCalled();
+    }
+};
+
+// --------------------------------------------------------------------------------
 
 beforeAll(() => {
     setupUseTranslationMock();
@@ -117,32 +163,20 @@ describe("RangeSelect", () => {
         it("setMin -> setMax", () => {
             mountTester();
 
-            clickOption("min", TEST_VALUE_MIN);
-            expect(onSetMin).toHaveBeenCalledTimes(1);
-            expect(onSetMin).toHaveBeenCalledWith(TEST_VALUE_MIN);
-            expect(onSetMax).not.toHaveBeenCalled();
-            expectFromInputValue(TEST_VALUE_MIN);
+            // click a min option which is *actually* smaller than the max
+            setUnconflicting("min", TEST_VALUE_MIN);
 
-            clickOption("max", TEST_VALUE_MAX);
-            expect(onSetMax).toHaveBeenCalledTimes(1);
-            expect(onSetMax).toHaveBeenCalledWith(TEST_VALUE_MAX);
-            expect(onSetMin).toHaveBeenCalledTimes(1);
-            expectToInputValue(TEST_VALUE_MAX);
+            // click a max option which is *actually* bigger than the min
+            setUnconflicting("max", TEST_VALUE_MAX, true);
         });
         it("setMax -> setMin", () => {
             mountTester();
 
-            clickOption("max", TEST_VALUE_MAX);
-            expect(onSetMax).toHaveBeenCalledTimes(1);
-            expect(onSetMax).toHaveBeenCalledWith(TEST_VALUE_MAX);
-            expect(onSetMin).not.toHaveBeenCalled();
-            expectToInputValue(TEST_VALUE_MAX);
+            // click a max option which is *actually* bigger than the min
+            setUnconflicting("max", TEST_VALUE_MAX);
 
-            clickOption("min", TEST_VALUE_MIN);
-            expect(onSetMin).toHaveBeenCalledTimes(1);
-            expect(onSetMin).toHaveBeenCalledWith(TEST_VALUE_MIN);
-            expect(onSetMax).toHaveBeenCalledTimes(1);
-            expectFromInputValue(TEST_VALUE_MIN);
+            // click a min option which is *actually* smaller than the max
+            setUnconflicting("min", TEST_VALUE_MIN, true);
         });
 
         it("typeMin", () => {});
@@ -153,30 +187,20 @@ describe("RangeSelect", () => {
         it("setMin -> setMax", () => {
             mountTester();
 
-            clickOption("min", TEST_VALUE_MAX);
-            expect(onSetMin).toHaveBeenCalledTimes(1);
-            expect(onSetMin).toHaveBeenCalledWith(TEST_VALUE_MAX);
-            expect(onSetMax).not.toHaveBeenCalled();
+            // click a min option which is bigger than the max; conflict!
+            setConflicting("min", TEST_VALUE_MAX);
 
-            clickOption("max", TEST_VALUE_MIN);
-            expect(onSetMax).toHaveBeenCalledTimes(1);
-            expect(onSetMax).toHaveBeenCalledWith(TEST_VALUE_MIN);
-            expect(onSetMin).toHaveBeenCalledTimes(2);
-            expect(onSetMin).toHaveBeenLastCalledWith(undefined);
+            // click a max option which is smaller than the min; conflict!
+            setConflicting("max", TEST_VALUE_MIN, true);
         });
         it("setMax -> setMin", () => {
             mountTester();
 
-            clickOption("max", TEST_VALUE_MIN);
-            expect(onSetMax).toHaveBeenCalledTimes(1);
-            expect(onSetMax).toHaveBeenCalledWith(TEST_VALUE_MIN);
-            expect(onSetMin).not.toHaveBeenCalled();
+            // click a max option which is smaller than the min; conflict!
+            setConflicting("max", TEST_VALUE_MIN);
 
-            clickOption("min", TEST_VALUE_MAX);
-            expect(onSetMin).toHaveBeenCalledTimes(1);
-            expect(onSetMin).toHaveBeenCalledWith(TEST_VALUE_MAX);
-            expect(onSetMax).toHaveBeenCalledTimes(2);
-            expect(onSetMax).toHaveBeenLastCalledWith(undefined);
+            // click a min option which is bigger than the max; conflict!
+            setConflicting("min", TEST_VALUE_MAX, true);
         });
         it("typeMin", () => {});
         it("typeMax", () => {});
