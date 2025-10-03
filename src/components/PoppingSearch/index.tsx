@@ -1,10 +1,9 @@
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
-import ClearIcon from "@mui/icons-material/Clear";
 import { forwardRef, useCallback } from "react";
 import useDialog from "@/hooks/useDialog";
 import StyledTextField, { StyledSearchProps } from "./StyledTextField";
+import { ClickAwayListener } from "@mui/material";
+import AdornmentLeft from "./AdornmentLeft";
+import AdornmentRight from "./AdornmentRight";
 
 // --------------------------------------------------------------------
 
@@ -24,30 +23,21 @@ const PoppingSearch = forwardRef<HTMLDivElement, PoppingSearchProps>(
         }, [onClear]);
 
         return (
-            <StyledTextField
-                ref={ref}
-                open={isOpen}
-                label={label}
-                InputProps={{
-                    ...InputProps,
-                    startAdornment: InputProps?.startAdornment || (
-                        <InputAdornment position="start">
-                            <IconButton onClick={openSearch}>
-                                <SearchIcon />
-                            </IconButton>
-                        </InputAdornment>
-                    ),
-                    endAdornment:
-                        InputProps?.endAdornment || isOpen ? (
-                            <InputAdornment position="end">
-                                <IconButton onClick={handleClear}>
-                                    <ClearIcon />
-                                </IconButton>
-                            </InputAdornment>
+            <ClickAwayListener onClickAway={closeSearch}>
+                <StyledTextField
+                    ref={ref}
+                    open={isOpen}
+                    label={label}
+                    InputProps={{
+                        ...InputProps,
+                        startAdornment: <AdornmentLeft onClick={openSearch} />,
+                        endAdornment: isOpen ? (
+                            <AdornmentRight onClick={handleClear} />
                         ) : null,
-                }}
-                {...props}
-            />
+                    }}
+                    {...props}
+                />
+            </ClickAwayListener>
         );
     }
 );

@@ -1,6 +1,42 @@
 import { styled, SxProps, Theme } from "@mui/material/styles";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 
+// --------------------------------------------------------------------------------------
+
+const getWithValueSx = (theme: Theme) => ({
+    ".MuiInputBase-root": {
+        // INFO: look like selectable
+        cursor: "pointer",
+
+        backgroundColor: theme.palette.primary.main,
+    },
+
+    ".MuiOutlinedInput-notchedOutline": {
+        border: 0,
+    },
+
+    ".MuiSvgIcon-root": {
+        color: "white",
+    },
+});
+
+interface Props extends Omit<TextFieldProps<"outlined">, "variant"> {
+    open: boolean;
+}
+
+const SelectableTextField = styled(TextField)<Props>(
+    ({ value, open, theme }) => ({
+        // INFO: look like selectable
+        ".MuiInputBase-root": {
+            cursor: open ? "default" : "pointer",
+        },
+        // INFO: style for when it has `value`
+        ...(value && !open ? getWithValueSx(theme) : {}),
+    })
+);
+
+// --------------------------------------------------------------------------------------
+
 const getMobileOpenSx = (theme: Theme): SxProps<Theme> => ({
     position: "absolute",
 
@@ -32,21 +68,16 @@ const getMobileClosedSx = (): SxProps<Theme> => ({
 const getMobileSx = (open: boolean, theme: Theme) =>
     open ? getMobileOpenSx(theme) : getMobileClosedSx();
 
-interface StyledSearchProps
-    extends Omit<TextFieldProps<"outlined">, "variant"> {
-    open: boolean;
-}
-
-const StyledTextField = styled(TextField)<StyledSearchProps>(
+const StyledTextField = styled(SelectableTextField)<Props>(
     ({ theme, open }) => ({
         minWidth: open ? "200px" : "50px",
         width: open ? "200px" : "50px",
 
         [theme.breakpoints.down("sm")]: getMobileSx(open, theme),
 
-        transition: "min-width 0.2s ease-out",
+        transition: "min-width 0.2s ease-out, width 0.2s ease-out",
     })
 );
 
-export type { StyledSearchProps };
+export type { Props as StyledSearchProps };
 export default StyledTextField;
