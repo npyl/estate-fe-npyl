@@ -4,6 +4,7 @@ import RHFColorPicker from "./RHFColorPicker";
 import Preview from "./Preview";
 import Resource from "./Resource";
 import { FC } from "react";
+import Assign from "./Assign";
 
 interface Props {
     isEdit: boolean;
@@ -26,6 +27,8 @@ const Content: FC<Props> = ({ isEdit }) => {
             <RHFColorPicker />
 
             <Preview />
+
+            <Assign />
         </>
     );
 };

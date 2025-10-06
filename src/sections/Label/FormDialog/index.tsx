@@ -10,7 +10,7 @@ import Title from "./Title";
 import Form, { LabelFormProps } from "@/ui/Label/Form";
 
 const StyledContent: FC<DialogContentProps> = ({ sx, ...props }) => (
-    <DialogContent sx={{ p: 1, ...sx }} {...props} />
+    <DialogContent sx={{ p: 0, ...sx }} {...props} />
 );
 
 const StyledActions: FC<DialogActionsProps> = ({ sx, ...props }) => (
