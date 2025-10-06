@@ -31,7 +31,6 @@ const DeleteDialog: FC<DeleteDialogProps> = ({
     ...props
 }) => (
     <Dialog
-        maxWidth="xs"
         closeAfterTransition={true}
         DialogContentComponent={StyledContent}
         // ...

@@ -1,9 +1,8 @@
-import { Grid, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { FC } from "react";
-import { useGetLabelsQuery } from "src/services/labels";
 import { ILabels } from "@/types/label";
 import { TSection } from "../types";
-import getLabel from "./getLabel";
+import Labels from "./Labels";
 
 interface SectionProps {
     sectionKey: keyof ILabels;
@@ -11,10 +10,6 @@ interface SectionProps {
 }
 
 const Section: FC<SectionProps> = ({ sectionKey, section }) => {
-    const { data: labels } = useGetLabelsQuery();
-
-    const data = labels?.[sectionKey] || [];
-
     const { label, variant } = section;
 
     return (
@@ -22,9 +17,7 @@ const Section: FC<SectionProps> = ({ sectionKey, section }) => {
             <Typography variant="h6" color="text.secondary">
                 {label}
             </Typography>
-            <Grid container spacing={0.7}>
-                {data?.map(getLabel(variant))}
-            </Grid>
+            <Labels sectionKey={sectionKey} resource={variant} />
         </Stack>
     );
 };

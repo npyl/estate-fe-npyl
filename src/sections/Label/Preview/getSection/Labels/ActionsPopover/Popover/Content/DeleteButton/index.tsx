@@ -7,11 +7,11 @@ import { LabelResourceType } from "@/types/label";
 const DeleteDialog = dynamic(() => import("./DeleteDialog"));
 
 interface DeleteButtonProps {
-    variant: LabelResourceType;
+    resource: LabelResourceType;
     labelId: number;
 }
 
-const DeleteButton: FC<DeleteButtonProps> = ({ variant, labelId }) => {
+const DeleteButton: FC<DeleteButtonProps> = ({ resource, labelId }) => {
     const [isDeleteOpen, openDelete, closeDelete] = useDialog();
 
     return (
@@ -22,7 +22,7 @@ const DeleteButton: FC<DeleteButtonProps> = ({ variant, labelId }) => {
 
             {isDeleteOpen ? (
                 <DeleteDialog
-                    resource={variant}
+                    resource={resource}
                     labelId={labelId}
                     onClose={closeDelete}
                 />

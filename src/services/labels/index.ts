@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ILabels } from "@/types/label";
+import { ILabel, ILabels } from "@/types/label";
 import {
     DeleteLabelProps,
+    GetLabelForResourceReq,
     IAssignLabelToResourceReq,
     IDeleteLabelForResourceReq,
     ILabelForResourceReq,
@@ -38,6 +39,11 @@ export const labels = createApi({
         //
         // general
         //
+        getLabelForResource: builder.query<ILabel, GetLabelForResourceReq>({
+            query: ({ resource, labelId }) => `/${resource}/${labelId}`,
+            providesTags: ["Labels"],
+        }),
+
         createLabelForResource: builder.mutation<
             ILabelForResourceRes,
             ILabelForResourceReq
@@ -103,8 +109,8 @@ export const labels = createApi({
 export const {
     useGetLabelsQuery,
     // general
+    useGetLabelForResourceQuery,
     useCreateLabelForResourceMutation,
-    // delete
     useDeleteLabelForResourceMutation,
     // resourceId
     useCreateAssignLabelForResourceIdMutation,
