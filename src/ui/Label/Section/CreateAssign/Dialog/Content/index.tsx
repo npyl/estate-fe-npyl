@@ -41,14 +41,7 @@ const getOPTIONS = (
                 {t("Create")}
             </Typography>
         ),
-        content: (
-            <LabelForm
-                noTitle
-                resource={resource}
-                onCreate={onExisting}
-                onCancel={onExisting}
-            />
-        ),
+        content: <LabelForm onCreate={onExisting} onCancel={onExisting} />,
     },
 ];
 

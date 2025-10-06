@@ -7,6 +7,7 @@ import MessageIcon from "@mui/icons-material/Message";
 import EmailIcon from "@mui/icons-material/Email";
 import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 import RssFeedIcon from "@mui/icons-material/RssFeed";
+import { CREATE_FLAG } from "@/sections/Label/useCreateParam";
 
 const MENU_ITEMS = [
     {
@@ -36,7 +37,7 @@ const MENU_ITEMS = [
     },
     {
         label: "Label",
-        path: "/label",
+        path: `/label?${CREATE_FLAG}=true`,
         icon: <LabelImportantIcon />,
     },
     {

@@ -40,7 +40,7 @@ const LabelsSx: SxProps<Theme> = {
 const useOnLabelClick = (resource: LabelResourceType, resourceId?: number) => {
     const { isControlled, onLabelClick: _onLabelClick } = useSettings();
 
-    const { invalidateTags } = useInvalidateTags(resource);
+    const { invalidateTags } = useInvalidateTags();
     const [assignLabel] = useAssignLabelToResourceIdMutation();
     return useCallback(
         async (body: ILabelPOST) => {
@@ -53,7 +53,7 @@ const useOnLabelClick = (resource: LabelResourceType, resourceId?: number) => {
                     body,
                 });
                 if ("error" in res) return;
-                invalidateTags();
+                invalidateTags(resource);
             }
         },
         [isControlled, _onLabelClick, resource, resourceId, invalidateTags]

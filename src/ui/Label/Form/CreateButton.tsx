@@ -6,50 +6,45 @@ import {
     useCreateLabelForResourceMutation,
 } from "@/services/labels";
 import { FC, useCallback } from "react";
-import { LabelResourceType } from "@/types/label";
 import useInvalidateTags from "./useInvalidateTags";
 import { ILabelForm } from "./types";
+import isFalsy from "@/utils/isFalsy";
 
 interface CreateButtonProps {
     edit: boolean;
-    resourceId?: number;
-    resource: LabelResourceType;
     onCreate?: (id: number) => void;
 }
 
-const CreateButton: FC<CreateButtonProps> = ({
-    edit,
-    resource,
-    resourceId,
-    onCreate,
-}) => {
+const CreateButton: FC<CreateButtonProps> = ({ edit, onCreate }) => {
     const { t } = useTranslation();
 
     const { formState, handleSubmit } = useFormContext<ILabelForm>();
     const isSubmitting = formState.isSubmitting;
     const isDirty = formState.isDirty;
 
-    const isAssign = Boolean(resourceId);
     const title = edit ? t("Update") : t("Create");
 
-    const { invalidateTags } = useInvalidateTags(resource);
+    const { invalidateTags } = useInvalidateTags();
 
     const [createLabel] = useCreateLabelForResourceMutation();
     const [createAssignLabel] = useCreateAssignLabelForResourceIdMutation();
 
     const onSubmit = useCallback(
-        async ({ resource: _0, resourceId: _, ...body }: ILabelForm) => {
-            const cb = isAssign ? createAssignLabel : createLabel;
+        async ({ resource, resourceId, ...body }: ILabelForm) => {
+            const cb = isFalsy(resourceId) ? createLabel : createAssignLabel;
+            const data = isFalsy(resourceId)
+                ? { body, resource }
+                : { body, resource, resourceId: resourceId! };
 
-            const res = await cb({ body, resource, resourceId: resourceId! });
+            const res = await cb(data as any);
 
             if (res && "error" in res) return;
 
-            invalidateTags();
+            invalidateTags(resource);
 
             onCreate?.(res.data?.id);
         },
-        [isAssign, onCreate]
+        [onCreate]
     );
 
     return (

@@ -21,7 +21,7 @@ const RemovableLabels: FC<RemovableLabelsProps> = ({
     const { isControlled, onLabelRemove: _onLabelRemove } = useSettings();
 
     const [deleteLabel, { isLoading }] = useDeleteLabelForResourceIdMutation();
-    const { invalidateTags } = useInvalidateTags(resource);
+    const { invalidateTags } = useInvalidateTags();
     const onLabelRemove = useCallback(
         async (labelId: number) => {
             if (isControlled) {
@@ -33,7 +33,7 @@ const RemovableLabels: FC<RemovableLabelsProps> = ({
                     labelId,
                 });
                 if ("error" in res) return;
-                invalidateTags();
+                invalidateTags(resource);
             }
         },
         [isControlled, resource, resourceId, invalidateTags, _onLabelRemove]

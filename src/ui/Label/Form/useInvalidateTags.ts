@@ -6,10 +6,10 @@ import { useDispatch } from "react-redux";
 import { LabelResourceType } from "@/types/label";
 import { labels } from "@/services/labels";
 
-const useInvalidateTags = (variant: LabelResourceType) => {
+const useInvalidateTags = () => {
     const dispatch = useDispatch();
 
-    const invalidateTags = useCallback(() => {
+    const invalidateTags = useCallback((variant: LabelResourceType) => {
         // Global
         dispatch(labels.util.invalidateTags(["Labels"]));
 
@@ -22,7 +22,7 @@ const useInvalidateTags = (variant: LabelResourceType) => {
             dispatch(customers.util.invalidateTags(["CustomerByIdLabels"]));
         else if (variant === "ticket")
             dispatch(tasks.util.invalidateTags(["Labels"]));
-    }, [variant]);
+    }, []);
 
     return { invalidateTags };
 };

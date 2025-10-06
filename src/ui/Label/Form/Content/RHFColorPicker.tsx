@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { ILabelForm } from "./types";
+import { ILabelForm } from "../types";
 import ColorPicker from "@/components/ColorPicker";
 
 const RHFColorPicker = () => {
