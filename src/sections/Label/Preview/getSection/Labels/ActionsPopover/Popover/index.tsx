@@ -38,7 +38,7 @@ const Popover: FC<PopoverProps> = ({
             },
         }}
     >
-        <Content resource={resource} labelId={labelId} />
+        <Content resource={resource} labelId={labelId} onClose={onClose} />
     </MuiPopover>
 );
 

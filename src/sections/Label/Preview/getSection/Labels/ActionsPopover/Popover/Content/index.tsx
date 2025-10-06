@@ -6,12 +6,13 @@ import EditButton from "./EditButton";
 interface ContentProps {
     resource: LabelResourceType;
     labelId: number;
+    onClose: VoidFunction;
 }
 
-const Content: FC<ContentProps> = ({ resource, labelId }) => (
+const Content: FC<ContentProps> = ({ resource, labelId, onClose }) => (
     <>
-        <EditButton resource={resource} labelId={labelId} />
-        <DeleteButton resource={resource} labelId={labelId} />
+        <EditButton resource={resource} labelId={labelId} onClose={onClose} />
+        <DeleteButton resource={resource} labelId={labelId} onClose={onClose} />
     </>
 );
 
