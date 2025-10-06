@@ -1,12 +1,15 @@
 import PPCreateFab from "@/ui/CreateFab";
-import { CREATE_FLAG } from "@/sections/Label/useCreateParam";
-import CreateWatcher from "./Watcher";
+import useDialog from "@/hooks/useDialog";
+import FormDialog from "../FormDialog";
 
-const CreateFab = () => (
-    <>
-        <PPCreateFab href={`/label?${CREATE_FLAG}=true`} />
-        <CreateWatcher />
-    </>
-);
+const CreateFab = () => {
+    const [isOpen, open, close] = useDialog();
+    return (
+        <>
+            <PPCreateFab onClick={open} />
+            {isOpen ? <FormDialog onCancel={close} /> : null}
+        </>
+    );
+};
 
 export default CreateFab;

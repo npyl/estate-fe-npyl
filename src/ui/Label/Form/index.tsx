@@ -46,7 +46,7 @@ const LabelForm: FC<LabelFormProps> = ({ label, onCancel, onCreate }) => {
                 <Content isEdit={isEdit} />
 
                 <SpaceBetween alignItems="center">
-                    <Button>{t("Cancel")}</Button>
+                    <Button onClick={onCancel}>{t("Cancel")}</Button>
                     <CreateButton edit={isEdit} onCreate={onCreate} />
                 </SpaceBetween>
             </Stack>

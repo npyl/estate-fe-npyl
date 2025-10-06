@@ -7,8 +7,7 @@ import {
     DialogContentProps,
 } from "@mui/material";
 import Title from "./Title";
-import { ILabel } from "@/types/label";
-import FormWithCancel from "./FormWithCancel";
+import Form, { LabelFormProps } from "@/ui/Label/Form";
 
 const StyledContent: FC<DialogContentProps> = ({ sx, ...props }) => (
     <DialogContent sx={{ p: 1, ...sx }} {...props} />
@@ -18,16 +17,14 @@ const StyledActions: FC<DialogActionsProps> = ({ sx, ...props }) => (
     <DialogActions sx={{ p: 0, ...sx }} {...props} />
 );
 
-interface FormDialogProps {
-    label?: ILabel;
-}
+interface FormDialogProps extends LabelFormProps {}
 
-const FormDialog: FC<FormDialogProps> = ({ label }) => (
+const FormDialog: FC<FormDialogProps> = (props) => (
     <Dialog
         DialogContentComponent={StyledContent}
         DialogActionsComponent={StyledActions}
-        title={<Title labelId={label?.id} />}
-        content={<FormWithCancel label={label} />}
+        title={<Title labelId={props?.label?.id} />}
+        content={<Form {...props} />}
     />
 );
 
