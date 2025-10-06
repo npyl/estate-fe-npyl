@@ -1,6 +1,6 @@
 import { FC, useCallback, useMemo } from "react";
 import { TSortByOption, TSortByOptions } from "./types";
-import Select, { SelectProps } from "@/components/Select";
+import Select, { SelectProps } from "./Select";
 import {
     InputAdornment,
     MenuItem,
