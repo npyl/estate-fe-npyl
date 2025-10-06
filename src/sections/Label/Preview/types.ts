@@ -1,5 +1,5 @@
-import { ILabel, LabelResourceType } from "src/types/label";
+import { LabelResourceType } from "@/types/label";
 
-export interface IEditProps extends ILabel {
-    resource: LabelResourceType;
-}
+type TSection = { label: string; variant: LabelResourceType };
+
+export type { TSection };
