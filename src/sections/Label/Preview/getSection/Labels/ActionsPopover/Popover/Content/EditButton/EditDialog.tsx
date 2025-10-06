@@ -1,6 +1,6 @@
 import FormDialog, { FormDialogProps } from "@/sections/Label/FormDialog";
 import { ILabel, LabelResourceType } from "@/types/label";
-import useExistingLabels from "@/ui/Label/useExistingLabels";
+import useExistingLabels from "@/services/labels/useExistingLabels";
 import { FC, useMemo } from "react";
 
 const hasId = (id: number) => (l: ILabel) => id === l.id;

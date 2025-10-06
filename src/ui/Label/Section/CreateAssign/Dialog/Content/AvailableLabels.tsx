@@ -3,9 +3,9 @@ import { FC, useCallback, useMemo } from "react";
 import { LabelClassName } from "@/components/Label/Label";
 import { ILabel, ILabelPOST, LabelResourceType } from "@/types/label";
 import useAssignedLabels from "@/ui/Label/Section/useAssignedLabels";
-import useExistingLabels from "@/ui/Label/useExistingLabels";
+import useExistingLabels from "@/services/labels/useExistingLabels";
 import Labels from "../../Labels";
-import useInvalidateTags from "@/ui/Label/Form/useSubmit/useInvalidateTags";
+import useInvalidateTags from "@/services/labels/useInvalidateTags";
 import { useAssignLabelToResourceIdMutation } from "@/services/labels";
 import { useSettings } from "@/ui/Label/Section/Context";
 

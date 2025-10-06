@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import useInvalidateTags from "./useInvalidateTags";
+import useInvalidateTags from "../../../../services/labels/useInvalidateTags";
 import {
     useCreateAssignLabelForResourceIdMutation,
     useCreateLabelForResourceMutation,

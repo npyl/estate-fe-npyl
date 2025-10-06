@@ -7,7 +7,7 @@ import {
 import { useGetCustomerLabelsQuery } from "src/services/customers";
 import { useRouter } from "next/router";
 import { useGetCardLabelsQuery } from "@/services/tasks";
-import useExistingLabels from "@/ui/Label/useExistingLabels";
+import useExistingLabels from "@/services/labels/useExistingLabels";
 import getIsControlled from "./getIsControlled";
 
 const usePropertyLabels = (variant: LabelResourceType, resourceId: number) =>
