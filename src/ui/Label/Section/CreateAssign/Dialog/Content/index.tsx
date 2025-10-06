@@ -41,7 +41,7 @@ const getOPTIONS = (
                 {t("Create")}
             </Typography>
         ),
-        content: <LabelForm onCreate={onExisting} onCancel={onExisting} />,
+        content: <LabelForm onSuccess={onExisting} onCancel={onExisting} />,
     },
 ];
 

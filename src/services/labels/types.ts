@@ -12,11 +12,6 @@ interface DeleteLabelProps {
     labelId: number;
 }
 
-interface GetLabelForResourceReq {
-    resource: LabelResourceType;
-    labelId: number;
-}
-
 interface ILabelForResourceReq {
     resourceId?: number;
     resource: LabelResourceType;
@@ -38,7 +33,6 @@ export type {
     LabelForResourceProps,
     IAssignLabelToResourceReq,
     DeleteLabelProps,
-    GetLabelForResourceReq,
     ILabelForResourceReq,
     ILabelForResourceRes,
     IDeleteLabelForResourceReq,

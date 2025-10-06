@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { LabelResourceType } from "src/types/label";
-import { useGetLabelsQuery } from "src/services/labels";
+import { LabelResourceType } from "@/types/label";
+import { useGetLabelsQuery } from "@/services/labels";
 
 const useExistingLabels = (variant: LabelResourceType, skip?: boolean) => {
     const { data } = useGetLabelsQuery(undefined, { skip });

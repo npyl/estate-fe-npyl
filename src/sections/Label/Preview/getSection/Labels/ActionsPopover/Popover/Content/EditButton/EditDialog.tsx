@@ -1,18 +1,20 @@
-import FormDialog from "@/sections/Label/FormDialog";
-import { useGetLabelForResourceQuery } from "@/services/labels";
-import { LabelResourceType } from "@/types/label";
-import { LabelFormProps } from "@/ui/Label/Form";
-import { FC } from "react";
+import FormDialog, { FormDialogProps } from "@/sections/Label/FormDialog";
+import { ILabel, LabelResourceType } from "@/types/label";
+import useExistingLabels from "@/ui/Label/useExistingLabels";
+import { FC, useMemo } from "react";
 
-interface EditButtonProps extends Omit<LabelFormProps, "label"> {
+const hasId = (id: number) => (l: ILabel) => id === l.id;
+
+interface EditButtonProps extends Omit<FormDialogProps, "label"> {
     resource: LabelResourceType;
     labelId: number;
 }
 
 const EditDialog: FC<EditButtonProps> = ({ resource, labelId, ...props }) => {
-    const { data } = useGetLabelForResourceQuery({ resource, labelId });
-    if (!data) return null;
-    return <FormDialog label={data} {...props} />;
+    const labels = useExistingLabels(resource);
+    const label = useMemo(() => labels.find(hasId(labelId)), [labels, labelId]);
+    if (!label) return null;
+    return <FormDialog label={label} {...props} />;
 };
 
 export default EditDialog;

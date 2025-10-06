@@ -17,15 +17,16 @@ const StyledActions: FC<DialogActionsProps> = ({ sx, ...props }) => (
     <DialogActions sx={{ p: 0, ...sx }} {...props} />
 );
 
-interface FormDialogProps extends LabelFormProps {}
+interface FormDialogProps extends Omit<LabelFormProps, "onSuccess"> {}
 
 const FormDialog: FC<FormDialogProps> = (props) => (
     <Dialog
         DialogContentComponent={StyledContent}
         DialogActionsComponent={StyledActions}
         title={<Title labelId={props?.label?.id} />}
-        content={<Form {...props} />}
+        content={<Form {...props} onSuccess={props.onCancel} />}
     />
 );
 
+export type { FormDialogProps };
 export default FormDialog;

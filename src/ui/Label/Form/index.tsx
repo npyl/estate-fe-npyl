@@ -22,17 +22,17 @@ const schema = z.object({
 interface LabelFormProps {
     label?: ILabel;
     onCancel: VoidFunction;
-    onCreate?: (id: number) => void;
+    onSuccess?: (id: number) => void;
 }
 
-const LabelForm: FC<LabelFormProps> = ({ label, onCancel, onCreate }) => {
+const LabelForm: FC<LabelFormProps> = ({ label, onCancel, onSuccess }) => {
     const { t } = useTranslation();
 
     const isEdit = Boolean(label);
 
     const methods = useForm<ILabelForm>({
         values: {
-            id: undefined,
+            id: label?.id,
             name: label?.name || "",
             color: label?.color || "#22194d",
             resource: "property",
@@ -47,7 +47,7 @@ const LabelForm: FC<LabelFormProps> = ({ label, onCancel, onCreate }) => {
 
                 <SpaceBetween alignItems="center">
                     <Button onClick={onCancel}>{t("Cancel")}</Button>
-                    <CreateButton edit={isEdit} onCreate={onCreate} />
+                    <CreateButton edit={isEdit} onSuccess={onSuccess} />
                 </SpaceBetween>
             </Stack>
         </FormProvider>

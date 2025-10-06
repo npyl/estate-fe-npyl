@@ -12,10 +12,10 @@ import isFalsy from "@/utils/isFalsy";
 
 interface CreateButtonProps {
     edit: boolean;
-    onCreate?: (id: number) => void;
+    onSuccess?: (id: number) => void;
 }
 
-const CreateButton: FC<CreateButtonProps> = ({ edit, onCreate }) => {
+const CreateButton: FC<CreateButtonProps> = ({ edit, onSuccess }) => {
     const { t } = useTranslation();
 
     const { formState, handleSubmit } = useFormContext<ILabelForm>();
@@ -42,9 +42,9 @@ const CreateButton: FC<CreateButtonProps> = ({ edit, onCreate }) => {
 
             invalidateTags(resource);
 
-            onCreate?.(res.data?.id);
+            onSuccess?.(res.data?.id);
         },
-        [onCreate]
+        [onSuccess]
     );
 
     return (
