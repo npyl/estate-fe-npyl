@@ -31,7 +31,7 @@ const Preview = () => {
         return Object.entries(getSections(t)) as [keyof ILabels, TSection][];
     }, [t]);
 
-    return sections.map(getSection);
+    return <div>{sections.map(getSection)}</div>;
 };
 
 export default Preview;
