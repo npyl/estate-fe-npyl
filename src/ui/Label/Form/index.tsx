@@ -9,11 +9,17 @@ import Form from "./Form";
 
 interface LabelFormProps {
     label?: ILabel;
+    assign?: boolean; // Flag to trigger assign to resource support on or off
     onCancel: VoidFunction;
     onSuccess?: (id: number) => void;
 }
 
-const LabelForm: FC<LabelFormProps> = ({ label, onCancel, onSuccess }) => {
+const LabelForm: FC<LabelFormProps> = ({
+    label,
+    assign = false,
+    onCancel,
+    onSuccess,
+}) => {
     const { t } = useTranslation();
 
     const isEdit = Boolean(label);
@@ -21,7 +27,7 @@ const LabelForm: FC<LabelFormProps> = ({ label, onCancel, onSuccess }) => {
     return (
         <Form label={label}>
             <Stack spacing={1} p={1}>
-                <Content isEdit={isEdit} />
+                <Content isEdit={isEdit} assign={assign} />
 
                 <SpaceBetween alignItems="center">
                     <Button onClick={onCancel}>{t("Cancel")}</Button>

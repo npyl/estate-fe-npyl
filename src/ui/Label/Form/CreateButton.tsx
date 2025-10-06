@@ -1,14 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@mui/lab";
 import { useFormContext } from "react-hook-form";
-import {
-    useCreateAssignLabelForResourceIdMutation,
-    useCreateLabelForResourceMutation,
-} from "@/services/labels";
-import { FC, useCallback } from "react";
-import useInvalidateTags from "./useInvalidateTags";
+import { FC } from "react";
 import { ILabelForm } from "./types";
-import isFalsy from "@/utils/isFalsy";
+import useSubmit from "./useSubmit";
 
 interface CreateButtonProps {
     edit: boolean;
@@ -24,28 +19,7 @@ const CreateButton: FC<CreateButtonProps> = ({ edit, onSuccess }) => {
 
     const title = edit ? t("Update") : t("Create");
 
-    const { invalidateTags } = useInvalidateTags();
-
-    const [createLabel] = useCreateLabelForResourceMutation();
-    const [createAssignLabel] = useCreateAssignLabelForResourceIdMutation();
-
-    const onSubmit = useCallback(
-        async ({ resource, resourceId, ...body }: ILabelForm) => {
-            const cb = isFalsy(resourceId) ? createLabel : createAssignLabel;
-            const data = isFalsy(resourceId)
-                ? { body, resource }
-                : { body, resource, resourceId: resourceId! };
-
-            const res = await cb(data as any);
-
-            if (res && "error" in res) return;
-
-            invalidateTags(resource);
-
-            onSuccess?.(res.data?.id);
-        },
-        [onSuccess]
-    );
+    const onSubmit = useSubmit(onSuccess);
 
     return (
         <LoadingButton

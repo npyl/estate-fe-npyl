@@ -5,7 +5,7 @@ import { ILabel, ILabelPOST, LabelResourceType } from "@/types/label";
 import useAssignedLabels from "@/ui/Label/Section/useAssignedLabels";
 import useExistingLabels from "@/ui/Label/useExistingLabels";
 import Labels from "../../Labels";
-import useInvalidateTags from "@/ui/Label/Form/useInvalidateTags";
+import useInvalidateTags from "@/ui/Label/Form/useSubmit/useInvalidateTags";
 import { useAssignLabelToResourceIdMutation } from "@/services/labels";
 import { useSettings } from "@/ui/Label/Section/Context";
 

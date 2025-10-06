@@ -1,5 +1,5 @@
 import Preview from "@/sections/Label/Preview";
-import CreateFab from "./CreateFab";
+import CreateFab from "./Create/Fab";
 import CreateWatcher from "./Watcher";
 
 const LabelSection = () => (

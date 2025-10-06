@@ -7,10 +7,11 @@ import { FC } from "react";
 import Assign from "./Assign";
 
 interface Props {
+    assign: boolean;
     isEdit: boolean;
 }
 
-const Content: FC<Props> = ({ isEdit }) => {
+const Content: FC<Props> = ({ assign, isEdit }) => {
     const { t } = useTranslation();
 
     return (
@@ -28,7 +29,7 @@ const Content: FC<Props> = ({ isEdit }) => {
 
             <Preview />
 
-            <Assign />
+            {assign ? <Assign /> : null}
         </>
     );
 };
