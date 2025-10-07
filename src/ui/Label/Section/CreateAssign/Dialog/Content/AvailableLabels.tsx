@@ -8,6 +8,7 @@ import Labels from "../../Labels";
 import useInvalidateTags from "@/services/labels/useInvalidateTags";
 import { useAssignLabelToResourceIdMutation } from "@/services/labels";
 import { useSettings } from "@/ui/Label/Section/Context";
+import { InvalidateTagsMetadata } from "@/services/labels/types";
 
 const areIdsEqual =
     (existingId: number) =>
@@ -37,10 +38,14 @@ const LabelsSx: SxProps<Theme> = {
     },
 };
 
-const useOnLabelClick = (resource: LabelResourceType, resourceId?: number) => {
+const useOnLabelClick = (
+    meta: InvalidateTagsMetadata,
+    resource: LabelResourceType,
+    resourceId?: number
+) => {
     const { isControlled, onLabelClick: _onLabelClick } = useSettings();
 
-    const { invalidateTags } = useInvalidateTags();
+    const { invalidateTags } = useInvalidateTags(meta);
     const [assignLabel] = useAssignLabelToResourceIdMutation();
     return useCallback(
         async (body: ILabelPOST) => {
@@ -63,13 +68,15 @@ const useOnLabelClick = (resource: LabelResourceType, resourceId?: number) => {
 interface AvailableLabelsProps {
     resourceId?: number;
     resource: LabelResourceType;
+    meta: InvalidateTagsMetadata;
 }
 
 const AvailableLabels: FC<AvailableLabelsProps> = ({
     resource,
     resourceId,
+    meta,
 }) => {
-    const onLabelClick = useOnLabelClick(resource, resourceId);
+    const onLabelClick = useOnLabelClick(meta, resource, resourceId);
     const labels = useAvailableLabels(resource, resourceId);
     return <Labels labels={labels} onLabelClick={onLabelClick} sx={LabelsSx} />;
 };

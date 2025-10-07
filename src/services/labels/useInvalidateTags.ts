@@ -1,28 +1,57 @@
 import { useCallback } from "react";
-import { properties } from "src/services/properties";
-import { customers } from "src/services/customers";
-import { tasks } from "@/services/tasks";
+import { properties } from "@/services/properties";
+import { customers } from "@/services/customers";
+import { getCardByIdLabelsTag, tasks } from "@/services/tasks";
 import { useDispatch } from "react-redux";
 import { LabelResourceType } from "@/types/label";
 import { labels } from "@/services/labels";
+import isFalsy from "@/utils/isFalsy";
+import { InvalidateTagsMetadata } from "./types";
+import { Dispatch, AnyAction } from "redux";
 
-const useInvalidateTags = () => {
+// ---------------------------------------------------------------------------------------
+
+const doLabels = (dispatch: Dispatch<AnyAction>) =>
+    dispatch(labels.util.invalidateTags(["Labels"]));
+
+const doProperty = (dispatch: Dispatch<AnyAction>) =>
+    dispatch(properties.util.invalidateTags(["PropertyByIdLabels"]));
+
+const doCustomer = (dispatch: Dispatch<AnyAction>) =>
+    dispatch(customers.util.invalidateTags(["CustomerByIdLabels"]));
+
+const doDocuments = (dispatch: Dispatch<AnyAction>) =>
+    dispatch(properties.util.invalidateTags(["PropertyByIdDocuments"]));
+
+const doTasks = (dispatch: Dispatch<AnyAction>, cardId?: number) => {
+    // INFO: make sure cardId is passed before we invalidateTags
+    if (isFalsy(cardId)) return;
+
+    const TAG = getCardByIdLabelsTag(cardId!);
+
+    dispatch(tasks.util.invalidateTags([TAG]));
+};
+
+// ---------------------------------------------------------------------------------------
+
+const useInvalidateTags = (meta?: InvalidateTagsMetadata) => {
+    const { cardId } = meta ?? {};
+
     const dispatch = useDispatch();
 
-    const invalidateTags = useCallback((variant: LabelResourceType) => {
-        // Global
-        dispatch(labels.util.invalidateTags(["Labels"]));
+    const invalidateTags = useCallback(
+        (variant: LabelResourceType) => {
+            // Global
+            doLabels(dispatch);
 
-        // By Resource Id
-        if (variant === "property")
-            dispatch(properties.util.invalidateTags(["PropertyByIdLabels"]));
-        else if (variant === "document")
-            dispatch(properties.util.invalidateTags(["PropertyByIdDocuments"]));
-        else if (variant === "customer")
-            dispatch(customers.util.invalidateTags(["CustomerByIdLabels"]));
-        else if (variant === "ticket")
-            dispatch(tasks.util.invalidateTags(["Labels"]));
-    }, []);
+            // By Resource Id
+            if (variant === "property") doProperty(dispatch);
+            if (variant === "customer") doCustomer(dispatch);
+            if (variant === "document") doDocuments(dispatch);
+            if (variant === "ticket") doTasks(dispatch, cardId);
+        },
+        [cardId]
+    );
 
     return { invalidateTags };
 };

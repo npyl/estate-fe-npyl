@@ -1,6 +1,6 @@
 import { LabelResourceType } from "@/types/label";
 import Dialog from "@/components/Dialog";
-import Content from "./Content";
+import Content, { ContentProps } from "./Content";
 import { FC } from "react";
 import {
     DialogActions,
@@ -20,17 +20,11 @@ const StyledActions: FC<DialogActionsProps> = ({ sx, ...props }) => (
     />
 );
 
-interface AddLabelDialog {
-    resourceId?: number;
-    variant: LabelResourceType;
+interface AddLabelDialog extends ContentProps {
     onClose: VoidFunction;
 }
 
-const AddLabelDialog: FC<AddLabelDialog> = ({
-    resourceId,
-    variant,
-    onClose,
-}) => (
+const AddLabelDialog: FC<AddLabelDialog> = ({ onClose, ...props }) => (
     <Dialog
         onClose={onClose}
         DialogContentComponent={StyledContent}
@@ -39,7 +33,7 @@ const AddLabelDialog: FC<AddLabelDialog> = ({
         submit
         // ...
         hideTitle
-        content={<Content resourceId={resourceId} resource={variant} />}
+        content={<Content {...props} />}
         actions={<CloseButton onClick={onClose} />}
     />
 );

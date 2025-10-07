@@ -9,6 +9,7 @@ import ExclusiveAccordion, {
     IOption,
 } from "@/ui/ExclusiveAccordion";
 import { TranslationType } from "@/types/translation";
+import { InvalidateTagsMetadata } from "@/services/labels/types";
 const LabelForm = dynamic(() => import("@/ui/Label/Form"));
 
 type TExpanded = "ADD" | "EXISTING";
@@ -16,12 +17,13 @@ type TExpanded = "ADD" | "EXISTING";
 interface OptionsProps {
     resourceId?: number;
     resource: LabelResourceType;
+    meta: InvalidateTagsMetadata;
     onExisting: VoidFunction;
 }
 
 const getOPTIONS = (
     t: TranslationType,
-    { resource, resourceId, onExisting }: OptionsProps
+    { resource, resourceId, meta, onExisting }: OptionsProps
 ): IOption<TExpanded>[] => [
     {
         optionKey: "EXISTING",
@@ -31,7 +33,11 @@ const getOPTIONS = (
             </Typography>
         ),
         content: (
-            <AvailableLabels resource={resource} resourceId={resourceId} />
+            <AvailableLabels
+                resource={resource}
+                resourceId={resourceId}
+                meta={meta}
+            />
         ),
     },
     {
@@ -41,16 +47,23 @@ const getOPTIONS = (
                 {t("Create")}
             </Typography>
         ),
-        content: <LabelForm onSuccess={onExisting} onCancel={onExisting} />,
+        content: (
+            <LabelForm
+                meta={meta}
+                onSuccess={onExisting}
+                onCancel={onExisting}
+            />
+        ),
     },
 ];
 
 interface ContentProps {
     resourceId?: number;
     resource: LabelResourceType;
+    meta: InvalidateTagsMetadata;
 }
 
-const Content: FC<ContentProps> = ({ resourceId, resource }) => {
+const Content: FC<ContentProps> = ({ resourceId, resource, meta }) => {
     const accordionRef = useRef<ExclusiveAccordionRef<TExpanded>>();
     const onExisting = useCallback(
         () => accordionRef.current?.setExpanded("EXISTING"),
@@ -63,9 +76,10 @@ const Content: FC<ContentProps> = ({ resourceId, resource }) => {
             getOPTIONS(t, {
                 resource,
                 resourceId,
+                meta,
                 onExisting,
             }),
-        [t, resource, resourceId]
+        [t, resource, resourceId, meta]
     );
 
     return (
@@ -77,4 +91,5 @@ const Content: FC<ContentProps> = ({ resourceId, resource }) => {
     );
 };
 
+export type { ContentProps };
 export default Content;

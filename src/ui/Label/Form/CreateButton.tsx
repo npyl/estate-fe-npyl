@@ -4,13 +4,15 @@ import { useFormContext } from "react-hook-form";
 import { FC } from "react";
 import { ILabelForm } from "./types";
 import useSubmit from "./useSubmit";
+import { InvalidateTagsMetadata } from "@/services/labels/types";
 
 interface CreateButtonProps {
+    meta: InvalidateTagsMetadata;
     edit: boolean;
     onSuccess?: (id: number) => void;
 }
 
-const CreateButton: FC<CreateButtonProps> = ({ edit, onSuccess }) => {
+const CreateButton: FC<CreateButtonProps> = ({ meta, edit, onSuccess }) => {
     const { t } = useTranslation();
 
     const { formState, handleSubmit } = useFormContext<ILabelForm>();
@@ -19,7 +21,7 @@ const CreateButton: FC<CreateButtonProps> = ({ edit, onSuccess }) => {
 
     const title = edit ? t("Update") : t("Create");
 
-    const onSubmit = useSubmit(onSuccess);
+    const onSubmit = useSubmit(meta, onSuccess);
 
     return (
         <LoadingButton

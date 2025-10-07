@@ -1,14 +1,18 @@
 import { useCallback } from "react";
-import useInvalidateTags from "../../../../services/labels/useInvalidateTags";
+import useInvalidateTags from "@/services/labels/useInvalidateTags";
 import {
     useCreateAssignLabelForResourceIdMutation,
     useCreateLabelForResourceMutation,
 } from "@/services/labels";
 import { ILabelForm } from "../types";
 import isFalsy from "@/utils/isFalsy";
+import { InvalidateTagsMetadata } from "@/services/labels/types";
 
-const useSubmit = (onSuccess?: (id: number) => void) => {
-    const { invalidateTags } = useInvalidateTags();
+const useSubmit = (
+    meta: InvalidateTagsMetadata,
+    onSuccess?: (id: number) => void
+) => {
+    const { invalidateTags } = useInvalidateTags(meta);
 
     const [createLabel] = useCreateLabelForResourceMutation();
     const [createAssignLabel] = useCreateAssignLabelForResourceIdMutation();

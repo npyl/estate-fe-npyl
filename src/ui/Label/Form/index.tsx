@@ -6,10 +6,14 @@ import { ILabel } from "@/types/label";
 import { SpaceBetween } from "@/components/styled";
 import Content from "./Content";
 import Form from "./Form";
+import { InvalidateTagsMetadata } from "@/services/labels/types";
 
 interface LabelFormProps {
     label?: ILabel;
     assign?: boolean; // Flag to trigger assign to resource support on or off
+
+    meta?: InvalidateTagsMetadata;
+
     onCancel: VoidFunction;
     onSuccess?: (id: number) => void;
 }
@@ -17,6 +21,7 @@ interface LabelFormProps {
 const LabelForm: FC<LabelFormProps> = ({
     label,
     assign = false,
+    meta = {},
     onCancel,
     onSuccess,
 }) => {
@@ -31,7 +36,11 @@ const LabelForm: FC<LabelFormProps> = ({
 
                 <SpaceBetween alignItems="center">
                     <Button onClick={onCancel}>{t("Cancel")}</Button>
-                    <CreateButton edit={isEdit} onSuccess={onSuccess} />
+                    <CreateButton
+                        meta={meta}
+                        edit={isEdit}
+                        onSuccess={onSuccess}
+                    />
                 </SpaceBetween>
             </Stack>
         </Form>
