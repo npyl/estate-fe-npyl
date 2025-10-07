@@ -2,6 +2,7 @@ import { ChangeEvent, forwardRef, useCallback } from "react";
 import AdornmentLeft from "./AdornmentLeft";
 import AdornmentRight from "./AdornmentRight";
 import StyledTextField, { StyledTextFieldProps } from "./StyledTextField";
+import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
 
 interface TextFieldWithMethodsProps
     extends Omit<StyledTextFieldProps, "onClick" | "onChange"> {
@@ -17,9 +18,24 @@ const TextFieldWithMethods = forwardRef<
     TextFieldWithMethodsProps
 >(
     (
-        { onClear, onChange: _onChange, onOpen, onClose, InputProps, ...props },
+        {
+            onClear,
+            onChange: _onChange,
+            onOpen: _onOpen,
+            onClose,
+            InputProps,
+            ...props
+        },
         ref
     ) => {
+        // Open & Focus
+        const [localRef, { onRef }] = useForwardedLocalRef(ref);
+        const onOpen = useCallback(() => {
+            _onOpen();
+            localRef.current?.focus();
+        }, []);
+
+        // Simplify onChange
         const onChange = useCallback(
             (e: ChangeEvent<HTMLInputElement>) => _onChange?.(e.target.value),
             [_onChange]
@@ -27,7 +43,7 @@ const TextFieldWithMethods = forwardRef<
 
         return (
             <StyledTextField
-                ref={ref}
+                ref={onRef}
                 InputProps={{
                     ...InputProps,
                     startAdornment: <AdornmentLeft />,
