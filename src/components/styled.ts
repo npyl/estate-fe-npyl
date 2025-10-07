@@ -1,13 +1,17 @@
 import Button, { ButtonProps } from "@mui/material/Button";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import Stack from "@mui/material/Stack";
+import Stack, { StackProps } from "@mui/material/Stack";
 import { styled, SxProps, Theme } from "@mui/material/styles";
 import { ComponentType } from "react";
 
-export const SpaceBetween = styled(Stack)({
+interface SpaceBetweenProps extends StackProps {}
+
+export const SpaceBetween = styled(Stack)<SpaceBetweenProps>({
     flexDirection: "row",
     justifyContent: "space-between",
 });
+
+export type { SpaceBetweenProps };
 
 interface PPButtonProps extends ButtonProps {
     clicked?: boolean;

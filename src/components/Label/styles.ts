@@ -1,27 +1,26 @@
 // @mui
-import { Theme, styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { Box, alpha } from "@mui/material";
 import { LabelColor, LabelProps } from "./types";
 
 // ----------------------------------------------------------------------
 
 export const StyledLabel = styled(Box)<LabelProps>(({ theme, color }) => {
-    const styles =
-        color[0] === "#"
-            ? {
-                  color: theme.palette.text.primary,
-                  backgroundColor:
-                      theme.palette.mode === "light"
-                          ? theme.palette.grey?.[200]
-                          : theme.palette.neutral?.[700],
-              }
-            : {
-                  color: theme.palette[color as LabelColor].light,
-                  backgroundColor: alpha(
-                      theme.palette[color as LabelColor].main,
-                      0.16
-                  ),
-              };
+    const styles = color.startsWith("#")
+        ? {
+              color: theme.palette.text.primary,
+              backgroundColor:
+                  theme.palette.mode === "light"
+                      ? theme.palette.grey?.[200]
+                      : theme.palette.neutral?.[700],
+          }
+        : {
+              color: theme.palette[color as LabelColor].light as string,
+              backgroundColor: alpha(
+                  theme.palette[color as LabelColor].main,
+                  0.16
+              ),
+          };
 
     return {
         height: 28,
@@ -37,7 +36,6 @@ export const StyledLabel = styled(Box)<LabelProps>(({ theme, color }) => {
         fontSize: theme.typography.pxToRem(14),
         fontFamily: theme.typography.fontFamily,
         fontWeight: theme.typography.fontWeightBold,
-        boxShadow: "0 2px 5px rgba(0,0,0,0.1)", // Subtle shadow
         transition: "all 0.3s ease", // Smooth transitionss
         ...styles,
     };

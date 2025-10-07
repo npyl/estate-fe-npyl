@@ -2,6 +2,17 @@ import { FC } from "react";
 import MuiPopover from "@mui/material/Popover";
 import Content from "./Content";
 import { LabelResourceType } from "@/types/label";
+import { SxProps, Theme } from "@mui/material";
+
+const PaperSx: SxProps<Theme> = {
+    border: 0,
+    boxShadow: 0,
+    backgroundColor: "transparent",
+    display: "flex",
+    flexDirection: "row",
+    gap: 0.5,
+    mx: 1,
+};
 
 interface PopoverProps {
     anchorEl: HTMLDivElement;
@@ -30,11 +41,7 @@ const Popover: FC<PopoverProps> = ({
         }}
         slotProps={{
             paper: {
-                sx: {
-                    display: "flex",
-                    flexDirection: "row",
-                    gap: 1,
-                },
+                sx: PaperSx,
             },
         }}
     >

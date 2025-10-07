@@ -3,6 +3,16 @@ import { FC, MouseEvent, useCallback } from "react";
 import Grid from "@mui/material/Grid";
 import { Label } from "@/components/Label";
 import { TClickCb } from "../types";
+import { SxProps, Theme } from "@mui/material";
+
+const LabelSx: SxProps<Theme> = {
+    ":hover": {
+        backgroundColor: "info.main",
+        color: "neutral.200",
+        cursor: "pointer",
+        boxShadow: 15,
+    },
+};
 
 interface LabelItemProps {
     l: ILabel;
@@ -19,6 +29,7 @@ const LabelItem: FC<LabelItemProps> = ({ l, onClick: _onClick }) => {
             <Label
                 width="fit-content"
                 maxWidth="70%"
+                sx={LabelSx}
                 // ...
                 color={l.color}
                 name={l.name}

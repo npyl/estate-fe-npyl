@@ -2,10 +2,11 @@ import { FC } from "react";
 import { ILabels } from "@/types/label";
 import { TSection } from "../types";
 import Labels from "./Labels";
-import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Typography from "@mui/material/Typography";
+import StyledAccordion from "./styled";
 
 interface SectionProps {
     sectionKey: keyof ILabels;
@@ -16,8 +17,8 @@ const Section: FC<SectionProps> = ({ sectionKey, section }) => {
     const { label, variant } = section;
 
     return (
-        <Accordion defaultExpanded>
-            <AccordionSummary>
+        <StyledAccordion defaultExpanded>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography variant="h6" color="text.secondary">
                     {label}
                 </Typography>
@@ -25,7 +26,7 @@ const Section: FC<SectionProps> = ({ sectionKey, section }) => {
             <AccordionDetails>
                 <Labels sectionKey={sectionKey} resource={variant} />
             </AccordionDetails>
-        </Accordion>
+        </StyledAccordion>
     );
 };
 

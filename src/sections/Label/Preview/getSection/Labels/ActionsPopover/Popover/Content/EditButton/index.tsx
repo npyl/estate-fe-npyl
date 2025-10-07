@@ -1,9 +1,9 @@
-import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import { LabelResourceType } from "@/types/label";
 import { FC, useCallback } from "react";
 import useDialog from "@/hooks/useDialog";
 import EditDialog from "./EditDialog";
+import RoundIconButton from "@/components/RoundIconButton";
 
 interface EditButtonProps {
     resource: LabelResourceType;
@@ -24,9 +24,9 @@ const EditButton: FC<EditButtonProps> = ({
 
     return (
         <>
-            <IconButton onClick={open}>
+            <RoundIconButton onClick={open}>
                 <EditIcon fontSize="small" />
-            </IconButton>
+            </RoundIconButton>
 
             {isOpen ? (
                 <EditDialog

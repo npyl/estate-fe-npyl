@@ -55,22 +55,20 @@ const Label = forwardRef<HTMLDivElement, LabelProps>(
                 />
             )}
 
-            <Tooltip title={name} placement="top">
-                <Box sx={{ minWidth: 0, flexGrow: 1, overflow: "hidden" }}>
-                    <Typography
-                        variant="body2"
-                        noWrap
-                        sx={{
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            maxWidth: "100%",
-                        }}
-                    >
-                        {name}
-                    </Typography>
-                </Box>
-            </Tooltip>
+            <Box sx={{ minWidth: 0, flexGrow: 1, overflow: "hidden" }}>
+                <Typography
+                    variant="body2"
+                    noWrap
+                    sx={{
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        maxWidth: "100%",
+                    }}
+                >
+                    {name}
+                </Typography>
+            </Box>
 
             {children}
 
