@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import { LabelResourceType } from "@/types/label";
 import { labels } from "@/services/labels";
 import isFalsy from "@/utils/isFalsy";
-import { InvalidateTagsMetadata } from "./types";
 import { Dispatch, AnyAction } from "redux";
 
 // ---------------------------------------------------------------------------------------
@@ -34,9 +33,7 @@ const doTasks = (dispatch: Dispatch<AnyAction>, cardId?: number) => {
 
 // ---------------------------------------------------------------------------------------
 
-const useInvalidateTags = (meta?: InvalidateTagsMetadata) => {
-    const { cardId } = meta ?? {};
-
+const useInvalidateTags = (resourceId?: number) => {
     const dispatch = useDispatch();
 
     const invalidateTags = useCallback(
@@ -48,9 +45,9 @@ const useInvalidateTags = (meta?: InvalidateTagsMetadata) => {
             if (variant === "property") doProperty(dispatch);
             if (variant === "customer") doCustomer(dispatch);
             if (variant === "document") doDocuments(dispatch);
-            if (variant === "ticket") doTasks(dispatch, cardId);
+            if (variant === "ticket") doTasks(dispatch, resourceId);
         },
-        [cardId]
+        [resourceId]
     );
 
     return { invalidateTags };

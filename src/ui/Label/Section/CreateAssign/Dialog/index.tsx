@@ -1,4 +1,3 @@
-import { LabelResourceType } from "@/types/label";
 import Dialog from "@/components/Dialog";
 import Content, { ContentProps } from "./Content";
 import { FC } from "react";

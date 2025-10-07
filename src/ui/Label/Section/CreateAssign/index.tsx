@@ -6,7 +6,6 @@ import { FC } from "react";
 import stopPropagation from "@/utils/stopPropagation";
 import AddButton from "./AddButton";
 import RemovableLabels from "./RemovableLabels";
-import { InvalidateTagsMetadata } from "@/services/labels/types";
 
 const LabelSectionTitleClassName = "PPLabelSectionTitle";
 
@@ -15,8 +14,6 @@ interface CreateAssignProps extends Omit<StackProps, "onClick"> {
     variant: LabelResourceType;
     resourceId?: number; // > 0 valid, undefined invalid
     disabled?: boolean;
-
-    meta?: InvalidateTagsMetadata;
 }
 
 const CreateAssign: FC<CreateAssignProps> = ({
@@ -25,8 +22,6 @@ const CreateAssign: FC<CreateAssignProps> = ({
     variant,
     resourceId,
     disabled = false,
-
-    meta = {},
 
     ...props
 }) => {
@@ -51,7 +46,6 @@ const CreateAssign: FC<CreateAssignProps> = ({
                     variant={variant}
                     resourceId={resourceId}
                     disabled={disabled}
-                    meta={meta}
                 />
             </SpaceBetween>
 
@@ -62,7 +56,6 @@ const CreateAssign: FC<CreateAssignProps> = ({
                 resource={variant}
                 resourceId={resourceId}
                 disabled={disabled}
-                meta={meta}
             />
         </Stack>
     );

@@ -6,13 +6,9 @@ import {
 } from "@/services/labels";
 import { ILabelForm } from "../types";
 import isFalsy from "@/utils/isFalsy";
-import { InvalidateTagsMetadata } from "@/services/labels/types";
 
-const useSubmit = (
-    meta: InvalidateTagsMetadata,
-    onSuccess?: (id: number) => void
-) => {
-    const { invalidateTags } = useInvalidateTags(meta);
+const useSubmit = (resourceId?: number, onSuccess?: (id: number) => void) => {
+    const { invalidateTags } = useInvalidateTags(resourceId);
 
     const [createLabel] = useCreateLabelForResourceMutation();
     const [createAssignLabel] = useCreateAssignLabelForResourceIdMutation();
@@ -32,7 +28,7 @@ const useSubmit = (
 
             onSuccess?.(res.data?.id);
         },
-        [onSuccess]
+        [onSuccess, invalidateTags]
     );
 };
 

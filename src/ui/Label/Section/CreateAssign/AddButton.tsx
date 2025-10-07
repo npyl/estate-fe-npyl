@@ -4,7 +4,6 @@ import { LabelResourceType } from "src/types/label";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
 import { FC, useCallback } from "react";
-import { InvalidateTagsMetadata } from "@/services/labels/types";
 const AddLabelDialog = dynamic(() => import("./Dialog"));
 
 interface AddButtonProps {
@@ -12,7 +11,6 @@ interface AddButtonProps {
     resourceId?: number; // > 0 valid, undefined invalid
     disabled?: boolean;
     loading?: boolean;
-    meta: InvalidateTagsMetadata;
 }
 
 const AddButton: FC<AddButtonProps> = ({
@@ -21,7 +19,6 @@ const AddButton: FC<AddButtonProps> = ({
     // ...
     disabled,
     loading,
-    meta,
 }) => {
     const [isOpen, openDialog, closeDialog] = useDialog();
 
@@ -47,7 +44,6 @@ const AddButton: FC<AddButtonProps> = ({
                 <AddLabelDialog
                     resourceId={resourceId}
                     resource={variant}
-                    meta={meta}
                     onClose={closeDialog}
                 />
             ) : null}

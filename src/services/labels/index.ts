@@ -8,11 +8,7 @@ import {
     ILabelForResourceRes,
     LabelForResourceProps,
 } from "./types";
-import {
-    optimisticAssign,
-    optimisticCreateAssign,
-    optimisticDelete,
-} from "./optimistic";
+import { optimisticDelete } from "./optimistic";
 import { getAccessToken } from "@/contexts/accessToken";
 
 export const labels = createApi({
@@ -73,7 +69,6 @@ export const labels = createApi({
                 method: "POST",
                 body,
             }),
-            onQueryStarted: optimisticCreateAssign,
             invalidatesTags: ["Labels"],
         }),
         assignLabelToResourceId: builder.mutation<
@@ -85,7 +80,6 @@ export const labels = createApi({
                 method: "POST",
                 params: { labelId: body.id },
             }),
-            onQueryStarted: optimisticAssign,
             invalidatesTags: ["Labels"],
         }),
         deleteLabelForResourceId: builder.mutation<void, DeleteLabelProps>({

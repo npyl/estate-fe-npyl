@@ -4,14 +4,12 @@ import { FC, useCallback } from "react";
 import Labels from "./Labels";
 import { ILabel, LabelResourceType } from "@/types/label";
 import { useSettings } from "../Context";
-import { InvalidateTagsMetadata } from "@/services/labels/types";
 
 interface RemovableLabelsProps {
     assignedLabels: ILabel[];
     resource: LabelResourceType;
     resourceId?: number; // > 0 valid, undefined invalid
     disabled?: boolean;
-    meta: InvalidateTagsMetadata;
 }
 
 const RemovableLabels: FC<RemovableLabelsProps> = ({
@@ -19,12 +17,11 @@ const RemovableLabels: FC<RemovableLabelsProps> = ({
     resourceId,
     assignedLabels,
     disabled,
-    meta,
 }) => {
     const { isControlled, onLabelRemove: _onLabelRemove } = useSettings();
 
     const [deleteLabel, { isLoading }] = useDeleteLabelForResourceIdMutation();
-    const { invalidateTags } = useInvalidateTags(meta);
+    const { invalidateTags } = useInvalidateTags(resourceId);
     const onLabelRemove = useCallback(
         async (labelId: number) => {
             if (isControlled) {

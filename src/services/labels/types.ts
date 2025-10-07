@@ -1,9 +1,5 @@
 import { ILabelPOST, LabelResourceType } from "@/types/label";
 
-type InvalidateTagsMetadata = Partial<{
-    cardId: number;
-}>;
-
 interface LabelForResourceProps {
     resourceId: number;
     resource: LabelResourceType;
@@ -34,8 +30,6 @@ interface IDeleteLabelForResourceReq {
 }
 
 export type {
-    InvalidateTagsMetadata,
-    // ...
     LabelForResourceProps,
     IAssignLabelToResourceReq,
     DeleteLabelProps,

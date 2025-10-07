@@ -9,7 +9,6 @@ import ExclusiveAccordion, {
     IOption,
 } from "@/ui/ExclusiveAccordion";
 import { TranslationType } from "@/types/translation";
-import { InvalidateTagsMetadata } from "@/services/labels/types";
 const LabelForm = dynamic(() => import("@/ui/Label/Form"));
 
 type TExpanded = "ADD" | "EXISTING";
@@ -17,13 +16,12 @@ type TExpanded = "ADD" | "EXISTING";
 interface OptionsProps {
     resourceId?: number;
     resource: LabelResourceType;
-    meta: InvalidateTagsMetadata;
     onExisting: VoidFunction;
 }
 
 const getOPTIONS = (
     t: TranslationType,
-    { resource, resourceId, meta, onExisting }: OptionsProps
+    { resource, resourceId, onExisting }: OptionsProps
 ): IOption<TExpanded>[] => [
     {
         optionKey: "EXISTING",
@@ -33,11 +31,7 @@ const getOPTIONS = (
             </Typography>
         ),
         content: (
-            <AvailableLabels
-                resource={resource}
-                resourceId={resourceId}
-                meta={meta}
-            />
+            <AvailableLabels resource={resource} resourceId={resourceId} />
         ),
     },
     {
@@ -49,7 +43,7 @@ const getOPTIONS = (
         ),
         content: (
             <LabelForm
-                meta={meta}
+                resourceId={resourceId}
                 onSuccess={onExisting}
                 onCancel={onExisting}
             />
@@ -60,10 +54,9 @@ const getOPTIONS = (
 interface ContentProps {
     resourceId?: number;
     resource: LabelResourceType;
-    meta: InvalidateTagsMetadata;
 }
 
-const Content: FC<ContentProps> = ({ resourceId, resource, meta }) => {
+const Content: FC<ContentProps> = ({ resourceId, resource }) => {
     const accordionRef = useRef<ExclusiveAccordionRef<TExpanded>>();
     const onExisting = useCallback(
         () => accordionRef.current?.setExpanded("EXISTING"),
@@ -76,10 +69,9 @@ const Content: FC<ContentProps> = ({ resourceId, resource, meta }) => {
             getOPTIONS(t, {
                 resource,
                 resourceId,
-                meta,
                 onExisting,
             }),
-        [t, resource, resourceId, meta]
+        [t, resource, resourceId]
     );
 
     return (
