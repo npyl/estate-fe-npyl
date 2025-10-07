@@ -21,6 +21,8 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
         },
         ref
     ) => {
+        const id = getEventId(event.id);
+
         const { top, height } = calculateTimePosition(
             event.startDate,
             event.endDate
@@ -41,7 +43,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
         if (isBullet) {
             return (
                 <Bullet
-                    id={event.id}
+                    id={id}
                     event={event}
                     top={top}
                     title={event?.title}
@@ -53,10 +55,10 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
 
         return (
             <Main
-                className={EVENT_CLASSNAME}
-                id={getEventId(event.id)}
                 data-testid={getEventTestId(event.id)}
                 ref={onRef}
+                id={id}
+                className={EVENT_CLASSNAME}
                 isMinimumHeight={isMinimumHeight}
                 top={top}
                 height={maxHeight}

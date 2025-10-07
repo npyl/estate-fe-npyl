@@ -1,14 +1,13 @@
 import CalendarGoogle from "@/components/CalendarGoogle";
-
-import dynamic from "next/dynamic";
-
-const Filters = dynamic(() => import("./Filters"));
 import { FiltersProvider } from "./Filters/context";
+import dynamic from "next/dynamic";
 
 const CalendarGoogleDayView = dynamic(() => import("./Views/Day"));
 import CalendarGoogleWeekView from "./Views/Week";
 const CalendarGoogleMonthView = dynamic(() => import("./Views/Month"));
 const CalendarGoogleYearView = dynamic(() => import("./Views/Year"));
+
+const Filters = dynamic(() => import("./Filters"));
 
 import useResponsive from "@/hooks/useResponsive";
 import { useState } from "react";
@@ -25,7 +24,7 @@ const CalendarSection = () => {
     const [date, setDate] = useState(TODAY);
 
     return (
-        <FiltersProvider>
+        <FiltersProvider onDateChange={setDate}>
             <Filters />
 
             <Box mt={1} />

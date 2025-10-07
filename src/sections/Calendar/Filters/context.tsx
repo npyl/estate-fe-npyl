@@ -1,6 +1,8 @@
 import {
     createContext,
     Dispatch,
+    FC,
+    PropsWithChildren,
     SetStateAction,
     useContext,
     useState,
@@ -13,12 +15,15 @@ type FiltersState = {
     setType: Dispatch<SetStateAction<TTypeFilter>>;
     calendarId?: TCalendarIdFilter;
     setCalendarId: (v: TCalendarIdFilter) => void;
+
+    onDateChange: (d: Date) => void;
 };
 
 const FiltersContext = createContext<FiltersState>({
     type: "ANY",
     setType() {},
     setCalendarId() {},
+    onDateChange(d) {},
 });
 
 export const useFiltersContext = () => {
@@ -31,9 +36,14 @@ export const useFiltersContext = () => {
     return context;
 };
 
-export const FiltersProvider: React.FC<React.PropsWithChildren<unknown>> = (
-    props
-) => {
+interface FiltersProviderProps extends PropsWithChildren {
+    onDateChange: (d: Date) => void;
+}
+
+export const FiltersProvider: FC<FiltersProviderProps> = ({
+    onDateChange,
+    ...props
+}) => {
     const [type, setType] = useState<TTypeFilter>("ANY");
     const [calendarId, setCalendarId] = useState<TCalendarIdFilter>("");
 
@@ -44,6 +54,7 @@ export const FiltersProvider: React.FC<React.PropsWithChildren<unknown>> = (
                 setType,
                 calendarId,
                 setCalendarId,
+                onDateChange,
             }}
             {...props}
         />
