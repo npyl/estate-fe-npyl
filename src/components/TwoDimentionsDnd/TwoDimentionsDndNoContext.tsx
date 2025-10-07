@@ -1,7 +1,12 @@
 import Stack from "@mui/material/Stack";
-import { Children, FC, ReactNode, useLayoutEffect, useMemo } from "react";
+import React, {
+    Children,
+    FC,
+    ReactNode,
+    useLayoutEffect,
+    useMemo,
+} from "react";
 import { TwoDimentionsDndNoContextProps, TwoDimentionsDndNode } from "./types";
-import React from "react";
 import DroppableRow from "./DroppableRow";
 import DraggableItem from "./DraggableItem";
 import PlaceholderRow from "./PlaceholderRow";
