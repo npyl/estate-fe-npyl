@@ -1,10 +1,10 @@
 import { ChangeEvent, forwardRef, useCallback } from "react";
 import AdornmentLeft from "./AdornmentLeft";
 import AdornmentRight from "./AdornmentRight";
-import StyledTextField, { StyledSearchProps } from "./StyledTextField";
+import StyledTextField, { StyledTextFieldProps } from "./StyledTextField";
 
 interface TextFieldWithMethodsProps
-    extends Omit<StyledSearchProps, "onClick" | "onChange"> {
+    extends Omit<StyledTextFieldProps, "onClick" | "onChange"> {
     onClear: VoidFunction;
     onChange: (s: string) => void;
 

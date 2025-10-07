@@ -15,7 +15,7 @@ export const StyledLabel = styled(Box)<LabelProps>(({ theme, color }) => {
                       : theme.palette.neutral?.[700],
           }
         : {
-              color: theme.palette[color as LabelColor].light as string,
+              color: theme.palette[color as LabelColor].light,
               backgroundColor: alpha(
                   theme.palette[color as LabelColor].main,
                   0.16
