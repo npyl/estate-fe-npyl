@@ -42,7 +42,11 @@ const Popover: FC<PopoverProps> = ({ anchorEl, events, onClose }) => {
             anchorEl={anchorEl}
             anchorOrigin={{
                 vertical: "bottom",
-                horizontal: "left",
+                horizontal: "center",
+            }}
+            transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
             }}
             onClose={onClose}
         >
