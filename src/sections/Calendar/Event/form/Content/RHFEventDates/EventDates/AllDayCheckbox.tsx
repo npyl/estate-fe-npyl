@@ -1,10 +1,13 @@
-import { FC, useCallback } from "react";
-import EventDates, { EventDatesProps } from "./EventDates";
-import {
-    getAllDayStartEnd,
-    isAllDay as getIsAllDay,
-} from "@/components/Calendar/util";
+import { getAllDayStartEnd } from "@/components/Calendar/util";
 import { TODAY } from "@/components/BaseCalendar/constants";
+import { FC, useCallback } from "react";
+import { useTranslation } from "react-i18next";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+
+const CheckboxSx = {
+    width: "fit-content",
+};
 
 const getDates = (
     startDate: string,
@@ -24,22 +27,20 @@ const getDates = (
     }
 };
 
-interface RenderProps
-    extends Omit<EventDatesProps, "allDay" | "onAllDayChange"> {
+interface AllDayCheckboxProps {
+    allDay: boolean;
     startDate: string;
-    endDate: string;
     onStartDateChange: (d: string) => void;
     onEndDateChange: (d: string) => void;
 }
 
-const Render: FC<RenderProps> = ({
+const AllDayCheckbox: FC<AllDayCheckboxProps> = ({
+    allDay,
     startDate,
-    endDate,
     onStartDateChange,
     onEndDateChange,
-    ...props
 }) => {
-    const allDay = getIsAllDay(startDate, endDate);
+    const { t } = useTranslation();
 
     const onAllDayChange = useCallback(
         (_: any, b: boolean) => {
@@ -52,15 +53,15 @@ const Render: FC<RenderProps> = ({
         },
         [startDate]
     );
-
     return (
-        <EventDates
-            allDay={allDay}
-            onAllDayChange={onAllDayChange}
-            {...props}
+        <FormControlLabel
+            label={t("All day")}
+            control={<Checkbox />}
+            checked={allDay}
+            onChange={onAllDayChange}
+            sx={CheckboxSx}
         />
     );
 };
 
-export type { RenderProps };
-export default Render;
+export default AllDayCheckbox;

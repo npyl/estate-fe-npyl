@@ -1,25 +1,25 @@
-import {
-    Checkbox,
-    FormControlLabel,
-    Stack,
-    StackProps,
-    Typography,
-} from "@mui/material";
+import { Stack, StackProps, Typography } from "@mui/material";
 import { FC } from "react";
-import { useTranslation } from "react-i18next";
 import { RHFDatePicker } from "@/components/hook-form";
 import RHFTimePicker from "@/components/hook-form/RHFTimePicker";
 import AllDayPicker from "./AllDayPicker";
+import { isAllDay } from "@/components/Calendar/util";
+import AllDayCheckbox from "./AllDayCheckbox";
+import {
+    DATEPICKER_TESTID,
+    END_TIME_PICKER_TESTID,
+    START_TIME_PICKER_TESTID,
+    // ...
+    ALL_DAY_DATEPICKER_TESTID,
+} from "./constants";
 
 // ----------------------------------------------------------------------
 
-const CheckboxSx = {
-    width: "fit-content",
-};
-
-export interface EventDatesProps extends StackProps {
-    allDay: boolean;
-    onAllDayChange: (_: any, b: boolean) => void;
+interface EventDatesProps extends StackProps {
+    startDate: string;
+    endDate: string;
+    onStartDateChange: (d: string) => void;
+    onEndDateChange: (d: string) => void;
 
     // INFO: make this component reusable in many hook-form setups
     startDateKey?: string;
@@ -27,46 +27,60 @@ export interface EventDatesProps extends StackProps {
 }
 
 const EventDates: FC<EventDatesProps> = ({
-    allDay,
-    onAllDayChange,
+    startDate,
+    endDate,
+    onStartDateChange,
+    onEndDateChange,
     // ...
     startDateKey = "startDate",
     endDateKey = "endDate",
     // ...
     ...props
 }) => {
-    const { t } = useTranslation();
+    const allDay = isAllDay(startDate, endDate);
 
     return (
         <Stack spacing={1} {...props}>
             <Stack direction="row" spacing={1} alignItems="center">
                 {allDay ? (
                     <AllDayPicker
+                        data-testid={ALL_DAY_DATEPICKER_TESTID}
                         startDateKey={startDateKey}
-                        endDateKey={endDateKey}
+                        onEndDateChange={onEndDateChange}
                     />
                 ) : null}
 
-                {!allDay ? <RHFDatePicker name={startDateKey} /> : null}
+                {!allDay ? (
+                    <RHFDatePicker
+                        data-testid={DATEPICKER_TESTID}
+                        name={startDateKey}
+                    />
+                ) : null}
 
-                <FormControlLabel
-                    label={t("All day")}
-                    control={<Checkbox />}
-                    checked={allDay}
-                    onChange={onAllDayChange}
-                    sx={CheckboxSx}
+                <AllDayCheckbox
+                    allDay={allDay}
+                    startDate={startDate}
+                    onStartDateChange={onStartDateChange}
+                    onEndDateChange={onEndDateChange}
                 />
             </Stack>
 
             {!allDay ? (
                 <Stack direction="row" spacing={1} alignItems="center">
-                    <RHFTimePicker name={startDateKey} />
+                    <RHFTimePicker
+                        data-testid={START_TIME_PICKER_TESTID}
+                        name={startDateKey}
+                    />
                     <Typography>-</Typography>
-                    <RHFTimePicker name={endDateKey} />
+                    <RHFTimePicker
+                        data-testid={END_TIME_PICKER_TESTID}
+                        name={endDateKey}
+                    />
                 </Stack>
             ) : null}
         </Stack>
     );
 };
 
+export type { EventDatesProps };
 export default EventDates;

@@ -1,16 +1,18 @@
 import { FC, useCallback } from "react";
-import { Controller, useFormContext } from "react-hook-form";
 import { RHFDatePicker } from "@/components/hook-form";
 import { getAllDayStartEnd } from "@/components/Calendar/util";
+import { RHFDatePickerProps } from "@/components/hook-form/RHFDatePicker";
 
-interface StartEndDatePickerProps {
+interface AllDayPickerProps
+    extends Omit<RHFDatePickerProps, "name" | "onChange"> {
     startDateKey: string;
     onEndDateChange: (d: string) => void;
 }
 
-const StartEndDatePicker: FC<StartEndDatePickerProps> = ({
+const AllDayPicker: FC<AllDayPickerProps> = ({
     startDateKey,
     onEndDateChange,
+    ...props
 }) => {
     const handleChange = useCallback(
         (s: string) => {
@@ -19,28 +21,8 @@ const StartEndDatePicker: FC<StartEndDatePickerProps> = ({
         },
         [onEndDateChange]
     );
-    return <RHFDatePicker name={startDateKey} onChange={handleChange} />;
-};
-
-interface AllDayPickerProps {
-    startDateKey: string;
-    endDateKey: string;
-}
-
-const AllDayPicker: FC<AllDayPickerProps> = ({ startDateKey, endDateKey }) => {
-    const { control } = useFormContext();
-
     return (
-        <Controller
-            name={endDateKey}
-            control={control}
-            render={({ field: { onChange } }) => (
-                <StartEndDatePicker
-                    startDateKey={startDateKey}
-                    onEndDateChange={onChange}
-                />
-            )}
-        />
+        <RHFDatePicker name={startDateKey} onChange={handleChange} {...props} />
     );
 };
 

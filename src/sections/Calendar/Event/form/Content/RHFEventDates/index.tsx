@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import Render, { RenderProps } from "./Render";
+import EventDates, { EventDatesProps } from "./EventDates";
 
 interface RHFEventDatesProps
     extends Omit<
-        RenderProps,
+        EventDatesProps,
         "startDate" | "endDate" | "onStartDateChange" | "onEndDateChange"
     > {
     startDateName: string;
@@ -31,7 +31,7 @@ const RHFEventDates: FC<RHFEventDatesProps> = ({
                     render={({
                         field: { value: endDate, onChange: onEndDateChange },
                     }) => (
-                        <Render
+                        <EventDates
                             startDate={startDate}
                             endDate={endDate}
                             onStartDateChange={onStartDateChange}
