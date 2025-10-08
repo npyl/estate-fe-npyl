@@ -4,10 +4,12 @@ import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import { styled } from "@mui/material/styles";
+import { FormControlProps } from "@mui/material";
 
-const CheckboxSx = {
+const StyledFormControlLabel = styled(FormControlLabel)({
     width: "fit-content",
-};
+});
 
 const getDates = (
     startDate: string,
@@ -27,7 +29,11 @@ const getDates = (
     }
 };
 
-interface AllDayCheckboxProps {
+interface AllDayCheckboxProps
+    extends Omit<
+        FormControlProps,
+        "label" | "control" | "checked" | "onChange"
+    > {
     allDay: boolean;
     startDate: string;
     onStartDateChange: (d: string) => void;
@@ -39,6 +45,7 @@ const AllDayCheckbox: FC<AllDayCheckboxProps> = ({
     startDate,
     onStartDateChange,
     onEndDateChange,
+    ...props
 }) => {
     const { t } = useTranslation();
 
@@ -54,12 +61,12 @@ const AllDayCheckbox: FC<AllDayCheckboxProps> = ({
         [startDate]
     );
     return (
-        <FormControlLabel
+        <StyledFormControlLabel
             label={t("All day")}
             control={<Checkbox />}
             checked={allDay}
             onChange={onAllDayChange}
-            sx={CheckboxSx}
+            {...props}
         />
     );
 };

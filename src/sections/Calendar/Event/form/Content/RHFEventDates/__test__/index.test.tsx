@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import Tester from "./Tester";
 import { END_DATE_TESTID, START_DATE_TESTID } from "./Tester/constants";
 import { START_HOUR, END_HOUR } from "@/constants/calendar";
@@ -7,6 +7,7 @@ import {
     END_TIME_PICKER_TESTID,
     START_TIME_PICKER_TESTID,
     // ...
+    ALL_DAY_CHECKBOX_TESTID,
     ALL_DAY_DATEPICKER_TESTID,
 } from "../EventDates/constants";
 import "@testing-library/jest-dom";
@@ -23,7 +24,8 @@ const getStartEndDates = (startHour: number, endHour: number) => {
     return [startDate.toISOString(), endDate.toISOString()];
 };
 
-const getNotAllDay = () => getStartEndDates(START_HOUR, END_HOUR - 2);
+const getNotAllDay = () => getStartEndDates(START_HOUR, START_HOUR + 1);
+
 const getAllDay = () => getStartEndDates(START_HOUR, END_HOUR);
 
 // Mock translation
@@ -77,6 +79,13 @@ const expectIsNotAllDayLayout = () => {
 
 // -----------------------------------------------------------------------------------
 
+const clickAllDayCheckboxAndExpect = (s0: string, s1: string) => {
+    act(() => screen.getByTestId(ALL_DAY_CHECKBOX_TESTID).click());
+    expectValues(s0, s1);
+};
+
+// -----------------------------------------------------------------------------------
+
 describe("RHFEventDates", () => {
     beforeEach(() => {
         jest.clearAllMocks();
@@ -96,6 +105,27 @@ describe("RHFEventDates", () => {
             const [startDate, endDate] = getAllDay();
             render(<Tester startDate={startDate} endDate={endDate} />);
             expectIsAllDayLayout();
+        });
+    });
+
+    describe("flows", () => {
+        it("notAllDay -> allDay", () => {
+            const [start0, end0] = getNotAllDay();
+            render(<Tester startDate={start0} endDate={end0} />);
+            expectIsNotAllDayLayout();
+
+            const [start1, end1] = getAllDay();
+            clickAllDayCheckboxAndExpect(start1, end1);
+            expectIsAllDayLayout();
+        });
+        it("allDay -> notAllDay", () => {
+            const [start0, end0] = getAllDay();
+            render(<Tester startDate={start0} endDate={end0} />);
+            expectIsAllDayLayout();
+
+            const [start1, end1] = getNotAllDay();
+            clickAllDayCheckboxAndExpect(start1, end1);
+            expectIsNotAllDayLayout();
         });
     });
 });

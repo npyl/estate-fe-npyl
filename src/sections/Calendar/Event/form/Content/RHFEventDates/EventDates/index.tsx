@@ -10,6 +10,7 @@ import {
     END_TIME_PICKER_TESTID,
     START_TIME_PICKER_TESTID,
     // ...
+    ALL_DAY_CHECKBOX_TESTID,
     ALL_DAY_DATEPICKER_TESTID,
 } from "./constants";
 
@@ -58,6 +59,7 @@ const EventDates: FC<EventDatesProps> = ({
                 ) : null}
 
                 <AllDayCheckbox
+                    data-testid={ALL_DAY_CHECKBOX_TESTID}
                     allDay={allDay}
                     startDate={startDate}
                     onStartDateChange={onStartDateChange}
