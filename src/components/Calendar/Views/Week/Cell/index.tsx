@@ -45,7 +45,9 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
 
     return (
         <div style={ContainerStyle}>
-            {miscEvents.length > 0 ? <MiscCell events={miscEvents} /> : null}
+            {miscEvents.length > 0 ? (
+                <MiscCell events={miscEvents} onEventClick={onEventClick} />
+            ) : null}
 
             <Cell date={date} {...props}>
                 {/* Events */}

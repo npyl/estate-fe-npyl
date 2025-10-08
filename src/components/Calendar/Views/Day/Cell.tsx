@@ -37,7 +37,9 @@ const CalendarDayViewCell: FC<CalendarCellProps> = ({
 
     return (
         <>
-            {miscEvents.length > 0 ? <MiscCell events={miscEvents} /> : null}
+            {miscEvents.length > 0 ? (
+                <MiscCell events={miscEvents} onEventClick={onEventClick} />
+            ) : null}
 
             <Cell date={date} {...props}>
                 {/* Events */}
