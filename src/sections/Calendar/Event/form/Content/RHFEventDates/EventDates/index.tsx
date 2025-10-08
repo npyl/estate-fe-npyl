@@ -5,32 +5,11 @@ import {
     StackProps,
     Typography,
 } from "@mui/material";
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { useFormContext } from "react-hook-form";
 import { RHFDatePicker } from "@/components/hook-form";
-import { getAllDayStartEnd } from "@/components/Calendar/util";
 import RHFTimePicker from "@/components/hook-form/RHFTimePicker";
-
-// ----------------------------------------------------------------------
-
-interface AllDayPickerProps {
-    startDateKey: string;
-    endDateKey: string;
-}
-
-const AllDayPicker: FC<AllDayPickerProps> = ({ startDateKey, endDateKey }) => {
-    const { setValue } = useFormContext();
-
-    const handleChange = useCallback((s: string) => {
-        const [start, end] = getAllDayStartEnd(s);
-
-        setValue(startDateKey, start, { shouldDirty: true });
-        setValue(endDateKey, end, { shouldDirty: true });
-    }, []);
-
-    return <RHFDatePicker name={startDateKey} onChange={handleChange} />;
-};
+import AllDayPicker from "./AllDayPicker";
 
 // ----------------------------------------------------------------------
 

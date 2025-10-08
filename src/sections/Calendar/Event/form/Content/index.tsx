@@ -4,12 +4,10 @@ import { useWatch } from "react-hook-form";
 import { CalendarEventReq } from "@/types/calendar";
 import { RHFTextField } from "@/components/hook-form";
 import RHFTypeSelect from "./RHFTypeSelect";
-import Pickers from "./Pickers";
 import dynamic from "next/dynamic";
 import RHFEditor from "@/components/hook-form/RHFEditor";
 import { EVENT_POPOVER_TITLE_TESTID } from "../constants";
-import { FC } from "react";
-import { TCalendarEvent } from "@/components/Calendar/types";
+import RHFEventDates from "./RHFEventDates";
 const Color = dynamic(() => import("./Color"), {
     loading: () => <Skeleton variant="circular" width="30px" height="30px" />,
 });
@@ -33,12 +31,7 @@ const TextFieldSx = {
     px: 0.5,
 };
 
-interface ContentProps {
-    startDate?: string;
-    event?: TCalendarEvent;
-}
-
-const Content: FC<ContentProps> = ({ startDate, event }) => {
+const Content = () => {
     const { t } = useTranslation();
 
     return (
@@ -51,10 +44,7 @@ const Content: FC<ContentProps> = ({ startDate, event }) => {
                 sx={TextFieldSx}
             />
 
-            <Pickers
-                startDate={startDate || event?.startDate}
-                endDate={startDate || event?.endDate}
-            />
+            <RHFEventDates startDateName="startDate" endDateName="endDate" />
 
             <RHFLocation />
 

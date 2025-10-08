@@ -29,19 +29,17 @@ const WithCalendar = () => {
     if (!isAssigneeSelected) return null;
 
     return (
-        <>
-            <Stack position="relative" spacing={1}>
-                <WithCalendarSwitch />
+        <Stack position="relative" spacing={1}>
+            <WithCalendarSwitch />
 
-                {isOpen ? (
-                    <IsAuthenticatedIndicator sx={OAuthButtonSx}>
-                        <WorkspaceUserGuard>
-                            <Pickers />
-                        </WorkspaceUserGuard>
-                    </IsAuthenticatedIndicator>
-                ) : null}
-            </Stack>
-        </>
+            {isOpen ? (
+                <IsAuthenticatedIndicator sx={OAuthButtonSx}>
+                    <WorkspaceUserGuard>
+                        <Pickers />
+                    </WorkspaceUserGuard>
+                </IsAuthenticatedIndicator>
+            ) : null}
+        </Stack>
     );
 };
 
