@@ -1,4 +1,4 @@
-import Typography from "@mui/material/Typography";
+import Typography, { TypographyProps } from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 import {
     FC,
@@ -10,12 +10,12 @@ import {
 } from "react";
 
 const useIsEllipsis = (elementRef: RefObject<HTMLElement>) => {
-    const [isEllipsis, setIsOverflown] = useState(false);
+    const [isEllipsis, setIsEllipsis] = useState(false);
 
     const checkOverflow = useCallback(() => {
         const element = elementRef.current;
         if (!element) return;
-        setIsOverflown(element.scrollWidth > element.clientWidth);
+        setIsEllipsis(element.scrollWidth > element.clientWidth);
     }, []);
 
     useLayoutEffect(() => {
@@ -39,24 +39,20 @@ const EllipsisSx = {
     whiteSpace: "nowrap",
 };
 
-interface ContentProps {
-    name: string;
+interface TypographyWithTooltipProps extends Omit<TypographyProps, "children"> {
+    children: string;
 }
 
-const Content: FC<ContentProps> = ({ name }) => {
+const TypographyWithTooltip: FC<TypographyWithTooltipProps> = (props) => {
     const textRef = useRef<HTMLElement>(null);
 
     const isEllipsis = useIsEllipsis(textRef);
 
-    const content = (
-        <Typography ref={textRef} sx={EllipsisSx} variant="body2">
-            {name}
-        </Typography>
-    );
+    const content = <Typography ref={textRef} sx={EllipsisSx} {...props} />;
 
     if (isEllipsis)
         return (
-            <Tooltip title={name} placement="top">
+            <Tooltip title={props.children} placement="top">
                 {content}
             </Tooltip>
         );
@@ -64,4 +60,4 @@ const Content: FC<ContentProps> = ({ name }) => {
     return content;
 };
 
-export default Content;
+export default TypographyWithTooltip;

@@ -1,12 +1,9 @@
 import { forwardRef } from "react";
-import { Box, IconButton, Tooltip, Typography, alpha } from "@mui/material";
-//
+import { Box, IconButton, alpha } from "@mui/material";
 import { StyledLabel } from "./styles";
 import { LabelProps } from "./types";
-// icons
 import { Close as CloseIcon } from "@mui/icons-material";
-
-// ----------------------------------------------------------------------
+import TypographyWithTooltip from "../TypographyWithTooltip";
 
 const LabelClassName = "PPLabelClassName";
 
@@ -55,20 +52,9 @@ const Label = forwardRef<HTMLDivElement, LabelProps>(
                 />
             )}
 
-            <Box sx={{ minWidth: 0, flexGrow: 1, overflow: "hidden" }}>
-                <Typography
-                    variant="body2"
-                    noWrap
-                    sx={{
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        maxWidth: "100%",
-                    }}
-                >
-                    {name}
-                </Typography>
-            </Box>
+            <TypographyWithTooltip variant="body2" maxWidth="100%">
+                {name}
+            </TypographyWithTooltip>
 
             {children}
 

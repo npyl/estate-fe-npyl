@@ -3,15 +3,15 @@ import { getPaperSx } from "./styled";
 import Header from "./Header";
 import Box from "@mui/material/Box";
 import Footer from "./Footer";
-import Content from "./Content";
 import { Paper, PaperProps } from "@mui/material";
 import { forwardRef } from "react";
 import Link from "@/components/Link";
 import TaskLabel from "./TaskLabel";
+import TypographyWithTooltip from "@/components/TypographyWithTooltip";
 
 // ----------------------------------------------------------------------
 
-export type TaskCardProps = PaperProps & {
+type TaskCardProps = PaperProps & {
     card: IKanbanCardShort;
 };
 
@@ -35,7 +35,9 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
                     uniqueCode={uniqueCode}
                 />
 
-                <Content name={name} />
+                <TypographyWithTooltip variant="body2">
+                    {name}
+                </TypographyWithTooltip>
 
                 <Box minHeight={22}>
                     <TaskLabel taskId={card.id} />
@@ -56,4 +58,5 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
 
 TaskCard.displayName = "TaskCard";
 
+export type { TaskCardProps };
 export default TaskCard;
