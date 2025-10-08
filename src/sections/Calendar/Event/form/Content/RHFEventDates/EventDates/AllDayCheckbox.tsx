@@ -2,10 +2,11 @@ import { getAllDayStartEnd } from "@/components/Calendar/util";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControlLabel, {
+    FormControlLabelProps,
+} from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { styled } from "@mui/material/styles";
-import { FormControlProps } from "@mui/material";
 
 const StyledFormControlLabel = styled(FormControlLabel)({
     width: "fit-content",
@@ -31,7 +32,7 @@ const getDates = (
 
 interface AllDayCheckboxProps
     extends Omit<
-        FormControlProps,
+        FormControlLabelProps,
         "label" | "control" | "checked" | "onChange"
     > {
     allDay: boolean;
