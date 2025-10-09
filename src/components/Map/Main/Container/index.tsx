@@ -1,15 +1,80 @@
 import { GoogleMap } from "@react-google-maps/api";
-import { CSSProperties, FC, useCallback, useRef } from "react";
+import {
+    CSSProperties,
+    FC,
+    forwardRef,
+    useCallback,
+    useImperativeHandle,
+    useRef,
+    useState,
+} from "react";
 import useLoadApi from "@/components/Map/hook";
-import { IMapProps, MapContainerProps } from "@/components/Map/types";
+import {
+    ContentProps,
+    IMapProps,
+    MapContainerProps,
+} from "@/components/Map/types";
 import { MapProvider, useMapContext } from "../context";
-import Controls, { ControlsRef } from "./Controls";
+import Controls from "./Controls";
 import { MAP_ID, patrasLatLng } from "@/components/Map/constants";
 import dynamic from "next/dynamic";
 import useZoom from "./useZoom";
 import useCenter from "./useCenter";
 import useClick from "./useClick";
 const MainMarker = dynamic(() => import("./MainMarker"));
+
+interface ContentRef {
+    load: VoidFunction;
+}
+
+const Content = forwardRef<ContentRef, ContentProps>(
+    (
+        {
+            geocoderRef,
+            // ...
+            onMainMarkerDrag,
+            mainMarker,
+            // ...
+            center,
+            // ..
+            centerTop,
+            leftCenter,
+            leftTop,
+            rightTop,
+            // ...
+            children,
+        },
+        ref
+    ) => {
+        const [isReady, setIsReady] = useState(false);
+
+        const load = useCallback(() => setIsReady(true), []);
+        useImperativeHandle(ref, () => ({ load }), []);
+
+        if (!isReady) return null;
+
+        return (
+            <>
+                <Controls
+                    centerTop={centerTop}
+                    leftCenter={leftCenter}
+                    leftTop={leftTop}
+                    rightTop={rightTop}
+                />
+
+                {mainMarker ? (
+                    <MainMarker
+                        geocoderRef={geocoderRef}
+                        center={center}
+                        onMainMarkerDrag={onMainMarkerDrag}
+                    />
+                ) : null}
+
+                {children}
+            </>
+        );
+    }
+);
 
 const containerStyle: CSSProperties = {
     width: "100%",
@@ -35,32 +100,56 @@ const MapContainer: FC<MapContainerProps> = ({
     children,
     ...props
 }) => {
+    const contentProps = {
+        onMainMarkerDrag,
+        mainMarker,
+        // ...
+        leftTop,
+        leftCenter,
+        rightTop,
+        centerTop,
+        // ...
+        children,
+    };
+
     const { mapRef } = useMapContext();
     const geocoderRef = useRef<google.maps.Geocoder>();
-    const controlsRef = useRef<ControlsRef>(null);
+    const contentRef = useRef<ContentRef>();
 
     const { isLoaded } = useLoadApi();
 
     const center = useCenter(_center);
     const zoom = useZoom(props.shapes, _zoom);
 
-    const onLoad = useCallback(
-        (map: google.maps.Map) => {
-            map.getDiv().setAttribute("data-testid", MAP_ID);
+    const onMutualLoad = useCallback(() => {
+        // content
+        contentRef.current?.load();
 
-            // map
-            mapRef.current = map;
+        onReady?.(mapRef.current!);
+    }, [onReady]);
 
-            // geocoder
-            geocoderRef.current = new window.google.maps.Geocoder();
+    const onMapRef = useCallback((map: google.maps.Map) => {
+        map.getDiv().setAttribute("data-testid", MAP_ID);
 
-            // load controls
-            controlsRef.current?.load();
+        // map
+        mapRef.current = map;
 
-            onReady?.(map);
-        },
-        [onReady]
-    );
+        // geocoder
+        geocoderRef.current = new window.google.maps.Geocoder();
+
+        // attempt mutual ref
+        if (!contentRef.current) return;
+        onMutualLoad();
+    }, []);
+
+    const onContentRef = useCallback((c: ContentRef | null) => {
+        if (!c) return;
+        contentRef.current = c;
+
+        // attempt mutual ref
+        if (!mapRef.current) return;
+        onMutualLoad();
+    }, []);
 
     const handleMapClick = useClick(geocoderRef, onClick);
 
@@ -72,7 +161,7 @@ const MapContainer: FC<MapContainerProps> = ({
             center={center}
             zoom={zoom}
             onClick={handleMapClick}
-            onLoad={onLoad}
+            onLoad={onMapRef}
             options={{
                 gestureHandling: "auto",
                 scrollwheel: true,
@@ -82,24 +171,14 @@ const MapContainer: FC<MapContainerProps> = ({
             }}
             {...props}
         >
-            <Controls
-                ref={controlsRef}
-                // ...
-                centerTop={centerTop}
-                leftCenter={leftCenter}
-                leftTop={leftTop}
-                rightTop={rightTop}
-            />
-
-            {mainMarker ? (
-                <MainMarker
-                    geocoderRef={geocoderRef}
-                    center={center}
-                    onMainMarkerDrag={onMainMarkerDrag}
-                />
-            ) : null}
-
-            {children}
+            <Content
+                ref={onContentRef}
+                center={center}
+                geocoderRef={geocoderRef}
+                {...contentProps}
+            >
+                {children}
+            </Content>
         </GoogleMap>
     );
 };
