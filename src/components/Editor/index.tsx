@@ -141,7 +141,7 @@ const Editor = forwardRef<EditorRef, EditorProps>(
 
                         ...(!editable
                             ? {
-                                  userSelect: "none",
+                                  userSelect: "text",
                               }
                             : {}),
 
