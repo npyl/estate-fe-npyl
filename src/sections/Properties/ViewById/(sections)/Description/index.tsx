@@ -36,20 +36,14 @@ const DescriptionSection = () => {
                 <Typography variant="body1">{title}</Typography>
             </Box>
             <Divider />
-            <Box
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6">{t("DescriptionSection")}</Typography>
-            </Box>
-
             <Box sx={BoxSx}>
-                <Editor ref={editorRef} editable={false} />
+                <Typography variant="h6" px={1.5} py={1}>
+                    {t("DescriptionSection")}
+                </Typography>
+
                 <CopyToClipboard editorRef={editorRef} />
+
+                <Editor ref={editorRef} editable={false} />
             </Box>
         </PanelWithQuickView>
     );

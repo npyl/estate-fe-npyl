@@ -5,6 +5,7 @@ import { FC, RefObject } from "react";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import { useTranslation } from "react-i18next";
 import { SxProps, Theme } from "@mui/material";
+import { getBorderColor2 } from "@/theme/borderColor";
 
 const ButtonSx: SxProps<Theme> = {
     display: "none",
@@ -14,6 +15,14 @@ const ButtonSx: SxProps<Theme> = {
     position: "absolute",
     top: 5,
     right: 5,
+
+    backgroundColor: "background.paper",
+    ":hover": {
+        backgroundColor: "actions.hover",
+    },
+
+    border: "1px solid",
+    borderColor: getBorderColor2,
 };
 
 const CN_COPY_TO_CLIPBOARD = "cn-copy-to-clipboard";
