@@ -32,6 +32,19 @@ import { ILabel } from "@/types/label";
 import { createRemoveTabAwareHook as rt } from "@/services/_util";
 import { getAccessToken } from "@/contexts/accessToken";
 
+/**
+ * Prepare a unique tag that will get invalidated *ONLY* when the specific card's labels change
+ *
+ * This causes an error: https://github.com/reduxjs/redux-toolkit/issues/5094
+ *
+ * But can be safely ignored!
+ *
+ * @param cardId card's id of which we want the labels
+ * @returns INFO: returns as `any` because RTK has type checking and does not support dynamic type (from what I know)
+ */
+const getCardByIdLabelsTag = (cardId: number): any =>
+    `CardById-${cardId}-Labels`;
+
 export const tasks = createApi({
     reducerPath: "tasks",
     baseQuery: fetchBaseQuery({
@@ -45,14 +58,7 @@ export const tasks = createApi({
         },
     }),
 
-    tagTypes: [
-        "Board",
-        "Card",
-        "Comments",
-        "Attachments",
-        "Labels",
-        "AssigneeHistory",
-    ],
+    tagTypes: ["Board", "Card", "Comments", "Attachments", "AssigneeHistory"],
 
     endpoints: (builder) => ({
         getBoard: builder.query<IKanbanBoard, BoardFiltersReq>({
@@ -161,6 +167,13 @@ export const tasks = createApi({
             }),
             invalidatesTags: ["Comments"],
         }),
+        removeComment: builder.mutation<void, number>({
+            query: (id) => ({
+                url: `/comment/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Comments"],
+        }),
 
         // Attachments
         getAttachments: builder.query<IKanbanAttachment[], number>({
@@ -200,7 +213,7 @@ export const tasks = createApi({
             query: (cardId) => ({
                 url: `/card/${cardId}/labels`,
             }),
-            providesTags: ["Labels"],
+            providesTags: (_0, _1, cardId) => [getCardByIdLabelsTag(cardId)],
         }),
     }),
 });
@@ -245,7 +258,11 @@ const useSetColumnDoneMutation = () => {
 
 // --------------------------------------------------------------------------
 
-export { useSetColumnDoneMutation };
+export {
+    getCardByIdLabelsTag,
+    // ...
+    useSetColumnDoneMutation,
+};
 
 const useDeleteCardMutation = rt(tasks.useDeleteCardMutation);
 export { useDeleteCardMutation };
@@ -269,6 +286,7 @@ export const {
     //Comments
     useGetCommentsForCardQuery,
     useCreateCommentMutation,
+    useRemoveCommentMutation,
 
     // Attachmetns
     useGetAttachmentsQuery,

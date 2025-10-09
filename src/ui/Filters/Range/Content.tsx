@@ -1,94 +1,74 @@
-import { Grid, List, ListItemText } from "@mui/material";
-import { FC, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { ListItem } from "@/components/Filters/styled";
-import DebouncedInput from "./DebouncedInput";
-import { Props } from "./types";
-import formatNumber from "./formatNumber";
+import { Stack } from "@mui/material";
+import { FC, useRef, useState } from "react";
+import Pane, { PaneRef, getInputTestId, getOptionTestId } from "./Pane";
+import useMinMaxControl from "./useMinMaxControl";
 
-const Content: FC<Props> = ({
-    type,
+// --------------------------------------------------------------------------------------
+
+interface ContentProps {
+    symbol: string;
+    ceiling: string;
+
+    valueMin?: number;
+    valueMax?: number;
+    setMin: (v?: number) => void;
+    setMax: (v?: number) => void;
+
+    generateNumbers: () => number[];
+}
+
+const Content: FC<ContentProps> = ({
+    ceiling,
+    symbol,
+    // ...
     valueMin,
     valueMax,
-    setMin,
-    setMax,
+    setMin: _setMin,
+    setMax: _setMax,
+    // ...
     generateNumbers,
 }) => {
-    const { t } = useTranslation();
-
-    const symbol = type === "price" ? "€" : "m²";
+    const fromRef = useRef<PaneRef>(null);
+    const toRef = useRef<PaneRef>(null);
 
     const [options] = useState(generateNumbers());
+    const genericProps = { symbol, ceiling, options };
 
-    const MAX_OPTION = (options?.at(-1) ?? 10000).toString();
+    const { setMin, setMax, clearMin, clearMax } = useMinMaxControl(
+        valueMin,
+        valueMax,
+        _setMin,
+        _setMax,
+        fromRef,
+        toRef
+    );
 
     return (
-        <Grid container p={1} spacing={3} sx={{ textWrap: "nowrap" }}>
-            <Grid item xs={12} sm={6}>
-                <DebouncedInput
-                    label={`${symbol} ${t("from")}`}
-                    max={MAX_OPTION}
-                    setter={setMin}
-                    value={valueMin}
-                />
-
-                <List
-                    sx={{
-                        maxHeight: 300,
-                        overflowY: "scroll",
-                    }}
-                >
-                    <ListItem onClick={() => setMin(undefined)}>
-                        <ListItemText primary={t("Indifferent")} />
-                    </ListItem>
-                    {options.map((option) => (
-                        <ListItem
-                            key={option}
-                            onClick={() =>
-                                valueMax && option > valueMax && valueMax !== 0
-                                    ? setMax(option)
-                                    : setMin(option)
-                            }
-                        >
-                            <ListItemText primary={formatNumber(option)} />
-                        </ListItem>
-                    ))}
-                </List>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-                <DebouncedInput
-                    label={`${symbol} ${t("to")}`}
-                    max={MAX_OPTION}
-                    setter={setMax}
-                    value={valueMax}
-                />
-
-                <List
-                    sx={{
-                        maxHeight: 300,
-                        overflowY: "scroll",
-                    }}
-                >
-                    <ListItem onClick={() => setMax(undefined)}>
-                        <ListItemText primary={t("Indifferent")} />
-                    </ListItem>
-                    {options.map((option) => (
-                        <ListItem
-                            key={option}
-                            onClick={() =>
-                                valueMin && option < valueMin
-                                    ? setMin(option)
-                                    : setMax(option)
-                            }
-                        >
-                            <ListItemText primary={formatNumber(option)} />
-                        </ListItem>
-                    ))}
-                </List>
-            </Grid>
-        </Grid>
+        <Stack direction="row" spacing={1}>
+            <Pane
+                ref={fromRef}
+                type="min"
+                // ...
+                {...genericProps}
+                // ...
+                value={valueMin}
+                setter={setMin}
+                clear={clearMin}
+            />
+            <Pane
+                ref={toRef}
+                type="max"
+                // ...
+                {...genericProps}
+                // ...
+                value={valueMax}
+                setter={setMax}
+                clear={clearMax}
+            />
+        </Stack>
     );
 };
 
+export { getInputTestId, getOptionTestId };
+export type { ContentProps };
 export default Content;

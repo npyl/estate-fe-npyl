@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import PropertyCard, { PropertyCardH } from "@/ui/Cards/PropertyCard";
+import PropertyCard from "@/ui/Cards/PropertyCard";
 import { IPropertyResultResponse } from "@/types/properties";
 import Placeholder from "./Placeholder";
 import useResponsiveOrientation from "./hook";
@@ -20,8 +20,6 @@ interface GridItemProps {
 
 const GridItem: FC<GridItemProps> = ({ orientation, item }) => {
     const { getByPropertyId } = useMarkerRefsContext();
-
-    const Card = orientation ? PropertyCardH : PropertyCard;
 
     const zIndex = useRef(0);
 
@@ -53,8 +51,9 @@ const GridItem: FC<GridItemProps> = ({ orientation, item }) => {
 
     return (
         <Grid mb={1} item xs={12} sm={orientation ? 12 : 6}>
-            <Card
+            <PropertyCard
                 item={item}
+                horizontal={orientation}
                 onMouseEnter={handleHover}
                 onMouseLeave={handleUnhover}
             />

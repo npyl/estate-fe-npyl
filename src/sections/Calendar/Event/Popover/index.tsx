@@ -1,23 +1,18 @@
-import getBorderColor from "@/theme/borderColor";
 import { forwardRef, ReactNode, useCallback, useImperativeHandle } from "react";
 import usePopoverPosition from "./usePopperControl";
-import { Paper, Popper, PopperProps, SxProps, Theme } from "@mui/material";
-import { Z_INDEX } from "@/constants/calendar";
+import { Popper as MuiPopper, SxProps, Theme } from "@mui/material";
 import { State } from "@popperjs/core";
 import { getPopoverTestId } from "./constants";
+import WithResponsive, { PopperProps } from "./WithResponsive";
+import StyledPaper from "./StyledPaper";
 
-const PaperSx: SxProps<Theme> = {
-    minWidth: "300px",
-    maxWidth: "500px",
-    height: "fit-content",
-    p: 1,
-    boxShadow: 20,
-    borderColor: getBorderColor,
-};
+const Popper = WithResponsive(MuiPopper);
+
+// ------------------------------------------------------------------------
 
 const PopperSx: SxProps<Theme> = {
     m: 1,
-    zIndex: Z_INDEX.HEADER + 1,
+    zIndex: ({ zIndex }) => zIndex.modal,
 };
 
 interface EventPopperRef {
@@ -26,22 +21,13 @@ interface EventPopperRef {
     updatePosition: () => Promise<Partial<State> | undefined>;
 }
 
-interface EventPopperProps
-    extends Omit<
-        PopperProps,
-        | "action"
-        | "anchorOrigin"
-        | "transformOrigin"
-        | "slotProps"
-        | "children"
-        | "onClose"
-    > {
+interface EventPopperProps extends Omit<PopperProps, "placement" | "children"> {
     eventId: string;
     children: ReactNode;
 }
 
-const EventPopper = forwardRef<EventPopperRef, EventPopperProps>(
-    ({ eventId, children, sx, anchorEl, ...props }, ref) => {
+const EventPopover = forwardRef<EventPopperRef, EventPopperProps>(
+    ({ eventId, children, sx, ...props }, ref) => {
         const {
             onPopperRef,
             onPaperRef,
@@ -71,17 +57,14 @@ const EventPopper = forwardRef<EventPopperRef, EventPopperProps>(
                 data-testid={getPopoverTestId(eventId)}
                 popperRef={onPopperRef}
                 placement="right"
-                anchorEl={anchorEl}
                 sx={{ ...PopperSx, ...sx }}
                 {...props}
             >
-                <Paper ref={onPaperRef} sx={PaperSx} variant="outlined">
-                    {children}
-                </Paper>
+                <StyledPaper ref={onPaperRef}>{children}</StyledPaper>
             </Popper>
         );
     }
 );
 
 export type { EventPopperRef };
-export default EventPopper;
+export default EventPopover;

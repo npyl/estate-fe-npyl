@@ -32,9 +32,9 @@ const MunicipOption: FC<IGeoLocation> = (o) => {
     return (
         <CustomMenuItem
             key={o.areaID}
-            checked={cities.indexOf(o.areaID.toString()) > -1}
+            o={o}
+            selected={cities.indexOf(o.areaID.toString()) > -1}
             onClick={handleClick}
-            {...o}
         />
     );
 };
@@ -78,8 +78,9 @@ const MunicipalitiesSection: FC<SectionProps> = ({ parentID, search }) => {
     );
 };
 
-const getMunicipalitiesSection = (search: string) => (areaID: string) =>
-    <MunicipalitiesSection key={areaID} parentID={+areaID} search={search} />;
+const getMunicipalitiesSection = (search: string) => (areaID: string) => (
+    <MunicipalitiesSection key={areaID} parentID={+areaID} search={search} />
+);
 
 // --------------------------------------------------------------------
 

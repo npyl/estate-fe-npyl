@@ -1,7 +1,7 @@
 import { Grid, Stack } from "@mui/material";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import LabelCreate from "@/sections/LabelCreate";
+import LabelSection from "@/ui/Label/Section";
 import Panel from "@/components/Panel";
 import {
     RHFSwitch,
@@ -102,7 +102,10 @@ const BasicSection = () => {
                     </Grid>
                 )}
                 <Grid item xs={12} sm={6}>
-                    <LabelCreate variant="property" resourceId={+propertyId!} />
+                    <LabelSection
+                        variant="property"
+                        resourceId={+propertyId!}
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers

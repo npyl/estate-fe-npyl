@@ -1,11 +1,12 @@
-import { CSSProperties, FC } from "react";
+import { FC } from "react";
 import { CalendarCellProps } from "../../types";
 import useTimemappedEvents from "../useTimemappedEvents";
 import { TODAY } from "@/components/BaseCalendar/constants";
 import dynamic from "next/dynamic";
 import MiscCell from "../MiscCell";
-import useNoDragClick from "@/components/Calendar/useNoDragClick";
 import BaseCell from "../BaseCell";
+import WithNoDragClick from "../../WithNoDragClick";
+const Cell = WithNoDragClick(BaseCell);
 const NowIndicator = dynamic(() => import("../NowIndicator"));
 
 // ------------------------------------------------------------------
@@ -19,9 +20,6 @@ const CalendarDayViewCell: FC<CalendarCellProps> = ({
     onEventDragEnd,
     onEventResizeStart,
     onEventResizeEnd,
-    onClick,
-    onMouseDown,
-    onMouseMove,
     ...props
 }) => {
     const [events, miscEvents] = getMiscCellEvents(_events);
@@ -37,19 +35,19 @@ const CalendarDayViewCell: FC<CalendarCellProps> = ({
     );
     const isToday = TODAY.toDateString() === date.toDateString();
 
-    const methods = useNoDragClick(onClick, onMouseDown, onMouseMove);
-
     return (
         <>
-            {miscEvents.length > 0 ? <MiscCell events={miscEvents} /> : null}
+            {miscEvents.length > 0 ? (
+                <MiscCell events={miscEvents} onEventClick={onEventClick} />
+            ) : null}
 
-            <BaseCell date={date} {...methods} {...props}>
+            <Cell date={date} {...props}>
                 {/* Events */}
                 {EVENTS}
 
                 {/* Today Indicator */}
                 {isToday ? <NowIndicator /> : null}
-            </BaseCell>
+            </Cell>
         </>
     );
 };

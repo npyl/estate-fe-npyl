@@ -50,4 +50,5 @@ const Main = forwardRef<HTMLDivElement, MainProps>(
     }
 );
 
+export type { MainProps };
 export default Main;

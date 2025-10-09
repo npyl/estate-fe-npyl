@@ -1,4 +1,3 @@
-import SoftButton from "@/components/SoftButton";
 import {
     Stack,
     StackProps,
@@ -12,6 +11,7 @@ import { useImageOperations } from "../../../context/ImageOperations";
 import { Icon } from "@iconify/react";
 import PublicButton from "./Buttons/Public";
 import PrivateButton from "./Buttons/Private";
+import SelectAllButton from "../SelectAllButton";
 
 interface ListingControlsProps extends StackProps {
     tab: TListingTab;
@@ -44,14 +44,11 @@ const ListingControls: React.FC<ListingControlsProps> = ({
                 </>
             ) : null}
 
-            <SoftButton
+            <SelectAllButton
+                active={isAllSelected}
                 disabled={isLoading}
                 onClick={onToggleAll}
-                variant="outlined"
-                color={isAllSelected ? "error" : "primary"}
-            >
-                {t(isAllSelected ? "Deselect All" : "Select All")}
-            </SoftButton>
+            />
 
             <ToggleButtonGroup
                 value={mode}

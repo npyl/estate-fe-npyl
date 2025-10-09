@@ -1,16 +1,15 @@
 import React from "react";
 import { Box, Stack, Typography, Chip } from "@mui/material";
-import { NormalBadge } from "@/ui/Cards/PropertyCard/styled";
 import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 import "dayjs/locale/en"; // English locale
 import "dayjs/locale/el"; // Greek locale
-import Link from "next/link";
 import {
     ContactNotification,
     IPropertyForNotification,
 } from "@/types/notification/notification";
 import { ListingNotification } from "@/types/notification/listing";
+import CodeBadgeLink from "@/ui/Property/CodeBadgeLink";
 
 //Mapper gia na exw tous mines stin geniki giati me to dayjs tous fernei like "Αυγουστος".
 const greekGenitiveMonths = [
@@ -103,31 +102,12 @@ const PropertyRegion: React.FC<PropertyRegionProps> = ({
 
                 {propertyDetails ? (
                     <Stack ml={1.5}>
-                        <Link
-                            href={`/property/${propertyDetails?.id}`}
-                            passHref
-                            style={{ textDecoration: "none" }}
-                        >
-                            <NormalBadge
-                                name={`${t("Code")}: ${
-                                    propertyDetails?.code || ""
-                                }`}
-                                color={"#ffcc00"}
-                                sx={{
-                                    color: (theme) =>
-                                        theme.palette.mode === "light"
-                                            ? "#854D0E"
-                                            : "null",
-                                    "&:hover": {
-                                        backgroundColor: (theme) =>
-                                            theme.palette.mode === "light"
-                                                ? "#d4a500"
-                                                : "#b38f00",
-                                    },
-                                }}
-                                onClick={handlePropertyCodeClick}
-                            />
-                        </Link>
+                        <CodeBadgeLink
+                            code={`${t("Code")}: ${
+                                propertyDetails?.code || ""
+                            }`}
+                            propertyId={propertyDetails?.id}
+                        />
                     </Stack>
                 ) : null}
             </Stack>

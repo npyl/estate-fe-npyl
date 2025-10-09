@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import FileThumbnail from "@/components/file-thumbnail";
 import { TUploadFile, UploadVariant } from "@/components/upload/types";
-import LabelCreate from "@/sections/LabelCreate";
+import LabelSection from "@/ui/Label/Section";
 import DocumentIcon from "../DocumentIcon";
 import GoogleEarthIcon from "@/assets/logo/GoogleEarth";
 import { SpaceBetween } from "@/components/styled";
@@ -88,7 +88,7 @@ const Item: FC<ItemProps> = ({
 
             <Stack direction="row" spacing={1} alignItems="center">
                 {variant === "document" && file.url ? (
-                    <LabelCreate
+                    <LabelSection
                         variant="document"
                         resourceId={file.id}
                         disabled={disabled}

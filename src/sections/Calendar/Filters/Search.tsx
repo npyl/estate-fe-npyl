@@ -1,5 +1,4 @@
-import { ChangeEvent, useCallback, useRef, useState } from "react";
-import { useDebounce } from "use-debounce";
+import { useCallback, useRef, useState } from "react";
 import { useSearchEventsQuery } from "@/services/calendar";
 import { useAuth } from "@/sections/use-auth";
 import PoppingSearch from "@/components/PoppingSearch";
@@ -10,10 +9,9 @@ const Popover = dynamic(() => import("./Popover"));
 // --------------------------------------------------------------------------
 
 const Search = () => {
-    const anchorRef = useRef<HTMLDivElement>(null);
+    const anchorRef = useRef<HTMLInputElement>(null);
 
-    const [search, setSearch] = useState("");
-    const [query] = useDebounce(search, 100);
+    const [query, setQuery] = useState("");
 
     const { user } = useAuth();
     const { calendarId } = useFiltersContext();
@@ -24,24 +22,19 @@ const Search = () => {
 
     const haveEvents = data?.length && data?.length > 0;
 
-    const handleSearch = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value),
-        []
-    );
-
-    const handleClear = useCallback(() => setSearch(""), []);
+    const handleClear = useCallback(() => setQuery(""), []);
 
     return (
         <>
             <PoppingSearch
                 ref={anchorRef}
                 // ...
-                value={search}
-                onChange={handleSearch}
+                value={query}
+                onChange={setQuery}
                 onClear={handleClear}
             />
 
-            {haveEvents && anchorRef.current && search ? (
+            {haveEvents && anchorRef.current && query ? (
                 <Popover
                     anchorEl={anchorRef.current}
                     events={data}

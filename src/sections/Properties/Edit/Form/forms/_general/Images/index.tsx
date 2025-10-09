@@ -3,7 +3,7 @@ import SoftButton from "@/components/SoftButton";
 import UploadImages from "./Upload";
 import useDialog from "@/hooks/useDialog";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import usePropertyImages from "./hook";
 import { PREVIEW_IMAGES_COUNT } from "./constants";
@@ -37,15 +37,47 @@ const Placeholder = ({ imagesLength }: PlaceholderProps) =>
 
 // ---------------------------------------------------------------
 
+interface SeeMoreButtonProps {
+    setLightboxImage: (s: string) => void;
+}
+
+const SeeMoreButton: FC<SeeMoreButtonProps> = ({ setLightboxImage }) => {
+    const { t } = useTranslation();
+
+    const { images } = usePropertyImages();
+
+    const [isSeeMoreOpen, openSeeMore, closeSeeMore] = useDialog();
+
+    if (images.length === 0) return null;
+
+    return (
+        <>
+            <SoftButton onClick={openSeeMore}>
+                {`${t("Edit")} (${images?.length || 0} ${t("images")})`}
+            </SoftButton>
+
+            {/* SeeMore */}
+            {isSeeMoreOpen ? (
+                <SeeMore
+                    open={isSeeMoreOpen}
+                    onOpenLightbox={setLightboxImage}
+                    onClose={closeSeeMore}
+                />
+            ) : null}
+        </>
+    );
+};
+
+// -------------------------------------------------------------------
+
 const ImagesSection = () => {
     const { t } = useTranslation();
 
     const { images, previewImages } = usePropertyImages();
 
-    const [isSeeMoreOpen, openSeeMore, closeSeeMore] = useDialog();
-
     // Gallery
     const [galleryImage, setGalleryImage] = useState("");
+    const isGalleryOpen = Boolean(galleryImage) && images.length > 0;
     const closeGallery = () => setGalleryImage("");
 
     // Lightbox
@@ -60,11 +92,9 @@ const ImagesSection = () => {
                     <Panel
                         label={t("Upload Images")}
                         endNode={
-                            <SoftButton onClick={openSeeMore}>
-                                {`${t("Edit")} (${images?.length || 0} ${t(
-                                    "images"
-                                )})`}
-                            </SoftButton>
+                            <SeeMoreButton
+                                setLightboxImage={setLightboxImage}
+                            />
                         }
                     >
                         <UploadImages
@@ -79,18 +109,10 @@ const ImagesSection = () => {
                     </Panel>
 
                     {/* Gallery */}
-                    <Gallery
-                        open={!!galleryImage && images.length > 0}
-                        openImageKey={galleryImage}
-                        onClose={closeGallery}
-                    />
-
-                    {/* SeeMore */}
-                    {isSeeMoreOpen ? (
-                        <SeeMore
-                            open={isSeeMoreOpen}
-                            onOpenLightbox={setLightboxImage}
-                            onClose={closeSeeMore}
+                    {isGalleryOpen ? (
+                        <Gallery
+                            openImageKey={galleryImage}
+                            onClose={closeGallery}
                         />
                     ) : null}
 

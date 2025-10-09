@@ -3,30 +3,12 @@ import { CELL_HOUR_HEIGHT } from "@/constants/calendar";
 import dynamic from "next/dynamic";
 import useWidthObserver from "@/hooks/useWidthObserver";
 import calculateTimePosition from "@/components/Calendar/calculateTimePosition";
-import { EventContainerProps } from "./Container";
-import {
-    TCalendarEvent,
-    TOnEventClick,
-    TOnEventDragEnd,
-    TOnEventDragStart,
-    TOnEventResizeEnd,
-    TOnEventResizeStart,
-} from "../types";
-import Main from "./Main";
+import Main, { MainProps } from "./Main";
 import { EVENT_CLASSNAME, getEventId, getEventTestId } from "./constants";
 const Bullet = dynamic(() => import("./Bullet"));
 
-// ------------------------------------------------------------------------------------
-
 interface CalendarEventProps
-    extends Omit<EventContainerProps, "bgcolor" | "onClick"> {
-    event: TCalendarEvent;
-    onEventClick?: TOnEventClick;
-    onEventDragStart?: TOnEventDragStart;
-    onEventDragEnd?: TOnEventDragEnd;
-    onEventResizeStart?: TOnEventResizeStart;
-    onEventResizeEnd?: TOnEventResizeEnd;
-}
+    extends Omit<MainProps, "isMinimumHeight" | "onClick"> {}
 
 const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
     (
@@ -39,6 +21,8 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
         },
         ref
     ) => {
+        const id = getEventId(event.id);
+
         const { top, height } = calculateTimePosition(
             event.startDate,
             event.endDate
@@ -47,10 +31,10 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
         const maxHeight = Math.max(height, CELL_HOUR_HEIGHT);
         const isMinimumHeight = maxHeight === CELL_HOUR_HEIGHT;
 
-        const [isBullet, setBullet] = useState(false);
+        const [isBullet, setIsBullet] = useState(false);
 
         const handleWidth = useCallback(
-            (width: number) => setBullet(width <= 60),
+            (width: number) => setIsBullet(width <= 60),
             []
         );
 
@@ -59,7 +43,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
         if (isBullet) {
             return (
                 <Bullet
-                    id={event.id}
+                    id={id}
                     event={event}
                     top={top}
                     title={event?.title}
@@ -71,10 +55,10 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
 
         return (
             <Main
-                className={EVENT_CLASSNAME}
-                id={getEventId(event.id)}
                 data-testid={getEventTestId(event.id)}
                 ref={onRef}
+                id={id}
+                className={EVENT_CLASSNAME}
                 isMinimumHeight={isMinimumHeight}
                 top={top}
                 height={maxHeight}

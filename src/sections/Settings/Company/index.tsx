@@ -163,7 +163,6 @@ const CompanyInformation: React.FC = () => {
 
                 {isDialogOpen ? (
                     <EditDialog
-                        open={isDialogOpen}
                         onClose={closeDialog}
                         initialValues={companyDetails}
                     />

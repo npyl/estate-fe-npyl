@@ -54,7 +54,13 @@ const ViewEventPopper = /* ... */ forwardRef<
     };
 
     return (
-        <Popover ref={ref} open anchorEl={anchorEl} eventId={event.id}>
+        <Popover
+            ref={ref}
+            open
+            anchorEl={anchorEl}
+            eventId={event.id}
+            onClose={onClose}
+        >
             <SpaceBetween width={1} direction="row" alignItems="center">
                 {!isEdit ? (
                     <Typography

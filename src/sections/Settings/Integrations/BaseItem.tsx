@@ -7,16 +7,18 @@ import {
     Divider,
 } from "@mui/material";
 import SoftButton from "@/components/SoftButton";
-import { SpaceBetween } from "@/components/styled";
+import { HideText, SpaceBetween } from "@/components/styled";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useTranslation } from "react-i18next";
 import useToggle from "@/hooks/useToggle";
 import { ComponentType, FC, PropsWithChildren, ReactNode } from "react";
+import EditIcon from "@mui/icons-material/Edit";
 
 interface BaseItemProps extends PropsWithChildren {
     Icon?: ComponentType<any>;
     type: string;
     topRightContent?: ReactNode;
+    expandedInitialy?: boolean;
     onEdit?: VoidFunction;
 }
 
@@ -25,13 +27,14 @@ const BaseItem: FC<BaseItemProps> = ({
     Icon,
     onEdit,
     topRightContent,
+    expandedInitialy,
     children,
 }) => {
     const { t } = useTranslation();
-    const [isExpanded, toggle] = useToggle();
+    const [isExpanded, toggle] = useToggle(expandedInitialy);
 
     return (
-        <Paper elevation={10}>
+        <Paper>
             <SpaceBetween
                 px={2}
                 py={1.5}
@@ -55,6 +58,8 @@ const BaseItem: FC<BaseItemProps> = ({
                                 <SoftButton
                                     variant="contained"
                                     size="small"
+                                    endIcon={<EditIcon />}
+                                    sx={HideText}
                                     onClick={onEdit}
                                 >
                                     {t("Edit")}
@@ -78,7 +83,7 @@ const BaseItem: FC<BaseItemProps> = ({
             </SpaceBetween>
             <Collapse in={isExpanded} timeout="auto" mountOnEnter unmountOnExit>
                 <Divider />
-                {children}
+                {isExpanded ? children : null}
             </Collapse>
         </Paper>
     );

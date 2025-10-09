@@ -1,4 +1,4 @@
-const ConfirmDialog = dynamic(() => import("@/ui/confirm-dialog"));
+const ConfirmDialog = dynamic(() => import("@/ui/Dialog/Confirm"));
 import useDialog from "@/hooks/useDialog";
 import { useDeleteColumnMutation } from "@/services/tasks";
 import Button from "@mui/material/Button";
@@ -26,7 +26,6 @@ const DeleteColumnItem: FC<Props> = ({ columnId }) => {
 
             {isOpen ? (
                 <ConfirmDialog
-                    open
                     onClose={closeConfirm}
                     // ...
                     title={t("Delete column?")}

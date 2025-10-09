@@ -18,8 +18,9 @@ const MaxPriceChip = () => {
         <Chip
             label={
                 <ChipLabel
+                    separateThousands
                     title={`${t("Maximum Price")} (€)`}
-                    value={maxValue?.toLocaleString("el-GR") || ""}
+                    value={maxValue}
                 />
             }
             onDelete={handleClear}

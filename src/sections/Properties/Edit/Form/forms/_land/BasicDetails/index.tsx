@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import * as React from "react";
-import LabelCreate from "@/sections/LabelCreate";
+import LabelSection from "@/ui/Label/Section";
 import { useMemo } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
@@ -186,7 +186,10 @@ const BasicForLandSection: React.FC<any> = () => {
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                    <LabelCreate variant="property" resourceId={+propertyId!} />
+                    <LabelSection
+                        variant="property"
+                        resourceId={+propertyId!}
+                    />
                 </Grid>
 
                 <Checkboxes />

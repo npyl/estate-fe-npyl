@@ -1,4 +1,6 @@
-function formatThousands(number: number | string) {
+function formatThousands(number?: number | string) {
+    if (!number) return "";
+
     // Convert the number to a string
     const numberString =
         typeof number === "string" ? number : number.toString();

@@ -1,9 +1,10 @@
-import { ClickAwayListener, SxProps, Theme } from "@mui/material";
+import { SxProps, Theme } from "@mui/material";
 import { FC, useCallback, useRef, useState } from "react";
 import { SearchCategory } from "./types";
 import { useDebounce } from "use-debounce";
 import SearchList, { SearchListRef } from "./SearchList";
 import Input from "./Input";
+import ClickAwayListener from "./ClickAwayListener";
 
 // ------------------------------------------------------------------------------
 
@@ -41,27 +42,25 @@ const DashboardNavbarSearch: FC<Props> = ({ sx }) => {
 
     return (
         <ClickAwayListener onClickAway={onClose}>
-            <div>
-                <Input
-                    ref={inputRef}
-                    value={searchText}
-                    onChange={handleInputChange}
-                    onFocus={handleFocus}
-                    // ...
-                    onClear={handleClearSearch}
-                    searchCategory={searchCategory}
-                    onSearchCategoryChange={setSearchCategory}
-                    // ...
-                    sx={sx}
-                />
+            <Input
+                ref={inputRef}
+                value={searchText}
+                onChange={handleInputChange}
+                onFocus={handleFocus}
+                // ...
+                onClear={handleClearSearch}
+                searchCategory={searchCategory}
+                onSearchCategoryChange={setSearchCategory}
+                // ...
+                sx={sx}
+            />
 
-                <SearchList
-                    ref={searchListRef}
-                    searchString={debouncedSearch}
-                    searchCategory={searchCategory}
-                    onSelectHistoryItem={setSearchText}
-                />
-            </div>
+            <SearchList
+                ref={searchListRef}
+                searchString={debouncedSearch}
+                searchCategory={searchCategory}
+                onSelectHistoryItem={setSearchText}
+            />
         </ClickAwayListener>
     );
 };

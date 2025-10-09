@@ -1,7 +1,6 @@
 import Link from "@/components/Link";
 import {
     alpha,
-    Box,
     BoxProps,
     SxProps,
     Theme,
@@ -20,50 +19,24 @@ const getCss = (theme: Theme) => ({
 });
 
 interface StyledBoxProps extends BoxProps {
+    horizontal?: boolean;
     isActive: boolean;
 }
 export const StyledLink = styled(Link, {
-    shouldForwardProp: (prop) => prop !== "isActive",
-})<StyledBoxProps>(({ isActive, theme }) => ({
-    display: "block", // INFO: without it the onHover css is not applied
+    shouldForwardProp: (prop) => prop !== "isActive" && prop !== "horizontal",
+})<StyledBoxProps>(({ horizontal = false, isActive, theme }) => ({
+    display: "flex",
+    // ...
+    flexDirection: horizontal ? "row" : "column",
+    padding: horizontal ? theme.spacing(1) : 0,
+    border: horizontal ? "1px solid" : 0,
+    borderColor: theme.palette.divider,
+    // ...
     borderRadius: "20px",
     cursor: "pointer",
-    "&:hover": {
-        ...getCss(theme),
-    },
+    "&:hover": getCss(theme),
     backgroundColor: theme.palette.background.paper,
     ...(isActive ? getCss(theme) : {}),
-}));
-
-interface PriceBadgeProps extends BoxProps {
-    price: number;
-}
-
-export const PriceBadge = styled(({ price, ...props }: PriceBadgeProps) => (
-    <Box {...props}>
-        <Typography variant="body2" fontWeight={500}>
-            {`${price ? price?.toLocaleString("de-DE") : "-"} €`}
-        </Typography>
-    </Box>
-))<PriceBadgeProps>(({ theme }) => ({
-    paddingLeft: theme.spacing(1.5),
-    paddingRight: theme.spacing(1.5),
-    paddingTop: theme.spacing(0.4),
-    paddingBottom: theme.spacing(0.2),
-
-    textAlign: "center",
-
-    borderRadius: "10px",
-    border: "2.5px solid",
-    borderColor:
-        theme.palette.mode === "light"
-            ? theme.palette.grey?.[600]
-            : theme.palette.neutral?.[600],
-
-    color:
-        theme.palette.mode === "light"
-            ? theme.palette.grey?.[600]
-            : theme.palette.neutral?.[400],
 }));
 
 // --------------------------------------------------------------------------------
@@ -99,10 +72,15 @@ const getSx = (color: string): SxProps => ({
 
 interface NormalBadgeProps extends TypographyProps {
     name: string;
-    color: string;
+    color?: string;
 }
 
-const NormalBadge: FC<NormalBadgeProps> = ({ name, color, sx, ...props }) => (
+const NormalBadge: FC<NormalBadgeProps> = ({
+    name,
+    color = "#3730a3",
+    sx,
+    ...props
+}) => (
     <Typography
         variant="body2"
         sx={{ ...(getSx(color) as any), ...sx }}

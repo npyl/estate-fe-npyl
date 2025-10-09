@@ -7,7 +7,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { FC, useCallback, useRef, KeyboardEvent } from "react";
 import { SxProps, Theme } from "@mui/material";
 import EmojiPickerButton from "@/components/EmojiPickerButton";
-import { MouseDownEvent } from "emoji-picker-react/dist/config/config";
+import { TEmoji } from "@/components/EmojiPicker";
 
 const SendButton: FC<IconButtonProps> = (props) => (
     <IconButton {...props}>
@@ -57,11 +57,11 @@ const TextField: FC<TextFieldProps> = ({
         onEmptied?.();
     }, [onSend, onEmptied]);
 
-    const handleEmojiClick: MouseDownEvent = useCallback(
-        (data) => {
+    const onEmojiSelect = useCallback(
+        ({ emoji }: TEmoji) => {
             if (!inputRef.current) return;
 
-            const v = inputRef.current.value + data.emoji;
+            const v = inputRef.current.value + emoji;
 
             inputRef.current.value = v;
             onEmojiClick?.(v);
@@ -89,11 +89,7 @@ const TextField: FC<TextFieldProps> = ({
             justifySelf="flex-end"
             sx={StackSx}
         >
-            <EmojiPickerButton
-                PickerProps={{
-                    onEmojiClick: handleEmojiClick,
-                }}
-            />
+            <EmojiPickerButton PickerProps={{ onEmojiSelect }} />
 
             <MuiTextField
                 fullWidth

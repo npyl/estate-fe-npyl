@@ -135,7 +135,8 @@ const OnlyNumbersInput = forwardRef<HTMLDivElement, OnlyNumbersInputProps>(
             onChange,
             min,
             max,
-            ...other
+            InputProps,
+            ...props
         },
         ref
     ) => {
@@ -162,15 +163,15 @@ const OnlyNumbersInput = forwardRef<HTMLDivElement, OnlyNumbersInputProps>(
                 ref={ref}
                 value={value}
                 onChange={handleChange}
-                {...other}
                 InputProps={{
-                    ...other.InputProps,
+                    ...InputProps,
                     endAdornment: adornment ? (
                         <InputAdornment position="end">
                             {adornment}
                         </InputAdornment>
                     ) : null,
                 }}
+                {...props}
             />
         );
     }

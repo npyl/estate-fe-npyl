@@ -1,52 +1,11 @@
-import {
-    Box,
-    Stack,
-    MenuItem,
-    TextField,
-    InputAdornment,
-    SxProps,
-    Theme,
-    IconButton,
-    Typography,
-} from "@mui/material";
-import { useCallback, useState, useMemo } from "react";
+import { Box, Stack, MenuItem, Typography } from "@mui/material";
+import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useDebounce } from "use-debounce";
-import SearchIcon from "@mui/icons-material/Search";
-import CloseIcon from "@mui/icons-material/Close";
 import { useFilterNotificationsQuery } from "@/services/notification";
 import { NotificationType } from "@/types/notification";
-import getBorderColor from "@/theme/borderColor";
 import Table from "../Notification/ViewAll/table";
 import Select from "@/components/Select";
-
-// 🔹 Search Input Styling
-const SearchInputSx: SxProps<Theme> = {
-    minWidth: 350,
-    "& .MuiOutlinedInput-root": {
-        borderRadius: "25px",
-        backgroundColor: "white",
-        "&.Mui-focused": {
-            borderColor: "primary.main",
-        },
-        "&:hover": {
-            borderColor: "primary.light",
-        },
-    },
-};
-
-// 🔹 Clear Button Styling
-const ClearButtonSx: SxProps<Theme> = {
-    width: 24,
-    height: 24,
-    borderRadius: "50%",
-    border: "1px solid",
-    borderColor: getBorderColor,
-    "& svg": {
-        fontSize: "1.1rem",
-        transform: "scale(0.8)",
-    },
-};
+import PoppingSearch from "@/components/PoppingSearch";
 
 interface PropertyNotificationProps {
     propertyId: string | string[] | undefined;
@@ -60,27 +19,17 @@ const PropertyNotification: React.FC<PropertyNotificationProps> = ({
     const [filter, setFilter] = useState<string>("all");
     const [searchText, setSearchText] = useState("");
 
-    const [debouncedSearchText] = useDebounce(searchText, 400);
-
     const handleFilterChange = (event: any) => {
         setFilter(event.target.value);
     };
 
-    const handleSearchTextChange = useCallback(
-        (event: React.ChangeEvent<HTMLInputElement>) => {
-            setSearchText(event.target.value);
-        },
-        []
-    );
+    const onClear = () => setSearchText("");
 
-    const handleClearSearch = () => {
-        setSearchText("");
-    };
     const filterBody = useMemo(() => {
         return {
             fromDate: null,
             toDate: null,
-            search: debouncedSearchText || "",
+            search: searchText || "",
             types: ["TOUR"] as NotificationType[],
             property: propertyId ? Number(propertyId) : undefined,
             viewed:
@@ -90,7 +39,7 @@ const PropertyNotification: React.FC<PropertyNotificationProps> = ({
                       ? false
                       : undefined,
         };
-    }, [filter, debouncedSearchText, propertyId]);
+    }, [filter, searchText, propertyId]);
 
     const { data: notifications } = useFilterNotificationsQuery({
         filter: filterBody,
@@ -108,37 +57,10 @@ const PropertyNotification: React.FC<PropertyNotificationProps> = ({
                 justifyContent="space-between"
                 alignItems="center"
             >
-                <TextField
-                    variant="outlined"
-                    size="small"
-                    placeholder={t("Search for tours") as string}
+                <PoppingSearch
                     value={searchText}
-                    onChange={handleSearchTextChange}
-                    sx={SearchInputSx}
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start" sx={{ ml: 0.5 }}>
-                                <SearchIcon sx={{ color: "gray" }} />
-                            </InputAdornment>
-                        ),
-                        endAdornment: (
-                            <Stack
-                                direction="row"
-                                spacing={1}
-                                alignItems="center"
-                                mr={0.5}
-                            >
-                                {searchText ? (
-                                    <IconButton
-                                        onClick={handleClearSearch}
-                                        sx={ClearButtonSx}
-                                    >
-                                        <CloseIcon />
-                                    </IconButton>
-                                ) : null}
-                            </Stack>
-                        ),
-                    }}
+                    onChange={setSearchText}
+                    onClear={onClear}
                 />
 
                 <Select

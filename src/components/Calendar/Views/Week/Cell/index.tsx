@@ -5,9 +5,11 @@ import { TODAY } from "@/components/BaseCalendar/constants";
 import NowIndicator from "../../NowIndicator";
 import dynamic from "next/dynamic";
 import VerticalDivider from "./VerticalDivider";
-import useNoDragClick from "@/components/Calendar/useNoDragClick";
 import BaseCell from "../../BaseCell";
+import WithNoDragClick from "@/components/Calendar/WithNoDragClick";
 const MiscCell = dynamic(() => import("../../MiscCell"));
+
+const Cell = WithNoDragClick(BaseCell);
 
 // -------------------------------------------------------------------------
 
@@ -27,9 +29,6 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
     onEventResizeStart,
     onEventResizeEnd,
     style,
-    onClick,
-    onMouseDown,
-    onMouseMove,
     ...props
 }) => {
     const [events, miscEvents] = getMiscCellEvents(_events);
@@ -44,19 +43,19 @@ const CalendarWeekViewCell: FC<CalendarCellProps> = ({
     );
     const isToday = TODAY.toDateString() === date.toDateString();
 
-    const methods = useNoDragClick(onClick, onMouseDown, onMouseMove);
-
     return (
         <div style={ContainerStyle}>
-            {miscEvents.length > 0 ? <MiscCell events={miscEvents} /> : null}
+            {miscEvents.length > 0 ? (
+                <MiscCell events={miscEvents} onEventClick={onEventClick} />
+            ) : null}
 
-            <BaseCell date={date} {...methods} {...props}>
+            <Cell date={date} {...props}>
                 {/* Events */}
                 {EVENTS}
 
                 {/* Today Indicator */}
                 {isToday ? <NowIndicator /> : null}
-            </BaseCell>
+            </Cell>
 
             <VerticalDivider />
         </div>

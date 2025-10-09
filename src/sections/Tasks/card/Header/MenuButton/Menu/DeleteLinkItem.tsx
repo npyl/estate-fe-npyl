@@ -1,4 +1,4 @@
-const ConfirmDialog = dynamic(() => import("@/ui/confirm-dialog"));
+const ConfirmDialog = dynamic(() => import("@/ui/Dialog/Confirm"));
 import useDialog from "@/hooks/useDialog";
 import { useDeleteCardMutation } from "@/services/tasks";
 import Button from "@mui/material/Button";
@@ -30,7 +30,6 @@ const DeleteItem: FC<DeleteItemProps> = ({ taskId }) => {
 
             {isOpen ? (
                 <ConfirmDialog
-                    open
                     onClose={closeConfirm}
                     // ...
                     title={t("Delete task?")}

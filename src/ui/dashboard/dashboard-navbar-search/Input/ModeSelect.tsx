@@ -30,15 +30,6 @@ const MenuItemSx: SxProps<Theme> = {
     alignItems: "center",
     color: "text.secondary",
     fontWeight: 500,
-    marginInline: 0.8,
-
-    "&:hover": {
-        backgroundColor: "action.hover",
-        borderRadius: "8px",
-    },
-    "&.Mui-selected": {
-        borderRadius: "8px",
-    },
 
     ".MuiSvgIcon-root": {
         color: "text.secondary",

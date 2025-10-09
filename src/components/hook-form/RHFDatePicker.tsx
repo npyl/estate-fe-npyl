@@ -1,16 +1,38 @@
 import { Controller, useFormContext } from "react-hook-form";
 import {
-    DatePickerProps,
+    DatePickerProps as MuiDatePickerProps,
     DatePicker as MuiDatePicker,
 } from "@mui/x-date-pickers";
 import Stack from "@mui/material/Stack";
 import { FormHelperText, Typography } from "@mui/material";
 import dayjs from "dayjs";
-import { useCallback } from "react";
+import { FC, useCallback } from "react";
 import toLocalDate from "@/utils/toLocalDate";
 import { LOCAL_DATE_FORMAT } from "@/constants/datepicker";
 
-interface Props extends Omit<DatePickerProps<dayjs.Dayjs>, "onChange"> {
+// --------------------------------------------------------------------------
+
+const getSlotProps = (
+    slotProps: MuiDatePickerProps<dayjs.Dayjs>["slotProps"],
+    dataTestId?: string
+) => ({
+    ...slotProps,
+    textField: {
+        ...slotProps?.textField,
+        ...(dataTestId
+            ? {
+                  inputProps: {
+                      "data-testid": dataTestId,
+                  },
+              }
+            : {}),
+    },
+});
+
+// --------------------------------------------------------------------------
+
+interface RHFDatePickerProps
+    extends Omit<MuiDatePickerProps<dayjs.Dayjs>, "value" | "onChange"> {
     label?: string;
     name: string;
     onChange?: (v: string) => void;
@@ -18,8 +40,16 @@ interface Props extends Omit<DatePickerProps<dayjs.Dayjs>, "onChange"> {
 
 // INFO: value prop must be an LocalDate (YYYY-MM-DD)
 
-const DatePicker = ({ name, label, onChange, ...others }: Props) => {
+const RHFDatePicker: FC<RHFDatePickerProps> = ({
+    name,
+    label,
+    onChange,
+    slotProps,
+    ...others
+}) => {
     const { control, setValue } = useFormContext();
+
+    const dataTestId = (others as any)?.["data-testid"];
 
     const handleChange = useCallback(
         (v: dayjs.Dayjs | null) => {
@@ -44,10 +74,11 @@ const DatePicker = ({ name, label, onChange, ...others }: Props) => {
                         <Typography variant="subtitle1">{label}</Typography>
                     ) : null}
                     <MuiDatePicker
-                        {...field}
-                        {...others}
                         value={value ? dayjs(value, LOCAL_DATE_FORMAT) : null}
                         onChange={handleChange}
+                        {...field}
+                        {...others}
+                        slotProps={getSlotProps(slotProps, dataTestId)}
                     />
                     {error ? (
                         <FormHelperText error>{error?.message}</FormHelperText>
@@ -58,4 +89,5 @@ const DatePicker = ({ name, label, onChange, ...others }: Props) => {
     );
 };
 
-export default DatePicker;
+export type { RHFDatePickerProps };
+export default RHFDatePicker;

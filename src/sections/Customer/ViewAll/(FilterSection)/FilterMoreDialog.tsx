@@ -16,7 +16,7 @@ const FilterMoreDialog: FC<Props> = ({ onClose }) => {
     const { resetState } = useFiltersContext();
 
     return (
-        <FilterMore open onClose={onClose} onResetFilter={resetState}>
+        <FilterMore onClose={onClose} onResetFilter={resetState}>
             <Stack gap={1}>
                 <Box width={"100%"} mb={1}>
                     <ChosenFilters sx={{ flexWrap: "wrap", gap: 0.5 }} />

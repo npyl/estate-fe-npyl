@@ -1,73 +1,11 @@
-import { forwardRef } from "react";
-import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
-import VerticalResize from "./VerticalResize";
-import {
-    TCalendarEvent,
-    TOnEventClick,
-    TOnEventDragEnd,
-    TOnEventResizeEnd,
-    TOnEventResizeStart,
-} from "../../../types";
-import Draggable, { DraggableProps } from "./Draggable";
+import WithNoDragClick from "@/components/Calendar/WithNoDragClick";
+import WithDrag from "./WithDrag";
+import Container from "./Container";
+import WithResize from "./WithResize";
 
-interface EventsTargetProps extends DraggableProps {
-    event: TCalendarEvent;
-
-    onEventClick?: TOnEventClick;
-    onEventResizeStart?: TOnEventResizeStart;
-    onEventDragEnd?: TOnEventDragEnd;
-    onEventResizeEnd?: TOnEventResizeEnd;
-}
-
-const EventsTarget = forwardRef<HTMLDivElement, EventsTargetProps>(
-    (
-        {
-            event,
-            cellsRef,
-            onPositionUpdate,
-            onEventResizeStart,
-            onEventResizeEnd,
-            onEventDragEnd,
-            onGhostAdd,
-            onGhostRemove,
-            // ...
-            children,
-            ...props
-        },
-        ref
-    ) => {
-        const [elementRef, { onRef }] =
-            useForwardedLocalRef<HTMLDivElement>(ref);
-
-        return (
-            <Draggable
-                ref={onRef}
-                event={event}
-                cellsRef={cellsRef}
-                onPositionUpdate={onPositionUpdate}
-                onGhostAdd={onGhostAdd}
-                onGhostRemove={onGhostRemove}
-                onEventDragEnd={onEventDragEnd}
-                {...props}
-            >
-                {children}
-
-                {onEventResizeEnd ? (
-                    <VerticalResize
-                        event={event}
-                        targetRef={elementRef}
-                        // ...
-                        onResizeEarlyStart={onGhostAdd}
-                        onResizeStart={onEventResizeStart}
-                        onResizeEnd={onEventResizeEnd}
-                        // ...
-                        onPositionUpdate={onPositionUpdate}
-                    />
-                ) : null}
-            </Draggable>
-        );
-    }
+// TODO: remove these "any"
+const EventsTarget = WithResize(
+    WithDrag(WithNoDragClick(Container) as any) as any
 );
 
-export type { EventsTargetProps };
 export default EventsTarget;

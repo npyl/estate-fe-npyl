@@ -25,7 +25,7 @@ import SouthRoundedIcon from "@mui/icons-material/SouthRounded";
 import NorthRoundedIcon from "@mui/icons-material/NorthRounded";
 import { format } from "date-fns";
 import useResponsive from "@/hooks/useResponsive";
-import DateRangePicker from "./DateRangePicker";
+import DateRangePicker from "../../ui/DateRangePicker";
 
 const formatYAxis = (tickItem: number) => {
     return tickItem > 999 ? `${tickItem / 1000}k` : tickItem.toString();

@@ -56,14 +56,14 @@ const RENT_AND_SALE_NUMBERS = RENT_AND_SALE_GENERATOR();
 
 // ---------------------------------------------------------------------------------------------
 
+// Return the appropriate pre-generated array based on state
 const generatePriceRange = (
-    nothingSelected: boolean,
+    isNothing: boolean,
     isRent: boolean,
     isSale: boolean
 ) => {
-    // Return the appropriate pre-generated array based on state
-    if (nothingSelected) {
-        return RENT_NUMBERS; // Default case uses same range as rent
+    if (isNothing) {
+        return SALE_NUMBERS; // Default case uses same range as rent
     }
 
     if (isRent && isSale) {

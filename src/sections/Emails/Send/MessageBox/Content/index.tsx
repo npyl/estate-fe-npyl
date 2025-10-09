@@ -4,29 +4,23 @@ import Recipients from "./Recipients";
 import StyledEditor from "./StyledEditor";
 import RHFSubject from "./RHFSubject";
 import RHFProperties from "./RHFProperties";
-import Actions from "./Actions";
-import PaperWithFullscreen from "./PaperWithFullscreen";
 import Attachments from "./Attachments";
 
 interface ContentProps {
     thread: boolean;
-    onClose: VoidFunction;
 }
 
-const Content: FC<ContentProps> = ({ thread, onClose }) => (
-    <PaperWithFullscreen>
-        <Stack position="relative" height={1}>
-            <Stack p={1} spacing={1} position="relative">
-                {thread ? null : <Recipients />}
-                {thread ? null : <RHFSubject />}
-                <RHFProperties />
-            </Stack>
-            <StyledEditor>
-                <Attachments />
-            </StyledEditor>
+const Content: FC<ContentProps> = ({ thread }) => (
+    <Stack position="relative" height={1}>
+        <Stack p={1} spacing={1} position="relative">
+            {thread ? null : <Recipients />}
+            {thread ? null : <RHFSubject />}
+            <RHFProperties />
         </Stack>
-        <Actions onClose={onClose} />
-    </PaperWithFullscreen>
+        <StyledEditor>
+            <Attachments />
+        </StyledEditor>
+    </Stack>
 );
 
 export default Content;

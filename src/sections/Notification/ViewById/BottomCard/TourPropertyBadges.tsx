@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import CodeBadgeLink from "../../_shared/CodeBadgeLink";
+import CodeBadgeLink from "@/ui/Property/CodeBadgeLink";
 import { NormalBadge } from "@/ui/Cards/PropertyCard/styled";
 
 interface TourPropertyBadgesProps {
@@ -28,7 +28,7 @@ const TourPropertyBadges: React.FC<TourPropertyBadgesProps> = ({
             />
             <CodeBadgeLink
                 code={`${t("Code")}: ${code}`}
-                propertyId={propertyId}
+                propertyId={propertyId!}
             />
         </Stack>
     );

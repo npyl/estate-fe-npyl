@@ -19,7 +19,7 @@ import PropertyCard from "@/ui/Cards/PropertyCard";
 import useResponsive from "@/hooks/useResponsive";
 import { format } from "date-fns";
 import LabelComponent from "./LabelComponent";
-import DateRangePicker from "./DateRangePicker";
+import DateRangePicker from "../../ui/DateRangePicker";
 
 export default function StackedAreas() {
     const { t } = useTranslation();

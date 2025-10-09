@@ -4,6 +4,14 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            COPY_TO_CLIPBOARD_SUCCESS: "Copied",
+
+            "Date Range": "Date Range",
+            Sort: "Sort",
+            "All labels": "All labels",
+            CLONE_TITLE: "Clone this property?",
+            NEW_TEMPLATE: "New Template",
+            Column: "Column",
             Images: "Images",
             MAKE_THUMBNAIL: "Make thumbnail",
             DELETE_RECORD: "Do you really want to delete this?",
@@ -792,7 +800,6 @@ const resources = {
             actions: "actions",
             Resource: "Resource",
             resources: "resources",
-            "Date Range": "Date Range",
             Permissions: "Permissions",
             "Create User": "Create User",
             Admin: "Admin",
@@ -1016,7 +1023,6 @@ const resources = {
                 "There are no matching properties",
 
             Custom: "Custom",
-            "Select Date Range": "Select Date Range",
             "Total Views": "Total Views",
             "Monthly Views": "Monthly Views",
             "Weekly Views": "Weekly Views",
@@ -1391,7 +1397,6 @@ const resources = {
             Document: "Document",
 
             "Are you sure?": "Are you sure?",
-            _UNDONE_: "This action cannot be undone",
 
             ERR_ADMIN_ONLY: "Accessible to admins only",
             ERR_ADMIN_ONLY_0:
@@ -1415,8 +1420,17 @@ const resources = {
     },
     el: {
         translation: {
-            Images: "Εικόνες",
+            COPY_TO_CLIPBOARD_SUCCESS: "Αντιγράφηκε",
 
+            Sort: "Ταξινόμηση",
+            "All labels": "Όλες οι ετικέτες",
+
+            CLONE_TITLE: "Κλωνοποίηση ακινήτου?",
+
+            NEW_TEMPLATE: "Νέο Πρότυπο",
+
+            Column: "Στήλη",
+            Images: "Εικόνες",
             MAKE_THUMBNAIL: "Κάνε την Μικρογραφία",
 
             DELETE_RECORD: "Επιθυμείτε να γίνει διαγραφή?",
@@ -1631,7 +1645,6 @@ const resources = {
             ERR_ADMIN_ONLY_0:
                 "Η σελίδα αυτή είναι προσβάσιμη μόνο από λογαριασμό διαχειριστή",
 
-            _UNDONE_: "Η ενέργεια δεν μπορεί να αναιρεθεί",
             "Are you sure?": "Είστε σίγουρος?",
 
             Document: "Έγγραφο",
@@ -1878,7 +1891,6 @@ const resources = {
             "Weekly Views": "Εβδομαδιαίες Προβολές",
             "Yearly Views": "Ετήσιες Προβολές",
             "Daily Views": "Ημερήσιες Προβολές",
-            "Select Date Range": "Επιλογή Χρονικού Διαστήματος",
             Custom: "Προσαρμοσμένο",
 
             "Edit Integration Details": "Επεξεργασία Λεπτομερειών Σύνδεσης",

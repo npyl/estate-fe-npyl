@@ -1,11 +1,17 @@
 import Button, { ButtonProps } from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
+import { OverridableComponent } from "@mui/material/OverridableComponent";
+import Stack, { StackProps } from "@mui/material/Stack";
 import { styled, SxProps, Theme } from "@mui/material/styles";
+import { ComponentType } from "react";
 
-export const SpaceBetween = styled(Stack)({
+interface SpaceBetweenProps extends StackProps {}
+
+export const SpaceBetween = styled(Stack)<SpaceBetweenProps>({
     flexDirection: "row",
     justifyContent: "space-between",
 });
+
+export type { SpaceBetweenProps };
 
 interface PPButtonProps extends ButtonProps {
     clicked?: boolean;
@@ -47,13 +53,54 @@ export const PPButton = styled(Button, {
 }));
 
 /**
- * Apply to buttons to hide text on small displays
+ * Apply to MUI components (e.g. Button, Select) to hide text on small displays
  */
 const HideText: SxProps<Theme> = {
-    "& .MuiButton-startIcon": {
+    "& .MuiButton-startIcon, .MuiButton-icon": {
         mr: { xs: 0, sm: 1 },
+    },
+    "& .MuiButton-endIcon, .MuiButton-icon": {
+        ml: { xs: 0, sm: "initial" },
     },
     fontSize: { xs: 0, sm: "initial" },
 };
 
-export { HideText };
+/**
+ * styled() variant of `HideText`
+ */
+const hideTextStyled = <
+    C extends OverridableComponent<any> | ComponentType<any>,
+>(
+    component: C,
+    options?: Parameters<typeof styled>[1]
+) =>
+    styled(
+        component,
+        options
+    )(({ theme }) => ({
+        // Below sm
+        [theme.breakpoints.down("sm")]: {
+            "& .MuiButton-startIcon, .MuiButton-icon": {
+                marginRight: 0,
+            },
+            "& .MuiButton-endIcon, .MuiButton-icon": {
+                marginLeft: 0,
+            },
+
+            fontSize: 0,
+        },
+
+        // Above sm
+        [theme.breakpoints.up("sm")]: {
+            "& .MuiButton-startIcon, .MuiButton-icon": {
+                marginRight: theme.spacing(1),
+            },
+            "& .MuiButton-endIcon, .MuiButton-icon": {
+                marginLeft: "initial",
+            },
+
+            fontSize: "initial",
+        },
+    }));
+
+export { HideText, hideTextStyled };

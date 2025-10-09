@@ -42,7 +42,6 @@ const SmartImage = forwardRef<HTMLImageElement, SmartImageProps>(
             // Drone (2048x1152)
             if (isCloseToRatio(aspectRatio, 2048 / 1152)) {
                 el.style.objectFit = "contain";
-                return;
             }
         }, []);
 

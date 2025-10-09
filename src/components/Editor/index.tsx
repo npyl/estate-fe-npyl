@@ -141,7 +141,7 @@ const Editor = forwardRef<EditorRef, EditorProps>(
 
                         ...(!editable
                             ? {
-                                  userSelect: "none",
+                                  userSelect: "text",
                               }
                             : {}),
 
@@ -245,5 +245,5 @@ const ProviderWrap = forwardRef<EditorRef, EditorProps>(
 );
 
 export { EDITOR_CONTENT_ID };
-export type { EditorRef, EditorProps };
+export type { TEditor, EditorRef, EditorProps };
 export default ProviderWrap;

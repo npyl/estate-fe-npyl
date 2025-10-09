@@ -105,13 +105,7 @@ const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                 />
 
                 <Stack alignItems="center" direction="row">
-                    <CreateButton
-                        sx={{
-                            mx: 1,
-                            ...HideText,
-                        }}
-                    />
-
+                    <CreateButton sx={{ mx: 1, ...HideText }} />
                     <AccountButton />
                 </Stack>
             </Toolbar>

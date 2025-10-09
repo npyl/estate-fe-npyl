@@ -1,4 +1,3 @@
-import Stack from "@mui/material/Stack";
 import { SxProps, Theme } from "@mui/material";
 import Search from "./Search";
 import UserSelect from "./UserSelect";
@@ -36,10 +35,10 @@ const Bar: FC<BarProps> = ({ create }) => (
             </>
         }
         controls={
-            <Stack direction="row" spacing={1} alignItems="center">
+            <>
                 <ModeButton />
                 <AddButtons create={create} />
-            </Stack>
+            </>
         }
         bottomContent={undefined}
     />

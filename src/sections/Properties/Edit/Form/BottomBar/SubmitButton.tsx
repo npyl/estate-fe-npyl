@@ -1,3 +1,4 @@
+import { HideText } from "@/components/styled";
 import { PROPERTY } from "@/constants/tests";
 import SendIcon from "@mui/icons-material/Send";
 import { LoadingButton } from "@mui/lab";
@@ -18,6 +19,7 @@ const SubmitButton = () => {
             variant="contained"
             startIcon={<SendIcon />}
             type="submit"
+            sx={HideText}
         >
             {t("Save")}
         </LoadingButton>

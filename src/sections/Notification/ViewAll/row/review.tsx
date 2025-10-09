@@ -15,7 +15,7 @@ import BasicRow from "./basic";
 import { useGetNotificationByIdQuery } from "@/services/notification";
 import { useGetPropertyByCodeQuery } from "@/services/properties";
 import { NormalBadge } from "@/ui/Cards/PropertyCard/styled";
-import CodeBadgeLink from "../../_shared/CodeBadgeLink";
+import CodeBadgeLink from "@/ui/Property/CodeBadgeLink";
 
 interface ReviewRowProps {
     row: ContactNotification;
@@ -86,7 +86,6 @@ const ReviewRow = ({ row, filter }: ReviewRowProps) => {
                                                 name={`${t("")} ${
                                                     review?.name || ""
                                                 }`}
-                                                color={"#3366ff"}
                                                 sx={{
                                                     fontWeight: "bold",
                                                     color: "aliceblue",
@@ -99,7 +98,6 @@ const ReviewRow = ({ row, filter }: ReviewRowProps) => {
                                                 name={`${t("")} ${
                                                     review?.email || ""
                                                 }`}
-                                                color={"#3366ff"}
                                                 sx={{
                                                     fontWeight: "bold",
                                                     color: "aliceblue",
@@ -109,7 +107,7 @@ const ReviewRow = ({ row, filter }: ReviewRowProps) => {
                                         </TableCell>
                                         <TableCell align="center">
                                             <CodeBadgeLink
-                                                propertyId={property?.id}
+                                                propertyId={property?.id!}
                                                 code={row.propertyCode}
                                             />
                                         </TableCell>

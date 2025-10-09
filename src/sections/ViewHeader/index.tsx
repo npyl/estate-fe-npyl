@@ -1,5 +1,5 @@
 import { Paper, Stack, SxProps, Theme } from "@mui/material";
-import { PropsWithChildren } from "react";
+import { FC, PropsWithChildren } from "react";
 import dynamic from "next/dynamic";
 const ExportButton = dynamic(() => import("./Export"));
 const ShareButton = dynamic(() => import("./ShareButton"));
@@ -18,7 +18,7 @@ const PaperSx: SxProps<Theme> = {
     gap: 2,
 };
 
-interface IViewHeaderProps extends PropsWithChildren {
+interface ViewHeaderProps extends PropsWithChildren {
     isProperty: boolean;
     isArchived?: boolean;
     // ...
@@ -28,7 +28,7 @@ interface IViewHeaderProps extends PropsWithChildren {
     onClone?: VoidFunction;
 }
 
-const ViewHeader = ({
+const ViewHeader: FC<ViewHeaderProps> = ({
     isProperty,
     isArchived = false,
     children,
@@ -37,7 +37,7 @@ const ViewHeader = ({
     onArchive,
     onDelete,
     onClone,
-}: IViewHeaderProps) => (
+}) => (
     <Paper sx={PaperSx}>
         {children}
 
@@ -58,4 +58,5 @@ const ViewHeader = ({
     </Paper>
 );
 
+export type { ViewHeaderProps };
 export default ViewHeader;

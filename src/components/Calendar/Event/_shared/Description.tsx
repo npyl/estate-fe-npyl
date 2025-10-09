@@ -19,7 +19,6 @@ interface Props extends EditorProps {
 
 const Description: FC<Props> = ({ content, containerSx, ...props }) => (
     <Editor
-        className="PPEvent-Description"
         editable={false}
         content={content}
         containerSx={{ ...DescriptionSx, ...containerSx }}

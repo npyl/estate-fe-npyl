@@ -19,7 +19,6 @@ const Controls = forwardRef<HTMLDivElement, ControlsProps>(
             alignItems="center"
             width="fit-content"
             visibility="hidden"
-            mt={0.5}
             {...props}
         >
             <RoundIconButton size="small" onClick={onScrollLeft}>

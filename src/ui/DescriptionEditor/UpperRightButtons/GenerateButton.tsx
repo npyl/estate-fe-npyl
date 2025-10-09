@@ -62,8 +62,8 @@ const GenerateButton: FC<GenerateButtonProps> = ({ lang }) => {
                 {isLoading
                     ? t("Generating...")
                     : styling
-                    ? t("Generate (RTF)")
-                    : t("Generate")}
+                      ? t("Generate (RTF)")
+                      : t("Generate")}
             </LoadingButton>
         </OptionButton>
     );

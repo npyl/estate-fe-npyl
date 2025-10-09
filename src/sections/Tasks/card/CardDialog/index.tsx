@@ -61,7 +61,6 @@ const Details: FC<DetailsProps> = ({ quickCreate = false, task, onClose }) => {
         <FormProvider {...methods}>
             <Dialog
                 data-testid={TASK.DIALOG_ID}
-                open
                 submit
                 onSubmit={methods.handleSubmit(handleSubmit)}
                 onClose={handleClose}
@@ -78,7 +77,6 @@ const Details: FC<DetailsProps> = ({ quickCreate = false, task, onClose }) => {
                         <Content
                             cardId={task?.id}
                             // ...
-                            createdAt={task?.createdAt}
                             updatedAt={task?.updatedAt}
                             reporter={task?.reporter}
                             updatedBy={task?.updatedBy}

@@ -1,4 +1,4 @@
-import { LanguageButton } from "@/components/LanguageButton";
+import LanguageButton from "@/components/LanguageButton";
 import { PreferredLanguageType } from "@/types/enums";
 import { TLanguageType } from "@/types/translation";
 import { useCallback } from "react";

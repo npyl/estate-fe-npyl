@@ -17,8 +17,9 @@ const MinPriceChip = () => {
         <Chip
             label={
                 <ChipLabel
+                    separateThousands
                     title={`${t("Minimum Price")} (€)`}
-                    value={minValue?.toLocaleString("el-GR") || ""}
+                    value={minValue}
                 />
             }
             onDelete={handleClear}

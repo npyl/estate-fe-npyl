@@ -84,11 +84,7 @@ const Content = () => {
             ) : null}
 
             {isDialogOpen ? (
-                <FilterMore
-                    open={isDialogOpen}
-                    onClose={closeDialog}
-                    onResetFilter={() => {}}
-                >
+                <FilterMore onClose={closeDialog} onResetFilter={() => {}}>
                     <FilterLogSection />
                 </FilterMore>
             ) : null}

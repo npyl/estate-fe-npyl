@@ -5,7 +5,7 @@ import Pagination, { usePagination } from "@/components/Pagination";
 import { useSearchPropertyQuery } from "@/services/properties";
 import HomeIcon from "@/assets/icons/home";
 import Head, { useHeadControl } from "./Head";
-import { PropertyCardH } from "@/ui/Cards/PropertyCard";
+import PropertyCard from "@/ui/Cards/PropertyCard";
 
 const PAGE_SIZE = 5;
 
@@ -70,7 +70,7 @@ const Content: FC<ContentProps> = ({
             ContainerProps={{ spacing: 1, p: 1 }}
         >
             {properties.map((p) => (
-                <PropertyCardH
+                <PropertyCard
                     key={p.id}
                     item={p}
                     onClick={() => onItemClick(p.code)}

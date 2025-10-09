@@ -1,6 +1,5 @@
 import BaseCalendar from "@/components/BaseCalendar";
-import { FC, useCallback, useState } from "react";
-import React from "react";
+import React, { FC, useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import { TCalendarView } from "@/components/BaseCalendar/types";
 import { TODAY } from "@/components/BaseCalendar/constants";

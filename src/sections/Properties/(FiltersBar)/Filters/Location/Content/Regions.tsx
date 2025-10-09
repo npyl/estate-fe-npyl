@@ -36,9 +36,9 @@ const RegionsTab: FC<Props> = ({ search }) => {
             {regionsOptions?.map((o) => (
                 <CustomMenuItem
                     key={o.areaID}
-                    checked={regions.indexOf(o.areaID.toString()) > -1}
+                    selected={regions.indexOf(o.areaID.toString()) > -1}
                     onClick={handleClick}
-                    {...o}
+                    o={o}
                 />
             ))}
 

@@ -3,11 +3,8 @@ import { Button, Grid, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { FC } from "react";
 import { ICustomer, ICustomerPOST } from "src/types/customer";
-// Sections
 import AddressDetails from "./AddressDetails";
 import CustomerInformation from "./CustomerInformation";
-import NotesSection from "./NotesSection";
-// Forms
 import { FormProvider, useWatch } from "react-hook-form";
 import { ICustomerYup } from "./types";
 import useCustomerForm from "./useCustomerForm";
@@ -15,6 +12,7 @@ import FormBottomBar from "@/ui/FormBottomBar";
 import SaveButton from "./SaveButton";
 import dynamic from "next/dynamic";
 import isFalsy from "@/utils/isFalsy";
+import RHFNoteSection from "@/ui/Note/RHFSection";
 const B2BMembers = dynamic(() => import("./B2BMembers"));
 
 const B2BSection = () => {
@@ -91,7 +89,12 @@ const Form: FC<CustomerFormProps> = ({
                                 <AddressDetails />
                             </Grid>
                             <Grid item xs={12}>
-                                <NotesSection isEditMode={!!customer} />
+                                <RHFNoteSection
+                                    chip
+                                    name="notes"
+                                    resource="customer"
+                                    resourceId={customer?.id}
+                                />
                             </Grid>
                         </Grid>
                     </Grid>

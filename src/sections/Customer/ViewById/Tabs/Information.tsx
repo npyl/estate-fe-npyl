@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
-
-import { Address, Information, Notes } from "../sections";
+import { Address, Information } from "../sections";
+import Notes from "./Notes";
 
 const CustomerInformation = () => (
     <Grid container spacing={1}>

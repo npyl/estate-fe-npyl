@@ -1,58 +1,58 @@
 import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import Content from "./Content";
-import { Props } from "./types";
-import formatNumber from "./formatNumber";
-import Select from "@/components/Select";
+import Content, {
+    ContentProps,
+    getInputTestId,
+    getOptionTestId,
+} from "./Content";
+import Select from "./Select";
+import { formatThousands } from "@/utils/formatNumber";
 
-const PriceSelect: FC<Props> = (props) => {
-    const { type, valueMin = 0, valueMax = 0 } = props;
+const PRICE_CEILING = (1000 * 1000 * 1000).toString(); // 1B euros
+const AREA_CEILING = (1000 * 1000).toString(); // 1M m^2
+
+interface RangeSelectProps extends Omit<ContentProps, "symbol" | "ceiling"> {
+    type: "price" | "area";
+    open?: boolean; // INFO: jest
+}
+
+const RangeSelect: FC<RangeSelectProps> = ({ type, open, ...props }) => {
+    const { valueMin, valueMax } = props;
 
     const { t } = useTranslation();
 
-    const { symbol, label } = useMemo(
-        () =>
-            type === "price"
-                ? {
-                      symbol: "€",
-                      label: "Price",
-                  }
-                : {
-                      symbol: "m²",
-                      label: "Area",
-                  },
-        [type]
-    );
+    const symbol = type === "price" ? "€" : "m²";
+    const label = type === "price" ? "Price" : "Area";
+    const ceiling = type === "price" ? PRICE_CEILING : AREA_CEILING;
 
     const value = useMemo(() => {
-        if (valueMin === 0 && valueMax === 0) {
+        if (valueMin === undefined && valueMax === undefined) {
             return "";
         }
-        if (valueMin && valueMax === 0) {
-            return t("From") + " " + formatNumber(valueMin) + symbol;
+        if (valueMin && valueMax === undefined) {
+            return t("From") + " " + formatThousands(valueMin) + symbol;
         }
-        if (valueMin === 0 && valueMax) {
-            return t("Until") + " " + formatNumber(valueMax) + symbol;
+        if (valueMin === undefined && valueMax) {
+            return t("Until") + " " + formatThousands(valueMax) + symbol;
         }
 
-        return formatNumber(valueMin) + "-" + formatNumber(valueMax) + symbol;
+        return (
+            formatThousands(valueMin) + "-" + formatThousands(valueMax) + symbol
+        );
     }, [valueMax, valueMin, t]);
 
     return (
         <Select
+            open={open}
             label={t(label)}
             value={value}
-            formControlProps={{
-                sx: {
-                    minWidth: "175px",
-                    maxWidth: "175px",
-                    textWrap: "nowrap",
-                },
-            }}
+            sx={{ minWidth: "175px", maxWidth: "175px", textWrap: "nowrap" }}
         >
-            <Content {...props} />
+            <Content symbol={symbol} ceiling={ceiling} {...props} />
         </Select>
     );
 };
 
-export default PriceSelect;
+export { getInputTestId, getOptionTestId, PRICE_CEILING };
+export type { RangeSelectProps };
+export default RangeSelect;

@@ -5,8 +5,8 @@ import ExpireIcon from "@mui/icons-material/AccessTime";
 import ExpiredIcon from "@mui/icons-material/Error";
 // Adjust the path as necessary
 import Link from "@/components/Link";
-import { NormalBadge } from "@/ui/Cards/PropertyCard/styled";
 import useGetNotification from "@/sections/Notification/useGetNotification";
+import CodeBadgeLink from "@/ui/Property/CodeBadgeLink";
 
 const AgreementDetails = () => {
     const { t } = useTranslation();
@@ -57,25 +57,12 @@ const AgreementDetails = () => {
                             Property with
                         </Typography>
 
-                        <Link
-                            href={propertyHref}
-                            passHref
-                            style={{ textDecoration: "none" }}
-                        >
-                            <NormalBadge
-                                name={`${t("Code")}: ${
-                                    agreement?.property?.code || ""
-                                }`}
-                                color={"#ffcc00"}
-                                sx={{
-                                    color: "#854D0E",
-                                    width: "100%",
-                                    "&:hover": {
-                                        backgroundColor: "#e6b800",
-                                    },
-                                }}
-                            />
-                        </Link>
+                        <CodeBadgeLink
+                            propertyId={agreement?.property?.id!}
+                            code={`${t("Code")}: ${
+                                agreement?.property?.code || ""
+                            }`}
+                        />
                     </Stack>
 
                     <Stack direction="row" gap={0.5} mt={0.5}>

@@ -2,7 +2,7 @@ import { TextField } from "@mui/material";
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useResetPasswordMutation } from "@/services/user";
-import ConfirmDialog from "@/ui/confirm-dialog";
+import ConfirmDialog from "@/ui/Dialog/Confirm";
 import { LoadingButton } from "@mui/lab";
 import useTextField from "@/hooks/useTextField";
 
@@ -24,7 +24,7 @@ const ResetDialog: FC<ResetDialogProps> = ({ userId, onClose }) => {
         onClose();
     }, [userId, newPassword]);
 
-    const Actions = Boolean(newPassword) ? (
+    const Actions = newPassword ? (
         <LoadingButton
             disabled={isLoading}
             loading={isLoading}
@@ -37,7 +37,6 @@ const ResetDialog: FC<ResetDialogProps> = ({ userId, onClose }) => {
 
     return (
         <ConfirmDialog
-            open
             title={t("RESET_USER_PASSWORD")}
             content={
                 <TextField

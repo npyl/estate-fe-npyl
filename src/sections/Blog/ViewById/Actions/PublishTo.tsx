@@ -1,5 +1,5 @@
 import { StyledInputLabel } from "@/components/Filters/styled";
-import { CreateOrUpdateBlogPostReq } from "@/services/blog";
+import { BlogPostReq } from "@/types/company";
 import PublicSitesPicker from "@/ui/Pickers/PublicSites";
 import FormControl from "@mui/material/FormControl";
 import { Controller, useFormContext } from "react-hook-form";
@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 
 const PublishTo = () => {
     const { t } = useTranslation();
-    const { control } = useFormContext<CreateOrUpdateBlogPostReq>();
+    const { control } = useFormContext<BlogPostReq>();
     return (
         <Controller
             name="publicSites"

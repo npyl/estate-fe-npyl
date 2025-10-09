@@ -30,6 +30,12 @@ export interface IPropertyFileRes {
 
 // ----------------------------------------------------------------------------------------
 
+export interface IPropertyFileMini {
+    id: number;
+    url: string;
+    uploadedAt: string;
+}
+
 export interface IPropertyFile {
     id: number;
     url: string | null;

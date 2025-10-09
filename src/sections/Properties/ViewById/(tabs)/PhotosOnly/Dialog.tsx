@@ -1,21 +1,10 @@
-// @mui
-import {
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogProps,
-    DialogTitle,
-    IconButton,
-    Typography,
-} from "@mui/material";
-
+import { DialogTitle, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/CloseOutlined";
 import { useTranslation } from "react-i18next";
-
 import { styled } from "@mui/material/styles";
 import { LoadingButton } from "@mui/lab";
-import { useState } from "react";
+import { FC, useState } from "react";
+import Dialog, { DialogProps } from "@/components/Dialog";
 
 // ----------------------------------------------------------------
 
@@ -35,12 +24,12 @@ interface DownloadDialogProps extends Omit<DialogProps, "onClose"> {
     onClose: VoidFunction;
 }
 
-const DownloadDialog = ({
+const DownloadDialog: FC<DownloadDialogProps> = ({
     loading,
     onExportAll,
     onExportPublic,
     ...props
-}: DownloadDialogProps) => {
+}) => {
     const { t } = useTranslation();
 
     const [clicked, setClicked] = useState<"all" | "public" | "">("");
@@ -55,41 +44,49 @@ const DownloadDialog = ({
     };
 
     return (
-        <Dialog keepMounted {...props}>
-            <StyledDialogTitle>
-                {t("Download Photos")}
-                <IconButton onClick={props.onClose}>
-                    <CloseIcon />
-                </IconButton>
-            </StyledDialogTitle>
-            <DialogContent>
-                <DialogContentText>
-                    {t("Please select between All or only Public photos")}
-                </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <LoadingButton
-                    loading={clicked === "all" && loading}
-                    color="primary"
-                    disabled={loading}
-                    onClick={handleExportAll}
-                >
-                    <Typography mr={clicked === "all" && loading ? 2 : 0}>
-                        {t("All Photos")}
-                    </Typography>
-                </LoadingButton>
-                <LoadingButton
-                    loading={clicked === "public" && loading}
-                    color="primary"
-                    disabled={loading}
-                    onClick={handleExportPublic}
-                >
-                    <Typography mr={clicked === "public" && loading ? 2 : 0}>
-                        {t("Public Photos")}
-                    </Typography>
-                </LoadingButton>
-            </DialogActions>
-        </Dialog>
+        <Dialog
+            DialogTitleComponent={StyledDialogTitle}
+            // ...
+            title={
+                <>
+                    {t("Download Photos")}
+                    <IconButton
+                        sx={{ position: "absolute", right: 2, top: 15 }}
+                        onClick={props.onClose}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                </>
+            }
+            content={t("Please select between All or only Public photos")}
+            actions={
+                <>
+                    <LoadingButton
+                        loading={clicked === "all" && loading}
+                        color="primary"
+                        disabled={loading}
+                        onClick={handleExportAll}
+                    >
+                        <Typography mr={clicked === "all" && loading ? 2 : 0}>
+                            {t("All Photos")}
+                        </Typography>
+                    </LoadingButton>
+                    <LoadingButton
+                        loading={clicked === "public" && loading}
+                        color="primary"
+                        disabled={loading}
+                        onClick={handleExportPublic}
+                    >
+                        <Typography
+                            mr={clicked === "public" && loading ? 2 : 0}
+                        >
+                            {t("Public Photos")}
+                        </Typography>
+                    </LoadingButton>
+                </>
+            }
+            {...props}
+        />
     );
 };
 

@@ -2,12 +2,12 @@ import { Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SoftButton from "@/components/SoftButton";
 import { useTranslation } from "react-i18next";
-const DeleteDialog = dynamic(() => import("@/components/Dialog/Delete"));
+const DeleteDialog = dynamic(() => import("@/ui/Dialog/Delete"));
 import useDialog from "@/hooks/useDialog";
 import { FC, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { useAuth } from "@/sections/use-auth";
-import ConfirmDialog from "@/ui/confirm-dialog";
+import ConfirmDialog from "@/ui/Dialog/Confirm";
 import ArchiveIcon from "@mui/icons-material/Archive";
 
 interface Props {
@@ -68,7 +68,6 @@ const DeleteOrArchiveButton: FC<Props> = ({
 
             {isArchiveOpen ? (
                 <ConfirmDialog
-                    open
                     onClose={closeArchive}
                     title={t("Archive")}
                     actions={
@@ -85,11 +84,7 @@ const DeleteOrArchiveButton: FC<Props> = ({
             ) : null}
 
             {isDeleteOpen ? (
-                <DeleteDialog
-                    open
-                    onClose={closeDelete}
-                    onDelete={handleDelete}
-                />
+                <DeleteDialog onClose={closeDelete} onDelete={handleDelete} />
             ) : null}
         </>
     );

@@ -11,7 +11,7 @@ import ListLanguageItem from "@/components/List/Items/language";
 import ViewPanel from "@/components/Panel/View";
 import { TypeLabels } from "@/components/TypeLabels";
 import useGetCustomer from "@/sections/Customer/hooks/useGetCustomer";
-import LabelCreate from "@/sections/LabelCreate";
+import LabelSection from "@/ui/Label/Section";
 import LeadSourceListItem from "./LeadSourceListItem";
 import { LeadSource } from "@/types/global";
 import { PreferredLanguageType } from "@/types/enums";
@@ -152,7 +152,7 @@ const Information = () => {
                     </List>
                 </Grid>
                 <Grid item xs={12} sm={6} p={1}>
-                    <LabelCreate
+                    <LabelSection
                         minHeight="70px"
                         variant="customer"
                         resourceId={customerId ? +customerId : -1}

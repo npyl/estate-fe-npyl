@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 // @mui
 import { Box, Button, Divider, Grid, Stack, Tab, Tabs } from "@mui/material";
 import { LabeledImage } from "@/components/image";
@@ -38,7 +38,7 @@ type Props = {
     data: IPropertyImage[];
 };
 
-function OnlyPhotosCarousel({ data }: Props) {
+const OnlyPhotosCarousel: FC<Props> = ({ data }) => {
     const { t } = useTranslation();
 
     const router = useRouter();
@@ -167,7 +167,6 @@ function OnlyPhotosCarousel({ data }: Props) {
             {/* Dialog */}
             {isDialogOpen ? (
                 <DownloadDialog
-                    open={isDialogOpen}
                     onClose={closeDialog}
                     // ...
                     loading={isLoading}
@@ -177,6 +176,6 @@ function OnlyPhotosCarousel({ data }: Props) {
             ) : null}
         </>
     );
-}
+};
 
 export default OnlyPhotosCarousel;

@@ -1,8 +1,9 @@
 import { forwardRef, useCallback, useImperativeHandle, useState } from "react";
 import { SearchCategory } from "../types";
-import Popover, { PopoverProps } from "../Popover";
+import Popover, { PopoverProps } from "./Popover";
 import SearchHistory from "./SearchHistory";
 import dynamic from "next/dynamic";
+import ClickAwayLayer from "./ClickAwayLayer";
 const SearchResults = dynamic(() => import("./SearchResults"));
 
 interface SearchListRef {
@@ -49,6 +50,8 @@ const SearchList = forwardRef<SearchListRef, SearchListProps>(
                 {!searchString ? (
                     <SearchHistory onSelect={onSelectHistoryItem} />
                 ) : null}
+
+                <ClickAwayLayer onClick={close} />
             </Popover>
         );
     }

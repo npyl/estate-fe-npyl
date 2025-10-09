@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@mui/lab";
 import { useFormContext, useWatch } from "react-hook-form";
 import { ICreatePropertyParams } from "@/services/properties";
+import { HideText } from "@/components/styled";
 
 const SAVE_BUTTON_TESTID = "PPPropertyCreateSaveButton";
 
@@ -21,6 +22,7 @@ const SaveButton = () => {
             loading={isLoading}
             variant="contained"
             startIcon={<SendIcon />}
+            sx={HideText}
             disabled={category === "" || isLoading}
         >
             {t("Save")}

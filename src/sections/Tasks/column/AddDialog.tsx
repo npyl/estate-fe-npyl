@@ -1,24 +1,32 @@
-import Dialog from "@mui/material/Dialog";
-
+import Dialog from "@/components/Dialog";
 import {
-    DialogActions,
     DialogContent,
+    DialogContentProps,
     DialogTitle,
+    DialogTitleProps,
     IconButton,
     TextField,
 } from "@mui/material";
-import { useState, useTransition } from "react";
+import { FC, useState, useTransition } from "react";
 import { useTranslation } from "react-i18next";
 import { Close as CloseIcon } from "@mui/icons-material";
 import { useAddColumnMutation, useEditColumnMutation } from "@/services/tasks";
 import { LoadingButton } from "@mui/lab";
 
+const StyledDialogTitle: FC<DialogTitleProps> = ({ sx, ...props }) => (
+    <DialogTitle sx={{ position: "relative", p: 2, ...sx }} {...props} />
+);
+
+const StyledDialogContent: FC<DialogContentProps> = ({ sx, ...props }) => (
+    <DialogContent sx={{ p: 2, ...sx }} {...props} />
+);
+
 interface Props {
     columnId?: number;
-    onClose: () => void;
+    onClose: VoidFunction;
 }
 
-const AddOrEditDialog = ({ columnId, onClose }: Props) => {
+const AddOrEditDialog: FC<Props> = ({ columnId, onClose }) => {
     const { t } = useTranslation();
 
     const [name, setName] = useState("");
@@ -44,38 +52,36 @@ const AddOrEditDialog = ({ columnId, onClose }: Props) => {
     };
 
     return (
-        <Dialog open onClose={onClose}>
-            <DialogTitle
-                sx={{
-                    position: "relative",
-                    p: 2,
-                }}
-            >
-                {title}
+        <Dialog
+            DialogTitleComponent={StyledDialogTitle}
+            DialogContentComponent={StyledDialogContent}
+            onClose={onClose}
+            // ...
+            title={
+                <>
+                    {title}
 
-                <IconButton
-                    sx={{
-                        position: "absolute",
-                        top: 7,
-                        right: 7,
-                    }}
-                    onClick={onClose}
-                >
-                    <CloseIcon />
-                </IconButton>
-            </DialogTitle>
-            <DialogContent
-                sx={{
-                    p: 2,
-                }}
-            >
+                    <IconButton
+                        sx={{
+                            position: "absolute",
+                            top: 7,
+                            right: 7,
+                        }}
+                        onClick={onClose}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                </>
+            }
+            content={
                 <TextField
+                    fullWidth
                     placeholder={t<string>("Name")}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
-            </DialogContent>
-            <DialogActions>
+            }
+            actions={
                 <LoadingButton
                     loading={isPending}
                     disabled={isPending}
@@ -83,8 +89,8 @@ const AddOrEditDialog = ({ columnId, onClose }: Props) => {
                 >
                     {columnId ? t("Edit") : t("Add")}
                 </LoadingButton>
-            </DialogActions>
-        </Dialog>
+            }
+        />
     );
 };
 

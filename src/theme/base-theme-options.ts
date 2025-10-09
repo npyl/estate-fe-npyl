@@ -1,4 +1,8 @@
 import { ThemeOptions } from "@mui/material";
+import AutocompletePaper from "./AutocompletePaper";
+import { POPOVER_ELEVATION } from "./constants";
+
+const SPACING = 8;
 
 const Z_INDEX = {
     NAVIGATION: 1000, // sidebar, topbar, subbar
@@ -7,6 +11,7 @@ const Z_INDEX = {
 };
 
 const baseThemeOptions: ThemeOptions = {
+    spacing: SPACING,
     breakpoints: {
         values: {
             xs: 0,
@@ -35,6 +40,29 @@ const baseThemeOptions: ThemeOptions = {
                 },
             },
         },
+        // -------------------------------------------------------------
+        // Rounded corners on Select options etc.
+        MuiMenu: {
+            styleOverrides: {
+                paper: {
+                    paddingLeft: SPACING,
+                    paddingRight: SPACING,
+                },
+            },
+        },
+        MuiMenuItem: {
+            styleOverrides: {
+                root: {
+                    borderRadius: SPACING,
+                },
+            },
+        },
+        MuiAutocomplete: {
+            defaultProps: {
+                PaperComponent: AutocompletePaper,
+            },
+        },
+        // -------------------------------------------------------------
         MuiButton: {
             defaultProps: {
                 disableElevation: true,
@@ -63,6 +91,11 @@ const baseThemeOptions: ThemeOptions = {
                 textSizeLarge: {
                     padding: "12px 16px",
                 },
+            },
+        },
+        MuiButtonGroup: {
+            defaultProps: {
+                disableRipple: true,
             },
         },
         MuiButtonBase: {
@@ -238,7 +271,7 @@ const baseThemeOptions: ThemeOptions = {
         },
         MuiPopover: {
             defaultProps: {
-                elevation: 16,
+                elevation: POPOVER_ELEVATION,
                 sx: {
                     zIndex: ({ zIndex }) => zIndex.modal,
                 },

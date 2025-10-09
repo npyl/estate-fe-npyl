@@ -10,7 +10,7 @@ import dynamic from "next/dynamic";
 import { useAuth } from "@/sections/use-auth";
 import Share from "./Share";
 import { defaultValues } from "./constants";
-const DeleteDialog = dynamic(() => import("@/components/Dialog/Delete"));
+const DeleteDialog = dynamic(() => import("@/ui/Dialog/Delete"));
 const BulkEdit = dynamic(() => import("./BulkEdit"));
 const BulkArchiveButton = dynamic(() => import("./BulkArchiveButton"));
 const BulkRestoreButton = dynamic(() => import("./BulkRestoreButton"));
@@ -90,7 +90,6 @@ const PropertiesToolbar: FC<ToolbarProps> = ({
             {isBulkDeleteOpen ? (
                 <DeleteDialog
                     multiple
-                    open={isBulkDeleteOpen}
                     onClose={closeBulkDelete}
                     onDelete={handleBulkDelete}
                 />

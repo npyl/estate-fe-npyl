@@ -22,7 +22,7 @@ import {
     NameType,
     ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
-import DateRangePicker from "./DateRangePicker";
+import DateRangePicker from "../../ui/DateRangePicker";
 import { format } from "date-fns";
 import { TranslationType } from "@/types/translation";
 import ParentCategorySelect from "@/ui/Pickers/ParentCategory";

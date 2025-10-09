@@ -1,18 +1,25 @@
-import { IUser } from "./user";
+import { IUserMini } from "@/types/user";
 
-export interface INote {
+interface INote {
     id: number;
     content: string;
-    creator: IUser;
+    creator: IUserMini;
 
     propertyId?: number;
     propertyCode?: string;
 
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
 }
 
-export interface INotePOST {
+interface INotePOST {
     id?: number;
     content: string;
 }
+
+interface AddNoteReq {
+    id: number; // resourceId
+    body: INotePOST;
+}
+
+export type { AddNoteReq, INote, INotePOST };

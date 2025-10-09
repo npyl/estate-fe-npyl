@@ -1,13 +1,17 @@
 import { styled } from "@mui/material/styles";
 import { ImgHTMLAttributes } from "react";
-import { Dialog, DialogActions } from "@mui/material";
+import { Dialog, DialogActions, Stack } from "@mui/material";
 
-export const ComparisonFrame = styled("div")(() => ({
+export const ComparisonFrame = styled(Stack)(({ theme }) => ({
     display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-evenly",
+    flexDirection: "column",
+    justifyContent: "center",
     alignItems: "center",
-    minHeight: "40vh",
+    gap: theme.spacing(1),
+    [theme.breakpoints.up("sm")]: {
+        flexDirection: "row",
+        minHeight: "40vh",
+    },
 }));
 
 interface ComparisonImageProps extends ImgHTMLAttributes<HTMLImageElement> {

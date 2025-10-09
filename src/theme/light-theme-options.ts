@@ -100,27 +100,6 @@ export const lightThemeOptions: Omit<ThemeOptions, "layout"> = {
                 },
             },
         },
-        MuiAutocomplete: {
-            styleOverrides: {
-                root: {
-                    fontSize: 16,
-                    fontWeight: 500,
-                    letterSpacing: 0,
-                    "& .MuiOutlinedInput-root": {
-                        paddingRight: "25px!important",
-                    },
-                    ".MuiOutlinedInput-notchedOutline": {
-                        borderColor: divider,
-                    },
-                    "&:hover .MuiOutlinedInput-notchedOutline": {
-                        border: `1px solid ${primary.main}!important`,
-                    },
-                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                        border: `1px solid ${primary.main}!important`,
-                    },
-                },
-            },
-        },
         MuiChip: {
             styleOverrides: {
                 root: {

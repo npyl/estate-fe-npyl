@@ -1,6 +1,5 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { TTags } from "../types";
-import { useTranslation } from "react-i18next";
 import useEnums from "../../useEnums";
 import Chip from "@mui/material/Chip";
 import ChipLabel from "@/ui/Filters/ChipLabel";
@@ -9,6 +8,32 @@ import {
     useChangedFields,
     useFiltersContext,
 } from "@/sections/Properties/FiltersContext";
+import { formatThousands } from "@/utils/formatNumber";
+
+const useValue = (suffix: string) => {
+    const { minFloorEnum, maxFloorEnum } = useEnums();
+    const changedProps = useChangedFields();
+
+    return useMemo(() => {
+        const minValue = changedProps[`min${suffix}`];
+        const maxValue = changedProps[`max${suffix}`];
+
+        if (suffix === "Floor") {
+            const min = getEnumLabel(minValue, minFloorEnum);
+            const max = getEnumLabel(maxValue, maxFloorEnum);
+            return `${min}-${max}`;
+        }
+
+        if (suffix === "Price" || suffix === "Area") {
+            const min = formatThousands(minValue);
+            const max = formatThousands(maxValue);
+            return `${min}-${max}`;
+        }
+
+        // Other
+        return `${minValue}-${maxValue}`;
+    }, [suffix, changedProps, minFloorEnum, maxFloorEnum]);
+};
 
 interface MinMaxChipProps {
     suffix: string;
@@ -16,15 +41,8 @@ interface MinMaxChipProps {
 }
 
 const MinMaxChip: FC<MinMaxChipProps> = ({ suffix, pairFilterTags }) => {
-    const { t } = useTranslation();
-
-    const { minFloorEnum, maxFloorEnum } = useEnums();
-    const changedProps = useChangedFields();
-
     const label = pairFilterTags[`minMax${suffix}`].label;
-
-    const minValue = changedProps[`min${suffix}`];
-    const maxValue = changedProps[`max${suffix}`];
+    const value = useValue(suffix);
 
     const { deleteFilter } = useFiltersContext();
     const handleClear = () => {
@@ -32,35 +50,9 @@ const MinMaxChip: FC<MinMaxChipProps> = ({ suffix, pairFilterTags }) => {
         deleteFilter(`max${suffix}`);
     };
 
-    if (suffix === "Floor") {
-        const min = getEnumLabel(minValue, minFloorEnum);
-        const max = getEnumLabel(maxValue, maxFloorEnum);
-
-        return (
-            <Chip
-                label={<ChipLabel title={t("Floor")} value={`${min}-${max}`} />}
-                onDelete={handleClear}
-            />
-        );
-    }
-
-    if (suffix === "Price") {
-        const min = minValue.toLocaleString("el-GR");
-        const max = maxValue.toLocaleString("el-GR");
-
-        return (
-            <Chip
-                label={<ChipLabel title={label} value={`${min}-${max}`} />}
-                onDelete={handleClear}
-            />
-        );
-    }
-
     return (
         <Chip
-            label={
-                <ChipLabel title={label} value={`${minValue}-${maxValue}`} />
-            }
+            label={<ChipLabel title={label} value={value} />}
             onDelete={handleClear}
         />
     );

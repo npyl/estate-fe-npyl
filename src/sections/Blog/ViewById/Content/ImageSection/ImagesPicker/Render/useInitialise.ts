@@ -3,39 +3,46 @@ import { useGetBlogPostByIdQuery } from "@/services/blog";
 import useDialog from "@/hooks/useDialog";
 import isFalsy from "@/utils/isFalsy";
 import uuidv4 from "@/utils/uuidv4";
+import { IPropertyFileMini } from "@/types/file";
+import debugLog from "@/_private/debugLog";
 
-const urlToFile = async (url: string) => {
-    const filename = uuidv4();
+const urlToFile = async ({ url }: IPropertyFileMini) => {
+    try {
+        const filename = uuidv4();
 
-    const response = await fetch(url);
-    const blob = await response.blob();
+        const res = await fetch(
+            `/api/image-proxy?url=${encodeURIComponent(url)}`
+        );
 
-    // Create a File object from the blob
-    return new File([blob], filename, { type: blob.type });
+        const blob = await res.blob();
+
+        return new File([blob], filename, { type: blob.type });
+    } catch (ex) {
+        debugLog(ex);
+        return null;
+    }
 };
 
 const useInitialise = (
     postId: number | undefined,
     onChange: (f: File[]) => void
 ) => {
-    const { data, isLoading: isLoading0 } = useGetBlogPostByIdQuery(postId!, {
+    const { data } = useGetBlogPostByIdQuery(postId!, {
         skip: isFalsy(postId),
     });
-    const [isLoading1, startLoading, stopLoading] = useDialog();
-    const getFiles = useCallback(async () => {
-        const i = data?.images ?? [];
-        if (i.length === 0) return;
-
+    const [isLoading, startLoading, stopLoading] = useDialog();
+    const getFiles = useCallback(async (i: IPropertyFileMini[]) => {
         startLoading();
         const all = await Promise.all(i.map(urlToFile));
-        onChange(all);
+        if (!all.every(Boolean)) return;
+        onChange(all as File[]);
         stopLoading();
     }, []);
     useEffect(() => {
-        if (isFalsy(postId)) return;
-        getFiles();
-    }, [postId]);
-    const isLoading = isLoading0 || isLoading1;
+        const images = data?.images ?? [];
+        if (!Array.isArray(images) || images.length === 0) return;
+        getFiles(images);
+    }, [data?.images]);
     return { isLoading };
 };
 
