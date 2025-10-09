@@ -10,6 +10,7 @@ import Emoji from "./Emoji";
 import Color from "./Color";
 import History from "./History";
 import Link from "./Link";
+import Copy from "./Copy";
 
 const MENUBAR_CLASSNAME = "PPEditor-MenuBar";
 
@@ -38,6 +39,12 @@ const MenuBar: FC<MenuBarProps> = ({ bubble = false, onLoad, ...props }) => {
             {...props}
         >
             <History bubble={bubble} />
+            <Divider
+                orientation="vertical"
+                flexItem
+                sx={{ display: bubble ? "none" : "block" }}
+            />
+            <Copy bubble={bubble} />
             <Divider
                 orientation="vertical"
                 flexItem

@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            COPY_TO_CLIPBOARD_SUCCESS: "Copied",
+
             "Date Range": "Date Range",
             Sort: "Sort",
             "All labels": "All labels",
@@ -1418,6 +1420,8 @@ const resources = {
     },
     el: {
         translation: {
+            COPY_TO_CLIPBOARD_SUCCESS: "Αντιγράφηκε",
+
             Sort: "Ταξινόμηση",
             "All labels": "Όλες οι ετικέτες",
 

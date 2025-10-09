@@ -25,7 +25,7 @@ const History: FC<HistoryProps> = ({ bubble }) => {
 
     return (
         <Stack
-            left={-85}
+            left={-140}
             direction="row"
             alignItems="center"
             position={bubble ? "absolute" : "unset"}
