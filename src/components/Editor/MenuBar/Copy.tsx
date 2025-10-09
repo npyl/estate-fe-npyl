@@ -1,11 +1,11 @@
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import MenuBarButton from "./MenuBarButton";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import { useEditorContext } from "../context";
-import { infoToast } from "@/components/Toaster";
 import Stack from "@mui/material/Stack";
 import { getBorderColor2 } from "@/theme/borderColor";
 import { SxProps, Theme } from "@mui/material/styles";
+import useCopyToClipboard from "@/components/Editor/hooks/useCopyToClipboard";
 
 const getStackSx = (bubble: boolean): SxProps<Theme> =>
     bubble
@@ -30,23 +30,7 @@ interface CopyProps {
 const Copy: FC<CopyProps> = ({ bubble }) => {
     const { editor } = useEditorContext();
 
-    const copyToClipboard = useCallback(async () => {
-        try {
-            const html = editor.getHTML();
-            const text = editor.getText();
-
-            await navigator.clipboard.write([
-                new ClipboardItem({
-                    "text/html": new Blob([html], { type: "text/html" }),
-                    "text/plain": new Blob([text], { type: "text/plain" }),
-                }),
-            ]);
-
-            infoToast("COPY_TO_CLIPBOARD_SUCCESS");
-        } catch (err) {
-            console.log(err);
-        }
-    }, []);
+    const copyToClipboard = useCopyToClipboard(editor);
 
     return (
         <Stack sx={getStackSx(bubble)}>

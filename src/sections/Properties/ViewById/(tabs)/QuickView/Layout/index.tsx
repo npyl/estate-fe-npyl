@@ -26,7 +26,7 @@ import {
 } from "@/sections/Properties/ViewById/(sections)";
 import ConstructionSection from "@/sections/Properties/ViewById/(sections)/ConstructionSection";
 import Features from "@/sections/Properties/ViewById/(sections)/FeaturesSection";
-import DescriptionSection from "@/sections/Properties/ViewById/(sections)/DescriptionSection";
+import DescriptionSection from "@/sections/Properties/ViewById/(sections)/Description";
 import GoogleEarthSection from "@/sections/Properties/ViewById/(sections)/GoogleEarthSection";
 import BasicSectionThreeCols from "../BasicSectionThreeCols";
 

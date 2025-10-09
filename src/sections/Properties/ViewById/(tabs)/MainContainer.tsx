@@ -19,7 +19,7 @@ import ConstructionSection from "../(sections)/ConstructionSection";
 import { useRouter } from "next/router";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import Features from "../(sections)/FeaturesSection";
-import DescriptionSection from "../(sections)/DescriptionSection";
+import DescriptionSection from "../(sections)/Description";
 import GoogleEarthSection from "../(sections)/GoogleEarthSection";
 
 const MainContainer: React.FC = () => {
@@ -58,7 +58,7 @@ const MainContainer: React.FC = () => {
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item xs={12} lg={4} order={"row"}>
+            <Grid item xs={12} lg={4} order="row">
                 <Grid container gap={1}>
                     <Grid item xs={12}>
                         <BasicSection />

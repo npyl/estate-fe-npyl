@@ -1,9 +1,20 @@
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Divider, SxProps, Theme, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import Editor, { EditorRef } from "@/components/Editor";
-import { useGetDescription } from "../hooks";
-import PanelWithQuickView from "../PanelWithQuickView";
+import { useGetDescription } from "../../hooks";
 import { useRef } from "react";
+import CopyToClipboard, { CN_COPY_TO_CLIPBOARD } from "./CopyToClipboard";
+import PanelWithQuickView from "../../PanelWithQuickView";
+
+const BoxSx: SxProps<Theme> = {
+    position: "relative",
+
+    ":hover": {
+        [`.${CN_COPY_TO_CLIPBOARD}`]: {
+            display: "flex",
+        },
+    },
+};
 
 const DescriptionSection = () => {
     const { t } = useTranslation();
@@ -36,7 +47,10 @@ const DescriptionSection = () => {
                 <Typography variant="h6">{t("DescriptionSection")}</Typography>
             </Box>
 
-            <Editor ref={editorRef} editable={false} />
+            <Box sx={BoxSx}>
+                <Editor ref={editorRef} editable={false} />
+                <CopyToClipboard editorRef={editorRef} />
+            </Box>
         </PanelWithQuickView>
     );
 };
