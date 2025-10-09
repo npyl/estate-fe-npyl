@@ -56,8 +56,6 @@ const Search: FC<SearchProps> = ({ onSearchSelect }) => {
     return (
         <StyledAutocomplete
             ref={textFieldRef}
-            fullWidth
-            variant="outlined"
             placeholder={t<string>("Search on map...")}
             InputProps={{
                 startAdornment: <SearchIcon />,
