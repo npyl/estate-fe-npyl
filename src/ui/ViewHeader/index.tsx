@@ -6,7 +6,7 @@ const ShareButton = dynamic(() => import("./ShareButton"));
 const DownloadGoogleEarthButton = dynamic(
     () => import("./DownloadGoogleEarthButton")
 );
-import MoreButton from "./More";
+import MoreButton from "./MoreButton";
 
 const PaperSx: SxProps<Theme> = {
     borderColor: "divider",
