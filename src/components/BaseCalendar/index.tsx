@@ -5,6 +5,8 @@ import BaseHeader from "./Header";
 import BaseView from "./View";
 import { CookiesProvider } from "react-cookie";
 
+const BASE_VIEW_ID = "calendar-base-view-id";
+
 const BaseCalendar: FC<BaseCalendarProps> = ({
     date = TODAY,
     onDateChange,
@@ -20,7 +22,7 @@ const BaseCalendar: FC<BaseCalendarProps> = ({
     const { Header = BaseHeader, View = BaseView } = slots || {};
 
     return (
-        <div {...props}>
+        <div id={BASE_VIEW_ID} {...props}>
             <CookiesProvider>
                 <Header
                     date={date}
@@ -38,4 +40,5 @@ const BaseCalendar: FC<BaseCalendarProps> = ({
     );
 };
 
+export { BASE_VIEW_ID };
 export default BaseCalendar;

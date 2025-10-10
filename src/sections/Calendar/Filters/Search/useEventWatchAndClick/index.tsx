@@ -7,6 +7,7 @@ const useEventWatchAndClick = () => {
         (eventId: string) => watchAndClickRef.current?.watchAndClick(eventId),
         []
     );
+
     const EventWatcher = <WatchAndClick ref={watchAndClickRef} />;
 
     return { onWaitEventAndClick, EventWatcher };
