@@ -10,25 +10,22 @@ const Controls: FC<IMapControls> = ({
 }) => (
     <>
         {leftTop ? (
-            <MapControl position={google.maps.ControlPosition.TOP_LEFT} p={1}>
+            <MapControl position={google.maps.ControlPosition.TOP_LEFT}>
                 {leftTop}
             </MapControl>
         ) : null}
         {leftCenter ? (
-            <MapControl
-                position={google.maps.ControlPosition.LEFT_CENTER}
-                p={1}
-            >
+            <MapControl position={google.maps.ControlPosition.LEFT_CENTER}>
                 {leftCenter}
             </MapControl>
         ) : null}
         {rightTop ? (
-            <MapControl position={google.maps.ControlPosition.TOP_RIGHT} p={1}>
+            <MapControl position={google.maps.ControlPosition.TOP_RIGHT}>
                 {rightTop}
             </MapControl>
         ) : null}
         {centerTop ? (
-            <MapControl position={google.maps.ControlPosition.TOP_CENTER} p={1}>
+            <MapControl position={google.maps.ControlPosition.TOP_CENTER}>
                 {centerTop}
             </MapControl>
         ) : null}
