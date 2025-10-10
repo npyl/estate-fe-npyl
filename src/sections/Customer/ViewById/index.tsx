@@ -4,7 +4,7 @@ import { ComponentType, FC, useCallback, useMemo } from "react";
 import { useDeleteCustomerMutation } from "@/services/customers";
 import { MatchingProperties, OwnedProperties, Logs } from "./sections";
 import TabPanel from "@/components/Tabs/TabPanel";
-import ViewHeader from "@/sections/ViewHeader";
+import ViewHeader from "@/ui/ViewHeader";
 import { useTranslation } from "react-i18next";
 import dynamic from "next/dynamic";
 import { TranslationType } from "@/types/translation";
