@@ -1,80 +1,67 @@
 import { GoogleMap } from "@react-google-maps/api";
-import {
-    CSSProperties,
-    FC,
-    forwardRef,
-    useCallback,
-    useImperativeHandle,
-    useRef,
-    useState,
-} from "react";
+import { CSSProperties, FC, useCallback, useLayoutEffect, useRef } from "react";
 import useLoadApi from "@/components/Map/hook";
-import {
-    ContentProps,
-    IMapProps,
-    MapContainerProps,
-} from "@/components/Map/types";
+import { IMapProps, MapContainerProps } from "@/components/Map/types";
 import { MapProvider, useMapContext } from "../context";
-import Controls from "./Controls";
 import { MAP_ID, patrasLatLng } from "@/components/Map/constants";
-import dynamic from "next/dynamic";
 import useZoom from "./useZoom";
 import useCenter from "./useCenter";
 import useClick from "./useClick";
-const MainMarker = dynamic(() => import("./MainMarker"));
+import Content, { ContentRef } from "./Content";
 
-interface ContentRef {
-    load: VoidFunction;
-}
+const useMutualLoad = (onReady?: (m: google.maps.Map) => void) => {
+    const { mapRef } = useMapContext();
+    const geocoderRef = useRef<google.maps.Geocoder>();
+    const contentRef = useRef<ContentRef>();
 
-const Content = forwardRef<ContentRef, ContentProps>(
-    (
-        {
-            geocoderRef,
-            // ...
-            onMainMarkerDrag,
-            mainMarker,
-            // ...
-            center,
-            // ..
-            centerTop,
-            leftCenter,
-            leftTop,
-            rightTop,
-            // ...
-            children,
-        },
-        ref
-    ) => {
-        const [isReady, setIsReady] = useState(false);
+    const onMutualLoad = useCallback(() => {
+        // content
+        contentRef.current?.load();
 
-        const load = useCallback(() => setIsReady(true), []);
-        useImperativeHandle(ref, () => ({ load }), []);
+        onReady?.(mapRef.current!);
 
-        if (!isReady) return null;
+        console.log("MUTUAL_LOAD!");
+    }, [onReady]);
 
-        return (
-            <>
-                <Controls
-                    centerTop={centerTop}
-                    leftCenter={leftCenter}
-                    leftTop={leftTop}
-                    rightTop={rightTop}
-                />
+    const onMapRef = useCallback((map: google.maps.Map) => {
+        map.getDiv().setAttribute("data-testid", MAP_ID);
 
-                {mainMarker ? (
-                    <MainMarker
-                        geocoderRef={geocoderRef}
-                        center={center}
-                        onMainMarkerDrag={onMainMarkerDrag}
-                    />
-                ) : null}
+        // map
+        mapRef.current = map;
 
-                {children}
-            </>
-        );
-    }
-);
+        // geocoder
+        geocoderRef.current = new window.google.maps.Geocoder();
+
+        console.log("EDW 1!");
+
+        // attempt mutual load
+        if (!contentRef.current) return;
+        onMutualLoad();
+
+        console.log("EDW 1.1!");
+    }, []);
+
+    const onContentRef = useCallback((c: ContentRef | null) => {
+        if (!c) return;
+        contentRef.current = c;
+
+        console.log("EDW 2!");
+
+        // attempt mutual load
+        if (!mapRef.current) return;
+        onMutualLoad();
+
+        console.log("EDW 2.1!");
+    }, []);
+
+    useLayoutEffect(() => {
+        return () => {
+            mapRef.current = undefined;
+        };
+    }, []);
+
+    return { geocoderRef, onMapRef, onContentRef };
+};
 
 const containerStyle: CSSProperties = {
     width: "100%",
@@ -112,44 +99,11 @@ const MapContainer: FC<MapContainerProps> = ({
         children,
     };
 
-    const { mapRef } = useMapContext();
-    const geocoderRef = useRef<google.maps.Geocoder>();
-    const contentRef = useRef<ContentRef>();
-
     const { isLoaded } = useLoadApi();
+    const { geocoderRef, onMapRef, onContentRef } = useMutualLoad(onReady);
 
     const center = useCenter(_center);
     const zoom = useZoom(props.shapes, _zoom);
-
-    const onMutualLoad = useCallback(() => {
-        // content
-        contentRef.current?.load();
-
-        onReady?.(mapRef.current!);
-    }, [onReady]);
-
-    const onMapRef = useCallback((map: google.maps.Map) => {
-        map.getDiv().setAttribute("data-testid", MAP_ID);
-
-        // map
-        mapRef.current = map;
-
-        // geocoder
-        geocoderRef.current = new window.google.maps.Geocoder();
-
-        // attempt mutual ref
-        if (!contentRef.current) return;
-        onMutualLoad();
-    }, []);
-
-    const onContentRef = useCallback((c: ContentRef | null) => {
-        if (!c) return;
-        contentRef.current = c;
-
-        // attempt mutual ref
-        if (!mapRef.current) return;
-        onMutualLoad();
-    }, []);
 
     const handleMapClick = useClick(geocoderRef, onClick);
 

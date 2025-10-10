@@ -1,33 +1,44 @@
-import { FC, useCallback, useRef } from "react";
-import { createPortal } from "react-dom";
+import { FC, ReactNode, useEffect, useRef } from "react";
 import { useMapContext } from "../../context";
+import { createRoot, Root } from "react-dom/client";
 import Box, { BoxProps } from "@mui/material/Box";
 
-interface MapControlProps extends Omit<BoxProps, "position"> {
+interface MapControlProps extends Omit<BoxProps, "position" | "children"> {
     position?: google.maps.ControlPosition;
+    children: ReactNode;
 }
 
 const MapControl: FC<MapControlProps> = ({
     position = google.maps.ControlPosition.LEFT_CENTER,
+    children,
     ...props
 }) => {
     const { mapRef } = useMapContext();
 
-    const controlDiv = useRef(document.createElement("div"));
+    const rootRef = useRef<Root>();
 
-    const onLoad = useCallback(() => {
-        if (!mapRef.current || !window.google) {
-            console.log("Problem is: ", mapRef.current, " ss: ", window.google);
-            return;
-        }
+    useEffect(() => {
+        if (!mapRef.current || !window.google) return;
 
         try {
-            const controls = mapRef.current?.controls[position];
-            controls.push(controlDiv.current);
-        } catch (ex) {}
-    }, [position]);
+            const container = document.createElement("div");
 
-    return createPortal(<Box ref={onLoad} {...props} />, controlDiv.current);
+            const root = createRoot(container);
+            rootRef.current = root;
+
+            root.render(<Box {...props}>{children}</Box>);
+
+            const controls = mapRef.current?.controls[position];
+            controls.push(container);
+        } catch (ex) {}
+
+        return () => {
+            rootRef.current?.unmount();
+            rootRef.current = undefined;
+        };
+    }, [position, children]);
+
+    return null;
 };
 
 MapControl.displayName = "MapControl";
