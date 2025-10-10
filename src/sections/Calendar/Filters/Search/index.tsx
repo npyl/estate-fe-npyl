@@ -5,6 +5,7 @@ import PoppingSearch from "@/components/PoppingSearch";
 import dynamic from "next/dynamic";
 import { useFiltersContext } from "../context";
 import useEventWatchAndClick from "./useEventWatchAndClick";
+import { CALENDAR_SEARCH_TESTID } from "./constants";
 const Popover = dynamic(() => import("./Popover"));
 
 // --------------------------------------------------------------------------
@@ -30,6 +31,7 @@ const Search = () => {
     return (
         <>
             <PoppingSearch
+                data-testid={CALENDAR_SEARCH_TESTID}
                 ref={anchorRef}
                 // ...
                 value={query}

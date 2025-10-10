@@ -4,9 +4,11 @@ import { TCalendarEvent, TOnEventClick } from "@/components/Calendar/types";
 import CompactCalendarEvent from "@/components/Calendar/Event/Compact";
 import Stack from "@mui/material/Stack";
 import { useFiltersContext } from "../context";
+import { CALENDAR_SEARCH_POPOVER_TESTID, getOptionTestId } from "./constants";
 
 const getEvent = (onEventClick: TOnEventClick) => (event: TCalendarEvent) => (
     <CompactCalendarEvent
+        data-testid={getOptionTestId(event.id)}
         key={event.id}
         event={event}
         onEventClick={onEventClick}
@@ -53,7 +55,12 @@ const Popover: FC<PopoverProps> = ({
             }}
             onClose={onClose}
         >
-            <Stack spacing={1} width="max-content" p={1}>
+            <Stack
+                data-testid={CALENDAR_SEARCH_POPOVER_TESTID}
+                spacing={1}
+                width="max-content"
+                p={1}
+            >
                 {events.map(getEvent(onEventClick))}
             </Stack>
         </MuiPopover>
