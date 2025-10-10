@@ -30,7 +30,7 @@ const baseUrl = "http://127.0.0.1:3000/__test__/map";
 let browser: Browser;
 let page: Page;
 
-// INFO: for ever test we need to bring up a non-headless browser instance (because the Map cannot load without a view)
+// INFO: for every test we need to bring up a non-headless browser instance (because the Map cannot load without a view)
 test.beforeAll(async () => {
     test.setTimeout(5 * 60 * 1000);
     browser = await chromium.launch({ headless: false });
