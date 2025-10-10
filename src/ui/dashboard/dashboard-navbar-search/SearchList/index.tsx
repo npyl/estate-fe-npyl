@@ -33,26 +33,28 @@ const SearchList = forwardRef<SearchListRef, SearchListProps>(
         if (!anchorEl) return null;
 
         return (
-            <Popover
-                anchorEl={anchorEl}
-                searchCategory={searchCategory}
-                historyMode={isHistoryMode}
-                {...props}
-            >
-                {searchString ? (
-                    <SearchResults
-                        searchString={searchString}
-                        searchCategory={searchCategory}
-                        onClose={close}
-                    />
-                ) : null}
+            <>
+                <Popover
+                    anchorEl={anchorEl}
+                    searchCategory={searchCategory}
+                    historyMode={isHistoryMode}
+                    {...props}
+                >
+                    {searchString ? (
+                        <SearchResults
+                            searchString={searchString}
+                            searchCategory={searchCategory}
+                            onClose={close}
+                        />
+                    ) : null}
 
-                {!searchString ? (
-                    <SearchHistory onSelect={onSelectHistoryItem} />
-                ) : null}
+                    {!searchString ? (
+                        <SearchHistory onSelect={onSelectHistoryItem} />
+                    ) : null}
+                </Popover>
 
                 <ClickAwayLayer onClick={close} />
-            </Popover>
+            </>
         );
     }
 );

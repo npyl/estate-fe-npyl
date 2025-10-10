@@ -12,6 +12,7 @@ const ClickAwayLayer: FC<ClickAwayLayerProps> = ({ onClick }) => (
         width="100vw"
         top={({ layout }) => layout.nav.topbarHeight}
         left={0}
+        zIndex={0}
         onClick={onClick}
     />
 );
