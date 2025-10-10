@@ -1,44 +1,47 @@
-import { FC, ReactNode, useEffect, useRef } from "react";
+import {
+    FC,
+    PropsWithChildren,
+    ReactPortal,
+    useLayoutEffect,
+    useState,
+} from "react";
+import { createPortal } from "react-dom";
 import { useMapContext } from "../../context";
-import { createRoot, Root } from "react-dom/client";
-import Box, { BoxProps } from "@mui/material/Box";
+import Box from "@mui/material/Box";
 
-interface MapControlProps extends Omit<BoxProps, "position" | "children"> {
+interface MapControlProps extends PropsWithChildren {
     position?: google.maps.ControlPosition;
-    children: ReactNode;
 }
 
 const MapControl: FC<MapControlProps> = ({
     position = google.maps.ControlPosition.LEFT_CENTER,
     children,
-    ...props
 }) => {
     const { mapRef } = useMapContext();
 
-    const rootRef = useRef<Root>();
+    const [content, setContent] = useState<ReactPortal>();
 
-    useEffect(() => {
-        if (!mapRef.current || !window.google) return;
+    useLayoutEffect(() => {
+        // Create Content
+        const controlDiv = document.createElement("div");
+        const c = createPortal(<Box p={1}>{children}</Box>, controlDiv);
 
-        try {
-            const container = document.createElement("div");
+        const controls = mapRef.current?.controls[position];
+        if (!controls) return;
 
-            const root = createRoot(container);
-            rootRef.current = root;
+        const index = controls.push(controlDiv) - 1;
 
-            root.render(<Box {...props}>{children}</Box>);
-
-            const controls = mapRef.current?.controls[position];
-            controls.push(container);
-        } catch (ex) {}
+        setContent(c);
 
         return () => {
-            rootRef.current?.unmount();
-            rootRef.current = undefined;
+            controls.removeAt(index);
+            controlDiv.remove();
         };
     }, [position, children]);
 
-    return null;
+    if (!content) return null;
+
+    return content;
 };
 
 MapControl.displayName = "MapControl";
