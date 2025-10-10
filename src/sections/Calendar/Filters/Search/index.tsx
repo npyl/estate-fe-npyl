@@ -3,7 +3,8 @@ import { useSearchEventsQuery } from "@/services/calendar";
 import { useAuth } from "@/sections/use-auth";
 import PoppingSearch from "@/components/PoppingSearch";
 import dynamic from "next/dynamic";
-import { useFiltersContext } from "./context";
+import { useFiltersContext } from "../context";
+import useEventWatchAndClick from "./useEventWatchAndClick";
 const Popover = dynamic(() => import("./Popover"));
 
 // --------------------------------------------------------------------------
@@ -24,6 +25,8 @@ const Search = () => {
 
     const handleClear = useCallback(() => setQuery(""), []);
 
+    const { onWaitEventAndClick, EventWatcher } = useEventWatchAndClick();
+
     return (
         <>
             <PoppingSearch
@@ -34,10 +37,13 @@ const Search = () => {
                 onClear={handleClear}
             />
 
+            {EventWatcher}
+
             {haveEvents && anchorRef.current && query ? (
                 <Popover
                     anchorEl={anchorRef.current}
                     events={data}
+                    onWaitEventAndClick={onWaitEventAndClick}
                     onClose={handleClear}
                 />
             ) : null}

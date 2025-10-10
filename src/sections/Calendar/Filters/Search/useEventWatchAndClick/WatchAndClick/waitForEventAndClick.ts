@@ -40,6 +40,7 @@ const waitForEventAndClick = async (eventId: string) => {
     const selector = `#${id}`;
     try {
         const el = await waitForEvent(selector);
+        alert("EDW!");
         el.click();
     } catch (ex) {
         console.log(ex);

@@ -4,7 +4,6 @@ import { TCalendarEvent, TOnEventClick } from "@/components/Calendar/types";
 import CompactCalendarEvent from "@/components/Calendar/Event/Compact";
 import Stack from "@mui/material/Stack";
 import { useFiltersContext } from "../context";
-import waitForEventAndClick from "./waitForEventAndClick";
 
 const getEvent = (onEventClick: TOnEventClick) => (event: TCalendarEvent) => (
     <CompactCalendarEvent
@@ -17,21 +16,25 @@ const getEvent = (onEventClick: TOnEventClick) => (event: TCalendarEvent) => (
 interface PopoverProps {
     anchorEl: HTMLElement;
     events: TCalendarEvent[];
+    onWaitEventAndClick: (eventId: string) => void;
     onClose: VoidFunction;
 }
 
-const Popover: FC<PopoverProps> = ({ anchorEl, events, onClose }) => {
+const Popover: FC<PopoverProps> = ({
+    anchorEl,
+    events,
+    onWaitEventAndClick,
+    onClose,
+}) => {
     const { onDateChange } = useFiltersContext();
 
     const onEventClick: TOnEventClick = useCallback(
         (_, ce) => {
             onDateChange(new Date(ce.startDate));
+            onWaitEventAndClick(ce.id);
             onClose();
-
-            // INFO: this is an async method; let it fire on its own; we do not care about the result
-            waitForEventAndClick(ce.id);
         },
-        [onDateChange]
+        [onWaitEventAndClick, onDateChange]
     );
 
     return (
