@@ -7,9 +7,9 @@ import {
     TOnEventDragStart,
     TOnEventResizeEnd,
     TOnEventResizeStart,
-} from "../types";
-import { EventProps } from "../Event/types";
-const CalendarEvent = dynamic(() => import("../Event"));
+} from "@/components/Calendar/types";
+import { EventProps } from "@/components/Calendar/Event/types";
+const CalendarEvent = dynamic(() => import("@/components/Calendar/Event"));
 
 // Constants
 const BUFFER_MS = 60 * 60 * 1000; // 1 hour in milliseconds
