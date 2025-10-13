@@ -14,35 +14,43 @@ const PPMap: FC<IMapProps> = ({
     drawing = false,
     search = false,
     // ...
-    leftCenter,
-    centerTop,
+    controls: _controls,
     // ...
     children,
     ...props
-}) => (
-    <MapContainer
-        leftCenter={
-            <>
-                <Draw
-                    drawing={drawing}
-                    shapes={props.shapes ?? []}
-                    onDraw={onDraw}
-                    onShapeChange={onShapeChange}
-                />
+}) => {
+    const { rightCenter, centerTop, ...controls } = _controls ?? {};
 
-                {leftCenter}
-            </>
-        }
-        centerTop={
-            <>
-                {search ? <Search onSearchSelect={onSearchSelect} /> : null}
-                {centerTop}
-            </>
-        }
-        {...props}
-    >
-        {children}
-    </MapContainer>
-);
+    return (
+        <MapContainer
+            controls={{
+                ...controls,
+                rightCenter: (
+                    <>
+                        <Draw
+                            drawing={drawing}
+                            shapes={props.shapes ?? []}
+                            onDraw={onDraw}
+                            onShapeChange={onShapeChange}
+                        />
+
+                        {rightCenter}
+                    </>
+                ),
+                centerTop: (
+                    <>
+                        {search ? (
+                            <Search onSearchSelect={onSearchSelect} />
+                        ) : null}
+                        {centerTop}
+                    </>
+                ),
+            }}
+            {...props}
+        >
+            {children}
+        </MapContainer>
+    );
+};
 
 export default PPMap;

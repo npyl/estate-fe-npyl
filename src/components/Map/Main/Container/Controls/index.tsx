@@ -5,6 +5,7 @@ import { IMapControls } from "@/components/Map/types";
 const Controls: FC<IMapControls> = ({
     centerTop,
     leftCenter,
+    rightCenter,
     leftTop,
     rightTop,
 }) => (
@@ -17,6 +18,11 @@ const Controls: FC<IMapControls> = ({
         {leftCenter ? (
             <MapControl position={google.maps.ControlPosition.LEFT_CENTER}>
                 {leftCenter}
+            </MapControl>
+        ) : null}
+        {rightCenter ? (
+            <MapControl position={google.maps.ControlPosition.RIGHT_CENTER}>
+                {rightCenter}
             </MapControl>
         ) : null}
         {rightTop ? (

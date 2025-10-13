@@ -18,10 +18,7 @@ const Content = forwardRef<ContentRef, ContentProps>(
             // ...
             center,
             // ..
-            centerTop,
-            leftCenter,
-            leftTop,
-            rightTop,
+            controls,
             // ...
             children,
         },
@@ -36,12 +33,7 @@ const Content = forwardRef<ContentRef, ContentProps>(
 
         return (
             <>
-                <Controls
-                    centerTop={centerTop}
-                    leftCenter={leftCenter}
-                    leftTop={leftTop}
-                    rightTop={rightTop}
-                />
+                <Controls {...controls} />
 
                 {mainMarker ? (
                     <MainMarker

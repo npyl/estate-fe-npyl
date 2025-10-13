@@ -79,10 +79,7 @@ const MapContainer: FC<MapContainerProps> = ({
     mainMarker = false,
     center: _center = patrasLatLng,
     // ...
-    leftTop,
-    leftCenter,
-    rightTop,
-    centerTop,
+    controls,
     // ...
     children,
     ...props
@@ -91,10 +88,7 @@ const MapContainer: FC<MapContainerProps> = ({
         onMainMarkerDrag,
         mainMarker,
         // ...
-        leftTop,
-        leftCenter,
-        rightTop,
-        centerTop,
+        controls,
         // ...
         children,
     };

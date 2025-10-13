@@ -27,9 +27,10 @@ interface IMapControls {
     centerTop?: ReactNode;
 
     leftCenter?: ReactNode;
+    rightCenter?: ReactNode;
 }
 
-interface ContentProps extends IMapControls {
+interface ContentProps {
     geocoderRef: MutableRefObject<google.maps.Geocoder | undefined>;
 
     mainMarker?: boolean;
@@ -40,6 +41,8 @@ interface ContentProps extends IMapControls {
     ) => void;
 
     center: IMapCoordinates;
+
+    controls?: IMapControls;
 
     // INFO: Only for e.g. custom markers. For controls use topLeft, centerLeft etc.
     children?: ReactNode;
