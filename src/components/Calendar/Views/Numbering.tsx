@@ -67,13 +67,15 @@ const getRow = (hour: number) => <NumberItem key={hour} hour={hour} />;
 
 // ------------------------------------------------------------------------------------------
 
+const PPCalendarNumberingCN = "PPCalendar-Numbering";
+
 const columnStyle: CSSProperties = {
     height: "max-content", // INFO: this is important!
 };
 
 const Numbering: FC<CalendarNumberingProps> = ({ style, ...props }) => (
     <div
-        className="PPCalendar-Numbering"
+        className={PPCalendarNumberingCN}
         style={{ ...columnStyle, ...style }}
         {...props}
     >
@@ -82,4 +84,5 @@ const Numbering: FC<CalendarNumberingProps> = ({ style, ...props }) => (
     </div>
 );
 
+export { PPCalendarNumberingCN };
 export default Numbering;

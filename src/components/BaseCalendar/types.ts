@@ -43,8 +43,12 @@ interface BaseCalendarCellProps extends HTMLAttributes<HTMLDivElement> {
 
 // --------------------------------------------------------------
 
+interface BaseContainerProps extends HTMLAttributes<HTMLDivElement> {
+    Numbering: ComponentType<BaseCalendarNumberingProps>;
+}
+
 interface ViewProps<
-    CellProps extends BaseCalendarCellProps = BaseCalendarCellProps
+    CellProps extends BaseCalendarCellProps = BaseCalendarCellProps,
 > extends HTMLAttributes<HTMLDivElement> {
     date: Date;
 
@@ -53,20 +57,20 @@ interface ViewProps<
 }
 
 interface BaseCalendarDayViewProps<
-    CellProps extends BaseCalendarCellProps = BaseCalendarCellProps
+    CellProps extends BaseCalendarCellProps = BaseCalendarCellProps,
 > extends ViewProps<CellProps> {}
 interface BaseCalendarWeekViewProps<
-    CellProps extends BaseCalendarCellProps = BaseCalendarCellProps
+    CellProps extends BaseCalendarCellProps = BaseCalendarCellProps,
 > extends ViewProps<CellProps> {}
 
 interface BaseCalendarMonthViewProps<
-    CellProps extends BaseCalendarCellProps = BaseCalendarCellProps
+    CellProps extends BaseCalendarCellProps = BaseCalendarCellProps,
 > extends Omit<ViewProps<CellProps>, "Numbering"> {
     HeadCell?: ComponentType<BaseCalendarCellProps>;
     PlaceholderCell?: ComponentType<BaseCalendarCellProps>;
 }
 interface BaseCalendarYearViewProps<
-    CellProps extends BaseCalendarCellProps = BaseCalendarCellProps
+    CellProps extends BaseCalendarCellProps = BaseCalendarCellProps,
 > extends Omit<ViewProps<CellProps>, "Numbering"> {}
 
 // --------------------------------------------------------------
@@ -74,8 +78,9 @@ interface BaseCalendarYearViewProps<
 interface BaseCalendarViewSlots<
     DayViewProps extends BaseCalendarDayViewProps = BaseCalendarDayViewProps,
     WeekViewProps extends BaseCalendarWeekViewProps = BaseCalendarWeekViewProps,
-    MonthViewProps extends BaseCalendarMonthViewProps = BaseCalendarMonthViewProps,
-    YearViewProps extends BaseCalendarYearViewProps = BaseCalendarYearViewProps
+    MonthViewProps extends
+        BaseCalendarMonthViewProps = BaseCalendarMonthViewProps,
+    YearViewProps extends BaseCalendarYearViewProps = BaseCalendarYearViewProps,
 > {
     DayView: ComponentType<DayViewProps>;
     WeekView: ComponentType<WeekViewProps>;
@@ -94,7 +99,7 @@ interface BaseCalendarViewProps extends HTMLAttributes<HTMLDivElement> {
 
 interface BaseCalendarSlots<
     H extends BaseCalendarHeaderProps = BaseCalendarHeaderProps,
-    V extends BaseCalendarViewProps = BaseCalendarViewProps
+    V extends BaseCalendarViewProps = BaseCalendarViewProps,
 > {
     Header: ComponentType<H>;
     View: ComponentType<V>;
@@ -120,6 +125,7 @@ export type {
     // ...
     BaseCalendarCellProps,
     // ...
+    BaseContainerProps,
     BaseCalendarDayViewProps,
     BaseCalendarWeekViewProps,
     BaseCalendarMonthViewProps,

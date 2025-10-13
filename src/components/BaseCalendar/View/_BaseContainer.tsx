@@ -1,5 +1,5 @@
-import Numbering from "@/components/Calendar/Views/Numbering";
-import { CSSProperties, FC, HTMLAttributes } from "react";
+import { CSSProperties, FC } from "react";
+import { BaseContainerProps } from "../types";
 
 const defaultStyle: CSSProperties = {
     display: "flex",
@@ -7,11 +7,10 @@ const defaultStyle: CSSProperties = {
     position: "relative",
 };
 
-interface BaseContainerProps extends HTMLAttributes<HTMLDivElement> {}
-
 const BaseContainer: FC<BaseContainerProps> = ({
     children,
     style,
+    Numbering,
     ...props
 }) => (
     <div style={{ ...defaultStyle, ...style }} {...props}>

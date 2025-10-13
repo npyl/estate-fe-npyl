@@ -16,7 +16,7 @@ const DayView: FC<BaseCalendarDayViewProps> = ({
     Numbering = NoNumbering,
     ...props
 }) => (
-    <BaseContainer {...props}>
+    <BaseContainer Numbering={Numbering} {...props}>
         <div id={GRID_VIEW_ID} style={contentStyle}>
             <Cell date={date} />
         </div>

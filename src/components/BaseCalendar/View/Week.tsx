@@ -33,7 +33,7 @@ const WeekView: React.FC<BaseCalendarWeekViewProps> = ({
     });
 
     return (
-        <BaseContainer {...props}>
+        <BaseContainer Numbering={Numbering} {...props}>
             <div id={GRID_VIEW_ID} style={gridStyle}>
                 {weekDays.map((day) => (
                     <Cell key={day.toISOString()} date={day} />
