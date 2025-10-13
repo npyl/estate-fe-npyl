@@ -11,9 +11,6 @@ import {
 import { EventProps } from "@/components/Calendar/Event/types";
 const CalendarEvent = dynamic(() => import("@/components/Calendar/Event"));
 
-// Constants
-const BUFFER_MS = 60 * 60 * 1000; // 1 hour in milliseconds
-
 interface TimestampedEvent extends TCalendarEvent {
     _startTime: number;
     _endTime: number;
@@ -45,9 +42,6 @@ const getWeightedOverlapCount = (
     // Early exit if no events
     if (events.length === 0) return 0;
 
-    const bufferedStart = targetStartTime - BUFFER_MS;
-    const bufferedEnd = targetEndTime + BUFFER_MS;
-
     let weightedCount = 0;
     const len = events.length | 0;
 
@@ -56,8 +50,8 @@ const getWeightedOverlapCount = (
 
         // Check if events overlap
         if (
-            bufferedEnd >= event._startTime - BUFFER_MS &&
-            bufferedStart <= event._endTime + BUFFER_MS
+            targetEndTime >= event._startTime &&
+            targetStartTime <= event._endTime
         ) {
             // Calculate weight based on duration ratio
             // If target is shorter than overlapping event, add more to count
