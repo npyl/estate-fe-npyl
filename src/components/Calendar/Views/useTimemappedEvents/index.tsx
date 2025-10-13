@@ -66,7 +66,7 @@ const getWeightedOverlapCount = (
     }
 
     // Round to get a reasonable overlap count
-    return Math.round(weightedCount);
+    return Math.ceil(weightedCount);
 };
 
 /**
