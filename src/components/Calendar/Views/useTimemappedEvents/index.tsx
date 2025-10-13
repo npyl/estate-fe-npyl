@@ -29,6 +29,13 @@ const createTimestampedEvent = (event: TCalendarEvent): TimestampedEvent => {
     };
 };
 
+const overlap = (
+    _startTime: number,
+    _endTime: number,
+    targetStartTime: number,
+    targetEndTime: number
+) => targetEndTime > _startTime && targetStartTime < _endTime;
+
 /**
  * Calculate overlap count weighted by duration
  * Shorter events get higher overlap counts, longer events get lower counts
@@ -43,29 +50,19 @@ const getWeightedOverlapCount = (
     if (events.length === 0) return 0;
 
     let weightedCount = 0;
-    const len = events.length | 0;
 
-    for (let i = 0; i < len; i = (i + 1) | 0) {
-        const event = events[i];
+    for (const event of events) {
+        const _startTime = event._startTime;
+        const _endTime = event._endTime;
 
-        // Check if events overlap
-        if (
-            targetEndTime >= event._startTime &&
-            targetStartTime <= event._endTime
-        ) {
-            // Calculate weight based on duration ratio
-            // If target is shorter than overlapping event, add more to count
-            // If target is longer than overlapping event, add less to count
-            const durationRatio = targetDuration / event._duration;
+        // No-overlap; continue
+        if (!overlap(_startTime, _endTime, targetStartTime, targetEndTime))
+            continue;
 
-            // Weight formula:
-            // - If target is 2x longer: weight = 0.5 (less overlap impact)
-            // - If target is same length: weight = 1.0 (equal impact)
-            // - If target is 2x shorter: weight = 2.0 (more overlap impact)
-            const weight = Math.sqrt(durationRatio);
-
-            weightedCount += weight;
-        }
+        // INFO: there is overlap
+        const durationRatio = targetDuration / event._duration;
+        const weight = Math.sqrt(durationRatio);
+        weightedCount += weight;
     }
 
     // Round to get a reasonable overlap count
