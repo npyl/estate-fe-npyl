@@ -71,7 +71,7 @@ interface BulletProps {
     event: TCalendarEvent;
     title: string;
     type: TCalendarEventType;
-    overlapCount?: number;
+    overlapCount: number;
     top?: number;
     onEventClick?: TOnEventClick;
 }
