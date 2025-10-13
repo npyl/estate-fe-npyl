@@ -103,8 +103,8 @@ function useTimemappedEvents<TCustomProps extends object = object>(
         const all: TimestampedEvent[] = [];
         const results: JSX.Element[] = [];
 
-        const len = timestampedEvents.length | 0;
-        for (let i = 0; i < len; i = (i + 1) | 0) {
+        const len = timestampedEvents.length;
+        for (let i = 0; i < len; i++) {
             const event = timestampedEvents[i];
             const overlapCount = getWeightedOverlapCount(
                 event._startTime,
