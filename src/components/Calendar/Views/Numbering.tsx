@@ -15,6 +15,13 @@ const hours = Array.from({ length: TOTAL_HOURS }, (_, i) => i + START_HOUR);
 
 // ------------------------------------------------------------------------------------------
 
+const PPCalendarHorizontalDividerId = "PPCalendarHorizontalDividerId";
+
+const getDividerId = (hour: number) =>
+    `${PPCalendarHorizontalDividerId}-${hour}`;
+
+const NUMBER_ITEM_WIDTH = 50;
+
 const DividerSx: CSSProperties = {
     position: "absolute",
     width: "100%",
@@ -35,7 +42,7 @@ const NumberItem: FC<NumberItemProps> = ({ hour }) => {
     const lang = i18n.language;
 
     return (
-        <Box width={50} height={CELL_HOUR_HEIGHT}>
+        <Box width={NUMBER_ITEM_WIDTH} height={CELL_HOUR_HEIGHT}>
             <Typography
                 variant="caption"
                 textAlign="right"
@@ -56,7 +63,7 @@ const NumberItem: FC<NumberItemProps> = ({ hour }) => {
             </Typography>
 
             {/* Row divider */}
-            <Divider sx={DividerSx} />
+            <Divider id={getDividerId(hour)} sx={DividerSx} />
         </Box>
     );
 };
@@ -84,5 +91,10 @@ const Numbering: FC<CalendarNumberingProps> = ({ style, ...props }) => (
     </div>
 );
 
-export { PPCalendarNumberingCN };
+export {
+    NUMBER_ITEM_WIDTH,
+    // ...
+    getDividerId,
+    PPCalendarNumberingCN,
+};
 export default Numbering;
