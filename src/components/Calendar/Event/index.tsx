@@ -14,7 +14,6 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
     (
         {
             event,
-            overlapCount = 0,
             onEventClick,
             // ...
             ...props
@@ -48,6 +47,7 @@ const CalendarEvent = forwardRef<HTMLDivElement, CalendarEventProps>(
                     top={top}
                     title={event?.title}
                     type={event?.type}
+                    overlapCount={props.overlapCount}
                     onEventClick={onEventClick}
                 />
             );

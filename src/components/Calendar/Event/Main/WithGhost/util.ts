@@ -4,6 +4,20 @@ const GHOST_CLASSNAME = "PPCalendar-EventGhost";
 
 const getGhostTestId = (eventId: string) => `PPCalendar-EventGhost-${eventId}`;
 
+/**
+ * Converts viewport-relative coordinates to document-relative coordinates.
+ *
+ * This is useful when positioning elements with `position: absolute` relative to the document,
+ * as `getBoundingClientRect()` returns coordinates relative to the current viewport.
+ *
+ * @param rect - A DOMRect object (typically from `getBoundingClientRect()`)
+ * @returns An object containing document-relative coordinates
+ */
+const getDocumentPosition = (rect: DOMRect) => ({
+    left: `${rect.left + window.scrollX}px`,
+    top: `${rect.top + window.scrollY}px`,
+});
+
 const createGhost = (element: HTMLElement) => {
     const computedStyle = window.getComputedStyle(element);
     const rect = element.getBoundingClientRect();
@@ -24,8 +38,7 @@ const createGhost = (element: HTMLElement) => {
         transform: computedStyle.transform,
         // Position-specific styles
         position: "absolute",
-        left: `${rect.left}px`,
-        top: `${rect.top}px`,
+        ...getDocumentPosition(rect),
         // Ghost-specific styles
         opacity: 0.4,
         pointerEvents: "none",

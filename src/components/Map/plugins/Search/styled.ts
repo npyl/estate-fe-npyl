@@ -1,11 +1,17 @@
 import { styled } from "@mui/material/styles";
 import PlacesAutocomplete from "./PlacesAutocomplete";
 
-const StyledAutocomplete = styled(PlacesAutocomplete)({
-    width: "52%",
+const StyledAutocomplete = styled(PlacesAutocomplete)(({ theme }) => ({
+    position: "absolute",
     left: "50%",
-    zIndex: 1,
     transform: "translateX(-50%)",
+
+    width: "140px",
+    [theme.breakpoints.down("sm")]: {
+        width: "50px",
+    },
+
+    zIndex: 1,
     backgroundColor: "white",
     borderRadius: "20px",
     boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
@@ -21,8 +27,8 @@ const StyledAutocomplete = styled(PlacesAutocomplete)({
         borderColor: "rgba(0, 0, 0, 0.23)",
     },
     "&:focus-within": {
-        width: "calc(100% - 9px)",
+        width: "240px",
     },
-});
+}));
 
 export { StyledAutocomplete };

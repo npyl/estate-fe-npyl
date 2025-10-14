@@ -1,5 +1,5 @@
 import { TShape } from "@/types/shape";
-import { ReactNode } from "react";
+import { MutableRefObject, ReactNode } from "react";
 
 export interface IMapCoordinates {
     lat: number;
@@ -27,25 +27,35 @@ interface IMapControls {
     centerTop?: ReactNode;
 
     leftCenter?: ReactNode;
+    rightCenter?: ReactNode;
 }
 
-interface MapContainerProps extends IMapControls {
-    onReady?: (m: google.maps.Map) => void;
-    onClick?: (lat: number, lng: number, address: IMapAddress) => void;
+interface ContentProps {
+    geocoderRef: MutableRefObject<google.maps.Geocoder | undefined>;
 
+    mainMarker?: boolean;
     onMainMarkerDrag?: (
         newLat: number,
         newLng: number,
         address: IMapAddress
     ) => void;
 
-    zoom?: number;
-    shapes?: TShape[];
-    center?: IMapCoordinates;
-    mainMarker?: boolean;
+    center: IMapCoordinates;
+
+    controls?: IMapControls;
 
     // INFO: Only for e.g. custom markers. For controls use topLeft, centerLeft etc.
     children?: ReactNode;
+}
+
+interface MapContainerProps
+    extends Omit<ContentProps, "center" | "geocoderRef"> {
+    onReady?: (m: google.maps.Map) => void;
+    onClick?: (lat: number, lng: number, address: IMapAddress) => void;
+
+    zoom?: number;
+    center?: IMapCoordinates;
+    shapes?: TShape[];
 }
 
 interface IMapProps extends MapContainerProps {
@@ -64,4 +74,4 @@ interface IMapProps extends MapContainerProps {
     onSearchSelect?: (lat: number, lng: number, selected: IMapAddress) => void;
 }
 
-export type { MapContainerProps, IMapControls, IMapProps };
+export type { ContentProps, MapContainerProps, IMapControls, IMapProps };

@@ -2,10 +2,10 @@ import { TEditor } from "@/components/Editor";
 import useCopyToClipboard from "@/components/Editor/hooks/useCopyToClipboard";
 import Button from "@mui/material/Button";
 import { FC, RefObject } from "react";
-import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import { useTranslation } from "react-i18next";
 import { SxProps, Theme } from "@mui/material";
 import { getBorderColor2 } from "@/theme/borderColor";
+import CopyIcon from "@/assets/icons/copy";
 
 const ButtonSx: SxProps<Theme> = {
     display: "none",
@@ -38,7 +38,7 @@ const CopyToClipboard: FC<Props> = ({ editorRef }) => {
         <Button
             fullWidth
             className={CN_COPY_TO_CLIPBOARD}
-            startIcon={<ContentPasteIcon fontSize="small" />}
+            startIcon={<CopyIcon />}
             onClick={copyToClipboard}
             sx={ButtonSx}
         >

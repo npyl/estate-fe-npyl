@@ -6,8 +6,9 @@ import { EventProps } from "../types";
 import DateInfo from "../_shared/DateInfo";
 import StyledStack from "./StyledStack";
 import { TCalendarEvent, TOnEventClick } from "../../types";
+import { getEventId } from "../constants";
 
-interface CompactEventProps extends EventProps {
+interface CompactEventProps extends Omit<EventProps, "overlapCount"> {
     event: TCalendarEvent;
     withDate?: boolean;
     onEventClick?: TOnEventClick;
@@ -29,6 +30,7 @@ const CompactCalendarEvent: FC<CompactEventProps> = ({
 
     return (
         <StyledStack
+            id={getEventId(event.id)}
             type={event.type}
             colorId={event.colorId}
             onClick={handleClick}

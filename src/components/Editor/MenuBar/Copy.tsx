@@ -1,11 +1,11 @@
 import { FC } from "react";
 import MenuBarButton from "./MenuBarButton";
-import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import { useEditorContext } from "../context";
 import Stack from "@mui/material/Stack";
 import { getBorderColor2 } from "@/theme/borderColor";
 import { SxProps, Theme } from "@mui/material/styles";
 import useCopyToClipboard from "@/components/Editor/hooks/useCopyToClipboard";
+import CopyIcon from "@/assets/icons/copy";
 
 const getStackSx = (bubble: boolean): SxProps<Theme> =>
     bubble
@@ -35,7 +35,7 @@ const Copy: FC<CopyProps> = ({ bubble }) => {
     return (
         <Stack sx={getStackSx(bubble)}>
             <MenuBarButton
-                icon={<ContentPasteIcon fontSize="small" />}
+                icon={<CopyIcon />}
                 disabled={editor.isEmpty}
                 onClick={copyToClipboard}
             />

@@ -1,44 +1,49 @@
-import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import {
+    FC,
+    PropsWithChildren,
+    ReactPortal,
+    useLayoutEffect,
+    useState,
+} from "react";
 import { createPortal } from "react-dom";
 import { useMapContext } from "../../context";
-import Box, { BoxProps } from "@mui/material/Box";
+import Box from "@mui/material/Box";
 
-interface MapControlProps extends Omit<BoxProps, "position"> {
+interface MapControlProps extends PropsWithChildren {
     position?: google.maps.ControlPosition;
 }
 
-interface MapControlRef {
-    load: VoidFunction;
-}
+const MapControl: FC<MapControlProps> = ({
+    position = google.maps.ControlPosition.LEFT_CENTER,
+    children,
+}) => {
+    const { mapRef } = useMapContext();
 
-const MapControl = forwardRef<MapControlRef, MapControlProps>(
-    ({ position = google.maps.ControlPosition.LEFT_CENTER, ...props }, ref) => {
-        const { mapRef } = useMapContext();
+    const [content, setContent] = useState<ReactPortal>();
 
-        const controlDiv = useRef(document.createElement("div"));
+    useLayoutEffect(() => {
+        // Create Content
+        const controlDiv = document.createElement("div");
+        const c = createPortal(<Box p={1}>{children}</Box>, controlDiv);
 
-        const load = useCallback(() => {
-            if (!mapRef.current || !window.google) return;
+        const controls = mapRef.current?.controls[position];
+        if (!controls) return;
 
-            try {
-                const controls = mapRef.current?.controls[position];
-                controls.push(controlDiv.current);
-            } catch (ex) {}
-        }, [position]);
+        const index = controls.push(controlDiv) - 1;
 
-        useImperativeHandle(
-            ref,
-            () => ({
-                load,
-            }),
-            []
-        );
+        setContent(c);
 
-        return createPortal(<Box {...props} />, controlDiv.current);
-    }
-);
+        return () => {
+            controls.removeAt(index);
+            controlDiv.remove();
+        };
+    }, [position, children]);
+
+    if (!content) return null;
+
+    return content;
+};
 
 MapControl.displayName = "MapControl";
 
-export type { MapControlRef };
 export default MapControl;

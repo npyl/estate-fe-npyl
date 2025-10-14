@@ -1,5 +1,5 @@
 import useDialog from "@/hooks/useDialog";
-import { ViewHeaderProps } from "@/sections/ViewHeader";
+import { ViewHeaderProps } from "@/ui/ViewHeader";
 import { useClonePropertyMutation } from "@/services/properties";
 import ConfirmDialog from "@/ui/Dialog/Confirm";
 import Button from "@mui/material/Button";

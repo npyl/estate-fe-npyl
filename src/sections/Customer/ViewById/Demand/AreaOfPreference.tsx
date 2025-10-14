@@ -63,7 +63,7 @@ const AreaOfPreferenceDemands: FC<AreaOfPreferenceProps> = ({ demand }) => {
                 )[0];
 
                 map.setCenter(
-                    new google.maps.LatLng(city?.latitude!, city?.longitude!)
+                    new google.maps.LatLng(city?.latitude!, city?.longitude)
                 );
 
                 map.setZoom(12);

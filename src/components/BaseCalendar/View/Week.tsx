@@ -3,13 +3,9 @@ import { BaseCalendarWeekViewProps } from "../types";
 import { EmptyCell, NoNumbering } from "./Empty";
 import useWeekUtils from "../useWeekUtils";
 import { GRID_VIEW_ID } from "../constants";
+import BaseContainer from "./_BaseContainer";
 
 // ------------------------------------------------------------
-
-const defaultStyle: CSSProperties = {
-    display: "flex",
-    flexDirection: "row",
-};
 
 const gridStyle: CSSProperties = {
     display: "grid",
@@ -37,21 +33,13 @@ const WeekView: React.FC<BaseCalendarWeekViewProps> = ({
     });
 
     return (
-        <div
-            style={{
-                ...defaultStyle,
-                ...style,
-            }}
-            {...props}
-        >
-            <Numbering />
-
+        <BaseContainer Numbering={Numbering} {...props}>
             <div id={GRID_VIEW_ID} style={gridStyle}>
                 {weekDays.map((day) => (
                     <Cell key={day.toISOString()} date={day} />
                 ))}
             </div>
-        </div>
+        </BaseContainer>
     );
 };
 

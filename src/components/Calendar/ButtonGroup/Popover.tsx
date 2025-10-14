@@ -1,9 +1,6 @@
 import { Popover as MuiPopover, SxProps, Theme } from "@mui/material";
-
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
-
-import TodayIcon from "@mui/icons-material/Today";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import YearIcon from "./YearIcon";
@@ -32,7 +29,6 @@ interface Option {
 }
 
 const getOPTIONS = (t: TranslationType): Option[] => [
-    { key: "day", label: t("Day"), Icon: TodayIcon },
     { key: "week", label: t("Week"), Icon: DateRangeIcon },
     { key: "month", label: t("Month"), Icon: CalendarMonthIcon },
     { key: "year", label: t("Year"), Icon: YearIcon },

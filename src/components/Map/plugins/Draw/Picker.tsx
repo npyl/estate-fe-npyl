@@ -3,6 +3,8 @@ import { styled } from "@mui/material/styles";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
+const DRAW_PLUGIN_TESTID = "draw-plugin-testid";
+
 const POLYGON_ID = "polygon-testid";
 const CIRCLE_ID = "circle-testid";
 const RECTANGLE_ID = "rectangle-testid";
@@ -46,6 +48,7 @@ const Picker: FC<PickerProps> = ({
     const { t } = useTranslation();
     return (
         <Stack
+            data-testid={DRAW_PLUGIN_TESTID}
             sx={{
                 padding: 0.5,
                 backgroundColor: "rgba(255, 255, 255, 0.7)",
@@ -91,5 +94,12 @@ const Picker: FC<PickerProps> = ({
     );
 };
 
-export { POLYGON_ID, CIRCLE_ID, RECTANGLE_ID, CLEAR_ID };
+export {
+    DRAW_PLUGIN_TESTID,
+    // ...
+    POLYGON_ID,
+    CIRCLE_ID,
+    RECTANGLE_ID,
+    CLEAR_ID,
+};
 export default Picker;

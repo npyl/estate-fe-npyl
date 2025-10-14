@@ -1,9 +1,9 @@
 import { Button } from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-
 import LocationOffIcon from "@mui/icons-material/LocationOff";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { HideText } from "@/components/styled";
 
 interface PinLockProps {
     locked: boolean;
@@ -18,6 +18,7 @@ const PinLock: FC<PinLockProps> = ({ locked, onToggle }) => {
             variant="contained"
             onClick={onToggle}
             endIcon={locked ? <LocationOffIcon /> : <LocationOnIcon />}
+            sx={HideText}
         >
             {locked ? t("Locked Pin") : t("Free Pin")}
         </Button>

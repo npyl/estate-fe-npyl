@@ -26,23 +26,26 @@ const useMouseMove = (
             const horizontalMovement =
                 clientX - dragInfo.current.startPosition.x;
 
+            const abs = Math.abs(horizontalMovement);
+
+            // INFO: adequate movement is considered 1/2 of the cell's width (e.g. a day's width)
+            const isAdequeteMovement = abs >= dayWidth / 2;
+
             // INFO: Only snap to new day if we've moved more than half a day width; this prevents accidental jumps
-            const dayOffset =
-                Math.abs(horizontalMovement) >= dayWidth / 2
-                    ? Math.sign(horizontalMovement) *
-                      Math.floor(
-                          (Math.abs(horizontalMovement) + dayWidth / 2) /
-                              dayWidth
-                      )
-                    : 0;
+            const offset = isAdequeteMovement
+                ? Math.sign(horizontalMovement) *
+                  Math.floor((abs + dayWidth / 2) / dayWidth)
+                : 0;
 
             const newLeft =
-                dragInfo.current.initialTransform.x + dayOffset * dayWidth;
+                dragInfo.current.initialTransform.x + offset * dayWidth;
 
-            if (isOutsideHorizontalBounds(newLeft)) return;
+            if (isOutsideHorizontalBounds(newLeft)) return false;
 
             // Update DOM element position
             eventElement.style.left = `${newLeft}px`;
+
+            return isAdequeteMovement;
         },
         []
     );
@@ -52,8 +55,8 @@ const useMouseMove = (
             // Calculate Y movement from start position
             const verticalMovement = clientY - dragInfo.current.startPosition.y;
 
-            // INFO: allow mouse to make minor movements before actually changing position!
-            if (Math.abs(verticalMovement) < INTERVAL_HEIGHT) return;
+            // INFO: allow mouse to make minor movements before *actually* changing position!
+            if (Math.abs(verticalMovement) < INTERVAL_HEIGHT / 2) return;
 
             const rawY = dragInfo.current.initialTransform.y + verticalMovement;
 
@@ -82,8 +85,12 @@ const useMouseMove = (
             const eventElement = eventRef.current;
             if (!eventElement) return;
 
-            // Calculate new position with snapping
-            moveHorizontally(e.clientX, eventElement);
+            // Calculate Horizontal Movement
+            const res = moveHorizontally(e.clientX, eventElement);
+
+            // INFO: if there was horizontal movement prevent vertical (=> prevent jumps + performance)
+            if (res) return;
+
             moveVertically(e.clientY, eventElement);
         },
         [moveHorizontally, moveVertically]

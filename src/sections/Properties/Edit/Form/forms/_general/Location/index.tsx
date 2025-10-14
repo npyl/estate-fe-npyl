@@ -1,5 +1,4 @@
-import { Divider, Grid, Stack, TextField } from "@mui/material";
-import { Box } from "@mui/material";
+import { Box, Divider, Grid, Stack, TextField } from "@mui/material";
 import { useCallback, useState } from "react";
 import Map, { IMapAddress, IMapMarker } from "@/components/Map";
 import { useTranslation } from "react-i18next";
@@ -90,12 +89,14 @@ const LocationSection = () => {
                             search={!isPinLocked}
                             zoom={10}
                             drawing={false}
-                            rightTop={
-                                <PinLock
-                                    locked={isPinLocked}
-                                    onToggle={togglePinLock}
-                                />
-                            }
+                            controls={{
+                                rightTop: (
+                                    <PinLock
+                                        locked={isPinLocked}
+                                        onToggle={togglePinLock}
+                                    />
+                                ),
+                            }}
                             mainMarker
                             center={center}
                             onMainMarkerDrag={onDragMethod}

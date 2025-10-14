@@ -61,14 +61,19 @@ const ViewEventPopper = /* ... */ forwardRef<
             eventId={event.id}
             onClose={onClose}
         >
-            <SpaceBetween width={1} direction="row" alignItems="center">
+            <SpaceBetween
+                width={1}
+                direction="row"
+                alignItems="center"
+                minWidth="300px"
+            >
                 {!isEdit ? (
                     <Typography
                         variant="h6"
                         textAlign="left"
                         noWrap
-                        minWidth="fit-content"
-                        maxWidth="calc(100% - 150px)"
+                        textOverflow="ellipsis"
+                        overflow="hidden"
                     >
                         {title}
                     </Typography>
