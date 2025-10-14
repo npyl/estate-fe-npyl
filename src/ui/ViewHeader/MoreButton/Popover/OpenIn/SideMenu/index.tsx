@@ -8,6 +8,7 @@ const PaperSx: SxProps<Theme> = {
     flexDirection: "column",
     gap: 1,
     p: 1,
+    ml: -0.5,
 };
 
 interface SideMenuProps extends ContentProps {

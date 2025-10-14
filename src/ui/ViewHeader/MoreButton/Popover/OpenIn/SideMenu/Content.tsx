@@ -3,8 +3,15 @@ import Link from "@/components/Link";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
+import { SxProps, Theme } from "@mui/material";
 
 // ---------------------------------------------------------------------------------
+
+const OptionSx: SxProps<Theme> = {
+    "&:hover": { bgcolor: "action.hover" },
+    p: 1,
+    borderRadius: 1,
+};
 
 interface PublicOptionProps {
     lang: string;
@@ -23,7 +30,7 @@ const PublicOption: FC<PublicOptionProps> = ({ lang, l, propertyId }) => {
     const href = `${siteUrl}/${lang}/property-detail/${propertyId}`;
 
     return (
-        <Link href={href} target="_blank">
+        <Link href={href} target="_blank" sx={OptionSx}>
             {siteUrl}
         </Link>
     );
