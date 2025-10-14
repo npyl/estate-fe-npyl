@@ -24,8 +24,8 @@ const createGhost = (element: HTMLElement) => {
         transform: computedStyle.transform,
         // Position-specific styles
         position: "absolute",
-        left: `${rect.left}px`,
-        top: `${rect.top}px`,
+        left: `${rect.left + window.scrollX}px`,
+        top: `${rect.top + window.scrollY}px`,
         // Ghost-specific styles
         opacity: 0.4,
         pointerEvents: "none",
