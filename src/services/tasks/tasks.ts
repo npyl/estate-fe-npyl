@@ -72,7 +72,7 @@ export const tasks = createApi({
 
         // Columns
         addColumn: builder.mutation<number, IKanbanColumnPOST>({
-            query: (body: IKanbanColumnPOST) => ({
+            query: (body) => ({
                 url: "/column",
                 method: "POST",
                 body,
@@ -113,7 +113,7 @@ export const tasks = createApi({
             providesTags: ["Card"],
         }),
         moveCard: builder.mutation<void, MoveCardProps>({
-            query: ({ cardId, dstColumnId, position }: MoveCardProps) => ({
+            query: ({ cardId, dstColumnId, position }) => ({
                 url: `/card/${cardId}/move/${dstColumnId}`,
                 method: "POST",
                 params: {
@@ -124,7 +124,7 @@ export const tasks = createApi({
             invalidatesTags: ["Board", "Card"],
         }),
         reorderCard: builder.mutation<void, ReorderCardProps>({
-            query: ({ cardId, position, columnId }: ReorderCardProps) => ({
+            query: ({ cardId, position, columnId }) => ({
                 url: `/card/reorder/column/${columnId}`,
                 method: "POST",
                 params: { card: cardId, position },
