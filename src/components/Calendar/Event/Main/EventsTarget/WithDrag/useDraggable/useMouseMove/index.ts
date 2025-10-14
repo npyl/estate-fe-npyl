@@ -26,14 +26,13 @@ const useMouseMove = (
             const horizontalMovement =
                 clientX - dragInfo.current.startPosition.x;
 
+            const abs = Math.abs(horizontalMovement);
+
             // INFO: Only snap to new day if we've moved more than half a day width; this prevents accidental jumps
             const dayOffset =
-                Math.abs(horizontalMovement) >= dayWidth / 2
+                abs >= dayWidth / 2
                     ? Math.sign(horizontalMovement) *
-                      Math.floor(
-                          (Math.abs(horizontalMovement) + dayWidth / 2) /
-                              dayWidth
-                      )
+                      Math.floor((abs + dayWidth / 2) / dayWidth)
                     : 0;
 
             const newLeft =
@@ -52,8 +51,8 @@ const useMouseMove = (
             // Calculate Y movement from start position
             const verticalMovement = clientY - dragInfo.current.startPosition.y;
 
-            // INFO: allow mouse to make minor movements before actually changing position!
-            if (Math.abs(verticalMovement) < INTERVAL_HEIGHT) return;
+            // INFO: allow mouse to make minor movements before *actually* changing position!
+            if (Math.abs(verticalMovement) < INTERVAL_HEIGHT / 2) return;
 
             const rawY = dragInfo.current.initialTransform.y + verticalMovement;
 
