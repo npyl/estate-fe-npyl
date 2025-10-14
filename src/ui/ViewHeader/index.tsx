@@ -19,8 +19,10 @@ const PaperSx: SxProps<Theme> = {
 };
 
 interface ViewHeaderProps extends PropsWithChildren {
-    isProperty: boolean;
+    isProperty?: boolean;
     isArchived?: boolean;
+
+    isCustomer?: boolean;
     // ...
     onEdit: VoidFunction;
     onArchive?: VoidFunction;
@@ -29,8 +31,9 @@ interface ViewHeaderProps extends PropsWithChildren {
 }
 
 const ViewHeader: FC<ViewHeaderProps> = ({
-    isProperty,
+    isProperty = false,
     isArchived = false,
+    isCustomer = false,
     children,
     // ...
     onEdit,
@@ -47,6 +50,7 @@ const ViewHeader: FC<ViewHeaderProps> = ({
             <ShareButton />
             <MoreButton
                 isProperty={isProperty}
+                isCustomer={isCustomer}
                 isArchived={isArchived}
                 // ...
                 onEdit={onEdit}

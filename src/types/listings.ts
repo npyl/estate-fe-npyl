@@ -1,6 +1,6 @@
 import { IntegrationSite } from "./integrations";
 
-export type Listings = Record<IntegrationSite, boolean>;
+type Listings = Record<IntegrationSite, boolean>;
 
 // INFO: for now, an IListing is only an IPublicSite (will change on rework)
 
@@ -13,7 +13,14 @@ interface IListing {
     published: boolean;
 }
 
-export interface IListings {
+interface IListings {
     publicSites: IListing[];
     integrations: IListing[];
 }
+
+export type {
+    Listings,
+    // ...
+    IListing,
+    IListings,
+};

@@ -143,11 +143,7 @@ const ViewById: FC<Props> = ({ b2b = false }) => {
 
     return (
         <>
-            <ViewHeader
-                isProperty={false}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-            >
+            <ViewHeader isCustomer onEdit={handleEdit} onDelete={handleDelete}>
                 <Tabs>{TABS.map(getTab)}</Tabs>
             </ViewHeader>
 
