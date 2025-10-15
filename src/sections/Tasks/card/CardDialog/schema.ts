@@ -3,7 +3,7 @@ import { z } from "zod";
 
 interface ZodCompatibleReq extends Omit<IKanbanCardPOST, "columnId"> {
     // TODO: this is due to a bug in our @/components/Select (probably)
-    columnId: string;
+    columnId: string | number;
 }
 
 const schema = z
@@ -19,7 +19,7 @@ const schema = z
         customers: z.array(z.number().min(0)).optional(),
         userIds: z.array(z.number().min(0)).min(1),
 
-        columnId: z.string().nonempty(),
+        columnId: z.string().nonempty().or(z.number().min(0)),
 
         labels: z.array(z.number()),
 
