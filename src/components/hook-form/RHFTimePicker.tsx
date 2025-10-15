@@ -21,4 +21,5 @@ const RHFTimePicker: FC<RHFTimePickerProps> = ({ name, ...props }) => {
     );
 };
 
+export type { RHFTimePickerProps };
 export default RHFTimePicker;

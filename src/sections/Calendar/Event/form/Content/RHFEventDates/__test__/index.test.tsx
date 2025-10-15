@@ -8,7 +8,6 @@ import {
     START_TIME_PICKER_TESTID,
     // ...
     ALL_DAY_CHECKBOX_TESTID,
-    ALL_DAY_DATEPICKER_TESTID,
 } from "../EventDates/constants";
 import "@testing-library/jest-dom";
 
@@ -50,15 +49,12 @@ const expectIsAllDayLayout = () => {
     const EL0 = screen.queryByTestId(START_TIME_PICKER_TESTID);
     const EL1 = screen.queryByTestId(END_TIME_PICKER_TESTID);
 
-    const EL2 = screen.getByTestId(ALL_DAY_DATEPICKER_TESTID);
-
     // Expect START, END time pickers to not be present
     expect(EL0).toBe(null);
     expect(EL1).toBe(null);
 
     // ...
-    expect(EL2).toBeInTheDocument();
-    expect(EL3).toBe(null);
+    expect(EL3).toBeInTheDocument();
 };
 
 const expectIsNotAllDayLayout = () => {
@@ -66,14 +62,11 @@ const expectIsNotAllDayLayout = () => {
     const EL0 = screen.getByTestId(START_TIME_PICKER_TESTID);
     const EL1 = screen.getByTestId(END_TIME_PICKER_TESTID);
 
-    const EL2 = screen.queryByTestId(ALL_DAY_DATEPICKER_TESTID);
-
     // Expect START, END time pickers to *BE* present
     expect(EL0).toBeInTheDocument();
     expect(EL1).toBeInTheDocument();
 
     // ...
-    expect(EL2).toBe(null);
     expect(EL3).toBeInTheDocument();
 };
 
