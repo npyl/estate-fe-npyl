@@ -1,17 +1,13 @@
 import { Stack, StackProps, Typography } from "@mui/material";
 import { FC } from "react";
-import { RHFDatePicker } from "@/components/hook-form";
-import RHFTimePicker from "@/components/hook-form/RHFTimePicker";
-import AllDayPicker from "./AllDayPicker";
+import { DatePicker, StartHourPicker, EndHourPicker } from "./Pickers";
 import { isAllDay } from "@/components/Calendar/util";
 import AllDayCheckbox from "./AllDayCheckbox";
 import {
     DATEPICKER_TESTID,
+    ALL_DAY_CHECKBOX_TESTID,
     END_TIME_PICKER_TESTID,
     START_TIME_PICKER_TESTID,
-    // ...
-    ALL_DAY_CHECKBOX_TESTID,
-    ALL_DAY_DATEPICKER_TESTID,
 } from "./constants";
 
 // ----------------------------------------------------------------------
@@ -43,20 +39,12 @@ const EventDates: FC<EventDatesProps> = ({
     return (
         <Stack spacing={1} {...props}>
             <Stack direction="row" spacing={1} alignItems="center">
-                {allDay ? (
-                    <AllDayPicker
-                        data-testid={ALL_DAY_DATEPICKER_TESTID}
-                        startDateKey={startDateKey}
-                        onEndDateChange={onEndDateChange}
-                    />
-                ) : null}
-
-                {!allDay ? (
-                    <RHFDatePicker
-                        data-testid={DATEPICKER_TESTID}
-                        name={startDateKey}
-                    />
-                ) : null}
+                <DatePicker
+                    data-testid={DATEPICKER_TESTID}
+                    allDay={allDay}
+                    startDateKey={startDateKey}
+                    onEndDateChange={onEndDateChange}
+                />
 
                 <AllDayCheckbox
                     data-testid={ALL_DAY_CHECKBOX_TESTID}
@@ -69,12 +57,12 @@ const EventDates: FC<EventDatesProps> = ({
 
             {!allDay ? (
                 <Stack direction="row" spacing={1} alignItems="center">
-                    <RHFTimePicker
+                    <StartHourPicker
                         data-testid={START_TIME_PICKER_TESTID}
                         name={startDateKey}
                     />
                     <Typography>-</Typography>
-                    <RHFTimePicker
+                    <EndHourPicker
                         data-testid={END_TIME_PICKER_TESTID}
                         name={endDateKey}
                     />
