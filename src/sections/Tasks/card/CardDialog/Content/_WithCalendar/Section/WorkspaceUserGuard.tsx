@@ -1,14 +1,13 @@
 import { useGetUserQuery } from "@/services/user";
 import { ICreateOrUpdateTaskReq } from "@/types/tasks";
-import SvgIcon from "@mui/material/SvgIcon";
 import { FC, PropsWithChildren } from "react";
 import { useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import PersonIcon from "@mui/icons-material/Person";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import { SxProps, Theme } from "@mui/material";
+import CrossedGoogleIcon from "@/assets/logo/CrossedGoogleLogo";
 
 // -----------------------------------------------------------------------------------------
 
@@ -24,17 +23,7 @@ const useIsWorkspaceUser = () => {
 
 // -----------------------------------------------------------------------------------------
 
-const CrossedUserIcon = () => (
-    <SvgIcon>
-        <PersonIcon />
-        <path
-            d="M22 2L2 22"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-        />
-    </SvgIcon>
-);
+const ERROR_INFO_TESTID = "error-info-testid";
 
 const IconButtonSx: SxProps<Theme> = {
     width: "fit-content",
@@ -43,9 +32,14 @@ const IconButtonSx: SxProps<Theme> = {
 const ErrorInfo = () => {
     const { t } = useTranslation();
     return (
-        <Stack direction="row" spacing={1} alignItems="center">
+        <Stack
+            data-testid={ERROR_INFO_TESTID}
+            direction="row"
+            spacing={1}
+            alignItems="center"
+        >
             <IconButton sx={IconButtonSx}>
-                <CrossedUserIcon />
+                <CrossedGoogleIcon />
             </IconButton>
 
             <Typography variant="body2" color="text.secondary">
@@ -57,12 +51,13 @@ const ErrorInfo = () => {
 
 // -----------------------------------------------------------------------------------------
 
+const PROTECTED_CONTENT_TESTID = "protected-content-testid";
+
 const WorkspaceUserGuard: FC<PropsWithChildren> = ({ children }) => {
     const isWorkspaceUser = useIsWorkspaceUser();
-
     if (!isWorkspaceUser) return <ErrorInfo />;
-
-    return <>{children}</>;
+    return <div data-testid={PROTECTED_CONTENT_TESTID}>{children}</div>;
 };
 
+export { PROTECTED_CONTENT_TESTID, ERROR_INFO_TESTID };
 export default WorkspaceUserGuard;

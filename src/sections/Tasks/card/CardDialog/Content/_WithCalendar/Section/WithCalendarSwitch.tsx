@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import RHFIOSSwitch from "@/components/hook-form/RHFIOSSwitch";
-import { Box, SxProps, Theme } from "@mui/material";
+import { SxProps, Theme } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import { ICreateOrUpdateTaskReq } from "@/types/tasks";
@@ -10,13 +10,14 @@ import dayjs from "dayjs";
 import { START_HOUR } from "@/constants/calendar";
 import GoogleCalendarIcon from "@/assets/GoogleCalendar";
 
+const WITH_CALENDAR_SWITCH_TESTID = "with-calendar-switch-testid";
+
 const Label = () => {
     const { t } = useTranslation();
 
     return (
         <Stack spacing={0.1} direction={"row"}>
             <Typography>{t("Connect with Google Calendar")}</Typography>
-
             <GoogleCalendarIcon sx={{ fontSize: 28 }} />
         </Stack>
     );
@@ -54,6 +55,7 @@ const WithCalendarSwitch = () => {
 
     return (
         <RHFIOSSwitch
+            data-testid={WITH_CALENDAR_SWITCH_TESTID}
             name="withCalendar"
             label={<Label />}
             labelPlacement="end"
@@ -63,4 +65,5 @@ const WithCalendarSwitch = () => {
     );
 };
 
+export { WITH_CALENDAR_SWITCH_TESTID };
 export default WithCalendarSwitch;
