@@ -9,8 +9,7 @@ import { useCallback } from "react";
 import dayjs from "dayjs";
 import { START_HOUR } from "@/constants/calendar";
 import GoogleCalendarIcon from "@/assets/GoogleCalendar";
-
-const WITH_CALENDAR_SWITCH_TESTID = "with-calendar-switch-testid";
+import { WITH_CALENDAR_SWITCH_TESTID } from "./constants";
 
 const Label = () => {
     const { t } = useTranslation();
@@ -65,5 +64,4 @@ const WithCalendarSwitch = () => {
     );
 };
 
-export { WITH_CALENDAR_SWITCH_TESTID };
 export default WithCalendarSwitch;
