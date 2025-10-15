@@ -44,7 +44,10 @@ const Content = () => {
                 sx={TextFieldSx}
             />
 
-            <RHFEventDates startDateName="startDate" endDateName="endDate" />
+            <RHFEventDates<CalendarEventReq>
+                startDateName="startDate"
+                endDateName="endDate"
+            />
 
             <RHFLocation />
 

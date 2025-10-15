@@ -1,10 +1,10 @@
-import { endDateKey, startDateKey } from "./constants";
 import RHFEventDates from "@/sections/Calendar/Event/form/Content/RHFEventDates";
+import { ICreateOrUpdateTaskReq } from "@/types/tasks";
 
 const Pickers = () => (
-    <RHFEventDates
-        startDateName={startDateKey}
-        endDateName={endDateKey}
+    <RHFEventDates<ICreateOrUpdateTaskReq>
+        startDateName="due.0"
+        endDateName="due.1"
         // ...
         direction="column"
     />

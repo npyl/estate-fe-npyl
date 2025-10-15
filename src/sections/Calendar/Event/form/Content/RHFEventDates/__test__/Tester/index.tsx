@@ -10,7 +10,10 @@ interface TesterProps extends Partial<FormReq> {}
 const Tester: FC<TesterProps> = (props) => (
     <DatePickerProvider>
         <Form {...props}>
-            <RHFEventDates startDateName="startDate" endDateName="endDate" />
+            <RHFEventDates<FormReq>
+                startDateName="startDate"
+                endDateName="endDate"
+            />
             <Values />
         </Form>
     </DatePickerProvider>
