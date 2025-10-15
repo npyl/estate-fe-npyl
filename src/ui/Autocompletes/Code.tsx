@@ -5,7 +5,7 @@ import {
     SxProps,
     Theme,
 } from "@mui/material";
-import { useAllPropertyCodesQuery } from "src/services/properties";
+import { useAllPropertyCodesQuery } from "@/services/properties";
 import {
     forwardRef,
     ForwardedRef,
@@ -120,7 +120,7 @@ function UnforwardedCodeSelect<Multiple extends TMultiple = false>(
 }
 
 const CodeSelect = forwardRef(UnforwardedCodeSelect) as <
-    Multiple extends TMultiple = false
+    Multiple extends TMultiple = false,
 >(
     props: CodeSelectProps<Multiple> & { ref?: ForwardedRef<HTMLElement> }
 ) => JSX.Element;
