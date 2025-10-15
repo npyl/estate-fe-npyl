@@ -1,27 +1,63 @@
 import { forwardRef, useCallback, useMemo } from "react";
-import { TimeField, TimeFieldProps } from "@mui/x-date-pickers";
-import useDialog from "@/hooks/useDialog";
-import dynamic from "next/dynamic";
-import dayjs, { Dayjs } from "dayjs";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
-import Box from "@mui/material/Box";
+import dayjs from "dayjs";
 import { DEFAULT_MAX_TIME, DEFAULT_MIN_TIME } from "./constants";
-import useForwardedLocalRef from "@/hooks/useForwadedLocalRef";
-const Menu = dynamic(() => import("./Menu"));
+import Select, { SelectChangeEvent, SelectProps } from "@/components/Select";
+import { END_HOUR, START_HOUR } from "@/constants/calendar";
+import MenuItem from "@mui/material/MenuItem";
+import { SxProps, Theme } from "@mui/material/styles";
+
+// Generate time slots using dayjs
+const generateTimeSlots = (
+    startHour: number = START_HOUR,
+    endHour: number = END_HOUR
+) => {
+    const slots: string[] = [];
+
+    // Use today's date as base
+    const baseDate = dayjs().startOf("day");
+
+    for (let hour = startHour; hour <= endHour; hour++) {
+        for (let minute = 0; minute < 60; minute += 15) {
+            // Skip times after the end hour
+            if (hour === endHour && minute > 0) continue;
+
+            const timeSlot = baseDate
+                .hour(hour)
+                .minute(minute)
+                .second(0)
+                .millisecond(0);
+            slots.push(timeSlot.toISOString());
+        }
+    }
+
+    return slots;
+};
+
+const formatTimeDisplay = (isoString: string): string => {
+    return dayjs(isoString).format("h:mm A");
+};
+
+const getOption = (d: string) => (
+    <MenuItem key={d} value={d}>
+        {formatTimeDisplay(d)}
+    </MenuItem>
+);
+
+const PaperSx: SxProps<Theme> = {
+    width: "inherit",
+    height: "300px",
+    overflowY: "auto",
+};
 
 interface TimePickerProps
-    extends Omit<
-        TimeFieldProps<Dayjs>,
-        "value" | "onChange" | "minTime" | "maxTime"
-    > {
+    extends Omit<SelectProps<string>, "onChange" | "value"> {
     value: string;
     onChange: (v: string) => void;
-
     minTime?: number;
     maxTime?: number;
 }
 
-const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
+const TimePicker = forwardRef<HTMLSelectElement, TimePickerProps>(
     (
         {
             value: _value,
@@ -32,70 +68,32 @@ const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
         },
         ref
     ) => {
-        const value = useMemo(() => dayjs(_value), [_value]);
+        const minTime = _minTime ?? DEFAULT_MIN_TIME;
+        const maxTime = _maxTime ?? DEFAULT_MAX_TIME;
 
-        const minTime = useMemo(
-            () =>
-                dayjs()
-                    .hour(_minTime ?? DEFAULT_MIN_TIME)
-                    .minute(0)
-                    .second(0),
-            [_minTime]
-        );
-        const maxTime = useMemo(
-            () =>
-                dayjs()
-                    .hour(_maxTime ?? DEFAULT_MAX_TIME)
-                    .minute(0)
-                    .second(0),
-            [_maxTime]
-        );
-
-        const [isOpen, openMenu, closeMenu] = useDialog();
-
-        const [anchorRef, { onRef }] =
-            useForwardedLocalRef<HTMLDivElement>(ref);
-
-        const handleSelect = useCallback(
-            (d: string) => {
-                onChange(d);
-                closeMenu();
-            },
-            [onChange]
+        const OPTIONS = useMemo(
+            () => generateTimeSlots(minTime, maxTime),
+            [minTime, maxTime]
         );
 
         const handleChange = useCallback(
-            (d: Dayjs | null) => {
-                if (!d) return;
-                onChange(d.toISOString());
-                closeMenu();
+            (e: SelectChangeEvent<string>) => {
+                const v = e.target.value;
+                onChange(v);
             },
             [onChange]
         );
 
         return (
-            <ClickAwayListener onClickAway={closeMenu}>
-                <Box>
-                    <TimeField
-                        ref={onRef}
-                        value={value}
-                        minTime={minTime}
-                        maxTime={maxTime}
-                        onChange={handleChange}
-                        onClick={openMenu}
-                        {...props}
-                    />
-
-                    {isOpen && anchorRef.current ? (
-                        <Menu
-                            minTime={_minTime}
-                            maxTime={_maxTime}
-                            anchorEl={anchorRef.current}
-                            onSelect={handleSelect}
-                        />
-                    ) : null}
-                </Box>
-            </ClickAwayListener>
+            <Select
+                ref={ref}
+                value={_value}
+                onChange={handleChange}
+                MenuProps={{ slotProps: { paper: { sx: PaperSx } } }}
+                {...props}
+            >
+                {OPTIONS.map(getOption)}
+            </Select>
         );
     }
 );
