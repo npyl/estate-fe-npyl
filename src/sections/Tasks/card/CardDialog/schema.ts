@@ -1,35 +1,44 @@
 import { IKanbanCardPOST } from "@/types/tasks";
-import * as yup from "yup";
+import { z } from "zod";
 
-const schema = yup.object<IKanbanCardPOST>().shape({
-    id: yup.number().optional(),
-    priority: yup.number().min(0).max(2).required(),
-    name: yup.string().required(),
-    description: yup.string().optional(),
+interface ZodCompatibleReq extends Omit<IKanbanCardPOST, "columnId"> {
+    // TODO: this is due to a bug in our @/components/Select (probably)
+    columnId: string;
+}
 
-    attachments: yup.array(yup.number().required()).required(),
+const schema = z
+    .object({
+        id: z.number().optional(),
+        priority: z.number().min(0).max(2),
+        name: z.string().min(1),
+        description: z.string().optional(),
 
-    properties: yup.array(yup.number().min(0).required()).optional(),
-    customers: yup.array(yup.number().min(0).required()).optional(),
-    userIds: yup.array(yup.number().min(0).required()).min(1).required(),
+        attachments: z.array(z.number()),
 
-    columnId: yup.number().min(0).required(),
+        properties: z.array(z.number().min(0)).optional(),
+        customers: z.array(z.number().min(0)).optional(),
+        userIds: z.array(z.number().min(0)).min(1),
 
-    labels: yup.array(yup.number().required()).required(),
+        columnId: z.string().nonempty(),
 
-    // TODO: supported by backend, but theoretically I should never update it!
-    event: yup.string().optional(),
-    withCalendar: yup.boolean().required(),
+        labels: z.array(z.number()),
 
-    // ------------------ Calendar Event Logic ----------------------------
+        // ------------------ Calendar Event Related ----------------------------
 
-    due: yup
-        .tuple([yup.string().required(), yup.string().required()])
-        .when("withCalendar", {
-            is: true,
-            then: (schema) => schema.required(),
-            otherwise: (schema) => schema.transform(() => undefined),
-        }),
-});
+        event: z.string().optional(), // TODO: supported by backend, but theoretically I should never update it!
+        withCalendar: z.boolean(),
+        due: z.tuple([z.string().optional(), z.string().optional()]).optional(),
+    })
+    .refine(
+        (data) => {
+            if (data.withCalendar) return data?.due?.[0] && data?.due?.[1];
+            return true;
+        },
+        {
+            message:
+                "due is required with non-empty strings when withCalendar is true",
+            path: ["due"],
+        }
+    ) satisfies z.ZodType<ZodCompatibleReq>;
 
 export default schema;

@@ -82,7 +82,7 @@ type IKanbanCardPOST = {
     id?: number;
     name: string;
     description?: string;
-    due?: [string, string];
+    due?: [string | undefined, string | undefined];
     priority: number;
     attachments: number[];
 
