@@ -1,27 +1,19 @@
 import { FC } from "react";
 import dayjs from "dayjs";
-import RHFTimePicker, {
-    RHFTimePickerProps,
-} from "@/components/hook-form/RHFTimePicker";
 import { useTranslation } from "react-i18next";
+import TimePicker, { TimePickerProps } from "@/components/Pickers/TimePicker";
 
 interface StartHourPickerProps
-    extends Omit<
-        RHFTimePickerProps,
-        "name" | "label" | "fullWidth" | "defaultValue"
-    > {
-    name: string;
-}
+    extends Omit<TimePickerProps, "label" | "fullWidth" | "defaultValue"> {}
 
-const StartHourPicker: FC<StartHourPickerProps> = ({ name, ...props }) => {
+const StartHourPicker: FC<StartHourPickerProps> = (props) => {
     const { t } = useTranslation();
 
     return (
-        <RHFTimePicker
+        <TimePicker
             fullWidth
             label={t("From")}
-            defaultValue={dayjs().startOf("hour").toISOString()}
-            name={name}
+            defaultValue={dayjs().toISOString()}
             {...props}
         />
     );

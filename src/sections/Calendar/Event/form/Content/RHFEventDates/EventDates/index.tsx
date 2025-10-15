@@ -1,4 +1,4 @@
-import { Stack, StackProps, Typography } from "@mui/material";
+import { Stack, StackProps } from "@mui/material";
 import { FC } from "react";
 import { DatePicker, StartHourPicker, EndHourPicker } from "./Pickers";
 import { isAllDay } from "@/components/Calendar/util";
@@ -59,12 +59,13 @@ const EventDates: FC<EventDatesProps> = ({
                 <Stack direction="row" spacing={1} alignItems="center">
                     <StartHourPicker
                         data-testid={START_TIME_PICKER_TESTID}
-                        name={startDateKey}
+                        value={startDate}
+                        onChange={onStartDateChange}
                     />
-                    <Typography>-</Typography>
                     <EndHourPicker
                         data-testid={END_TIME_PICKER_TESTID}
-                        name={endDateKey}
+                        value={endDate}
+                        onChange={onEndDateChange}
                     />
                 </Stack>
             ) : null}

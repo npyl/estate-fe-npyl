@@ -50,9 +50,10 @@ const PaperSx: SxProps<Theme> = {
 };
 
 interface TimePickerProps
-    extends Omit<SelectProps<string>, "onChange" | "value"> {
+    extends Omit<SelectProps<string>, "value" | "onChange"> {
     value: string;
     onChange: (v: string) => void;
+
     minTime?: number;
     maxTime?: number;
 }
@@ -63,11 +64,21 @@ const TimePicker = forwardRef<HTMLSelectElement, TimePickerProps>(
             value: _value,
             minTime: _minTime,
             maxTime: _maxTime,
+            defaultValue,
             onChange,
             ...props
         },
         ref
     ) => {
+        const value = useMemo(
+            () => _value ?? defaultValue ?? dayjs().toISOString(),
+            [_value, defaultValue]
+        );
+        const renderValue = useCallback(
+            () => formatTimeDisplay(value),
+            [value]
+        );
+
         const minTime = _minTime ?? DEFAULT_MIN_TIME;
         const maxTime = _maxTime ?? DEFAULT_MAX_TIME;
 
@@ -79,6 +90,7 @@ const TimePicker = forwardRef<HTMLSelectElement, TimePickerProps>(
         const handleChange = useCallback(
             (e: SelectChangeEvent<string>) => {
                 const v = e.target.value;
+                console.log("SENDING: ", v);
                 onChange(v);
             },
             [onChange]
@@ -87,7 +99,8 @@ const TimePicker = forwardRef<HTMLSelectElement, TimePickerProps>(
         return (
             <Select
                 ref={ref}
-                value={_value}
+                value={value}
+                renderValue={renderValue}
                 onChange={handleChange}
                 MenuProps={{ slotProps: { paper: { sx: PaperSx } } }}
                 {...props}
