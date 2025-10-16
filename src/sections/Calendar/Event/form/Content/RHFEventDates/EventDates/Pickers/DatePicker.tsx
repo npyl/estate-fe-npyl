@@ -1,19 +1,18 @@
 import { FC, useCallback } from "react";
-import { RHFDatePicker } from "@/components/hook-form";
 import { getAllDayStartEnd } from "@/components/Calendar/util";
-import { RHFDatePickerProps } from "@/components/hook-form/RHFDatePicker";
+import PPDatePicker, {
+    DatePickerProps as PPDatePickerProps,
+} from "@/components/Pickers/DatePicker";
 import dayjs from "dayjs";
 
 interface DatePickerProps
-    extends Omit<RHFDatePickerProps, "name" | "onChange"> {
+    extends Omit<PPDatePickerProps, "onChangeISO" | "onChange"> {
     allDay: boolean;
-    startDateKey: string;
     onEndDateChange: (d: string) => void;
 }
 
 const DatePicker: FC<DatePickerProps> = ({
     allDay,
-    startDateKey,
     onEndDateChange,
     ...props
 }) => {
@@ -27,10 +26,9 @@ const DatePicker: FC<DatePickerProps> = ({
         [allDay, onEndDateChange]
     );
     return (
-        <RHFDatePicker
-            name={startDateKey}
+        <PPDatePicker
             defaultValue={dayjs()}
-            onChange={handleChange}
+            onChangeISO={handleChange}
             {...props}
         />
     );

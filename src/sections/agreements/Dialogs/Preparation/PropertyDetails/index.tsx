@@ -68,7 +68,7 @@ const PropertyDetails: React.FC<Props> = ({ isCustomer, shouldAutofill }) => {
                         name="startingDate"
                         label={t("Starting Date").toString()}
                         disablePast
-                        onChange={handleStartingChange}
+                        onChangeISO={handleStartingChange}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>

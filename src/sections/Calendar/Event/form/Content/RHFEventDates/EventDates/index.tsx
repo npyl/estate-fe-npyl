@@ -42,7 +42,7 @@ const EventDates: FC<EventDatesProps> = ({
                 <DatePicker
                     data-testid={DATEPICKER_TESTID}
                     allDay={allDay}
-                    startDateKey={startDateKey}
+                    value={startDate}
                     onEndDateChange={onEndDateChange}
                 />
 

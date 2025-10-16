@@ -48,7 +48,7 @@ const Rent = () => {
                             name="availableAfter"
                             label={t("Available After").toString()}
                             disablePast
-                            onChange={handleAvailableAfterChange}
+                            onChangeISO={handleAvailableAfterChange}
                         />
                     </Grid>
 
@@ -77,7 +77,7 @@ const Rent = () => {
                                     ? dayjs(availDate, "YYYY-MM-DD")
                                     : undefined
                             }
-                            onChange={handleRentalStartChange}
+                            onChangeISO={handleRentalStartChange}
                         />
                     </Grid>
 

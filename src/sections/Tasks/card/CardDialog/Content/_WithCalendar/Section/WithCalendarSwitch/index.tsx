@@ -7,7 +7,6 @@ import Stack from "@mui/material/Stack";
 import { ICreateOrUpdateTaskReq } from "@/types/tasks";
 import { useCallback } from "react";
 import dayjs from "dayjs";
-import { START_HOUR } from "@/constants/calendar";
 import GoogleCalendarIcon from "@/assets/GoogleCalendar";
 import { WITH_CALENDAR_SWITCH_TESTID } from "./constants";
 
@@ -37,16 +36,8 @@ const WithCalendarSwitch = () => {
     const onChange = useCallback((b: boolean) => {
         // enabling
         if (b) {
-            const due0 = dayjs()
-                .hour(START_HOUR)
-                .minute(0)
-                .second(0)
-                .toISOString();
-            const due1 = dayjs()
-                .hour(START_HOUR + 1)
-                .minute(0)
-                .second(0)
-                .toISOString();
+            const due0 = dayjs().toISOString();
+            const due1 = dayjs().add(1, "hour").toISOString();
 
             setValue("due", [due0, due1], { shouldDirty: true });
         }
