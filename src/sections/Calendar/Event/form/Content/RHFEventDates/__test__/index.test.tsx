@@ -1,4 +1,10 @@
-import { act, render, screen } from "@testing-library/react";
+import {
+    act,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+} from "@testing-library/react";
 import Tester from "./Tester";
 import { END_DATE_TESTID, START_DATE_TESTID } from "./Tester/constants";
 import { START_HOUR, END_HOUR } from "@/constants/calendar";
@@ -10,6 +16,7 @@ import {
     ALL_DAY_CHECKBOX_TESTID,
 } from "../EventDates/constants";
 import "@testing-library/jest-dom";
+import { getOptionTestId } from "@/components/Pickers/TimePicker";
 
 // ----------------------------------------------------------------------------------
 
@@ -44,6 +51,17 @@ const expectValues = (s0: string, s1: string) => {
     expect(endDate).toHaveTextContent(s1);
 };
 
+const expectInputHourValues = (s0: number, s1: number) => {
+    const startDate = screen.getByTestId(START_DATE_TESTID).textContent;
+    const s = startDate ? new Date(startDate).getHours() : -1;
+
+    const endDate = screen.getByTestId(END_DATE_TESTID).textContent;
+    const e = endDate ? new Date(endDate).getHours() : -1;
+
+    expect(s).toBe(s0);
+    expect(e).toBe(s1);
+};
+
 const expectIsAllDayLayout = () => {
     const EL3 = screen.queryByTestId(DATEPICKER_TESTID);
     const EL0 = screen.queryByTestId(START_TIME_PICKER_TESTID);
@@ -71,6 +89,31 @@ const expectIsNotAllDayLayout = () => {
 };
 
 // -----------------------------------------------------------------------------------
+
+const openSelect = async (testId: string) => {
+    const selectElement = screen.getByTestId(testId);
+    const selectButton = selectElement.querySelector('[role="combobox"]');
+
+    if (!selectButton) {
+        throw new Error(`Could not find select button for ${testId}`);
+    }
+
+    // Use fireEvent.mouseDown which is what MUI Select listens for
+    fireEvent.mouseDown(selectButton);
+
+    // Wait for the menu to appear
+    await waitFor(() => {
+        expect(screen.getByRole("listbox")).toBeInTheDocument();
+    });
+};
+
+// -----------------------------------------------------------------------------------
+
+const clickStartTimePicker = () => openSelect(START_TIME_PICKER_TESTID);
+const clickEndTimePicker = () => openSelect(END_TIME_PICKER_TESTID);
+
+const clickTimeOption = (...args: Parameters<typeof getOptionTestId>) =>
+    act(() => screen.getByTestId(getOptionTestId(...args)).click());
 
 const clickAllDayCheckboxAndExpect = (s0: string, s1: string) => {
     act(() => screen.getByTestId(ALL_DAY_CHECKBOX_TESTID).click());
@@ -119,6 +162,30 @@ describe("RHFEventDates", () => {
             const [start1, end1] = getNotAllDay();
             clickAllDayCheckboxAndExpect(start1, end1);
             expectIsNotAllDayLayout();
+        });
+    });
+
+    describe("flows2", () => {
+        const START_HOUR = 8;
+        const END_HOUR = 10;
+
+        it("startHour > endHour", async () => {
+            const [start0, end0] = getStartEndDates(START_HOUR, END_HOUR);
+            render(<Tester startDate={start0} endDate={end0} />);
+
+            await clickStartTimePicker();
+            clickTimeOption(START_TIME_PICKER_TESTID, END_HOUR + 1, 0, "am");
+
+            expectInputHourValues(END_HOUR + 1, -1);
+        });
+        it("endHour < startHour", async () => {
+            const [start0, end0] = getStartEndDates(START_HOUR, END_HOUR);
+            render(<Tester startDate={start0} endDate={end0} />);
+
+            await clickEndTimePicker();
+            clickTimeOption(END_TIME_PICKER_TESTID, START_HOUR - 1, 0, "am");
+
+            expectInputHourValues(-1, START_HOUR - 1);
         });
     });
 });
