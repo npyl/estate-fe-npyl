@@ -8,12 +8,12 @@ import { START_HOUR, END_HOUR } from "../../src/constants/calendar";
 // --------------------------------------------------------------------------------------------
 
 const expectHours = (
-    response: ICreateOrUpdateTaskReq,
+    request: ICreateOrUpdateTaskReq,
     startHour: number,
     endHour: number
 ) => {
-    const due0 = response.due?.at(0);
-    const due1 = response.due?.at(1);
+    const due0 = request.due?.at(0);
+    const due1 = request.due?.at(1);
 
     const startDate = due0 ? new Date(due0) : undefined;
     const endDate = due1 ? new Date(due1) : undefined;
@@ -26,12 +26,12 @@ const expectHours = (
 
 test.describe("create", () => {
     test("Simple", async ({ page }) => {
-        const [response, { columnId, title, assigneeId }] =
+        const [request, { columnId, title, assigneeId }] =
             await createEvent(page);
 
-        expect(response.columnId.toString()).toBe(columnId);
-        expect(response.name).toBe(title);
-        expect(response.userIds?.at(0)).toBe(assigneeId);
+        expect(request.columnId.toString()).toBe(columnId);
+        expect(request.name).toBe(title);
+        expect(request.userIds?.at(0)).toBe(assigneeId);
     });
 
     test.describe("w/ Calendar", () => {
@@ -46,9 +46,9 @@ test.describe("create", () => {
                 currentHour = new Date().getHours();
             };
 
-            const [response] = await createEvent(page, onBeforeSubmit);
+            const [request] = await createEvent(page, onBeforeSubmit);
 
-            expectHours(response, currentHour, currentHour + 1);
+            expectHours(request, currentHour, currentHour + 1);
         });
 
         test("all day", async ({ page }) => {
@@ -60,9 +60,9 @@ test.describe("create", () => {
                 await page.getByTestId(ALL_DAY_CHECKBOX_TESTID).click();
             };
 
-            const [response] = await createEvent(page, onBeforeSubmit);
+            const [request] = await createEvent(page, onBeforeSubmit);
 
-            expectHours(response, START_HOUR, END_HOUR);
+            expectHours(request, START_HOUR, END_HOUR);
         });
     });
 });

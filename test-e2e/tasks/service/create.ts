@@ -56,9 +56,9 @@ const submitAndInterceptRequest = async (page: Page) => {
     await page.getByTestId(TASK.SUBMIT_ID).click();
 
     // Now wait for the request
-    const response = await p;
+    const request = await p;
 
-    return response.postDataJSON() as ICreateOrUpdateTaskReq;
+    return request.postDataJSON() as ICreateOrUpdateTaskReq;
 };
 
 // --------------------------------------------------------------------------------
@@ -112,9 +112,9 @@ const createEvent = async (
     await onBeforeSubmit?.();
 
     // Submit
-    const response = await submitAndInterceptRequest(page);
+    const request = await submitAndInterceptRequest(page);
 
-    return [response, { columnId, title, assigneeId }] as const;
+    return [request, { columnId, title, assigneeId }] as const;
 };
 
 export { createEvent };
