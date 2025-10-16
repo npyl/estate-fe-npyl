@@ -36,19 +36,12 @@ const useSafeChange = (
     );
     const onEndDateChange = useCallback(
         (v: string) => {
-            console.log("onEndDateChange called with:", v);
-            console.log("Current startDate:", startDate);
             _onEndDateChange(v);
 
             const c = getTime(v);
-            const s = startDate ? getTime(startDate) : Infinity;
-            console.log("Comparing:", c, "<", s, "?", c < s);
-            if (c < s) {
-                console.log("Clearing start date!");
-                clearStartDate();
-            }
+            if (c < s) clearStartDate();
         },
-        [startDate, clearStartDate, _onEndDateChange]
+        [s, clearStartDate]
     );
 
     // --------------------------------------------------------------------
