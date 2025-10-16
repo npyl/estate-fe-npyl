@@ -2,41 +2,67 @@ import { test, expect } from "@playwright/test";
 import { createEvent } from "./service/create";
 import { WITH_CALENDAR_SWITCH_TESTID } from "../../src/sections/Tasks/card/CardDialog/Content/_WithCalendar/Section/WithCalendarSwitch/constants";
 import { ALL_DAY_CHECKBOX_TESTID } from "../../src/sections/Calendar/Event/form/Content/RHFEventDates/EventDates/constants";
+import { ICreateOrUpdateTaskReq } from "../../src/types/tasks";
+import { START_HOUR, END_HOUR } from "../../src/constants/calendar";
+
+// --------------------------------------------------------------------------------------------
+
+const expectHours = (
+    response: ICreateOrUpdateTaskReq,
+    startHour: number,
+    endHour: number
+) => {
+    const due0 = response.due?.at(0);
+    const due1 = response.due?.at(1);
+
+    const startDate = due0 ? new Date(due0) : undefined;
+    const endDate = due1 ? new Date(due1) : undefined;
+
+    expect(startDate?.getHours()).toBe(startHour);
+    expect(endDate?.getHours()).toBe(endHour);
+};
+
+// --------------------------------------------------------------------------------------------
 
 test.describe("create", () => {
     test("Simple", async ({ page }) => {
-        const [request, { columnId, title, assigneeId }] =
+        const [response, { columnId, title, assigneeId }] =
             await createEvent(page);
 
-        expect(request.columnId.toString()).toBe(columnId);
-        expect(request.name).toBe(title);
-        expect(request.userIds?.at(0)).toBe(assigneeId);
+        expect(response.columnId.toString()).toBe(columnId);
+        expect(response.name).toBe(title);
+        expect(response.userIds?.at(0)).toBe(assigneeId);
     });
 
-    test("w/ Calendar (default dates)", async ({ page }) => {
-        const onBeforeSubmit = async () => {
-            // 1. click calendar switch
-            page.getByTestId(WITH_CALENDAR_SWITCH_TESTID).click();
-        };
+    test.describe("w/ Calendar", () => {
+        test("default dates", async ({ page }) => {
+            let currentHour = -1;
 
-        const [request, { columnId, title, assigneeId }] = await createEvent(
-            page,
-            onBeforeSubmit
-        );
-    });
+            const onBeforeSubmit = async () => {
+                // 1. click calendar switch
+                await page.getByTestId(WITH_CALENDAR_SWITCH_TESTID).click();
 
-    test("w/ Calendar (all day)", async ({ page }) => {
-        const onBeforeSubmit = async () => {
-            // 1. click calendar switch
-            page.getByTestId(WITH_CALENDAR_SWITCH_TESTID).click();
+                // 2. before submitting, note down the hour we set the <RHFEventDates /> (by default value)
+                currentHour = new Date().getHours();
+            };
 
-            // 2. click all day
-            page.getByTestId(ALL_DAY_CHECKBOX_TESTID).click();
-        };
+            const [response] = await createEvent(page, onBeforeSubmit);
 
-        const [request, { columnId, title, assigneeId }] = await createEvent(
-            page,
-            onBeforeSubmit
-        );
+            expectHours(response, currentHour, currentHour + 1);
+        });
+
+        test("all day", async ({ page }) => {
+            const onBeforeSubmit = async () => {
+                // 1. click calendar switch
+                await page.getByTestId(WITH_CALENDAR_SWITCH_TESTID).click();
+
+                // 2. click all day checkbox
+                await page.getByTestId(ALL_DAY_CHECKBOX_TESTID).click();
+            };
+
+            const [response] = await createEvent(page, onBeforeSubmit);
+
+            expectHours(response, START_HOUR, END_HOUR);
+        });
     });
 });

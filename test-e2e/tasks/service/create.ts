@@ -9,7 +9,7 @@ import clickAutocompleteOptions from "../../_util/autocomplete/clickOptions";
 import { getOptionTestId as getSelectOptionTestId } from "../../../src/components/hook-form/Select/constants";
 import { getOptionTestId as getAutocompleteOptionTestId } from "../../../src/ui/Autocompletes/Manager/constant";
 import getBoard from "../../_service/getBoard";
-import getAllUsers from "../../_service/getAllUsers";
+import getProfile from "../../_service/getProfile";
 
 // --------------------------------------------------------------------------------
 
@@ -47,23 +47,25 @@ const selectColumn = async (page: Page) => {
 // --------------------------------------------------------------------------------
 
 const submitAndInterceptRequest = async (page: Page) => {
-    const [request] = await Promise.all([
-        page.waitForRequest(
-            (req) =>
-                req.url().includes("/api/google") && req.method() === "POST"
-        ),
+    // INFO: first register interceptor; *then* actually wait for response
+    const p = page.waitForRequest(
+        (req) => req.url().includes("/api/google") && req.method() === "POST"
+    );
 
-        page.getByTestId(TASK.SUBMIT_ID).click(),
-    ]);
+    // Then click the button
+    await page.getByTestId(TASK.SUBMIT_ID).click();
 
-    return request.postDataJSON() as ICreateOrUpdateTaskReq;
+    // Now wait for the request
+    const response = await p;
+
+    return response.postDataJSON() as ICreateOrUpdateTaskReq;
 };
 
 // --------------------------------------------------------------------------------
 
 const getAssigneeSelectFirstOption = async (page: Page) => {
-    const users = await getAllUsers(page);
-    const assigneeId = users?.at(0)?.id ?? -1;
+    const user = await getProfile(page);
+    const assigneeId = user?.id ?? -1;
     if (assigneeId === -1) throw "Bad assigneeId";
     return assigneeId;
 };
@@ -110,9 +112,9 @@ const createEvent = async (
     await onBeforeSubmit?.();
 
     // Submit
-    const request = await submitAndInterceptRequest(page);
+    const response = await submitAndInterceptRequest(page);
 
-    return [request, { columnId, title, assigneeId }] as const;
+    return [response, { columnId, title, assigneeId }] as const;
 };
 
 export { createEvent };

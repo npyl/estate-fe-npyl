@@ -55,7 +55,7 @@ const EventDates: FC<EventDatesProps> = ({
                 />
             </Stack>
 
-            {!allDay ? (
+            {allDay ? null : (
                 <Stack direction="row" spacing={1} alignItems="center">
                     <StartHourPicker
                         data-testid={START_TIME_PICKER_TESTID}
@@ -68,7 +68,7 @@ const EventDates: FC<EventDatesProps> = ({
                         onChange={onEndDateChange}
                     />
                 </Stack>
-            ) : null}
+            )}
         </Stack>
     );
 };
