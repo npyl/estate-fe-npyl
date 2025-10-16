@@ -25,6 +25,8 @@ const expectHours = (
 // --------------------------------------------------------------------------------------------
 
 test.describe("create", () => {
+    test.setTimeout(2 * 60 * 1000);
+
     test("Simple", async ({ page }) => {
         const [request, { columnId, title, assigneeId }] =
             await createEvent(page);
@@ -34,7 +36,7 @@ test.describe("create", () => {
         expect(request.userIds?.at(0)).toBe(assigneeId);
     });
 
-    test.describe("w/ Calendar", () => {
+    test.describe("w/ Calendar Flows", () => {
         test("default dates", async ({ page }) => {
             let currentHour = -1;
 
@@ -51,18 +53,40 @@ test.describe("create", () => {
             expectHours(request, currentHour, currentHour + 1);
         });
 
-        test("all day", async ({ page }) => {
+        test("default dates -> all day", async ({ page }) => {
             const onBeforeSubmit = async () => {
                 // 1. click calendar switch
                 await page.getByTestId(WITH_CALENDAR_SWITCH_TESTID).click();
 
-                // 2. click all day checkbox
+                // 2. click all day checkbox (all day ON)
                 await page.getByTestId(ALL_DAY_CHECKBOX_TESTID).click();
             };
 
             const [request] = await createEvent(page, onBeforeSubmit);
 
             expectHours(request, START_HOUR, END_HOUR);
+        });
+
+        test("default dates -> all day -> default dates", async ({ page }) => {
+            let currentHour = -1;
+
+            const onBeforeSubmit = async () => {
+                // 1. click calendar switch
+                await page.getByTestId(WITH_CALENDAR_SWITCH_TESTID).click();
+
+                // 2. click all day checkbox (all day ON)
+                await page.getByTestId(ALL_DAY_CHECKBOX_TESTID).click();
+
+                // 3. re-click all day checkbox (all day OFF)
+                await page.getByTestId(ALL_DAY_CHECKBOX_TESTID).click();
+
+                // 4. before submitting, note down the hour we set the <RHFEventDates /> (by default value)
+                currentHour = new Date().getHours();
+            };
+
+            const [request] = await createEvent(page, onBeforeSubmit);
+
+            expectHours(request, currentHour, currentHour + 1);
         });
     });
 });
