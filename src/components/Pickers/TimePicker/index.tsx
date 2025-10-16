@@ -6,12 +6,32 @@ import { END_HOUR, START_HOUR } from "@/constants/calendar";
 import MenuItem from "@mui/material/MenuItem";
 import { SxProps, Theme } from "@mui/material/styles";
 
-// Generate time slots using dayjs
+// ------------------------------------------------------------------
+
+const formatTimeDisplay = (isoString: string): string =>
+    dayjs(isoString).format("h:mm A");
+
+const getOption = (d: string, dataTestId: string) => (
+    <MenuItem data-testid={dataTestId} key={d} value={d}>
+        {formatTimeDisplay(d)}
+    </MenuItem>
+);
+
+// ------------------------------------------------------------------
+
+const getOptionTestId = (
+    mainDataTestId: string = "PPTimePicker",
+    hour: number,
+    minute: number,
+    ampm: "am" | "pm"
+) => `${mainDataTestId}-Option-${hour}-${minute}-${ampm}`;
+
 const generateTimeSlots = (
     startHour: number = START_HOUR,
-    endHour: number = END_HOUR
+    endHour: number = END_HOUR,
+    mainDataTestId: string
 ) => {
-    const slots: string[] = [];
+    const slots: JSX.Element[] = [];
 
     // Use today's date as base
     const baseDate = dayjs().startOf("day");
@@ -19,29 +39,31 @@ const generateTimeSlots = (
     for (let hour = startHour; hour <= endHour; hour++) {
         for (let minute = 0; minute < 60; minute += 15) {
             // Skip times after the end hour
-            if (hour === endHour && minute > 0) continue;
+            if (hour === endHour && minute > 0) break;
 
             const timeSlot = baseDate
                 .hour(hour)
                 .minute(minute)
                 .second(0)
                 .millisecond(0);
-            slots.push(timeSlot.toISOString());
+
+            const ampm = hour < 12 ? "am" : "pm";
+
+            const DATA_TESTID = getOptionTestId(
+                mainDataTestId,
+                hour,
+                minute,
+                ampm
+            );
+
+            slots.push(getOption(timeSlot.toISOString(), DATA_TESTID));
         }
     }
 
     return slots;
 };
 
-const formatTimeDisplay = (isoString: string): string => {
-    return dayjs(isoString).format("h:mm A");
-};
-
-const getOption = (d: string) => (
-    <MenuItem key={d} value={d}>
-        {formatTimeDisplay(d)}
-    </MenuItem>
-);
+// ------------------------------------------------------------------
 
 const PaperSx: SxProps<Theme> = {
     width: "inherit",
@@ -70,6 +92,8 @@ const TimePicker = forwardRef<HTMLSelectElement, TimePickerProps>(
         },
         ref
     ) => {
+        const dataTestId = (props as any)?.["data-testid"];
+
         const value = useMemo(
             () => _value ?? defaultValue ?? dayjs().toISOString(),
             [_value, defaultValue]
@@ -83,14 +107,13 @@ const TimePicker = forwardRef<HTMLSelectElement, TimePickerProps>(
         const maxTime = _maxTime ?? DEFAULT_MAX_TIME;
 
         const OPTIONS = useMemo(
-            () => generateTimeSlots(minTime, maxTime),
-            [minTime, maxTime]
+            () => generateTimeSlots(minTime, maxTime, dataTestId),
+            [minTime, maxTime, dataTestId]
         );
 
         const handleChange = useCallback(
             (e: SelectChangeEvent<string>) => {
                 const v = e.target.value;
-                console.log("SENDING: ", v);
                 onChange(v);
             },
             [onChange]
@@ -105,7 +128,7 @@ const TimePicker = forwardRef<HTMLSelectElement, TimePickerProps>(
                 MenuProps={{ slotProps: { paper: { sx: PaperSx } } }}
                 {...props}
             >
-                {OPTIONS.map(getOption)}
+                {OPTIONS}
             </Select>
         );
     }
@@ -113,5 +136,6 @@ const TimePicker = forwardRef<HTMLSelectElement, TimePickerProps>(
 
 TimePicker.displayName = "TimePicker";
 
+export { getOptionTestId };
 export type { TimePickerProps };
 export default TimePicker;

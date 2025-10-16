@@ -9,6 +9,7 @@ import {
     END_TIME_PICKER_TESTID,
     START_TIME_PICKER_TESTID,
 } from "./constants";
+import useSafeChange from "./useSafeChange";
 
 // ----------------------------------------------------------------------
 
@@ -17,24 +18,24 @@ interface EventDatesProps extends StackProps {
     endDate: string;
     onStartDateChange: (d: string) => void;
     onEndDateChange: (d: string) => void;
-
-    // INFO: make this component reusable in many hook-form setups
-    startDateKey?: string;
-    endDateKey?: string;
 }
 
 const EventDates: FC<EventDatesProps> = ({
     startDate,
     endDate,
-    onStartDateChange,
-    onEndDateChange,
-    // ...
-    startDateKey = "startDate",
-    endDateKey = "endDate",
+    onStartDateChange: _onStartDateChange,
+    onEndDateChange: _onEndDateChange,
     // ...
     ...props
 }) => {
     const allDay = isAllDay(startDate, endDate);
+
+    const { onStartDateChange, onEndDateChange } = useSafeChange(
+        startDate,
+        endDate,
+        _onStartDateChange,
+        _onEndDateChange
+    );
 
     return (
         <Stack spacing={1} {...props}>
