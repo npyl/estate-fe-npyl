@@ -166,26 +166,23 @@ describe("RHFEventDates", () => {
     });
 
     describe("flows2", () => {
-        const START_HOUR = 8;
-        const END_HOUR = 10;
-
         it("startHour > endHour", async () => {
-            const [start0, end0] = getStartEndDates(START_HOUR, END_HOUR);
+            const [start0, end0] = getStartEndDates(9, 10);
             render(<Tester startDate={start0} endDate={end0} />);
 
             await clickStartTimePicker();
-            clickTimeOption(START_TIME_PICKER_TESTID, END_HOUR + 1, 0, "am");
+            clickTimeOption(11, 0, "am", START_TIME_PICKER_TESTID);
 
-            expectInputHourValues(END_HOUR + 1, -1);
+            expectInputHourValues(11, END_HOUR);
         });
         it("endHour < startHour", async () => {
-            const [start0, end0] = getStartEndDates(START_HOUR, END_HOUR);
+            const [start0, end0] = getStartEndDates(10, 11);
             render(<Tester startDate={start0} endDate={end0} />);
 
             await clickEndTimePicker();
-            clickTimeOption(END_TIME_PICKER_TESTID, START_HOUR - 1, 0, "am");
+            clickTimeOption(9, 0, "am", END_TIME_PICKER_TESTID);
 
-            expectInputHourValues(-1, START_HOUR - 1);
+            expectInputHourValues(START_HOUR, 9);
         });
     });
 });

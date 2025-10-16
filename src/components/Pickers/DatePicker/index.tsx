@@ -43,7 +43,7 @@ interface DatePickerProps
 }
 
 const DatePicker: FC<DatePickerProps> = ({
-    localDate = false,
+    localDate = true,
     // ...
     value: _value,
     slotProps,
