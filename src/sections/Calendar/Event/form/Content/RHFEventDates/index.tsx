@@ -1,6 +1,5 @@
 import { Controller, FieldValues, Path, useFormContext } from "react-hook-form";
 import EventDates, { EventDatesProps } from "./EventDates";
-import { FC } from "react";
 
 interface RHFEventDatesProps<T extends FieldValues>
     extends Omit<
