@@ -1,3 +1,5 @@
+import { END_HOUR, START_HOUR } from "@/constants/calendar";
+import dayjs from "dayjs";
 import { useCallback, useMemo } from "react";
 
 const getTime = (s: string) => new Date(s).getTime();
@@ -14,13 +16,29 @@ const useSafeChange = (
     // --------------------------------------------------------------------
 
     const clearStartDate = useCallback(
-        () => _onStartDateChange(""),
-        [_onStartDateChange]
+        () =>
+            _onStartDateChange(
+                dayjs(startDate)
+                    .hour(START_HOUR)
+                    .minute(0)
+                    .second(0)
+                    .millisecond(0)
+                    .toISOString()
+            ),
+        [startDate, _onStartDateChange]
     );
 
     const clearEndDate = useCallback(
-        () => _onEndDateChange(""),
-        [_onEndDateChange]
+        () =>
+            _onEndDateChange(
+                dayjs(endDate)
+                    .hour(END_HOUR)
+                    .minute(0)
+                    .second(0)
+                    .millisecond(0)
+                    .toISOString()
+            ),
+        [endDate, _onEndDateChange]
     );
 
     // --------------------------------------------------------------------

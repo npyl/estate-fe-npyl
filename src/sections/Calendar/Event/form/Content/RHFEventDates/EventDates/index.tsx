@@ -42,17 +42,18 @@ const EventDates: FC<EventDatesProps> = ({
             <Stack direction="row" spacing={1} alignItems="center">
                 <DatePicker
                     data-testid={DATEPICKER_TESTID}
-                    allDay={allDay}
-                    value={startDate}
-                    onEndDateChange={onEndDateChange}
+                    startDate={startDate}
+                    endDate={endDate}
+                    onStartDateChange={_onStartDateChange}
+                    onEndDateChange={_onEndDateChange}
                 />
 
                 <AllDayCheckbox
                     data-testid={ALL_DAY_CHECKBOX_TESTID}
                     allDay={allDay}
                     startDate={startDate}
-                    onStartDateChange={onStartDateChange}
-                    onEndDateChange={onEndDateChange}
+                    onStartDateChange={_onStartDateChange}
+                    onEndDateChange={_onEndDateChange}
                 />
             </Stack>
 

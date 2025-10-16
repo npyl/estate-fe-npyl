@@ -4,8 +4,11 @@ import {
 } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { FC, useCallback, useMemo } from "react";
-import { LOCAL_DATE_FORMAT } from "@/constants/datepicker";
 import toLocalDate from "@/utils/toLocalDate";
+import utc from "dayjs/plugin/utc";
+import { LOCAL_DATE_FORMAT } from "@/constants/datepicker";
+
+dayjs.extend(utc);
 
 // INFO: value prop must be LocalDate (YYYY-MM-DD)
 
@@ -32,12 +35,16 @@ const getSlotProps = (
 
 interface DatePickerProps
     extends Omit<MuiDatePickerProps<dayjs.Dayjs>, "value" | "onChange"> {
+    localDate?: false; // INFO: toggles localDate mode ON/OFF which is the default for 99% cases of PropertyPro (and BE)
+
     value?: string;
     onChange?: (v: string) => void;
     onChangeISO?: (v: string) => void;
 }
 
 const DatePicker: FC<DatePickerProps> = ({
+    localDate = false,
+    // ...
     value: _value,
     slotProps,
     // ...
@@ -48,15 +55,18 @@ const DatePicker: FC<DatePickerProps> = ({
 }) => {
     const dataTestId = (props as any)?.["data-testid"];
 
+    const format = localDate ? LOCAL_DATE_FORMAT : undefined;
+
     const value = useMemo(
-        () => (_value ? dayjs(_value, LOCAL_DATE_FORMAT) : null),
-        [_value]
+        () => (_value ? dayjs(_value, format) : null),
+        [_value, format]
     );
 
     const onChange = useCallback(
         (v: dayjs.Dayjs | null) => {
-            _onChange?.(toLocalDate(v?.toISOString() || ""));
-            onChangeISO?.(v?.toISOString() || "");
+            const utcDate = v?.utc().startOf("day");
+            _onChange?.(toLocalDate(utcDate?.toISOString() || ""));
+            onChangeISO?.(utcDate?.toISOString() || "");
         },
         [_onChange, onChangeISO]
     );

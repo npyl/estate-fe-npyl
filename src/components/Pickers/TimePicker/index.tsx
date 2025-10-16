@@ -20,21 +20,22 @@ const getOption = (d: string, dataTestId: string) => (
 // ------------------------------------------------------------------
 
 const getOptionTestId = (
-    mainDataTestId: string = "PPTimePicker",
     hour: number,
     minute: number,
-    ampm: "am" | "pm"
+    ampm: "am" | "pm",
+    mainDataTestId: string = "PPTimePicker"
 ) => `${mainDataTestId}-Option-${hour}-${minute}-${ampm}`;
 
 const generateTimeSlots = (
+    value: string,
+    mainDataTestId: string,
     startHour: number = START_HOUR,
-    endHour: number = END_HOUR,
-    mainDataTestId: string
+    endHour: number = END_HOUR
 ) => {
     const slots: JSX.Element[] = [];
 
-    // Use today's date as base
-    const baseDate = dayjs().startOf("day");
+    // Use the value's date as base instead of today
+    const baseDate = (value ? dayjs(value) : dayjs()).startOf("day");
 
     for (let hour = startHour; hour <= endHour; hour++) {
         for (let minute = 0; minute < 60; minute += 15) {
@@ -50,10 +51,10 @@ const generateTimeSlots = (
             const ampm = hour < 12 ? "am" : "pm";
 
             const DATA_TESTID = getOptionTestId(
-                mainDataTestId,
                 hour,
                 minute,
-                ampm
+                ampm,
+                mainDataTestId
             );
 
             slots.push(getOption(timeSlot.toISOString(), DATA_TESTID));
@@ -72,7 +73,7 @@ const PaperSx: SxProps<Theme> = {
 };
 
 interface TimePickerProps
-    extends Omit<SelectProps<string>, "value" | "onChange"> {
+    extends Omit<SelectProps<string>, "value" | "defaultValue" | "onChange"> {
     value: string;
     onChange: (v: string) => void;
 
@@ -82,22 +83,11 @@ interface TimePickerProps
 
 const TimePicker = forwardRef<HTMLSelectElement, TimePickerProps>(
     (
-        {
-            value: _value,
-            minTime: _minTime,
-            maxTime: _maxTime,
-            defaultValue,
-            onChange,
-            ...props
-        },
+        { value, minTime: _minTime, maxTime: _maxTime, onChange, ...props },
         ref
     ) => {
         const dataTestId = (props as any)?.["data-testid"];
 
-        const value = useMemo(
-            () => _value ?? defaultValue ?? dayjs().toISOString(),
-            [_value, defaultValue]
-        );
         const renderValue = useCallback(
             () => formatTimeDisplay(value),
             [value]
@@ -107,8 +97,8 @@ const TimePicker = forwardRef<HTMLSelectElement, TimePickerProps>(
         const maxTime = _maxTime ?? DEFAULT_MAX_TIME;
 
         const OPTIONS = useMemo(
-            () => generateTimeSlots(minTime, maxTime, dataTestId),
-            [minTime, maxTime, dataTestId]
+            () => generateTimeSlots(value, dataTestId, minTime, maxTime),
+            [value, minTime, maxTime, dataTestId]
         );
 
         const handleChange = useCallback(
