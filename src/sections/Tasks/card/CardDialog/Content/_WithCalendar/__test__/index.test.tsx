@@ -13,7 +13,7 @@ import {
     PROTECTED_CONTENT_TESTID,
     ERROR_INFO_TESTID,
 } from "../Section/WorkspaceUserGuard";
-import { WITH_CALENDAR_SWITCH_TESTID } from "../Section/WithCalendarSwitch";
+import { WITH_CALENDAR_SWITCH_TESTID } from "../Section/WithCalendarSwitch/constants";
 import "@testing-library/jest-dom";
 
 // ----------------------------------------------------------------------------
