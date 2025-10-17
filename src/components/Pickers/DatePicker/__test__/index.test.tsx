@@ -6,6 +6,7 @@ import Tester from "./Tester";
 import { DatePickerProps } from "@/components/Pickers/DatePicker";
 import dayjs from "dayjs";
 import { clickAvailableDay, expectInputDate } from "./util";
+import toLocalDate from "@/utils/toLocalDate";
 
 // ----------------------------------------------------------------------------------
 
@@ -28,7 +29,8 @@ const DATE = dayjs().toISOString();
 
 const onChangeCb = jest.fn();
 
-const expectOnChangeCalled = () => expect(onChangeCb).toHaveBeenCalledTimes(1);
+const expectOnChangeWith = (v: string) =>
+    expect(onChangeCb).toHaveBeenCalledWith(v);
 
 describe("DatePicker", () => {
     beforeEach(() => {
@@ -44,12 +46,12 @@ describe("DatePicker", () => {
             renderLocalDateTester({ onChange: onChangeCb });
             const clickedDate = await clickAvailableDay(DATE);
             expectInputDate(DATEPICKER_TESTID, clickedDate);
-            expectOnChangeCalled();
+            expectOnChangeWith(toLocalDate(clickedDate));
         });
     });
     describe("ISO Date", () => {
         it("initialValues", () => {
-            renderISOTester({});
+            renderISOTester({ value: DATE });
             expectInputDate(DATEPICKER_TESTID, DATE);
         });
 
@@ -57,7 +59,7 @@ describe("DatePicker", () => {
             renderISOTester({ onChange: onChangeCb });
             const clickedDate = await clickAvailableDay(DATE);
             expectInputDate(DATEPICKER_TESTID, clickedDate);
-            expectOnChangeCalled();
+            expectOnChangeWith(clickedDate);
         });
     });
 });
