@@ -4,11 +4,7 @@ import {
 } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { forwardRef, useCallback, useMemo } from "react";
-import toLocalDate from "@/utils/toLocalDate";
-import utc from "dayjs/plugin/utc";
 import { LOCAL_DATE_FORMAT } from "@/constants/datepicker";
-
-dayjs.extend(utc);
 
 // INFO: value prop must be LocalDate (YYYY-MM-DD)
 
@@ -65,15 +61,13 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         }, [_value, localDate]);
 
         const onChange = useCallback(
-            (v: dayjs.Dayjs) => {
+            (v: dayjs.Dayjs | null) => {
                 if (!v) return;
                 if (!_onChange) return;
 
-                const UTCISOString = v.utc().toISOString();
-
                 const final = localDate
-                    ? toLocalDate(UTCISOString)
-                    : UTCISOString;
+                    ? v.format(LOCAL_DATE_FORMAT)
+                    : v.toISOString();
 
                 _onChange?.(final);
             },
