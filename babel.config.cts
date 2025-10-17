@@ -6,6 +6,7 @@ const config: TransformOptions = {
         ["@babel/preset-react", { runtime: "automatic" }],
         "@babel/preset-typescript",
     ],
+    plugins: ["babel-plugin-dynamic-import-node"],
 };
 
 export default config;

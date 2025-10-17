@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import { SxProps, Theme } from "@mui/material";
 import CrossedGoogleIcon from "@/assets/logo/CrossedGoogleLogo";
+import toNumberSafe from "@/utils/toNumberSafe";
 
 // -----------------------------------------------------------------------------------------
 
@@ -16,7 +17,7 @@ import CrossedGoogleIcon from "@/assets/logo/CrossedGoogleLogo";
  */
 const useIsWorkspaceUser = () => {
     const userIds = useWatch<ICreateOrUpdateTaskReq>({ name: "userIds" });
-    const userId = Array.isArray(userIds) ? (userIds[0] as number) : -1;
+    const userId = Array.isArray(userIds) ? toNumberSafe(userIds?.[0]) : -1;
     const { data } = useGetUserQuery(userId, { skip: userId === -1 });
     return Boolean(data?.workspaceEmail);
 };

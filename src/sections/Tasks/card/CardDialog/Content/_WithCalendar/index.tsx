@@ -1,12 +1,13 @@
 import { useWatch } from "react-hook-form";
 import dynamic from "next/dynamic";
 import { ICreateOrUpdateTaskReq } from "@/types/tasks";
+import toNumberSafe from "@/utils/toNumberSafe";
 const Section = dynamic(() => import("./Section"));
 
 const useIsAssigneeSelected = () => {
     const userIds = useWatch<ICreateOrUpdateTaskReq>({ name: "userIds" });
-    const userId = Array.isArray(userIds) ? (userIds[0] as number) : -1;
-    return Boolean(userId);
+    const userId = Array.isArray(userIds) ? toNumberSafe(userIds?.[0]) : -1;
+    return userId > -1;
 };
 
 const WithCalendar = () => {

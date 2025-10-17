@@ -4,25 +4,14 @@
 // SCENARIO 2.2:    w/ User Id,     w/  Google Workspace email
 // ============================================================================
 
-import { setupUseTranslationMock } from "@/test/mock/useTranslation";
-setupUseTranslationMock();
-
-import { setupUseAuthMock } from "@/test/mock/useAuth";
-setupUseAuthMock();
-
-import { render, screen } from "@testing-library/react";
-import mockNextDynamic from "@/test/mock/dynamic";
-import Tester, { TesterProps } from "./Tester";
-import {
-    PROTECTED_CONTENT_TESTID,
-    ERROR_INFO_TESTID,
-} from "../Section/WorkspaceUserGuard";
-import { WITH_CALENDAR_SWITCH_TESTID } from "../Section/WithCalendarSwitch/constants";
-import "@testing-library/jest-dom";
-
 // ----------------------------------------------------------------------------
 
-mockNextDynamic();
+import { setupUseTranslationMock } from "@/test/mock/useTranslation";
+import { setupUseAuthMock } from "@/test/mock/useAuth";
+import preloadAll from "jest-next-dynamic";
+
+setupUseTranslationMock();
+setupUseAuthMock();
 
 jest.mock("@/services/user", () => ({
     useGetUserQuery: jest.fn(),
@@ -31,6 +20,31 @@ jest.mock("@/services/user", () => ({
 jest.mock("@/services/calendar", () => ({
     useCalendarAuth: jest.fn(),
 }));
+
+jest.mock("@/services/google-oauth", () => ({
+    useLogoutMutation: jest.fn(() => [jest.fn(), {}]),
+}));
+
+jest.mock("@/services/company", () => ({
+    useIsGoogleWorkspaceIntegratedQuery: jest.fn(() => ({
+        data: {
+            isIntegrated: true,
+            domain: "digipath.gr",
+        },
+        isLoading: false,
+    })),
+}));
+
+// ----------------------------------------------------------------------------
+
+import { render, screen } from "@testing-library/react";
+import Tester, { TesterProps } from "./Tester";
+import {
+    PROTECTED_CONTENT_TESTID,
+    ERROR_INFO_TESTID,
+} from "../Section/WorkspaceUserGuard";
+import { WITH_CALENDAR_SWITCH_TESTID } from "../Section/WithCalendarSwitch/constants";
+import "@testing-library/jest-dom";
 
 // ----------------------------------------------------------------------------
 
@@ -77,6 +91,10 @@ const mock_UserId_WorkspaceEmail = () => {
 };
 
 // ----------------------------------------------------------------------------
+
+beforeAll(async () => {
+    await preloadAll();
+});
 
 describe("Tasks.WithCalendar", () => {
     describe("[1]: No user ID selected", () => {

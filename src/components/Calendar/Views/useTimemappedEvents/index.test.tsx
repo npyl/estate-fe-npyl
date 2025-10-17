@@ -1,9 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import useTimemappedEvents from "@/components/Calendar/Views/useTimemappedEvents";
 import { TCalendarEvent } from "@/components/Calendar/types";
-import mockNextDynamic from "@/test/mock/dynamic";
-
-mockNextDynamic();
 
 const getHook = (...args: Parameters<typeof useTimemappedEvents>) =>
     renderHook(() => useTimemappedEvents(...args));

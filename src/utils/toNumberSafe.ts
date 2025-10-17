@@ -13,6 +13,7 @@ const toNumber = (s: string) => {
  */
 const toNumberSafe = (s?: any) => {
     try {
+        if (typeof s === "number") return s;
         if (typeof s !== "string") return -1;
         if (!s) return -1;
         return toNumber(s);
