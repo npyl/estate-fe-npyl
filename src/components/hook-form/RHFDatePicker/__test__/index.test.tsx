@@ -1,14 +1,15 @@
 import { setupUseTranslationMock } from "@/test/mock/useTranslation";
 setupUseTranslationMock();
 
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import dayjs from "dayjs";
-import { DATEPICKER_TESTID } from "./Tester/constants";
+import { DATEPICKER_TESTID, VALUE_TESTID } from "./Tester/constants";
 import Tester, { TesterProps } from "./Tester";
 import {
     clickAvailableDay,
     expectInputDate,
 } from "@/components/Pickers/DatePicker/__test__/util";
+import toLocalDate from "@/utils/toLocalDate";
 
 // ----------------------------------------------------------------------------------
 
@@ -33,23 +34,43 @@ const onChangeCb = jest.fn();
  */
 const expectOnChangeCalled = () => expect(onChangeCb).toHaveBeenCalledTimes(1);
 
-describe("DatePicker", () => {
+// ----------------------------------------------------------------------------------
+
+// INFO: these check the <div> that contains the value
+
+const expectISOValue = (d: string) => {
+    const v = screen.getByTestId(VALUE_TESTID).textContent;
+    expect(v).toBe(d);
+};
+
+const expectLocalDateValue = (d: string) => {
+    const v = screen.getByTestId(VALUE_TESTID).textContent;
+    expect(v).toBe(toLocalDate(d));
+};
+
+// ----------------------------------------------------------------------------------
+
+describe("RHFDatePicker", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
     describe("LocalDate", () => {
         it("initialValues", () => {
-            renderLocalDateTester({ formValues: { myDate: DATE } });
+            renderLocalDateTester({
+                formValues: { myDate: toLocalDate(DATE) },
+            });
             expectInputDate(DATEPICKER_TESTID, DATE);
+            expectLocalDateValue(DATE);
         });
         it("onChange", async () => {
             renderLocalDateTester({
-                formValues: { myDate: DATE },
+                formValues: { myDate: toLocalDate(DATE) },
                 onChange: onChangeCb,
             });
             const clickedDate = await clickAvailableDay(DATE);
             expectInputDate(DATEPICKER_TESTID, clickedDate);
+            expectLocalDateValue(clickedDate);
             expectOnChangeCalled();
         });
     });
@@ -57,6 +78,7 @@ describe("DatePicker", () => {
         it("initialValues", () => {
             renderISOTester({ formValues: { myDate: DATE } });
             expectInputDate(DATEPICKER_TESTID, DATE);
+            expectISOValue(DATE);
         });
         it("onChange", async () => {
             renderISOTester({
@@ -65,6 +87,7 @@ describe("DatePicker", () => {
             });
             const clickedDate = await clickAvailableDay(DATE);
             expectInputDate(DATEPICKER_TESTID, clickedDate);
+            expectISOValue(clickedDate);
             expectOnChangeCalled();
         });
     });
