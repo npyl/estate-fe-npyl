@@ -2,22 +2,22 @@ import { setupUseTranslationMock } from "@/test/mock/useTranslation";
 setupUseTranslationMock();
 
 import { render } from "@testing-library/react";
+import Tester from "./Tester";
+import { DatePickerProps } from "@/components/Pickers/DatePicker";
 import dayjs from "dayjs";
-import { DATEPICKER_TESTID } from "./Tester/constants";
-import Tester, { TesterProps } from "./Tester";
-import {
-    clickAvailableDay,
-    expectInputDate,
-} from "@/components/Pickers/DatePicker/__test__/util";
+import { clickAvailableDay, expectInputDate } from "./util";
 
 // ----------------------------------------------------------------------------------
 
-const renderTester = (props: TesterProps) => render(<Tester {...props} />);
+const DATEPICKER_TESTID = "datepicker-testid";
 
-const renderLocalDateTester = (props: Omit<TesterProps, "localDate">) =>
+const renderTester = (props: DatePickerProps) =>
+    render(<Tester data-testid={DATEPICKER_TESTID} {...props} />);
+
+const renderLocalDateTester = (props: Omit<DatePickerProps, "localDate">) =>
     renderTester({ localDate: true, ...props });
 
-const renderISOTester = (props: Omit<TesterProps, "localDate">) =>
+const renderISOTester = (props: Omit<DatePickerProps, "localDate">) =>
     renderTester({ localDate: false, ...props });
 
 // ----------------------------------------------------------------------------------
@@ -28,9 +28,6 @@ const DATE = dayjs().toISOString();
 
 const onChangeCb = jest.fn();
 
-/**
- * <RHFDatePicker /> supports exposing an onChange callback (despite being under RHF) because
- */
 const expectOnChangeCalled = () => expect(onChangeCb).toHaveBeenCalledTimes(1);
 
 describe("DatePicker", () => {
@@ -40,14 +37,11 @@ describe("DatePicker", () => {
 
     describe("LocalDate", () => {
         it("initialValues", () => {
-            renderLocalDateTester({ formValues: { myDate: DATE } });
+            renderLocalDateTester({ value: DATE });
             expectInputDate(DATEPICKER_TESTID, DATE);
         });
         it("onChange", async () => {
-            renderLocalDateTester({
-                formValues: { myDate: DATE },
-                onChange: onChangeCb,
-            });
+            renderLocalDateTester({ onChange: onChangeCb });
             const clickedDate = await clickAvailableDay(DATE);
             expectInputDate(DATEPICKER_TESTID, clickedDate);
             expectOnChangeCalled();
@@ -55,14 +49,12 @@ describe("DatePicker", () => {
     });
     describe("ISO Date", () => {
         it("initialValues", () => {
-            renderISOTester({ formValues: { myDate: DATE } });
+            renderISOTester({});
             expectInputDate(DATEPICKER_TESTID, DATE);
         });
+
         it("onChange", async () => {
-            renderISOTester({
-                formValues: { myDate: DATE },
-                onChange: onChangeCb,
-            });
+            renderISOTester({ onChange: onChangeCb });
             const clickedDate = await clickAvailableDay(DATE);
             expectInputDate(DATEPICKER_TESTID, clickedDate);
             expectOnChangeCalled();
