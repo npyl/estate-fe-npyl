@@ -59,17 +59,14 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     ) => {
         const dataTestId = (props as any)?.["data-testid"];
 
-        const format = localDate ? LOCAL_DATE_FORMAT : undefined;
-
-        const value = useMemo(
-            () => (_value ? dayjs(_value, format) : null),
-            [_value, format]
-        );
+        const value = useMemo(() => {
+            const format = localDate ? LOCAL_DATE_FORMAT : undefined;
+            return _value ? dayjs(_value, format) : null;
+        }, [_value, localDate]);
 
         const onChange = useCallback(
             (v: dayjs.Dayjs | null) => {
-                const UTCISOString =
-                    v?.utc().startOf("day").toISOString() || "";
+                const UTCISOString = v?.utc().toISOString() || "";
 
                 const final = localDate
                     ? toLocalDate(UTCISOString)
