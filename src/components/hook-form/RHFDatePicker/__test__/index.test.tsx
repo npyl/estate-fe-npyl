@@ -87,7 +87,6 @@ describe("RHFDatePicker", () => {
             });
             const clickedDate = await clickAvailableDay(DATE);
             expectInputDate(DATEPICKER_TESTID, clickedDate);
-            console.log("DATE: ", DATE, " CLICKEDDATE: ", clickedDate);
             expectISOValue(clickedDate);
             expectOnChangeCalled();
         });
