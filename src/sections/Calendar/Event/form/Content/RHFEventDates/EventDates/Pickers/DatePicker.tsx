@@ -4,7 +4,7 @@ import PPDatePicker, {
 } from "@/components/Pickers/DatePicker";
 import dayjs from "dayjs";
 
-type OmitList = "localDate" | "value" | "onChangeISO" | "onChange";
+type OmitList = "localDate" | "value" | "onChange";
 
 interface DatePickerProps extends Omit<PPDatePickerProps, OmitList> {
     startDate: string;
@@ -20,7 +20,7 @@ const DatePicker: FC<DatePickerProps> = ({
     onEndDateChange,
     ...props
 }) => {
-    const onChangeISO = useCallback(
+    const onChange = useCallback(
         (v: string) => {
             const s = dayjs(startDate);
             const e = dayjs(endDate);
@@ -47,7 +47,7 @@ const DatePicker: FC<DatePickerProps> = ({
         <PPDatePicker
             localDate={false}
             value={startDate}
-            onChangeISO={onChangeISO}
+            onChange={onChange}
             {...props}
         />
     );

@@ -41,7 +41,6 @@ interface DatePickerProps
 
     value?: string;
     onChange?: (v: string) => void;
-    onChangeISO?: (v: string) => void;
 }
 
 const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
@@ -53,7 +52,6 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
             slotProps,
             // ...
             onChange: _onChange,
-            onChangeISO,
             // ...
             ...props
         },
@@ -70,11 +68,16 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
 
         const onChange = useCallback(
             (v: dayjs.Dayjs | null) => {
-                const utcDate = v?.utc().startOf("day");
-                _onChange?.(toLocalDate(utcDate?.toISOString() || ""));
-                onChangeISO?.(utcDate?.toISOString() || "");
+                const UTCISOString =
+                    v?.utc().startOf("day").toISOString() || "";
+
+                const final = localDate
+                    ? toLocalDate(UTCISOString)
+                    : UTCISOString;
+
+                _onChange?.(final);
             },
-            [_onChange, onChangeISO]
+            [localDate, _onChange]
         );
 
         return (

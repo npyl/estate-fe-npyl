@@ -1,12 +1,56 @@
-import { Controller, FieldValues, Path, useFormContext } from "react-hook-form";
+import {
+    Controller,
+    ControllerRenderProps,
+    FieldError,
+    FieldValues,
+    Path,
+    useFormContext,
+} from "react-hook-form";
 import DatePicker, { DatePickerProps } from "@/components/Pickers/DatePicker";
 import Stack from "@mui/material/Stack";
 import { FormHelperText, Typography } from "@mui/material";
+import { useCallback } from "react";
+
+// --------------------------------------------------------------------------
+
+type RenderProps<T extends FieldValues> = DatePickerProps & {
+    label?: string;
+    field: ControllerRenderProps<T, Path<T>>;
+    error?: FieldError;
+};
+
+const Render = <T extends FieldValues>({
+    field: { onChange: _onChange0, ...field },
+    error,
+    label,
+    onChange: _onChange1,
+    ...props
+}: RenderProps<T>) => {
+    const onChange = useCallback(
+        (v: string) => {
+            _onChange0(v);
+            _onChange1?.(v);
+        },
+        [_onChange0, _onChange1]
+    );
+
+    return (
+        <Stack spacing={1}>
+            {label ? (
+                <Typography variant="subtitle1">{label}</Typography>
+            ) : null}
+            <DatePicker {...field} onChange={onChange} {...props} />
+            {error ? (
+                <FormHelperText error>{error?.message}</FormHelperText>
+            ) : null}
+        </Stack>
+    );
+};
 
 // --------------------------------------------------------------------------
 
 interface RHFDatePickerProps<T extends FieldValues>
-    extends Omit<DatePickerProps, "value" | "onChange"> {
+    extends Omit<DatePickerProps, "value"> {
     label?: string;
     name: Path<T>;
 }
@@ -16,7 +60,7 @@ interface RHFDatePickerProps<T extends FieldValues>
 const RHFDatePicker = <T extends FieldValues>({
     name,
     label,
-    ...others
+    ...props
 }: RHFDatePickerProps<T>) => {
     const { control } = useFormContext<T>();
 
@@ -25,15 +69,12 @@ const RHFDatePicker = <T extends FieldValues>({
             name={name}
             control={control}
             render={({ field, fieldState: { error } }) => (
-                <Stack spacing={1}>
-                    {label ? (
-                        <Typography variant="subtitle1">{label}</Typography>
-                    ) : null}
-                    <DatePicker {...field} {...others} />
-                    {error ? (
-                        <FormHelperText error>{error?.message}</FormHelperText>
-                    ) : null}
-                </Stack>
+                <Render<T>
+                    label={label}
+                    field={field}
+                    error={error}
+                    {...props}
+                />
             )}
         />
     );
