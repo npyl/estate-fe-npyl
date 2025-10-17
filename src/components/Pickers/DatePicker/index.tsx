@@ -67,7 +67,7 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
 
                 const final = localDate
                     ? v.format(LOCAL_DATE_FORMAT)
-                    : v.toISOString();
+                    : v.startOf("day").toISOString();
 
                 _onChange?.(final);
             },
