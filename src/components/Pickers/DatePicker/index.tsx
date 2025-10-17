@@ -33,9 +33,11 @@ const getSlotProps = (
 
 // --------------------------------------------------------------------------
 
+type OmitList = "value" | "defaultValue" | "onChange";
+
 interface DatePickerProps
-    extends Omit<MuiDatePickerProps<dayjs.Dayjs>, "value" | "onChange"> {
-    localDate?: false; // INFO: toggles localDate mode ON/OFF which is the default for 99% cases of PropertyPro (and BE)
+    extends Omit<MuiDatePickerProps<dayjs.Dayjs>, OmitList> {
+    localDate?: boolean; // INFO: toggles localDate mode ON/OFF which is the default for 99% cases of PropertyPro (and BE)
 
     value?: string;
     onChange?: (v: string) => void;
