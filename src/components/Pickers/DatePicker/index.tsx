@@ -65,8 +65,11 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         }, [_value, localDate]);
 
         const onChange = useCallback(
-            (v: dayjs.Dayjs | null) => {
-                const UTCISOString = v?.utc().toISOString() || "";
+            (v: dayjs.Dayjs) => {
+                if (!v) return;
+                if (!_onChange) return;
+
+                const UTCISOString = v.utc().toISOString();
 
                 const final = localDate
                     ? toLocalDate(UTCISOString)
