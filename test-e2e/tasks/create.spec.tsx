@@ -68,8 +68,6 @@ test.describe("create", () => {
         });
 
         test("default dates -> all day -> default dates", async ({ page }) => {
-            let currentHour = -1;
-
             const onBeforeSubmit = async () => {
                 // 1. click calendar switch
                 await page.getByTestId(WITH_CALENDAR_SWITCH_TESTID).click();
@@ -79,14 +77,11 @@ test.describe("create", () => {
 
                 // 3. re-click all day checkbox (all day OFF)
                 await page.getByTestId(ALL_DAY_CHECKBOX_TESTID).click();
-
-                // 4. before submitting, note down the hour we set the <RHFEventDates /> (by default value)
-                currentHour = new Date().getHours();
             };
 
             const [request] = await createEvent(page, onBeforeSubmit);
 
-            expectHours(request, currentHour, currentHour + 1);
+            expectHours(request, START_HOUR, START_HOUR + 1);
         });
     });
 });
