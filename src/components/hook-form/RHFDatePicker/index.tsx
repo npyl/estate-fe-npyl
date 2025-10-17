@@ -1,21 +1,24 @@
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, FieldValues, Path, useFormContext } from "react-hook-form";
 import DatePicker, { DatePickerProps } from "@/components/Pickers/DatePicker";
 import Stack from "@mui/material/Stack";
 import { FormHelperText, Typography } from "@mui/material";
-import { FC } from "react";
 
 // --------------------------------------------------------------------------
 
-interface RHFDatePickerProps
+interface RHFDatePickerProps<T extends FieldValues>
     extends Omit<DatePickerProps, "value" | "onChange"> {
     label?: string;
-    name: string;
+    name: Path<T>;
 }
 
 // INFO: value prop must be LocalDate (YYYY-MM-DD)
 
-const RHFDatePicker: FC<RHFDatePickerProps> = ({ name, label, ...others }) => {
-    const { control } = useFormContext();
+const RHFDatePicker = <T extends FieldValues>({
+    name,
+    label,
+    ...others
+}: RHFDatePickerProps<T>) => {
+    const { control } = useFormContext<T>();
 
     return (
         <Controller
