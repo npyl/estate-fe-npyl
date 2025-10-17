@@ -7,6 +7,9 @@ jest.mock("react-i18next", () => ({
 const t = jest.fn((key) => key);
 
 const setupUseTranslationMock = () =>
-    (useTranslation as jest.Mock).mockReturnValue({ t });
+    (useTranslation as jest.Mock).mockReturnValue({
+        t,
+        i18n: { language: "en" },
+    });
 
 export { setupUseTranslationMock };
