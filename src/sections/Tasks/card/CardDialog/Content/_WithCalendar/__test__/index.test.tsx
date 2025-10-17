@@ -3,6 +3,10 @@
 // SCENARIO 2.1:    w/ User ID,     w/o Google Workspace email
 // SCENARIO 2.2:    w/ User Id,     w/  Google Workspace email
 // ============================================================================
+
+import { setupUseTranslationMock } from "@/test/mock/useTranslation";
+setupUseTranslationMock();
+
 import { setupUseAuthMock } from "@/test/mock/useAuth";
 setupUseAuthMock();
 
