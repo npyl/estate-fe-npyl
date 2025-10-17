@@ -3,7 +3,7 @@ import {
     DatePicker as MuiDatePicker,
 } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import { FC, useCallback, useMemo } from "react";
+import { forwardRef, useCallback, useMemo } from "react";
 import toLocalDate from "@/utils/toLocalDate";
 import utc from "dayjs/plugin/utc";
 import { LOCAL_DATE_FORMAT } from "@/constants/datepicker";
@@ -44,44 +44,52 @@ interface DatePickerProps
     onChangeISO?: (v: string) => void;
 }
 
-const DatePicker: FC<DatePickerProps> = ({
-    localDate = true,
-    // ...
-    value: _value,
-    slotProps,
-    // ...
-    onChange: _onChange,
-    onChangeISO,
-    // ...
-    ...props
-}) => {
-    const dataTestId = (props as any)?.["data-testid"];
-
-    const format = localDate ? LOCAL_DATE_FORMAT : undefined;
-
-    const value = useMemo(
-        () => (_value ? dayjs(_value, format) : null),
-        [_value, format]
-    );
-
-    const onChange = useCallback(
-        (v: dayjs.Dayjs | null) => {
-            const utcDate = v?.utc().startOf("day");
-            _onChange?.(toLocalDate(utcDate?.toISOString() || ""));
-            onChangeISO?.(utcDate?.toISOString() || "");
+const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
+    (
+        {
+            localDate = true,
+            // ...
+            value: _value,
+            slotProps,
+            // ...
+            onChange: _onChange,
+            onChangeISO,
+            // ...
+            ...props
         },
-        [_onChange, onChangeISO]
-    );
+        ref
+    ) => {
+        const dataTestId = (props as any)?.["data-testid"];
 
-    return (
-        <MuiDatePicker
-            value={value}
-            onChange={onChange}
-            slotProps={getSlotProps(slotProps, dataTestId)}
-            {...props}
-        />
-    );
-};
+        const format = localDate ? LOCAL_DATE_FORMAT : undefined;
+
+        const value = useMemo(
+            () => (_value ? dayjs(_value, format) : null),
+            [_value, format]
+        );
+
+        const onChange = useCallback(
+            (v: dayjs.Dayjs | null) => {
+                const utcDate = v?.utc().startOf("day");
+                _onChange?.(toLocalDate(utcDate?.toISOString() || ""));
+                onChangeISO?.(utcDate?.toISOString() || "");
+            },
+            [_onChange, onChangeISO]
+        );
+
+        return (
+            <MuiDatePicker
+                ref={ref}
+                value={value}
+                onChange={onChange}
+                slotProps={getSlotProps(slotProps, dataTestId)}
+                {...props}
+            />
+        );
+    }
+);
+
+DatePicker.displayName = "DatePicker";
 
 export type { DatePickerProps };
 export default DatePicker;
