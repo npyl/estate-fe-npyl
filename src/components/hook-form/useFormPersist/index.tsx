@@ -8,11 +8,10 @@ import {
 import debugLog from "@/_private/debugLog";
 import useUnsavedChangesWatcher from "./useUnsavedWatcher";
 import { EMPTY_FALLBACK } from "./constant";
-import dynamic from "next/dynamic";
 import useFormStorage from "./useFormStorage";
 import quickToast from "./quickToast";
 import useFormMethods from "./useFormMethods";
-const Notice = dynamic(() => import("./Notice"));
+import Notice from "./Notice";
 
 // INFO: prevent state change before redirects
 const PASSIVE = true;

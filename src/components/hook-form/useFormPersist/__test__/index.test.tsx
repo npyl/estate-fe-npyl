@@ -1,5 +1,10 @@
 import { setupUseRouterMock } from "@/test/mock/useRouter";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { setupUseTranslationMock } from "@/test/mock/useTranslation";
+
+setupUseTranslationMock();
+setupUseRouterMock();
+
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import Tester, {
     DIRTY_TESTID,
     DIRTY_YES,
@@ -12,14 +17,12 @@ import Tester, {
     Values,
 } from "./index.comp";
 import { PropsWithoutDefaultValues } from "@/components/hook-form/useFormPersist";
-import userEvent from "@testing-library/user-event";
 import { getVersioned, TVersioned } from "@/hooks/useVersioned";
-import { setupUseTranslationMock } from "@/test/mock/useTranslation";
 import uuidv4 from "@/utils/uuidv4";
 import { PERSIST_NOTICE_TESTID } from "../constant";
 import triggerEvent from "@/components/hook-form/useFormPersist/useUnsavedWatcher/triggerEvent";
-import "@testing-library/jest-dom";
 import sleep from "@/utils/sleep";
+import "@testing-library/jest-dom";
 
 const COOKIE_VALUES: Values = {
     something: "test-cookie",
@@ -36,8 +39,7 @@ const renderTester = (
 ) => render(<Tester formProps={formProps} config={config} />);
 
 const clickSubmit = async () => {
-    const user = userEvent.setup();
-    await user.click(screen.getByTestId(SUBMIT_ID));
+    await act(async () => screen.getByTestId(SUBMIT_ID).click());
 };
 
 const expectPayload = async (expected: string) => {
@@ -77,7 +79,7 @@ const expectStorageValue = () => {
 const fillInput = (inputId: string) => {
     const field = screen.getByTestId(inputId);
     const input = field.querySelector("input");
-    if (!input) throw "Bad input";
+    if (!input) throw new Error("Bad input");
     const value = uuidv4();
     fireEvent.change(input, { target: { value } });
     return value;
@@ -85,14 +87,13 @@ const fillInput = (inputId: string) => {
 
 // ----------------------------------------------------------------------------
 
-const clickPersistChanges = () => screen.getByTestId(PERSIST_TESTID).click();
+const clickPersistChanges = () =>
+    act(() => screen.getByTestId(PERSIST_TESTID).click());
 
 // ----------------------------------------------------------------------------
 
 describe("useFormPersist", () => {
     beforeEach(() => {
-        setupUseTranslationMock();
-        setupUseRouterMock();
         clearStorage();
     });
 
@@ -103,7 +104,10 @@ describe("useFormPersist", () => {
             renderTester({});
 
             // 1.1: register event listener spy
-            const addEventListenerSpy = jest.spyOn(window, "addEventListener");
+            const addEventListenerSpy = jest.spyOn(
+                globalThis.window,
+                "addEventListener"
+            );
 
             // 2: fill in input
             const value = fillInput(FIELD_TESTID);
@@ -115,7 +119,7 @@ describe("useFormPersist", () => {
 
             // 4: Expect storage item value
             const expect = expectStorageValue();
-            if (!expect) throw "Bad expect";
+            if (!expect) throw new Error("Bad expect");
             expect.toBe(value);
 
             // 5. Cleanup
@@ -212,7 +216,7 @@ describe("useFormPersist", () => {
 
         // Expect storage item value
         const expect = expectStorageValue();
-        if (!expect) throw "Bad expect";
+        if (!expect) throw new Error("Bad expect");
         expect.toBe(value);
     });
 });
