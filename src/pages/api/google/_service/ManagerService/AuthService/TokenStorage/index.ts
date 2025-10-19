@@ -1,5 +1,9 @@
+import debugLog from "@/_private/debugLog";
 import { storeCreate, storeExists, storeRead, storeWrite } from "./store";
 import { Store, StoredToken } from "./types";
+
+const storageLog = (method: string, ...args: any) =>
+    debugLog(`[${method}]: `, ...args);
 
 interface GetAllTokensRes {
     tokens: StoredToken[];
@@ -21,7 +25,8 @@ class TokenStorage {
         try {
             const tokens = store?.[domain] ?? [];
             return { tokens, store };
-        } catch {
+        } catch (ex) {
+            storageLog("getAllTokens", ex);
             return { tokens: [], store: {} };
         }
     }
@@ -30,11 +35,7 @@ class TokenStorage {
         domain: string,
         userId: number
     ): Promise<StoredToken | undefined> {
-        const res = await this.getAllTokens(domain);
-        if (!res) return;
-
-        const { tokens } = res;
-
+        const { tokens } = await this.getAllTokens(domain);
         return tokens.find((t) => t.userId === userId);
     }
 
@@ -44,10 +45,7 @@ class TokenStorage {
      * @param token
      */
     async saveToken(domain: string, token: StoredToken): Promise<boolean> {
-        const res = await this.getAllTokens(domain);
-        if (!res) return false;
-
-        const { tokens, store } = res;
+        const { tokens, store } = await this.getAllTokens(domain);
 
         try {
             const idx = tokens.findIndex((t) => t.userId === token.userId);
@@ -61,16 +59,14 @@ class TokenStorage {
             const newStore = { ...store, [domain]: tokens };
 
             return await storeWrite(newStore);
-        } catch {
+        } catch (ex) {
+            storageLog("saveToken", ex);
             return false;
         }
     }
 
     async deleteToken(domain: string, userId: number): Promise<boolean> {
-        const res = await this.getAllTokens(domain);
-        if (!res) return false;
-
-        const { tokens, store } = res;
+        const { tokens, store } = await this.getAllTokens(domain);
 
         try {
             const filteredTokens = tokens.filter((t) => t.userId !== userId);
@@ -79,7 +75,7 @@ class TokenStorage {
 
             return await storeWrite(newStore);
         } catch (ex) {
-            console.log(ex);
+            storageLog("deleteToken", ex);
             return false;
         }
     }
