@@ -4,9 +4,9 @@ import {
     IsAuthenticatedRes,
 } from "@/types/calendar/google";
 import { GoogleWorkspaceKeys } from "@/pages/api/google/_service/getCredentialsForUser";
-import tokenService from "./TokenStorage";
+import tokenService from "@/pages/api/google/_service/ManagerService/AuthService/TokenStorage";
 import toNumberSafe from "@/utils/toNumberSafe";
-import SCOPE from "./SCOPE";
+import SCOPE from "@/pages/api/google/_service/ManagerService/SCOPE";
 
 /**
  * AuthService - OAuth & Users manager for a single workspace
@@ -17,12 +17,6 @@ import SCOPE from "./SCOPE";
 const serviceLog = (...s: any) => console.log(`[AuthService]: `, ...s);
 
 // ------------------------------------------------------------------------
-
-interface UserToken {
-    accessToken: string;
-    refreshToken: string;
-    expiryDate: number;
-}
 
 const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
 
@@ -43,6 +37,84 @@ class AuthService {
 
     // e.g. npylarinos@digipath.gr -> digipath.gr
     WORKSPACE_DOMAIN: string | undefined;
+
+    // -------------------------------------------------------------------------------------//
+    //                                Double Storage                                        //
+    // -------------------------------------------------------------------------------------//
+
+    private readonly DOUBLE_deleteToken = async (userId: number) => {
+        await tokenService.deleteToken(userId);
+        this.userTokens.delete(userId);
+    };
+
+    /**
+     * Remove all users from our storage (a.k.a log them out), clear our in-memory record of logged-in users
+     */
+    private async DOUBLE_logoutAllUsers() {
+        serviceLog("removing all user tokens (in-memory)");
+        this.userTokens.clear();
+        serviceLog("removing all user tokens (disk)");
+        await tokenService.deleteAllTokens();
+    }
+
+    private async DOUBLE_initialise() {
+        await tokenService.initialize();
+    }
+
+    // -------------------------------------------------------------------------------------
+
+    private readonly getRevokeUserPromise = async (
+        tokens: UserToken,
+        i: number
+    ) => {
+        this.oauth2Client.setCredentials({
+            access_token: tokens.accessToken,
+            refresh_token: tokens.refreshToken,
+            expiry_date: tokens.expiryDate,
+        });
+
+        await this.oauth2Client.revokeCredentials();
+
+        serviceLog(`revoked[${i}]: `, tokens.accessToken);
+    };
+
+    /**
+     * Refresh the access token using the refresh token
+     * @param userId User ID
+     * @param refreshToken Refresh token
+     * @returns Updated UserToken object
+     */
+    private async refreshAccessToken(
+        userId: number,
+        refreshToken: string
+    ): Promise<UserToken> {
+        try {
+            const { credentials } =
+                await this.oauth2Client.refreshAccessToken();
+
+            if (!credentials.access_token || !credentials.expiry_date) {
+                throw new Error("Failed to refresh access token");
+            }
+
+            const updatedToken: UserToken = {
+                accessToken: credentials.access_token,
+                refreshToken: refreshToken, // Keep the existing refresh token
+                expiryDate: credentials.expiry_date,
+            };
+
+            console.log("Expired! Got new: ", updatedToken);
+
+            // Update the tokens in memory
+            this.userTokens.set(userId, updatedToken);
+
+            return updatedToken;
+        } catch (error) {
+            console.error("Error refreshing access token:", error);
+            throw error;
+        }
+    }
+
+    // -----------------------------------------------------------------------------------
 
     async getAuthUrl(userId: number) {
         const authUrl = this.oauth2Client.generateAuthUrl({
@@ -92,44 +164,8 @@ class AuthService {
         throw new Error("Invalid token response");
     }
 
-    /**
-     * Refresh the access token using the refresh token
-     * @param userId User ID
-     * @param refreshToken Refresh token
-     * @returns Updated UserToken object
-     */
-    private async refreshAccessToken(
-        userId: number,
-        refreshToken: string
-    ): Promise<UserToken> {
-        try {
-            const { credentials } =
-                await this.oauth2Client.refreshAccessToken();
-
-            if (!credentials.access_token || !credentials.expiry_date) {
-                throw new Error("Failed to refresh access token");
-            }
-
-            const updatedToken: UserToken = {
-                accessToken: credentials.access_token,
-                refreshToken: refreshToken, // Keep the existing refresh token
-                expiryDate: credentials.expiry_date,
-            };
-
-            console.log("Expired! Got new: ", updatedToken);
-
-            // Update the tokens in memory
-            this.userTokens.set(userId, updatedToken);
-
-            return updatedToken;
-        } catch (error) {
-            console.error("Error refreshing access token:", error);
-            throw error;
-        }
-    }
-
     async getAuthForUser(userId: number): Promise<OAuth2Client | undefined> {
-        let userTokens = this.userTokens.get(userId);
+        const userTokens = this.userTokens.get(userId);
         if (!userTokens) return;
 
         // Check if the current token is expired
@@ -162,7 +198,7 @@ class AuthService {
     async getUserInfo(userId: number): Promise<GoogleCalendarUserInfo | null> {
         try {
             const tokens = this.userTokens.get(userId);
-            if (!tokens) throw "Could find token for userId";
+            if (!tokens) throw new Error("Could find token for userId");
 
             const { accessToken } = tokens;
 
@@ -197,39 +233,12 @@ class AuthService {
         }
     }
 
-    // ------------------------------------------------------------------------------------------------------
-
-    /**
-     * Remove all users from our storage (a.k.a log them out), clear our in-memory record of logged-in users
-     */
-    private async logoutAllUsers() {
-        serviceLog("removing all user tokens (in-memory)");
-        this.userTokens.clear();
-        serviceLog("removing all user tokens (disk)");
-        await tokenService.deleteAllTokens();
-    }
-
-    private readonly getRevokeUserPromise = async (
-        tokens: UserToken,
-        i: number
-    ) => {
-        this.oauth2Client.setCredentials({
-            access_token: tokens.accessToken,
-            refresh_token: tokens.refreshToken,
-            expiry_date: tokens.expiryDate,
-        });
-
-        await this.oauth2Client.revokeCredentials();
-
-        serviceLog(`revoked[${i}]: `, tokens.accessToken);
-    };
-
     /**
      * Invalidate oauth2Client instance so that when a pp-user (that is admin) changes his company's google workspace (or deletes it) a new one can be given upon request.
      * Considering our development is also our production and testing (uhhh) this is also helpful for testing.
      */
     async dropGoogleWorkspace() {
-        await this.logoutAllUsers();
+        await this.DOUBLE_logoutAllUsers();
 
         serviceLog("revoking workspace access");
         const tokensList = Array.from(this.userTokens.values());
@@ -240,21 +249,16 @@ class AuthService {
         this.oauth2Client = undefined!;
     }
 
-    // ------------------------------------------------------------------------------------------------------
-
     async revokeAuthentication(userId: number) {
         try {
             await this.oauth2Client.revokeCredentials();
-            await tokenService.deleteToken(userId);
-            this.userTokens.delete(userId);
+            await this.DOUBLE_deleteToken(userId);
         } catch (ex) {
             console.error(ex);
         }
     }
 
-    // -------------------------------------------------------------------------------
-
-    setOauth2ClientForKeys = async (keys: GoogleWorkspaceKeys) => {
+    async setOauth2ClientForKeys(keys: GoogleWorkspaceKeys) {
         serviceLog(keys);
 
         // INFO: keep this for workspace-related higher-level apis (like calendar)
@@ -268,11 +272,14 @@ class AuthService {
         if (!res) return;
 
         this.oauth2Client = res;
-    };
+    }
 
     async initialise(keys: GoogleWorkspaceKeys) {
+        // OAuthClient
         await this.setOauth2ClientForKeys(keys);
-        await tokenService.initialize();
+
+        // Initialise Token storage(s)
+        await this.DOUBLE_initialise();
     }
 }
 
