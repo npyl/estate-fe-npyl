@@ -9,6 +9,7 @@ import toNumberSafe from "@/utils/toNumberSafe";
 import SCOPE from "../SCOPE";
 import { UserToken } from "./types";
 import DoubleStore from "./DoubleStore";
+import debugLog from "@/_private/debugLog";
 
 /**
  * AuthService - OAuth & Users manager for a single workspace
@@ -16,7 +17,7 @@ import DoubleStore from "./DoubleStore";
 
 // ------------------------------------------------------------------------
 
-const serviceLog = (...s: any) => console.log(`[AuthService]: `, ...s);
+const serviceLog = (...s: any) => debugLog(`[AuthService]: `, ...s);
 
 // ------------------------------------------------------------------------
 

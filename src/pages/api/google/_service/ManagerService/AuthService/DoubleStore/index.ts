@@ -1,8 +1,9 @@
 import tokenService from "@/pages/api/google/_service/ManagerService/AuthService/TokenStorage";
 import { UserToken } from "@/pages/api/google/_service/ManagerService/AuthService/types";
 import { StoredToken } from "@/pages/api/google/_service/ManagerService/AuthService/TokenStorage/types";
+import debugLog from "@/_private/debugLog";
 
-const serviceLog = (...s: any) => console.log(`[AuthService]: `, ...s);
+const serviceLog = (...s: any) => debugLog(`[AuthService]: `, ...s);
 
 class DoubleStore {
     // e.g. npylarinos@digipath.gr -> digipath.gr
