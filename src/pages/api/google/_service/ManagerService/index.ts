@@ -110,7 +110,7 @@ class ManagerService {
     // WORKSPACE
 
     getWorkspaceDomain(userId: number) {
-        return this.authServiceFor(userId)?.WORKSPACE_DOMAIN;
+        return this.authServiceFor(userId)?.getWorkspaceDomain();
     }
 
     async dropGoogleWorkspace(userId: number) {
