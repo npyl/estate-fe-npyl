@@ -1,6 +1,6 @@
-import tokenService from "./TokenStorage";
-import { UserToken } from "./types";
-import { StoredToken } from "./TokenStorage/types";
+import tokenService from "@/pages/api/google/_service/ManagerService/AuthService/TokenStorage";
+import { UserToken } from "@/pages/api/google/_service/ManagerService/AuthService/types";
+import { StoredToken } from "@/pages/api/google/_service/ManagerService/AuthService/TokenStorage/types";
 
 const serviceLog = (...s: any) => console.log(`[AuthService]: `, ...s);
 
