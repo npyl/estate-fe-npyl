@@ -1,6 +1,6 @@
 import { ICreateOrUpdateTaskReq, IKanbanCardPOST } from "@/types/tasks";
 import type { NextApiRequest, NextApiResponse } from "next/types";
-import calendarService from "../../calendar/_service/CalendarService";
+import calendarService from "@/pages/api/calendar/_service/CalendarService";
 import { KanbanTaskToCalendarEvent } from "@/types/tasks/mapper";
 import { TCalendarEventToGCalendarEvent } from "@/types/calendar/mapper";
 import { IUser } from "@/types/user";

@@ -49,7 +49,7 @@ const selectColumn = async (page: Page) => {
 const submitAndInterceptRequest = async (page: Page) => {
     // INFO: first register interceptor; *then* actually wait for response
     const p = page.waitForRequest(
-        (req) => req.url().includes("/api/google") && req.method() === "POST"
+        (req) => req.url().includes("/api/tasks") && req.method() === "POST"
     );
 
     // Then click the button
