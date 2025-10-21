@@ -6,7 +6,6 @@ import {
 import { setupUseSearchParamsMock } from "@/test/mock/useSearchParams";
 import { setupUseAuthMock, UseAuthMockOptions } from "@/test/mock/useAuth";
 import Tester, { AUTHORIZED_CONTENT_ID } from "./index.comp";
-import "@testing-library/jest-dom";
 
 // ----------------------------------------------------------------------------------------------
 

@@ -15,7 +15,7 @@ import {
     // ...
     ALL_DAY_CHECKBOX_TESTID,
 } from "../EventDates/constants";
-import "@testing-library/jest-dom";
+
 import { getOptionTestId } from "@/components/Pickers/TimePicker";
 
 // ----------------------------------------------------------------------------------

@@ -1,6 +1,5 @@
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom";
 
 const clickOptions = async (SELECT_ID: string, OPTION_IDs: string[]) => {
     const user = userEvent.setup();

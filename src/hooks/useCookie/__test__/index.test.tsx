@@ -10,7 +10,6 @@ import clickAndExpectOrg from "@/test/clickAndExpect";
 import { render, screen } from "@testing-library/react";
 import { parseCookies, initialiseCookie } from "@/test/cookies";
 import { getVersioned } from "@/hooks/useVersioned";
-import "@testing-library/jest-dom";
 
 /**
  * Check actual cookie value (stored in document.cookie for Jest)

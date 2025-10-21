@@ -6,7 +6,6 @@ import {
 } from "@/test/mock/useRouter";
 import { setupUseAuthMock, UseAuthMockOptions } from "@/test/mock/useAuth";
 import Tester, { DIV_TESTID } from "./index.comp";
-import "@testing-library/jest-dom";
 
 // ----------------------------------------------------------------------------------------------
 

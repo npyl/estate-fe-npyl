@@ -12,7 +12,6 @@ import AgreementsGuard from "@/components/authentication/agreements-guard";
 import MessagesGuard from "../messages-guard";
 import NotificationsGuard from "../notification-guard";
 import TasksGuard from "../tasks-guard";
-import "@testing-library/jest-dom";
 
 // ----------------------------------------------------------------------------------------------
 

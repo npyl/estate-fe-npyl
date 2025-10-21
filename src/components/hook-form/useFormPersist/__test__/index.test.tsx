@@ -22,7 +22,6 @@ import uuidv4 from "@/utils/uuidv4";
 import { PERSIST_NOTICE_TESTID } from "../constant";
 import triggerEvent from "@/components/hook-form/useFormPersist/useUnsavedWatcher/triggerEvent";
 import sleep from "@/utils/sleep";
-import "@testing-library/jest-dom";
 
 const COOKIE_VALUES: Values = {
     something: "test-cookie",
