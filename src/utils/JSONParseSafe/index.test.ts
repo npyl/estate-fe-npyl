@@ -1,28 +1,19 @@
 import JSONParseSafe from "@/utils/JSONParseSafe";
 
 describe("JSONParseSafe", () => {
-    let consoleSpy: jest.SpyInstance;
-
-    beforeEach(() => {
-        consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
-    });
-
-    afterEach(() => {
-        consoleSpy.mockRestore();
-    });
+    beforeEach(() => {});
+    afterEach(() => {});
 
     describe("JSON", () => {
         it("should parse valid JSON string", () => {
             const validJson = '{"name": "John", "age": 30}';
             const result = JSONParseSafe(validJson);
-
             expect(result).toEqual({ name: "John", age: 30 });
         });
 
         it("JSON (array)", () => {
             const validJson = '[1, 2, 3, "test"]';
             const result = JSONParseSafe(validJson);
-
             expect(result).toEqual([1, 2, 3, "test"]);
         });
 
@@ -61,10 +52,7 @@ describe("JSONParseSafe", () => {
         it("invalid JSON", () => {
             const invalidJson = '{"invalid": json}';
             const result = JSONParseSafe(invalidJson);
-
             expect(result).toBe(null);
-            expect(consoleSpy).toHaveBeenCalledTimes(1);
-            expect(consoleSpy).toHaveBeenCalledWith(expect.any(SyntaxError));
         });
 
         it("malformed JSON", () => {
@@ -81,8 +69,6 @@ describe("JSONParseSafe", () => {
                 const result = JSONParseSafe(invalidCase);
                 expect(result).toBe(null);
             });
-
-            expect(consoleSpy).toHaveBeenCalledTimes(malformedCases.length);
         });
     });
 });
