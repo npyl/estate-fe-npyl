@@ -28,7 +28,7 @@ class ManagerService {
     // ------------------------------------------------------------------------------------------------------
     // INTERNAL
 
-    private authServiceFor(userId: number) {
+    protected authServiceFor(userId: number) {
         const domain = this.domains.get(userId);
         if (!domain) return;
         return this.workspaces.get(domain);
@@ -51,7 +51,7 @@ class ManagerService {
      * @param Authorization `Bearer ${...}`
      * @returns Receive google workspace credentials from backend
      */
-    private async initialise(userId: number, Authorization: string) {
+    protected async initialise(userId: number, Authorization: string) {
         const keys = await getCredentialsForUser(Authorization);
         if (!keys) return null;
 
@@ -145,4 +145,5 @@ if (process.env.NODE_ENV !== "production")
 
 // ------------------------------------------------------------------------------
 
+export { ManagerService };
 export default managerService;
