@@ -12,8 +12,6 @@ import {
     expectWrittenStore,
     setupDefaultMocks,
 } from "./utils";
-import "@/_private/JSON";
-
 // Mock only the filesystem layer
 jest.mock("node:fs/promises");
 

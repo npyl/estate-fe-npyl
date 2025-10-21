@@ -3,8 +3,6 @@ import path from "node:path";
 import tokenService from "@/pages/api/google/_service/ManagerService/AuthService/TokenStorage";
 import { TOKEN_FILE_PATH } from "@/pages/api/google/_service/ManagerService/AuthService/TokenStorage/constants";
 import { ERRORS } from "./utils";
-import "@/_private/JSON";
-
 jest.mock("node:fs/promises");
 
 const mockedFs = fs as jest.Mocked<typeof fs>;

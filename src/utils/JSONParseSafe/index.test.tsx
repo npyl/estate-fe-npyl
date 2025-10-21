@@ -1,9 +1,7 @@
-describe("JSON.parseSafe", () => {
-    let consoleSpy: jest.SpyInstance;
+import JSONParseSafe from ".";
 
-    beforeAll(async () => {
-        await import("@/_private/JSON");
-    });
+describe("JSONParseSafe", () => {
+    let consoleSpy: jest.SpyInstance;
 
     beforeEach(() => {
         consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
@@ -16,45 +14,45 @@ describe("JSON.parseSafe", () => {
     describe("JSON", () => {
         it("should parse valid JSON string", () => {
             const validJson = '{"name": "John", "age": 30}';
-            const result = JSON.parseSafe(validJson);
+            const result = JSONParseSafe(validJson);
 
             expect(result).toEqual({ name: "John", age: 30 });
         });
 
         it("JSON (array)", () => {
             const validJson = '[1, 2, 3, "test"]';
-            const result = JSON.parseSafe(validJson);
+            const result = JSONParseSafe(validJson);
 
             expect(result).toEqual([1, 2, 3, "test"]);
         });
 
         it("primitives", () => {
-            expect(JSON.parseSafe("42")).toBe(42);
-            expect(JSON.parseSafe('"hello"')).toBe("hello");
-            expect(JSON.parseSafe("true")).toBe(true);
-            expect(JSON.parseSafe("false")).toBe(false);
-            expect(JSON.parseSafe("null")).toBe(null);
+            expect(JSONParseSafe("42")).toBe(42);
+            expect(JSONParseSafe('"hello"')).toBe("hello");
+            expect(JSONParseSafe("true")).toBe(true);
+            expect(JSONParseSafe("false")).toBe(false);
+            expect(JSONParseSafe("null")).toBe(null);
         });
     });
 
     describe("null & undefined input", () => {
         it("null", () => {
-            const result = JSON.parseSafe(null);
+            const result = JSONParseSafe(null);
             expect(result).toBe(null);
         });
 
         it("undefined", () => {
-            const result = JSON.parseSafe(undefined);
+            const result = JSONParseSafe(undefined);
             expect(result).toBe(null);
         });
 
         it("empty string", () => {
-            const result = JSON.parseSafe("");
+            const result = JSONParseSafe("");
             expect(result).toBe(null);
         });
 
         it("whitespace-only string", () => {
-            const result = JSON.parseSafe("   ");
+            const result = JSONParseSafe("   ");
             expect(result).toBe(null);
         });
     });
@@ -62,7 +60,7 @@ describe("JSON.parseSafe", () => {
     describe("error handling", () => {
         it("invalid JSON", () => {
             const invalidJson = '{"invalid": json}';
-            const result = JSON.parseSafe(invalidJson);
+            const result = JSONParseSafe(invalidJson);
 
             expect(result).toBe(null);
             expect(consoleSpy).toHaveBeenCalledTimes(1);
@@ -80,7 +78,7 @@ describe("JSON.parseSafe", () => {
             ];
 
             malformedCases.forEach((invalidCase) => {
-                const result = JSON.parseSafe(invalidCase);
+                const result = JSONParseSafe(invalidCase);
                 expect(result).toBe(null);
             });
 

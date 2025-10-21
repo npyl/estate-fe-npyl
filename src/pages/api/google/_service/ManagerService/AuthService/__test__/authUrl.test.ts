@@ -1,4 +1,3 @@
-import "@/_private/JSON";
 import { setupFsMocks, createAuthServiceWithMocks } from "./utils";
 
 jest.mock("node:fs/promises");

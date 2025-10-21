@@ -1,6 +1,5 @@
 import { OAuth2Client } from "google-auth-library";
 import AuthService from "@/pages/api/google/_service/ManagerService/AuthService";
-import "@/_private/JSON";
 import { mockKeys, createMockUserToken, setupFsMocks, mockedFs } from "./utils";
 
 jest.mock("node:fs/promises");

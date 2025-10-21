@@ -14,8 +14,6 @@ import {
     expectWrittenStore,
     getLastWrittenData,
 } from "./utils";
-import "@/_private/JSON";
-
 jest.mock("node:fs/promises");
 
 const mockedFs = fs as jest.Mocked<typeof fs>;

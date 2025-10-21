@@ -24,8 +24,6 @@ import { createEmotionCache } from "../utils/create-emotion-cache";
 import Toaster from "@/components/Toaster";
 
 // IMPORTANT
-import "@/_private/JSON";
-
 import AuthenticatedProviders from "@/providers/Authenticated";
 import LoadBalancerRedirect from "@/providers/LoadBalancerRedirect";
 

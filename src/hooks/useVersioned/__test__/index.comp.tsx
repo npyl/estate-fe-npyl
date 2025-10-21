@@ -1,7 +1,6 @@
 import { FC, useCallback, useLayoutEffect, useState } from "react";
 import useVersioned, { getVersioned, TVersioned } from "@/hooks/useVersioned";
 
-import "@/_private/JSON";
 import { useReadInjected, useWriteInjected } from "./useInjected";
 
 type TValue = {
