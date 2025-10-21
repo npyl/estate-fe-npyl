@@ -4,7 +4,6 @@ import {
     IsAuthenticatedRes,
 } from "@/types/calendar/google";
 import { GoogleWorkspaceKeys } from "@/pages/api/google/_service/getCredentialsForUser";
-import tokenService from "./TokenStorage";
 import toNumberSafe from "@/utils/toNumberSafe";
 import SCOPE from "../SCOPE";
 import { UserToken } from "./types";
@@ -75,7 +74,7 @@ class AuthService extends DoubleStore {
 
             serviceLog.debug(refreshToken, "recovered refreshToken: ");
 
-            this.DOUBLE_set(userId, {
+            await this.DOUBLE_set(userId, {
                 accessToken: res.data.access_token,
                 refreshToken,
                 expiryDate: res.data.expiry_date,
@@ -240,8 +239,7 @@ class AuthService extends DoubleStore {
     async revokeAuthentication(userId: number) {
         try {
             await this.oauth2Client.revokeCredentials();
-            await tokenService.deleteToken(this.WORKSPACE_DOMAIN!, userId);
-            this.DOUBLE_delete(userId);
+            await this.DOUBLE_delete(userId);
         } catch (ex) {
             serviceLog.error(ex);
         }
