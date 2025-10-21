@@ -8,7 +8,7 @@ const getValue = <V extends AnyType = string>(
     key: string | null,
     fallbackValue: V
 ) => {
-    if (typeof window === "undefined") return fallbackValue;
+    if (typeof globalThis.window === "undefined") return fallbackValue;
     if (!key) return fallbackValue;
 
     const v = localStorage.getItem(key);
@@ -21,7 +21,9 @@ const getValue = <V extends AnyType = string>(
 };
 
 function dispatchStorageEvent(key: string, newValue: string | null) {
-    window.dispatchEvent(new StorageEvent("storage", { key, newValue }));
+    globalThis.window.dispatchEvent(
+        new StorageEvent("storage", { key, newValue })
+    );
 }
 
 // ----------------------------------------------------------------------------------
@@ -33,7 +35,7 @@ const setLocalStorageItem = <V extends string | number | object = string>(
 ) => {
     try {
         const stringifiedValue = JSON.stringify(value);
-        window.localStorage.setItem(key, stringifiedValue);
+        globalThis.window.localStorage.setItem(key, stringifiedValue);
 
         if (passive) return;
         dispatchStorageEvent(key, stringifiedValue);
@@ -43,7 +45,7 @@ const setLocalStorageItem = <V extends string | number | object = string>(
 };
 
 const removeLocalStorageItem = (key: string, passive?: boolean) => {
-    window.localStorage.removeItem(key);
+    globalThis.window.localStorage.removeItem(key);
 
     if (passive) return;
     dispatchStorageEvent(key, null);
@@ -51,7 +53,7 @@ const removeLocalStorageItem = (key: string, passive?: boolean) => {
 
 // ----------------------------------------------------------------------------------
 
-const useLocalStorageSubscribe = <V>(
+const useLocalStorageSubscribe = <V extends AnyType = object>(
     key: string | null,
     fallbackValue: V,
     onChange: (v: V) => void
@@ -71,9 +73,9 @@ const useLocalStorageSubscribe = <V>(
     );
 
     useLayoutEffect(() => {
-        window.addEventListener("storage", cb);
+        globalThis.window.addEventListener("storage", cb);
         return () => {
-            window.removeEventListener("storage", cb);
+            globalThis.window.removeEventListener("storage", cb);
         };
     }, [cb]);
 };

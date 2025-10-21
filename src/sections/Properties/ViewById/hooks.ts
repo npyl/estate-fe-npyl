@@ -1,7 +1,7 @@
 import { EditorRef } from "@/components/Editor";
 import { useLazyGetPropertyByIdQuery } from "@/services/properties";
 import JSONParseSafe from "@/utils/JSONParseSafe";
-import { Content } from "@tiptap/react";
+import { JSONContent } from "@tiptap/react";
 import { useRouter } from "next/router";
 import { RefObject, useCallback, useLayoutEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -28,7 +28,7 @@ export const useGetDescription = (editorRef: RefObject<EditorRef>) => {
             if (!selected) return;
 
             const { description, title } = selected;
-            const sDescription = JSONParseSafe<Content>(description);
+            const sDescription = JSONParseSafe<JSONContent>(description);
 
             setTitle(title);
             editorRef.current?.commands.setContent(sDescription);

@@ -1,4 +1,6 @@
-const JSONParseSafe = function <T>(
+type AnyType = string | number | object;
+
+const JSONParseSafe = function <T extends AnyType = object>(
     text: string | null | undefined,
     reviver?: (key: string, value: any) => any
 ) {

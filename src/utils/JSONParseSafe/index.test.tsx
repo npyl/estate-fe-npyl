@@ -1,4 +1,4 @@
-import JSONParseSafe from ".";
+import JSONParseSafe from "@/utils/JSONParseSafe";
 
 describe("JSONParseSafe", () => {
     let consoleSpy: jest.SpyInstance;
