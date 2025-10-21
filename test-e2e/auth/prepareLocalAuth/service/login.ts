@@ -1,10 +1,10 @@
 import { UserResponse } from "../../../../src/types/auth";
-import { TCredentials } from "../../../_util/getCredentials";
+import { TCredential } from "../../../_util/getCredentials";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}`;
 const loginUrl = `${baseUrl}/login`;
 
-const login = async (credentials: TCredentials) => {
+const login = async (credentials: TCredential) => {
     try {
         const res = await fetch(loginUrl, {
             headers: {
@@ -16,10 +16,12 @@ const login = async (credentials: TCredentials) => {
         if (!res.ok) throw await res.json();
 
         const data = (await res.json()) as UserResponse;
-        if (!("token" in data)) throw "Bad content in login response";
+        if (!("token" in data))
+            throw new Error("Bad content in login response");
 
         return data.token ?? "";
     } catch (ex) {
+        console.log(ex);
         return "";
     }
 };
