@@ -1,4 +1,5 @@
 import { Language } from "@/components/LanguageButton/types";
+import JSONParseSafe from "@/utils/JSONParseSafe";
 import { createContext, useCallback, useEffect, useState } from "react";
 import type { FC, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
@@ -26,13 +27,13 @@ const initialSettings: Settings = {
 };
 
 export const restoreSettings = (): Settings | null => {
-    let settings = null;
+    let settings: Settings | null = null;
 
     try {
         const storedData = globalThis.localStorage.getItem("settings");
 
         if (storedData) {
-            settings = JSON.parseSafe(storedData);
+            settings = JSONParseSafe<Settings>(storedData);
         } else {
             settings = {
                 direction: "ltr",

@@ -5,6 +5,7 @@ import { KanbanTaskToCalendarEvent } from "@/types/tasks/mapper";
 import { TCalendarEventToGCalendarEvent } from "@/types/calendar/mapper";
 import { IUser } from "@/types/user";
 import toNumberSafe from "@/utils/toNumberSafe";
+import JSONParseSafe from "@/utils/JSONParseSafe";
 
 // -----------------------------------------------------------------------
 
@@ -131,7 +132,7 @@ export default async function handler(
         const Authorization = req.headers.authorization;
         if (!Authorization) throw new Error("Invalid headers");
 
-        const parsedBody = JSON.parseSafe<ICreateOrUpdateTaskReq>(req.body);
+        const parsedBody = JSONParseSafe<ICreateOrUpdateTaskReq>(req.body);
         if (!parsedBody) throw new Error("Bad json body");
 
         // ------------------------------------------------

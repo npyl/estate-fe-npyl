@@ -3,6 +3,7 @@ import path from "node:path";
 import { TOKEN_FILE_PATH } from "./constants";
 import { Store } from "./types";
 import logger from "@/pino";
+import JSONParseSafe from "@/utils/JSONParseSafe";
 
 const storeCreate = async () => {
     try {
@@ -28,7 +29,7 @@ const storeExists = async () => {
 const storeRead = async (): Promise<Store> => {
     try {
         const data = await fs.readFile(TOKEN_FILE_PATH, "utf-8");
-        const res = JSON.parseSafe<Store>(data);
+        const res = JSONParseSafe<Store>(data);
         if (!res) throw new Error("Parsing store fail");
         return res;
     } catch (ex) {

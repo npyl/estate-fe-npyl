@@ -16,6 +16,7 @@ import {
     useSelectAll,
     useSorting,
 } from "./(FilterSection)/Context";
+import JSONParseSafe from "@/utils/JSONParseSafe";
 
 interface Props {
     b2b?: boolean;
@@ -73,7 +74,7 @@ const CustomersViewAll: FC<Props> = ({ b2b = false }) => {
         );
 
         if (storedPagination) {
-            const parsedPagination = JSON.parseSafe(storedPagination);
+            const parsedPagination = JSONParseSafe<any>(storedPagination);
             if (!parsedPagination) return;
 
             if (page !== parsedPagination.page) {

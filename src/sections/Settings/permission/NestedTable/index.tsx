@@ -12,6 +12,8 @@ import { useSecurityContext } from "@/sections/Settings/permission/Context";
 import { StateTypes, actions } from "@/constants/security";
 import useToggle from "@/hooks/useToggle";
 import Content from "./Content";
+import JSONParseSafe from "@/utils/JSONParseSafe";
+import { IRoles } from "@/types/roles";
 
 type Props = {
     row: string;
@@ -27,7 +29,7 @@ const NestedTable = ({ row, state }: Props) => {
         row: string
     ) => {
         const str = JSON.stringify(data?.permissionResponses);
-        const newData = JSON.parseSafe(str);
+        const newData = JSONParseSafe<IRoles[]>(str);
         if (!newData) return;
 
         for (const key in data?.permissionResponses) {
@@ -35,9 +37,9 @@ const NestedTable = ({ row, state }: Props) => {
                 newData[key].parentCategory === row &&
                 newData[key].state === state
             ) {
-                for (const actionKey in newData[key].actions) {
-                    newData[key].actions[actionKey] = e.target.checked;
-                }
+                // for (const actionKey in newData[key].actions) {
+                //     newData[key].actions[actionKey] = e.target.checked;
+                // }
             }
         }
         setIsDirty(true);

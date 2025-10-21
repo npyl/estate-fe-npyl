@@ -1,4 +1,5 @@
 import debugLog from "@/_private/debugLog";
+import JSONParseSafe from "@/utils/JSONParseSafe";
 import { useCallback, useLayoutEffect, useState } from "react";
 
 type AnyType = string | number | object;
@@ -13,7 +14,7 @@ const getValue = <V extends AnyType = string>(
     const v = localStorage.getItem(key);
     if (!v) return fallbackValue;
 
-    const parsed = JSON.parseSafe<V>(v);
+    const parsed = JSONParseSafe<V>(v);
     if (!parsed) return fallbackValue;
 
     return parsed;
@@ -61,7 +62,7 @@ const useLocalStorageSubscribe = <V>(
             if (e.key !== key) return;
 
             const v = e?.newValue
-                ? (JSON.parseSafe<V>(e.newValue) ?? fallbackValue)
+                ? (JSONParseSafe<V>(e.newValue) ?? fallbackValue)
                 : fallbackValue;
 
             onChange(v);

@@ -40,7 +40,7 @@ describe("TokenStorage - getAllTokens", () => {
     });
 
     describe("I/O Errors", () => {
-        it("should handle JSON.parseSafe failure", async () => {
+        it("should handle JSONParseSafe failure", async () => {
             mockedFs.readFile.mockResolvedValue("invalid json");
 
             const result = await tokenService.getAllTokens(TEST_DOMAIN);

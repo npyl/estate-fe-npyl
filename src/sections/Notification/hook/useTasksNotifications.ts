@@ -1,6 +1,7 @@
 import { useCallback, useLayoutEffect } from "react";
 import { IUserMini } from "@/types/user";
 import useMainSocket from "@/_private/useMainSocket";
+import JSONParseSafe from "@/utils/JSONParseSafe";
 
 interface IActiveTaskCountPayload {
     userId: number;
@@ -37,7 +38,7 @@ const useTasksNotifications = ({
         (event: WebSocketEventMap["message"]) => {
             try {
                 const { type, payload } =
-                    (JSON.parseSafe(event?.data) as IMessageData) || {};
+                    (JSONParseSafe(event?.data) as IMessageData) || {};
 
                 const cb =
                     type === "active-task-count"

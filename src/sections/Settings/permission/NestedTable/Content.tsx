@@ -19,6 +19,7 @@ import {
     subcategories4,
 } from "@/constants/security";
 import { resolveCategory } from "@/sections/Settings/permission/utils";
+import JSONParseSafe from "@/utils/JSONParseSafe";
 
 interface ContentProps {
     row: string;
@@ -51,7 +52,7 @@ const Content: FC<ContentProps> = ({ row, state }) => {
         );
         const action = actions[columnIndex];
 
-        const updatedData = JSON.parseSafe<IRoles[]>(
+        const updatedData = JSONParseSafe<IRoles[]>(
             JSON.stringify(data?.permissionResponses)
         );
 
@@ -69,7 +70,7 @@ const Content: FC<ContentProps> = ({ row, state }) => {
         e: React.ChangeEvent<HTMLInputElement>,
         category: string
     ) => {
-        const newData = JSON.parseSafe<IRoles[]>(
+        const newData = JSONParseSafe<IRoles[]>(
             JSON.stringify(data?.permissionResponses)
         );
         if (!newData) return;
@@ -120,7 +121,7 @@ const Content: FC<ContentProps> = ({ row, state }) => {
         row: string,
         state: string
     ) => {
-        const newData = JSON.parseSafe<IRoles[]>(
+        const newData = JSONParseSafe<IRoles[]>(
             JSON.stringify(data?.permissionResponses)
         );
         if (!newData) return;

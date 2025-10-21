@@ -21,6 +21,7 @@ import { debuglog } from "util";
 import getBorderColor, { getBorderColor2 } from "@/theme/borderColor";
 import { CLASSNAMES } from "./constants";
 import { primary } from "@/theme/light-theme-options";
+import JSONParseSafe from "@/utils/JSONParseSafe";
 const MenuBar = dynamic(() => import("./MenuBar"), { ssr: false });
 const BubbleMenu = dynamic(() => import("./BubbleMenu"));
 
@@ -68,7 +69,7 @@ const useContentUpdate = (editor: TEditor, content: string | undefined) => {
     useEffect(() => {
         if (!content || isInternalUpdate.current) return;
 
-        const parsed = JSON.parseSafe(content);
+        const parsed = JSONParseSafe(content);
         if (!parsed) return;
 
         editor.commands?.setContent(parsed);

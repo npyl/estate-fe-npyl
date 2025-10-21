@@ -15,6 +15,7 @@ import {
 import toNumberSafe from "@/utils/toNumberSafe";
 import toLocalDate from "@/utils/toLocalDate";
 import debugLog from "@/_private/debugLog";
+import JSONParseSafe from "@/utils/JSONParseSafe";
 
 type TColorDefinition = calendar_v3.Schema$ColorDefinition;
 type TColorEntry = [string, TColorDefinition];
@@ -51,7 +52,7 @@ const extractPeople = (
         const field = extendedProperties?.private?.[PP_EVENT_PEOPLE_KEY];
         if (!field) return [];
 
-        const people = JSON.parseSafe<TCalendarEventPerson[]>(field) || [];
+        const people = JSONParseSafe<TCalendarEventPerson[]>(field) || [];
 
         return people;
     } catch (ex) {
