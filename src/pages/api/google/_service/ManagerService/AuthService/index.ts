@@ -9,7 +9,7 @@ import toNumberSafe from "@/utils/toNumberSafe";
 import SCOPE from "../SCOPE";
 import { UserToken } from "./types";
 import DoubleStore from "./DoubleStore";
-import debugLog from "@/_private/debugLog";
+import { getServiceLogger } from "@/pino";
 
 /**
  * AuthService - OAuth & Users manager for a single workspace
@@ -17,7 +17,7 @@ import debugLog from "@/_private/debugLog";
 
 // ------------------------------------------------------------------------
 
-const serviceLog = (...s: any) => debugLog(`[AuthService]: `, ...s);
+const serviceLog = getServiceLogger("AuthService");
 
 // ------------------------------------------------------------------------
 
@@ -73,7 +73,7 @@ class AuthService extends DoubleStore {
 
             // TODO: what should we do when we don't have refresh token but the user has an active oauth in his computer ??
 
-            serviceLog("recovered refreshToken: ", refreshToken);
+            serviceLog.debug(refreshToken, "recovered refreshToken: ");
 
             this.DOUBLE_set(userId, {
                 accessToken: res.data.access_token,
@@ -113,14 +113,14 @@ class AuthService extends DoubleStore {
                 expiryDate: credentials.expiry_date,
             };
 
-            console.log("Expired! Got new: ", updatedToken);
-
             // Update the tokens in memory
             await this.DOUBLE_set(userId, updatedToken);
 
+            serviceLog.debug(updatedToken, "Expired! Got new: ");
+
             return updatedToken;
         } catch (error) {
-            console.error("Error refreshing access token:", error);
+            serviceLog.error("Error refreshing access token:", error);
             throw error;
         }
     }
@@ -135,7 +135,7 @@ class AuthService extends DoubleStore {
                 // Refresh the token
                 await this.refreshAccessToken(userId, userTokens.refreshToken);
             } catch (error) {
-                console.error("Token refresh failed:", error);
+                serviceLog.error("Token refresh failed:", error);
 
                 // If refresh fails, delete the tokens and return null
                 await this.revokeAuthentication(userId);
@@ -179,7 +179,7 @@ class AuthService extends DoubleStore {
 
             return await res.json();
         } catch (ex) {
-            console.log(ex);
+            serviceLog.error(ex, "getUserInfo");
             return null;
         }
     }
@@ -212,7 +212,7 @@ class AuthService extends DoubleStore {
 
         await this.oauth2Client.revokeCredentials();
 
-        serviceLog(`revoked[${i}]: `, tokens.accessToken);
+        serviceLog.debug(`revoked[${i}]: `, tokens.accessToken);
     };
 
     /**
@@ -220,14 +220,14 @@ class AuthService extends DoubleStore {
      * Considering our development is also our production and testing (uhhh) this is also helpful for testing.
      */
     async dropGoogleWorkspace() {
-        serviceLog("revoking workspace access");
+        serviceLog.info("revoking workspace access");
         const tokensList = Array.from(this.DOUBLE_getAll());
         const promises = tokensList.map(this.getRevokeUserPromise);
         await Promise.all(promises);
 
         await this.DOUBLE_deleteAllTokens();
 
-        serviceLog("invalidating oauth2Client object");
+        serviceLog.info("invalidating oauth2Client object");
         this.oauth2Client = undefined!;
     }
 
@@ -243,14 +243,14 @@ class AuthService extends DoubleStore {
             await tokenService.deleteToken(this.WORKSPACE_DOMAIN!, userId);
             this.DOUBLE_delete(userId);
         } catch (ex) {
-            console.error(ex);
+            serviceLog.error(ex);
         }
     }
 
     // -------------------------------------------------------------------------------
 
     setOauth2ClientForKeys = async (keys: GoogleWorkspaceKeys) => {
-        serviceLog(keys);
+        serviceLog.info(keys);
 
         // INFO: keep this for workspace-related higher-level apis (like calendar)
         this.WORKSPACE_DOMAIN = keys.domain;

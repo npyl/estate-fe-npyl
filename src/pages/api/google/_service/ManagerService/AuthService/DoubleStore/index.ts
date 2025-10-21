@@ -1,9 +1,6 @@
 import tokenService from "@/pages/api/google/_service/ManagerService/AuthService/TokenStorage";
 import { UserToken } from "@/pages/api/google/_service/ManagerService/AuthService/types";
 import { StoredToken } from "@/pages/api/google/_service/ManagerService/AuthService/TokenStorage/types";
-import debugLog from "@/_private/debugLog";
-
-const serviceLog = (...s: any) => debugLog(`[AuthService]: `, ...s);
 
 class DoubleStore {
     // e.g. npylarinos@digipath.gr -> digipath.gr
@@ -54,11 +51,9 @@ class DoubleStore {
      * Remove all users from our storage (a.k.a log them out), clear our in-memory record of logged-in users
      */
     protected async DOUBLE_deleteAllTokens() {
-        serviceLog("removing all user tokens (disk)");
         const res = await tokenService.deleteAllTokens(this.WORKSPACE_DOMAIN!);
         if (!res) return false;
 
-        serviceLog("removing all user tokens (in-memory)");
         this.userTokens.clear();
 
         return true;
