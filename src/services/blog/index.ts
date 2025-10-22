@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BlogFilters, BlogPostRes, BlogPostShort } from "@/types/company";
 import IPage from "@/types/page";
-import { getAccessToken } from "@/contexts/accessToken";
+import { getAccessToken } from "@/contexts/tokens";
 import useCreateOrUpdateBlogPostMutation from "./useCreateOrUpdateBlogPostMutation";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/blog`;

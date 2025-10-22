@@ -1,5 +1,5 @@
 import { errorToast } from "@/components/Toaster";
-import { getAccessToken } from "@/contexts/accessToken";
+import { getAccessToken } from "@/contexts/tokens";
 import useDialog from "@/hooks/useDialog";
 import { useCallback } from "react";
 

@@ -9,7 +9,7 @@ import {
 } from "@/services/blog";
 import useDialog from "@/hooks/useDialog";
 import { useDispatch } from "react-redux";
-import { getAccessToken } from "@/contexts/accessToken";
+import { getAccessToken } from "@/contexts/tokens";
 
 const createOrUpdate = async (d: Omit<BlogPostReq, "images">) => {
     try {

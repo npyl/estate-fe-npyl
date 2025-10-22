@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { calendar } from "./calendar";
 import { errorToast } from "@/components/Toaster";
-import { getAccessToken } from "@/contexts/accessToken";
+import { getAccessToken } from "@/contexts/tokens";
 
 type UserId = number;
 

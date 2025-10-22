@@ -9,7 +9,7 @@ import {
     LabelForResourceProps,
 } from "./types";
 import { optimisticDelete } from "./optimistic";
-import { getAccessToken } from "@/contexts/accessToken";
+import { getAccessToken } from "@/contexts/tokens";
 
 export const labels = createApi({
     reducerPath: "labels",

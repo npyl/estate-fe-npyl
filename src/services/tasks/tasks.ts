@@ -30,7 +30,7 @@ import {
 import { errorToast } from "@/components/Toaster";
 import { ILabel } from "@/types/label";
 import { createRemoveTabAwareHook as rt } from "@/services/_util";
-import { getAccessToken } from "@/contexts/accessToken";
+import { getAccessToken } from "@/contexts/tokens";
 
 /**
  * Prepare a unique tag that will get invalidated *ONLY* when the specific card's labels change

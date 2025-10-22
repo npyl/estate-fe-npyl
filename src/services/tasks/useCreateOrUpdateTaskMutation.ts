@@ -8,7 +8,7 @@ import { calendar } from "@/services/calendar";
 import { properties } from "@/services/properties";
 import { customers } from "@/services/customers";
 import { errorToast } from "@/components/Toaster";
-import { getAccessToken } from "@/contexts/accessToken";
+import { getAccessToken } from "@/contexts/tokens";
 
 const baseUrl = process.env.NEXT_PUBLIC_PROXY_API;
 

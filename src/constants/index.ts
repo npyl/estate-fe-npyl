@@ -1,3 +1,4 @@
-const tokenKey = "accessToken";
+const accessTokenKey = "accessToken";
+const refreshTokenKey = "refreshToken";
 
-export { tokenKey };
+export { accessTokenKey, refreshTokenKey };

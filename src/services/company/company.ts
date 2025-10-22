@@ -13,7 +13,7 @@ import {
     IPublicSiteReq,
     IPublicSitesRes,
 } from "@/types/company";
-import { getAccessToken } from "@/contexts/accessToken";
+import { getAccessToken } from "@/contexts/tokens";
 
 interface IUploadCompanyImage {
     contentType: string;

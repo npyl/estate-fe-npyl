@@ -9,11 +9,7 @@ import {
 import { useLogoutMutation } from "@/services/logout";
 import debugLog from "@/_private/debugLog";
 import { clearAllApiCaches } from "@/store";
-import {
-    getAccessToken,
-    removeAccessToken,
-    setAccessToken,
-} from "./accessToken";
+import { getAccessToken, removeAccessToken, setAccessToken } from "./tokens";
 
 interface State {
     platform: "JWT";
@@ -135,7 +131,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
             } else {
                 throw "Token doesn't exist!";
             }
-        } catch (error) {
+        } catch {
             // INFO: prevent infinite loop where user refreshes upon getProfile with unsuccessfully existing token
             removeAccessToken();
 

@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { GetImagesOrderReq, UpdateImagesOrderReq } from "./types";
 import { ImagesOrderRes } from "@/types/integrations";
-import { getAccessToken } from "@/contexts/accessToken";
+import { getAccessToken } from "@/contexts/tokens";
 
 // TODO: optimistic
 

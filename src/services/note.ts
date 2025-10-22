@@ -1,4 +1,4 @@
-import { getAccessToken } from "@/contexts/accessToken";
+import { getAccessToken } from "@/contexts/tokens";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { INote, AddNoteReq } from "@/types/note";
 
