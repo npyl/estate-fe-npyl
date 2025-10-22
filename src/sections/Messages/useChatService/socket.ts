@@ -1,9 +1,10 @@
+import { getChatToken } from "@/contexts/tokens";
 import { io } from "socket.io-client";
 
 const SocketIOSingleton = () => {
     if (typeof window === "undefined") return;
 
-    const token = localStorage.getItem("chatToken");
+    const token = getChatToken();
     if (!token) return;
 
     const socket = io(process.env.NEXT_PUBLIC_MESSAGES_URL, {

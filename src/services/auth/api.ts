@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IAuthReq, UserResponse } from "@/types/auth";
+import { IAuthReq, TokenResponse } from "@/types/auth";
 
 export const auth = createApi({
     reducerPath: "auth",
@@ -7,7 +7,7 @@ export const auth = createApi({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}`,
     }),
     endpoints: (builder) => ({
-        login: builder.mutation<UserResponse, IAuthReq>({
+        login: builder.mutation<TokenResponse, IAuthReq>({
             query: (credentials) => ({
                 url: "login",
                 method: "POST",

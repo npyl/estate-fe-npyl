@@ -1,3 +1,4 @@
+import { getChatToken } from "@/contexts/tokens";
 import { IConversation, IMessageRes } from "@/types/messages";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -32,10 +33,7 @@ export const messages = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl,
         prepareHeaders: (headers) => {
-            headers.set(
-                "Authorization",
-                `Bearer ${localStorage.getItem("chatToken")}`
-            );
+            headers.set("Authorization", `Bearer ${getChatToken()}`);
             return headers;
         },
     }),

@@ -9,7 +9,7 @@ import {
 import { useLogoutMutation } from "@/services/logout";
 import debugLog from "@/_private/debugLog";
 import { clearAllApiCaches } from "@/store";
-import { getAccessToken, removeAccessToken, setAccessToken } from "./tokens";
+import { getTokens, removeTokens, setChatToken, setTokens } from "./tokens";
 
 interface State {
     platform: "JWT";
@@ -18,7 +18,7 @@ interface State {
     user: IUser | null;
 }
 
-export interface AuthContextValue extends State {
+interface AuthContextValue extends State {
     signin: (username: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
 }
@@ -113,27 +113,25 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         initialize();
     }, []);
 
-    const initialize = useCallback(async (): Promise<void> => {
+    const initialize = useCallback(async () => {
         try {
-            if (getAccessToken()) {
-                const user = await getProfile().unwrap();
-                if (!user) {
-                    throw "Failed to get profile!";
-                }
+            const t = getTokens();
+            if (!t.accessToken || !t.refreshToken)
+                throw new Error("Tokens non-existent!");
 
-                dispatch({
-                    type: ActionType.INITIALIZE,
-                    payload: {
-                        isAuthenticated: true,
-                        user,
-                    },
-                });
-            } else {
-                throw "Token doesn't exist!";
-            }
+            const user = await getProfile().unwrap();
+            if (!user) throw new Error("Failed to get profile!");
+
+            dispatch({
+                type: ActionType.INITIALIZE,
+                payload: {
+                    isAuthenticated: true,
+                    user,
+                },
+            });
         } catch {
             // INFO: prevent infinite loop where user refreshes upon getProfile with unsuccessfully existing token
-            removeAccessToken();
+            removeTokens();
 
             dispatch({
                 type: ActionType.INITIALIZE,
@@ -145,31 +143,31 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         }
     }, []);
 
-    const signin = async (
-        username: string,
-        password: string
-    ): Promise<void> => {
+    const signin = useCallback(async (username: string, password: string) => {
         const loginRes = await loginCb({
             username,
             password,
         }).unwrap();
 
-        setAccessToken(loginRes.token);
+        setTokens(loginRes);
 
         clearAllApiCaches();
 
         const user = await getProfile().unwrap();
-        if (!user) throw "Failed getting profile!";
+        if (!user) throw new Error("Failed getting profile!");
 
         // INFO: chat token
         try {
             const { messagingEnabled } = user;
             if (!messagingEnabled)
-                throw "Abort generating chat token; messaging is disabled for this user";
+                throw new Error(
+                    "Abort generating chat token; messaging is disabled for this user"
+                );
 
             const { token } = await generateChatToken(loginRes.token).unwrap();
-            if (!token) throw new Error("");
-            localStorage.setItem("chatToken", token);
+            if (!token) throw new Error("Did not receive chatToken");
+
+            setChatToken(token);
         } catch (ex) {
             debugLog(ex);
         }
@@ -180,11 +178,11 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
                 user,
             },
         });
-    };
+    }, []);
 
     const logout = useCallback(async () => {
         await logoutCb();
-        removeAccessToken();
+        removeTokens();
         dispatch({ type: ActionType.LOGOUT });
     }, []);
 

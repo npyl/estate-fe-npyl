@@ -1,5 +1,3 @@
-// src/services/location.ts
-
 import { getAccessToken } from "@/contexts/tokens";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IGeoLocation } from "src/types/geolocation";
