@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from "node:fs";
 import readToken from "./util/readToken";
 import isTokenExpired from "./util/isTokenExpired";
 import { Page } from "@playwright/test";

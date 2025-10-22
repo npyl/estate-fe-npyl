@@ -1,4 +1,4 @@
-import { UserResponse } from "../../../../src/types/auth";
+import { TokenResponse } from "../../../../src/types/auth";
 import { TCredential } from "../../../_util/getCredentials";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}`;
@@ -15,7 +15,7 @@ const login = async (credentials: TCredential) => {
         });
         if (!res.ok) throw await res.json();
 
-        const data = (await res.json()) as UserResponse;
+        const data = (await res.json()) as TokenResponse;
         if (!("token" in data))
             throw new Error("Bad content in login response");
 
