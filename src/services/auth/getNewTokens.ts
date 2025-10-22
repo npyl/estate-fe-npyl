@@ -1,25 +1,13 @@
-import { getAccessToken, getRefreshToken } from "@/contexts/tokens";
+import { getTokens } from "@/contexts/tokens";
 import { TokenResponse } from "@/types/auth";
-
-// --------------------------------------------------------------------------------
-
-const getCurrentTokens = () => {
-    const accessToken = getAccessToken();
-    if (!accessToken) throw new Error("No access token available");
-
-    const refreshToken = getRefreshToken();
-    if (!refreshToken) throw new Error("No refresh token available");
-
-    return { accessToken, refreshToken };
-};
-
-// --------------------------------------------------------------------------------
 
 const revalidateUrl = `${process.env.NEXT_PUBLIC_API_URL}/refresh`;
 
 const getNewTokens = async () => {
     try {
-        const { accessToken, refreshToken } = getCurrentTokens();
+        const { accessToken, refreshToken } = getTokens();
+        if (!accessToken) throw new Error("No access token available");
+        if (!refreshToken) throw new Error("No refresh token available");
 
         const res = await fetch(revalidateUrl, {
             method: "POST",
@@ -35,7 +23,7 @@ const getNewTokens = async () => {
         if (!data?.token || !data?.refreshToken)
             throw new Error("No access token received!");
 
-        return data.token;
+        return data;
     } catch (error) {
         console.error(error);
         return null;
