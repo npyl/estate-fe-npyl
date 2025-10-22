@@ -254,8 +254,6 @@ class AuthService extends DoubleStore {
     setOauth2ClientForKeys = (keys: GoogleWorkspaceKeys) => {
         serviceLog.info(keys);
 
-        console.log("SETTING: ", keys.domain);
-
         // INFO: keep this for workspace-related higher-level apis (like calendar)
         this.WORKSPACE_DOMAIN = keys.domain;
 

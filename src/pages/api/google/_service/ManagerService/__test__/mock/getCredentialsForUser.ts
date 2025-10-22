@@ -18,9 +18,10 @@ const AUTHORIZATION_DOMAIN_MAP: Record<AuthorizationType, GoogleWorkspaceKeys> =
         [AUTHORIZATION1]: WORKSPACE1,
     };
 
-const getKeysForAuthorization = (
-    Authorization: AuthorizationType
-): GoogleWorkspaceKeys => AUTHORIZATION_DOMAIN_MAP[Authorization];
+const getKeysForAuthorization = async (
+    Authorization: string
+): Promise<GoogleWorkspaceKeys> =>
+    AUTHORIZATION_DOMAIN_MAP[Authorization as AuthorizationType];
 
 // ------------------------------------------------------------------
 
@@ -30,10 +31,8 @@ const mockGetCredentialsForUser = getCredentialsForUser as jest.MockedFunction<
     typeof getCredentialsForUser
 >;
 
-const setupMockGetCredentialsForUser = (Authorization: AuthorizationType) => {
-    mockGetCredentialsForUser.mockResolvedValueOnce(
-        getKeysForAuthorization(Authorization)
-    );
+const setupMockGetCredentialsForUser = () => {
+    mockGetCredentialsForUser.mockImplementation(getKeysForAuthorization);
 };
 
 export type { AuthorizationType };

@@ -17,6 +17,7 @@ import TestManagerService from "./TestManageService";
 
 jest.mock("node:fs/promises");
 
+setupMockGetCredentialsForUser();
 setupOAuth2Client();
 
 // ------------------------------------------------------------------
@@ -30,7 +31,6 @@ const addWorkspaceAndUser = async (
     Authorization: AuthorizationType,
     userId: number
 ) => {
-    setupMockGetCredentialsForUser(Authorization);
     await ms.addWorkspace(userId, Authorization);
 };
 
@@ -38,6 +38,21 @@ const addWorkspaceAndUser = async (
 
 const WORKSPACE0_USERID = WORKSPACE0.userIds[0];
 const WORKSPACE1_USERID = WORKSPACE1.userIds[0];
+
+// ------------------------------------------------------------------
+
+const expectDomainsContained = (names: string[]) => {
+    const n = ms?.getDomainNames();
+    const na = n ? Array.from(n) : [];
+
+    expect(na.length).toBe(names.length);
+
+    for (const name of names) {
+        expect(na).toContain(name);
+    }
+};
+
+// ------------------------------------------------------------------
 
 const addOneWorkspace = async () => {
     // Add DOMAIN0 workspace
@@ -50,6 +65,8 @@ const addBothWorkspaces = async () => {
 
     // Add DOMAIN1 workspace
     await addWorkspaceAndUser(ms!, AUTHORIZATION1, WORKSPACE1_USERID);
+
+    expectDomainsContained([WORKSPACE0.domain, WORKSPACE1.domain]);
 };
 
 // ------------------------------------------------------------------
@@ -116,6 +133,11 @@ describe("ManagerService", () => {
             AUTHORIZATION0,
             FAKE_WORKSPACE_UPDATE
         );
+
+        expectDomainsContained([
+            WORKSPACE1.domain,
+            FAKE_WORKSPACE_UPDATE.domain,
+        ]);
 
         // Expect New Workspace Established
         ms?.expectOAuthClient(WORKSPACE0_USERID, FAKE_WORKSPACE_UPDATE);

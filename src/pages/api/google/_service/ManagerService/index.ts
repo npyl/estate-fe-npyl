@@ -18,7 +18,7 @@ type TWorkspaceDomain = string;
 
 class ManagerService {
     private readonly domains: Map<TUserId, TWorkspaceDomain>;
-    private readonly workspaces: Map<TWorkspaceDomain, AuthService>;
+    protected readonly workspaces: Map<TWorkspaceDomain, AuthService>;
 
     constructor() {
         this.domains = new Map();
@@ -53,6 +53,10 @@ class ManagerService {
 
         // 1: update with new keys
         s.setOauth2ClientForKeys(keys);
+
+        // Rename
+        this.workspaces.set(keys.domain, s);
+        this.workspaces.delete(domain);
     }
 
     protected authServiceFor(userId: number) {

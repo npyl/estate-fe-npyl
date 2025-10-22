@@ -16,6 +16,10 @@ class DoubleStoreFriend extends DoubleStore {
 }
 
 class TestManagerService extends ManagerService {
+    getDomainNames() {
+        return this.workspaces.keys();
+    }
+
     addWorkspace = (...args: Parameters<ManagerService["initialise"]>) =>
         this.initialise(...args);
 
