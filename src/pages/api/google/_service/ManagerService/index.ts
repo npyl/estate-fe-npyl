@@ -28,6 +28,33 @@ class ManagerService {
     // ------------------------------------------------------------------------------------------------------
     // INTERNAL
 
+    private _dropGoogleWorkspace(s: AuthService) {
+        return s.dropGoogleWorkspace();
+    }
+
+    protected async _updateKeys(
+        Authorization: string,
+        keys: GoogleWorkspaceKeys,
+        onOldWorkspaceDrop?: () => Promise<void>
+    ) {
+        const res = await getCredentialsForUser(Authorization);
+        if (!res) return null;
+
+        const { domain } = res;
+
+        // Get authService for domain
+        const s = this.workspaces.get(domain);
+        if (!s) return;
+
+        // 0: drop (disconnect users & remove tokens) existing workspace
+        await this._dropGoogleWorkspace(s);
+
+        await onOldWorkspaceDrop?.();
+
+        // 1: update with new keys
+        s.setOauth2ClientForKeys(keys);
+    }
+
     protected authServiceFor(userId: number) {
         const domain = this.domains.get(userId);
         if (!domain) return;
@@ -114,16 +141,13 @@ class ManagerService {
     }
 
     async dropGoogleWorkspace(userId: number) {
-        return await this.authServiceFor(userId)?.dropGoogleWorkspace();
+        const s = this.authServiceFor(userId);
+        if (!s) return;
+        return await this._dropGoogleWorkspace(s);
     }
 
-    async updateKeys(Authorization: string, keys: GoogleWorkspaceKeys) {
-        const res = await getCredentialsForUser(Authorization);
-        if (!res) return null;
-
-        const { domain } = res;
-
-        this.workspaces.get(domain)?.setOauth2ClientForKeys(keys);
+    updateKeys(...args: Parameters<typeof this._updateKeys>) {
+        return this._updateKeys(...args);
     }
 }
 

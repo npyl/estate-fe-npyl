@@ -1,12 +1,12 @@
 import getCredentialsForUser, {
     GoogleWorkspaceKeys,
-} from "../../getCredentialsForUser";
+} from "@/pages/api/google/_service/getCredentialsForUser";
 import {
     AUTHORIZATION0,
     AUTHORIZATION1,
     WORKSPACE0,
     WORKSPACE1,
-} from "./constants";
+} from "@/pages/api/google/_service/ManagerService/__test__/constants";
 
 // ------------------------------------------------------------------
 

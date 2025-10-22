@@ -64,7 +64,7 @@ describe("AuthService - Initialisation", () => {
                 domain: "new-domain.com",
             };
 
-            await authService.setOauth2ClientForKeys(newKeys);
+            authService.setOauth2ClientForKeys(newKeys);
 
             expect(authService.getWorkspaceDomain()).toBe(newKeys.domain);
             expect((authService as any).oauth2Client).toBeInstanceOf(

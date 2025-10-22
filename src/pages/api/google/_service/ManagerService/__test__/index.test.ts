@@ -1,15 +1,23 @@
+import { GoogleWorkspaceKeys } from "../../getCredentialsForUser";
 import {
     AUTHORIZATION0,
     AUTHORIZATION1,
     WORKSPACE0,
     WORKSPACE1,
 } from "./constants";
-import { AuthorizationType, setupMockGetCredentialsForUser } from "./mock";
+import {
+    AuthorizationType,
+    // ...
+    setupMockGetCredentialsForUser,
+    setupOAuth2Client,
+} from "./mock";
 import TestManagerService from "./TestManageService";
 
 // ------------------------------------------------------------------
 
 jest.mock("node:fs/promises");
+
+setupOAuth2Client();
 
 // ------------------------------------------------------------------
 
@@ -45,6 +53,11 @@ const addBothWorkspaces = async () => {
 };
 
 // ------------------------------------------------------------------
+
+const FAKE_WORKSPACE_UPDATE: GoogleWorkspaceKeys = {
+    ...WORKSPACE0,
+    domain: "domain2.com",
+};
 
 describe("ManagerService", () => {
     beforeEach(async () => {
@@ -91,5 +104,20 @@ describe("ManagerService", () => {
 
         await ms?.dropGoogleWorkspace(WORKSPACE1_USERID);
         ms?.expectUserAndWorkspaceUnbound(WORKSPACE1_USERID);
+    });
+
+    it("updateKeys", async () => {
+        // Add DOMAIN0 & DOMAIN1 workspace
+        await addBothWorkspaces();
+
+        // Update Keys, Expect Old Workspace Dropped
+        await ms?.updateKeysAndExpectOldWorkspaceDrop(
+            WORKSPACE0_USERID,
+            AUTHORIZATION0,
+            FAKE_WORKSPACE_UPDATE
+        );
+
+        // Expect New Workspace Established
+        ms?.expectOAuthClient(WORKSPACE0_USERID, FAKE_WORKSPACE_UPDATE);
     });
 });

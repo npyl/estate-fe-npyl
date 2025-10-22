@@ -25,7 +25,7 @@ describe("AuthService - Workspace", () => {
                 domain: "updated-domain.com",
             };
 
-            await authService.setOauth2ClientForKeys(newKeys);
+            authService.setOauth2ClientForKeys(newKeys);
 
             const domain = authService.getWorkspaceDomain();
             expect(domain).toBe(newKeys.domain);

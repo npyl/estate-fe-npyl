@@ -36,6 +36,10 @@ function isTokenExpired(expiryDate: number): boolean {
 class AuthService extends DoubleStore {
     private oauth2Client!: OAuth2Client;
 
+    protected getOAuth2Client() {
+        return this.oauth2Client;
+    }
+
     // --------------------------------------------------------------------------------------------
 
     async getAuthUrl(userId: number) {
@@ -247,8 +251,10 @@ class AuthService extends DoubleStore {
 
     // -------------------------------------------------------------------------------
 
-    setOauth2ClientForKeys = async (keys: GoogleWorkspaceKeys) => {
+    setOauth2ClientForKeys = (keys: GoogleWorkspaceKeys) => {
         serviceLog.info(keys);
+
+        console.log("SETTING: ", keys.domain);
 
         // INFO: keep this for workspace-related higher-level apis (like calendar)
         this.WORKSPACE_DOMAIN = keys.domain;
@@ -266,7 +272,7 @@ class AuthService extends DoubleStore {
     // -------------------------------------------------------------------------------
 
     async initialise(keys: GoogleWorkspaceKeys) {
-        await this.setOauth2ClientForKeys(keys);
+        this.setOauth2ClientForKeys(keys);
         await this.DOUBLE_initialise();
     }
 }
