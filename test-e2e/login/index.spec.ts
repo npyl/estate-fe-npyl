@@ -1,9 +1,13 @@
 import { test } from "@playwright/test";
-import fillAndExpect from "./_util/fillAndExpect";
-import { EMAIL_ID, PSSWD_ID, SUBMIT_ID } from "../src/sections/Login/constants";
-import { DASHBOARD_ID } from "../src/sections/dashboard/constants";
-import { getLocalCredentials } from "./_util/getCredentials";
-import gotoSafe from "./_util/gotoSafe";
+import fillAndExpect from "../_util/fillAndExpect";
+import {
+    EMAIL_ID,
+    PSSWD_ID,
+    SUBMIT_ID,
+} from "../../src/sections/Login/constants";
+import { DASHBOARD_ID } from "../../src/sections/dashboard/constants";
+import { getLocalCredentials } from "../_util/getCredentials";
+import gotoSafe from "../_util/gotoSafe";
 
 const SEARCH_DEEPER = true;
 

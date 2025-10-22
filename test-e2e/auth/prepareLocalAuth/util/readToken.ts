@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import { AUTH_FILE } from "../_constant";
-import { tokenKey } from "../../../../src/constants";
+import { accessTokenKey } from "../../../../src/constants";
 import JSONParseSafe from "../../../../src/utils/JSONParseSafe";
 import { BrowserContextOptions } from "@playwright/test";
 
@@ -20,7 +20,7 @@ const readToken = async (): Promise<string | undefined> => {
 
     // Find the accessToken in localStorage
     const tokenItem = origin.localStorage.find(
-        (item) => item.name === tokenKey
+        (item) => item.name === accessTokenKey
     );
     if (!tokenItem) return;
 

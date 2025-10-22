@@ -26,6 +26,7 @@ import { messages } from "@/services/messages";
 import { logout } from "@/services/logout";
 import { emails } from "@/services/email";
 import { blog } from "@/services/blog";
+import { refreshToken } from "@/services/__test__/refreshToken";
 
 export const rootReducer = combineReducers({
     [location.reducerPath]: location.reducer,
@@ -61,4 +62,6 @@ export const rootReducer = combineReducers({
     // ...
     [emails.reducerPath]: emails.reducer,
     [blog.reducerPath]: blog.reducer,
+    // ...
+    [refreshToken.reducerPath]: refreshToken.reducer,
 });
