@@ -1,22 +1,18 @@
 import useDialog from "@/hooks/useDialog";
 import { OPEN_VIEW_BUTTON_TESTID, HIDDEN_VIEW_TESTID } from "./constants";
-import {
-    useGetData0Query,
-    useGetData1Query,
-    useGetData2Query,
-} from "@/services/__test__/refreshToken";
-
-// Create RTK Query API
+import { useAllUsersQuery } from "@/services/user";
+import { useGetDashboardQuery } from "@/services/dashboard";
 
 const ViewWithHiddenQueries = () => {
-    useGetData0Query();
-    useGetData1Query();
-    useGetData2Query();
+    useAllUsersQuery();
+    useGetDashboardQuery();
     return (
         <div
             data-testid={HIDDEN_VIEW_TESTID}
             style={{ width: 100, height: 100 }}
-        />
+        >
+            HIDDEN_QUERIES
+        </div>
     );
 };
 
