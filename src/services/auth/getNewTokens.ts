@@ -17,7 +17,7 @@ const getNewTokens = async () => {
             },
             body: JSON.stringify({ refreshToken }),
         });
-        if (!res.ok) throw new Error("Token refresh failed");
+        if (!res.ok) throw await res.json();
 
         const data = (await res.json()) as TokenResponse;
         if (!data?.token || !data?.refreshToken)
