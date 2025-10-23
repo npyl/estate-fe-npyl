@@ -9,6 +9,25 @@ import getNewTokens from "@/services/auth/getNewTokens";
 
 // ---------------------------------------------------------------------------------------------
 
+const LOG_CODES = {
+    REFRESHING: "IS_REFRESHING",
+    // ...
+    MAIN_LOGIC: "MAIN_LOGIC",
+    // ...
+    ADD_TO_QUEUE: "ADD_TO_QUEUE",
+    RESOVLING: "RESOLVING",
+    ERROR: "ERROR",
+};
+
+const isDebug = process.env.NODE_ENV === "development";
+
+const log = (s: keyof typeof LOG_CODES, ...args: any) => {
+    if (!isDebug) return;
+    console.log(LOG_CODES[s], ...args);
+};
+
+// ---------------------------------------------------------------------------------------------
+
 interface QueuedRequest {
     resolve: (value: { token: string | null; action: any }) => void;
     reject: (reason?: any) => void;
@@ -36,13 +55,15 @@ const doExpiryLogic = async (api: MiddlewareAPI, action: any): Promise<any> => {
     try {
         // If we're already refreshing, queue this request
         if (isRefreshing) {
+            log("REFRESHING");
+
             return new Promise<{ token: string | null; action: any }>(
                 (resolve, reject) => {
-                    console.log("Adding to queue action: ", action);
+                    log("ADD_TO_QUEUE", action);
                     failedQueue.push({ resolve, reject, action });
                 }
             ).then((result) => {
-                console.log("Resolving action: ", result.action);
+                log("RESOVLING", result.action);
 
                 // The token has been refreshed, now retry the original request
                 // For RTK Query, we need to dispatch the original thunk again
@@ -55,6 +76,8 @@ const doExpiryLogic = async (api: MiddlewareAPI, action: any): Promise<any> => {
 
         // Set refreshing flag
         isRefreshing = true;
+
+        log("MAIN_LOGIC");
 
         // Attempt to refresh the token
         const newToken = await getNewTokens();
@@ -72,6 +95,8 @@ const doExpiryLogic = async (api: MiddlewareAPI, action: any): Promise<any> => {
 
         return null;
     } catch (error) {
+        log("ERROR", error);
+
         // Handle refresh error
         processQueue(error, null);
 
