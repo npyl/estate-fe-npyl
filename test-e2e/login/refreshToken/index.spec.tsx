@@ -1,4 +1,4 @@
-import { Page, Route, test } from "@playwright/test";
+import { Page, Route, test, expect, Browser, chromium } from "@playwright/test";
 import gotoSafe from "../../_util/gotoSafe";
 
 import {
@@ -10,9 +10,7 @@ import {
     URL2,
 } from "../../../src/sections/__test__/RefreshToken/constants";
 
-test.beforeEach(async ({ page }) => {
-    await gotoSafe(page, "http://127.0.0.1:3000/__test__/refreshToken");
-});
+const PAGE_URL = "http://127.0.0.1:3000/__test__/refreshToken";
 
 const openHiddenQueriesView = async (page: Page) => {
     // click
@@ -26,6 +24,16 @@ const openHiddenQueriesView = async (page: Page) => {
 
 let getNewTokensSuccess = false;
 
+const FAKE_BASE_URL = "http://127.0.0.1:3000/api/__test__/refreshToken";
+
+const setupQueriesToFullfillWithStatus = async (page: Page, status: number) => {
+    const res = await page.request.post(`${FAKE_BASE_URL}?status=${status}`);
+
+    if (res.status() !== 200) throw new Error(await res.text());
+};
+
+// -----------------------------------------------------------------------------------
+
 const fullfillWithStatus =
     (status: number, onFullfilled?: VoidFunction) => async (route: Route) => {
         const res = await route.fulfill({
@@ -38,14 +46,6 @@ const fullfillWithStatus =
 
         return res;
     };
-
-const setupQueriesToFullfillWithStatus = async (page: Page, status: number) => {
-    await page.route(URL0, fullfillWithStatus(status));
-    await page.route(URL1, fullfillWithStatus(status));
-    await page.route(URL2, fullfillWithStatus(status));
-};
-
-// -----------------------------------------------------------------------------------
 
 const setupGetNewTokensToSucceed = async (
     page: Page,
@@ -68,14 +68,32 @@ const onSuccessAfterRefresh = () => {
     getNewTokensSuccess = true;
 };
 
+let browser: Browser;
+let page: Page;
+
+test.beforeAll(async () => {
+    test.setTimeout(5 * 60 * 1000);
+    browser = await chromium.launch({ headless: false });
+    const context = await browser.newContext();
+    page = await context.newPage();
+});
+
+test.afterAll(async () => {
+    await browser?.close();
+});
+
 test.describe("RefreshToken Flows", () => {
-    test("AccessToken Expires -> Refreshing Tokens (SUCCESS) -> All Requests are re-evaluated", async ({
-        page,
-    }) => {
-        // 0. for step 2. and 3., respectively
+    test("AccessToken Expires -> Refreshing Tokens (SUCCESS) -> All Requests are re-evaluated", async ({}) => {
+        // Reset state
+        getNewTokensSuccess = false;
+
+        // 0. Setup route handlers BEFORE navigating to the page
         await setupQueriesToFullfillWithStatus(page, 401);
         await setupGetNewTokensToSucceed(page, onSuccessAfterRefresh);
 
+        // Navigate to page AFTER setting up routes
+        await gotoSafe(page, PAGE_URL);
+
         // 1. click toggle (hidden view with useQuery0(), useQuery1(), ..., appear)
         await openHiddenQueriesView(page);
 
@@ -87,15 +105,24 @@ test.describe("RefreshToken Flows", () => {
             page.waitForResponse((resp) => resp.url().includes(URL1)),
             page.waitForResponse((resp) => resp.url().includes(URL2)),
         ]);
+
+        await page.waitForTimeout(5 * 1000 * 60);
+
+        // 4. verify URL remains the same (successful refresh keeps user on page)
+        await page.waitForURL(PAGE_URL);
     });
 
-    test("AccessToken Expires -> Refreshing Tokens (FAIL) -> All Requests finally fail", async ({
-        page,
-    }) => {
-        // 0. for step 2. and 3., respectively
+    test("AccessToken Expires -> Refreshing Tokens (FAIL) -> All Requests finally fail", async ({}) => {
+        // Reset state
+        getNewTokensSuccess = false;
+
+        // 0. Setup route handlers BEFORE navigating to the page
         await setupQueriesToFullfillWithStatus(page, 401);
         await setupGetNewTokensToFail(page);
 
+        // Navigate to page AFTER setting up routes
+        await gotoSafe(page, PAGE_URL);
+
         // 1. click toggle (hidden view with useQuery0(), useQuery1(), ..., appear)
         await openHiddenQueriesView(page);
 
@@ -107,5 +134,10 @@ test.describe("RefreshToken Flows", () => {
             page.waitForResponse((resp) => resp.url().includes(URL1)),
             page.waitForResponse((resp) => resp.url().includes(URL2)),
         ]);
+
+        await page.waitForTimeout(5 * 1000 * 60);
+
+        // 4. verify redirect to login screen
+        await page.waitForURL("http://127.0.0.1:3000/login");
     });
 });
