@@ -26,7 +26,7 @@ const Sidebar = () => {
 
 const Roles = () => (
     <>
-        <Grid container gap={1}>
+        <Grid container>
             <Grid
                 xs={12}
                 sm={1.5}
@@ -36,7 +36,7 @@ const Roles = () => (
             >
                 <Sidebar />
             </Grid>
-            <Grid xs={12} sm={10}>
+            <Grid xs={12} sm={10.5}>
                 <CreateOrEdit />
             </Grid>
         </Grid>

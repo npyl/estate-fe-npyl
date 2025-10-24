@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            CreateRole: "Create Role",
+            EditRole: "Edit Role",
             PERMISSIONS_Roles: "Roles",
 
             COPY_TO_CLIPBOARD_SUCCESS: "Copied",
@@ -1422,6 +1424,8 @@ const resources = {
     },
     el: {
         translation: {
+            EditRole: "Επεξεργασία Ρόλου",
+            CreateRole: "Δημιουργία Ρόλου",
             PERMISSIONS_Roles: "Ρόλοι",
 
             COPY_TO_CLIPBOARD_SUCCESS: "Αντιγράφηκε",
