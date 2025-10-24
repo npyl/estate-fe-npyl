@@ -12,7 +12,6 @@ import { customers } from "@/services/customers";
 import { global } from "@/services/global";
 import { location } from "@/services/location";
 import { properties } from "@/services/properties";
-import { security } from "@/services/security";
 import { user } from "@/services/user";
 import { translation } from "@/services/translate";
 import { publicDashboard } from "@/services/publicDashboard";
@@ -37,7 +36,6 @@ export const rootReducer = combineReducers({
     [note.reducerPath]: note.reducer,
     [labels.reducerPath]: labels.reducer,
     [notification.reducerPath]: notification.reducer,
-    [security.reducerPath]: security.reducer,
     [tasks.reducerPath]: tasks.reducer,
     [logs.reducerPath]: logs.reducer,
     [dashboard.reducerPath]: dashboard.reducer,
