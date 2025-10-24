@@ -1,7 +1,15 @@
 import { styled } from "@mui/material/styles";
-import TextField from "@mui/material/TextField";
+import TextField, {
+    TextFieldProps,
+    TextFieldVariants,
+} from "@mui/material/TextField";
 
-const MultilineTextField = styled(TextField)(({ theme }) => ({
+type MultilineTextFieldProps<V extends TextFieldVariants = TextFieldVariants> =
+    Omit<TextFieldProps<V>, "multiline">;
+
+const MultilineTextField = styled((props: MultilineTextFieldProps) => (
+    <TextField multiline {...props} />
+))(({ theme }) => ({
     "& .MuiInputBase-root": {
         height: "auto!important",
     },

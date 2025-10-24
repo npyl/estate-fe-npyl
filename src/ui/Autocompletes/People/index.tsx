@@ -36,7 +36,6 @@ const getDefaultRenderInput =
     ) =>
     (params: AutocompleteRenderInputParams): React.ReactNode => (
         <MultilineTextField
-            multiline
             label={label}
             {...params}
             error={error}
