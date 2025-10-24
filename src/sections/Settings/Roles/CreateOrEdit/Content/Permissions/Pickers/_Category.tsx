@@ -15,9 +15,9 @@ import { TranslationType } from "@/types/translation";
 // ------------------------------------------------------------------------------
 
 const getOption =
-    (parentCategory: string, value: string[]) => (o: KeyValue) => (
+    (parentCategory: string, value?: string[]) => (o: KeyValue) => (
         <MenuItem key={`${parentCategory}_${o.key}`} value={o.key}>
-            <Checkbox checked={value.includes(o.key)} />
+            <Checkbox checked={value?.includes(o.key)} />
             {o.value}
         </MenuItem>
     );

@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import RHFParentCategoryPicker from "./Pickers/RHFParentCategory";
 import RHFCategoryPicker from "./Pickers/RHFCategory";
+import RHFStatePicker from "./Pickers/RHFState";
 
 const Triplet = () => {
     const { t } = useTranslation();
@@ -26,7 +27,7 @@ const Property = () => {
             </Typography>
             <Triplet />
             <Stack direction="row" spacing={1} pt={1}>
-                {/* <States /> */}
+                <RHFStatePicker name="states" />
                 <RHFParentCategoryPicker name="parentCategories" />
                 <RHFCategoryPicker
                     name="categories"
