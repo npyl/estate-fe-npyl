@@ -1,12 +1,12 @@
 import { errorToast } from "@/components/Toaster";
-import { removeAccessToken, setTokens } from "@/contexts/tokens";
+import { removeAccessToken, setTokens_safe } from "@/contexts/tokens";
 import {
     Middleware,
     MiddlewareAPI,
     isRejectedWithValue,
 } from "@reduxjs/toolkit";
 import getNewTokens from "@/services/auth/getNewTokens";
-import { Mutex } from "async-mutex";
+import { Mutex, MutexInterface } from "async-mutex";
 
 // ---------------------------------------------------------------------------------------------
 
@@ -15,50 +15,59 @@ const mutex = new Mutex();
 
 // ---------------------------------------------------------------------------------------------
 
+const isUnauthorized = (result: any) => {
+    const status = result?.action.payload?.status;
+    return isRejectedWithValue(result) && (status === 401 || status === 403);
+};
+
+const retryAction_throwable = async (api: MiddlewareAPI, action: any) => {
+    let result = null;
+    try {
+        result = await api.dispatch(action.meta.arg);
+    } catch {}
+    if (isUnauthorized(result)) throw new Error("Unauthorized after refresh!");
+    return result;
+};
+
+// ---------------------------------------------------------------------------------------------
+
 const doExpiryLogic = async (api: MiddlewareAPI, action: any): Promise<any> => {
-    // Wait until the mutex is available without locking it
-    await mutex.waitForUnlock();
+    let releaseHandle: MutexInterface.Releaser | null = null;
 
-    // Check if mutex is already locked (another refresh is in progress)
-    if (!mutex.isLocked()) {
-        // Acquire the mutex lock
-        const release = await mutex.acquire();
+    try {
+        // Check if mutex is already locked (another refresh is in progress)
+        if (!mutex.isLocked()) {
+            // Acquire the mutex lock
+            releaseHandle = await mutex.acquire();
 
-        try {
             // Attempt to refresh the token
             const newToken = await getNewTokens();
             if (!newToken) throw new Error("Token refresh failed");
 
             // Store the new token
-            setTokens(newToken);
+            await setTokens_safe(newToken);
 
             // Retry the original request
-            // For RTK Query, we need to dispatch the original query/mutation again
-            if (action.meta?.arg) {
-                return api.dispatch(action.meta.arg);
-            }
+            const result = await retryAction_throwable(api, action);
+
+            releaseHandle?.();
+
+            return result;
+        } else {
+            // Mutex is locked, wait for it to be released
+            await mutex.waitForUnlock();
+
+            await retryAction_throwable(api, action);
 
             return null;
-        } catch (error) {
-            // Handle refresh error
-            removeAccessToken();
-            globalThis.location.replace("/login");
-            errorToast("_END_OF_SESSION_");
-            throw error;
-        } finally {
-            // Always release the mutex, even if an error occurs
-            release();
         }
-    } else {
-        // Mutex is locked, wait for it to be released
-        await mutex.waitForUnlock();
+    } catch {
+        releaseHandle?.();
 
-        // Token has been refreshed by another request, retry this one
-        if (action.meta?.arg) {
-            return api.dispatch(action.meta.arg);
-        }
-
-        return null;
+        // Handle refresh error
+        removeAccessToken();
+        globalThis.location.replace("/login");
+        errorToast("_END_OF_SESSION_");
     }
 };
 

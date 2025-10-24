@@ -17,6 +17,7 @@ import {
     TOTAL_TESTID,
 } from "../../../src/sections/__test__/RefreshToken/constants";
 import login from "../_shared/login";
+import { EMAIL_ID, PSSWD_ID } from "../../../src/sections/Login/constants";
 
 // -------------------------------------------------------------------------------------------------------
 
@@ -85,11 +86,26 @@ const openHiddenQueriesView = async (page: Page) => {
 
 // -----------------------------------------------------------------------------------
 
-const expectUrlsToHaveStatus = (page: Page, status: number) =>
-    Promise.all([
-        page.waitForResponse(testUrlWithStatus(URL0, status)),
-        // page.waitForResponse(testUrlWithStatus(URL1, status)),
-    ]);
+const testUrlWithStatus =
+    (URL: string, status: number, onResult: (b: boolean) => void) =>
+    (resp: Response) => {
+        const res = resp.url().includes(URL) && resp.status() === status;
+        onResult(res);
+        return res;
+    };
+
+const expectUrlsToHaveStatus = async (page: Page, status: number) => {
+    let p0 = false;
+    let p1 = false;
+
+    const setP0 = (b: boolean) => (p0 = b);
+    const setP1 = (b: boolean) => (p1 = b);
+
+    await page.waitForResponse(testUrlWithStatus(URL0, status, setP0));
+    // await page.waitForResponse(testUrlWithStatus(URL1, status, setP1));
+
+    expect(p0 || p1).toBe(true);
+};
 
 // -----------------------------------------------------------------------------------
 
@@ -100,10 +116,15 @@ const expectUrlsToFail = (page: Page) => expectUrlsToHaveStatus(page, 400);
 
 // -----------------------------------------------------------------------------------
 
-const setupGetNewTokensToSucceed = async (page: Page) =>
+const setupGetNewTokensToSucceed = async (
+    page: Page,
+    unroute: boolean = false
+) =>
     page.route(`${process.env.NEXT_PUBLIC_API_URL}/refresh`, async (route) => {
-        // Disable interceptors!
-        await unrouteQueries(page);
+        // INFO: Disable interceptors to allow natural flow (a.k.a. to actually succeed with the refreshed tokens)
+        if (unroute) {
+            await unrouteQueries(page);
+        }
 
         // Call original!
         await route.continue();
@@ -132,12 +153,18 @@ const expectTotal = async (page: Page) => {
 
 // -----------------------------------------------------------------------------------
 
-const testUrlWithStatus = (URL: string, status: number) => (resp: Response) =>
-    resp.url().includes(URL) && resp.status() === status;
+const expectLoginPage = async (page: Page) => {
+    await page.getByTestId(PSSWD_ID).waitFor({ state: "visible" });
+    await page.getByTestId(EMAIL_ID).waitFor({ state: "visible" });
+};
+
+const SHOULD_STAY_UNAUTHORIZED = false;
 
 test.describe("RefreshToken Flows", () => {
+    test.setTimeout(5 * 60 * 1000);
+
     test("AccessToken Expires -> Refreshing Tokens (SUCCESS) -> All Requests are re-evaluated", async () => {
-        test.setTimeout(5 * 60 * 1000);
+        test.setTimeout(1 * 60 * 1000);
 
         await setupQueriesToFullfillWithStatus(page, 401);
         await setupGetNewTokensToSucceed(page);
@@ -152,18 +179,35 @@ test.describe("RefreshToken Flows", () => {
         // Now click toggle to trigger the queries
         await openHiddenQueriesView(page);
 
-        // await expectUrlsToSucceed(page);
+        // Expect 401 from both urls
+        await expectUrlsToUnauthorized(page);
 
         // INFO: when the two queries re-run expect some content to appear
         await expectFirstName(page);
-        // await expectTotal(page);
+        await expectTotal(page);
 
-        await page.waitForTimeout(5 * 60 * 1000);
+        // await page.waitForTimeout(5 * 60 * 1000);
+    });
+
+    test("AccessToken Expires -> Refreshing Tokens (SUCCESS) -> Re-evaluated requests (FAILURE) -> logout", async () => {
+        await setupQueriesToFullfillWithStatus(page, 401);
+        await setupGetNewTokensToSucceed(page, SHOULD_STAY_UNAUTHORIZED);
+
+        // Force a brand-new session for token validity
+        await login(page);
+
+        // Navigate to PAGE_URL & wait for all network operations to finish
+        await gotoSafe(page, PAGE_URL);
+        await page.waitForLoadState("networkidle", { timeout: 2 * 60 * 1000 });
+
+        // Now click toggle to trigger the queries
+        await openHiddenQueriesView(page);
+
+        // Check whether /login *actually* loaded
+        await expectLoginPage(page);
     });
 
     test("AccessToken Expires -> Refreshing Tokens (FAILURE) -> Logout", async () => {
-        test.setTimeout(5 * 60 * 1000);
-
         await setupQueriesToFullfillWithStatus(page, 401);
         await setupGetNewTokensToFail(page);
 
@@ -177,6 +221,7 @@ test.describe("RefreshToken Flows", () => {
         // Now click toggle to trigger the queries
         await openHiddenQueriesView(page);
 
-        await page.waitForURL("**/login");
+        // Check whether /login *actually* loaded
+        await expectLoginPage(page);
     });
 });
