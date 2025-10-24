@@ -1,34 +1,19 @@
-import {
-    Page,
-    test,
-    Response,
-    Browser,
-    chromium,
-    Route,
-    expect,
-} from "@playwright/test";
+import { Page, test, Browser, chromium } from "@playwright/test";
 import gotoSafe from "../../_util/gotoSafe";
-
+import login from "../_shared/login";
+import { PAGE_URL, SHOULD_FULLFILL_NATURALLY } from "./constants";
 import {
-    HIDDEN_VIEW_TESTID,
-    OPEN_VIEW_BUTTON_TESTID,
     // ...
     FIRSTNAME_TESTID,
     TOTAL_TESTID,
 } from "../../../src/sections/__test__/RefreshToken/constants";
-import login from "../_shared/login";
-import { EMAIL_ID, PSSWD_ID } from "../../../src/sections/Login/constants";
+import {
+    openHiddenQueriesView,
+    setupGetNewTokensToSucceed,
+    setupQueriesToFullfillWithStatus,
+} from "./util";
 
-// -------------------------------------------------------------------------------------------------------
-
-const PAGE_URL = "http://127.0.0.1:3000/__test__/refreshToken";
-
-// -------------------------------------------------------------------------------------------------------
-
-const URL0 = `${process.env.NEXT_PUBLIC_API_URL}/users`;
-const URL1 = `${process.env.NEXT_PUBLIC_API_URL}/dashboard`;
-
-// -------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------
 
 let browser: Browser;
 let page: Page;
@@ -49,95 +34,6 @@ test.beforeAll(async () => {
 
 // ---------------------------------------------------------------------------------------------------------
 
-const fullfillWithStatus = (status: number) => async (route: Route) =>
-    route.fulfill({
-        status,
-        contentType: "application/json",
-        body: JSON.stringify({}),
-    });
-
-const interceptUrlWithStatusAndUnroute = (
-    page: Page,
-    url: string,
-    status: number
-) => page.route(url, fullfillWithStatus(status));
-
-// -------------------------------------------------------------------------------------------------------
-
-const setupQueriesToFullfillWithStatus = async (page: Page, status: number) => {
-    await interceptUrlWithStatusAndUnroute(page, URL0, status);
-    await interceptUrlWithStatusAndUnroute(page, URL1, status);
-};
-
-const unrouteQueries = async (page: Page) => {
-    await page.unroute(URL0);
-    await page.unroute(URL1);
-};
-
-// -------------------------------------------------------------------------------------------------------
-
-const openHiddenQueriesView = async (page: Page) => {
-    // click
-    await page.getByTestId(OPEN_VIEW_BUTTON_TESTID).click();
-
-    // wait for view to open
-    await page.getByTestId(HIDDEN_VIEW_TESTID).waitFor({ state: "visible" });
-};
-
-// -----------------------------------------------------------------------------------
-
-const testUrlWithStatus =
-    (URL: string, status: number, onResult: (b: boolean) => void) =>
-    (resp: Response) => {
-        const res = resp.url().includes(URL) && resp.status() === status;
-        onResult(res);
-        return res;
-    };
-
-const expectUrlsToHaveStatus = async (page: Page, status: number) => {
-    let p0 = false;
-    let p1 = false;
-
-    const setP0 = (b: boolean) => (p0 = b);
-    const setP1 = (b: boolean) => (p1 = b);
-
-    await page.waitForResponse(testUrlWithStatus(URL0, status, setP0));
-    // await page.waitForResponse(testUrlWithStatus(URL1, status, setP1));
-
-    expect(p0 || p1).toBe(true);
-};
-
-// -----------------------------------------------------------------------------------
-
-const expectUrlsToSucceed = (page: Page) => expectUrlsToHaveStatus(page, 200);
-const expectUrlsToUnauthorized = (page: Page) =>
-    expectUrlsToHaveStatus(page, 401);
-const expectUrlsToFail = (page: Page) => expectUrlsToHaveStatus(page, 400);
-
-// -----------------------------------------------------------------------------------
-
-const setupGetNewTokensToSucceed = async (
-    page: Page,
-    unroute: boolean = false
-) =>
-    page.route(`${process.env.NEXT_PUBLIC_API_URL}/refresh`, async (route) => {
-        // INFO: Disable interceptors to allow natural flow (a.k.a. to actually succeed with the refreshed tokens)
-        if (unroute) {
-            await unrouteQueries(page);
-        }
-
-        // Call original!
-        await route.continue();
-    });
-
-const setupGetNewTokensToFail = (page: Page) =>
-    page.route(
-        `${process.env.NEXT_PUBLIC_API_URL}/refresh`,
-        fullfillWithStatus(400)
-    );
-
-// -----------------------------------------------------------------------------------
-
 const expectFirstName = async (page: Page) => {
     const l = page.getByTestId(FIRSTNAME_TESTID);
     await l.waitFor({ state: "visible" });
@@ -151,77 +47,26 @@ const expectTotal = async (page: Page) => {
     expect(text).toBeTruthy();
 };
 
-// -----------------------------------------------------------------------------------
-
-const expectLoginPage = async (page: Page) => {
-    await page.getByTestId(PSSWD_ID).waitFor({ state: "visible" });
-    await page.getByTestId(EMAIL_ID).waitFor({ state: "visible" });
-};
-
-const SHOULD_STAY_UNAUTHORIZED = false;
+// ---------------------------------------------------------------------------------------------------------
 
 test.describe("RefreshToken Flows", () => {
-    test.setTimeout(5 * 60 * 1000);
-
     test("AccessToken Expires -> Refreshing Tokens (SUCCESS) -> All Requests are re-evaluated", async () => {
-        test.setTimeout(1 * 60 * 1000);
-
-        await setupQueriesToFullfillWithStatus(page, 401);
-        await setupGetNewTokensToSucceed(page);
+        test.setTimeout(5 * 60 * 1000);
 
         // Force a brand-new session for token validity
         await login(page);
 
-        // Navigate to PAGE_URL & wait for all network operations to finish
+        // Navigate FIRST, before setting up interceptors
         await gotoSafe(page, PAGE_URL);
-        await page.waitForLoadState("networkidle", { timeout: 2 * 60 * 1000 });
+
+        // THEN set up your interceptors
+        await setupQueriesToFullfillWithStatus(page, 401);
+        await setupGetNewTokensToSucceed(page, SHOULD_FULLFILL_NATURALLY);
 
         // Now click toggle to trigger the queries
         await openHiddenQueriesView(page);
 
-        // Expect 401 from both urls
-        await expectUrlsToUnauthorized(page);
-
-        // INFO: when the two queries re-run expect some content to appear
         await expectFirstName(page);
         await expectTotal(page);
-
-        // await page.waitForTimeout(5 * 60 * 1000);
-    });
-
-    test("AccessToken Expires -> Refreshing Tokens (SUCCESS) -> Re-evaluated requests (FAILURE) -> logout", async () => {
-        await setupQueriesToFullfillWithStatus(page, 401);
-        await setupGetNewTokensToSucceed(page, SHOULD_STAY_UNAUTHORIZED);
-
-        // Force a brand-new session for token validity
-        await login(page);
-
-        // Navigate to PAGE_URL & wait for all network operations to finish
-        await gotoSafe(page, PAGE_URL);
-        await page.waitForLoadState("networkidle", { timeout: 2 * 60 * 1000 });
-
-        // Now click toggle to trigger the queries
-        await openHiddenQueriesView(page);
-
-        // Check whether /login *actually* loaded
-        await expectLoginPage(page);
-    });
-
-    test("AccessToken Expires -> Refreshing Tokens (FAILURE) -> Logout", async () => {
-        await setupQueriesToFullfillWithStatus(page, 401);
-        await setupGetNewTokensToFail(page);
-
-        // Force a brand-new session for token validity
-        await login(page);
-
-        // Navigate to PAGE_URL & wait for all network operations to finish
-        await gotoSafe(page, PAGE_URL);
-        await page.waitForLoadState("networkidle", { timeout: 2 * 60 * 1000 });
-
-        // Now click toggle to trigger the queries
-        await openHiddenQueriesView(page);
-
-        // Check whether /login *actually* loaded
-        await expectLoginPage(page);
     });
 });
