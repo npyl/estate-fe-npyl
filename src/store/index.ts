@@ -19,7 +19,6 @@ import { dashboard } from "../services/dashboard";
 import { rtkQueryErrorLogger } from "../services/error";
 import { location } from "../services/location";
 import { properties } from "../services/properties";
-import { security } from "../services/security";
 import { user } from "../services/user";
 import { publicDashboard } from "@/services/publicDashboard";
 import { translation } from "@/services/translate";
@@ -33,6 +32,7 @@ import { messages } from "@/services/messages";
 import { logout } from "@/services/logout";
 import { emails } from "@/services/email";
 import { blog } from "@/services/blog";
+import { roles } from "@/services/roles";
 import { rootReducer } from "./root-reducer";
 
 const services = [
@@ -45,7 +45,6 @@ const services = [
     labels,
     location,
     notification,
-    security,
     tasks,
     logs,
     dashboard,
@@ -67,6 +66,7 @@ const services = [
     logout,
     emails,
     blog,
+    roles,
 ];
 
 export const clearAllApiCaches = () =>
