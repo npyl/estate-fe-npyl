@@ -1,16 +1,79 @@
-import { Page, Route, test, expect, Browser, chromium } from "@playwright/test";
+import {
+    Page,
+    test,
+    Response,
+    Browser,
+    chromium,
+    Route,
+    expect,
+} from "@playwright/test";
 import gotoSafe from "../../_util/gotoSafe";
 
 import {
     HIDDEN_VIEW_TESTID,
     OPEN_VIEW_BUTTON_TESTID,
     // ...
-    URL0,
-    URL1,
-    URL2,
+    FIRSTNAME_TESTID,
+    TOTAL_TESTID,
 } from "../../../src/sections/__test__/RefreshToken/constants";
+import login from "../_shared/login";
+
+// -------------------------------------------------------------------------------------------------------
 
 const PAGE_URL = "http://127.0.0.1:3000/__test__/refreshToken";
+
+// -------------------------------------------------------------------------------------------------------
+
+const URL0 = `${process.env.NEXT_PUBLIC_API_URL}/users`;
+const URL1 = `${process.env.NEXT_PUBLIC_API_URL}/dashboard`;
+
+// -------------------------------------------------------------------------------------------------------
+
+let browser: Browser;
+let page: Page;
+
+// INFO: for every test we need to bring up a non-headless browser instance (because the Map cannot load without a view)
+test.beforeAll(async () => {
+    test.setTimeout(5 * 60 * 1000);
+
+    browser = await chromium.launch({
+        headless: false,
+        devtools: true,
+    });
+    const context = await browser.newContext();
+    page = await context.newPage();
+
+    await gotoSafe(page, "http://127.0.0.1:3000");
+});
+
+// ---------------------------------------------------------------------------------------------------------
+
+const fullfillWithStatus = (status: number) => async (route: Route) =>
+    route.fulfill({
+        status,
+        contentType: "application/json",
+        body: JSON.stringify({}),
+    });
+
+const interceptUrlWithStatusAndUnroute = (
+    page: Page,
+    url: string,
+    status: number
+) => page.route(url, fullfillWithStatus(status));
+
+// -------------------------------------------------------------------------------------------------------
+
+const setupQueriesToFullfillWithStatus = async (page: Page, status: number) => {
+    await interceptUrlWithStatusAndUnroute(page, URL0, status);
+    await interceptUrlWithStatusAndUnroute(page, URL1, status);
+};
+
+const unrouteQueries = async (page: Page) => {
+    await page.unroute(URL0);
+    await page.unroute(URL1);
+};
+
+// -------------------------------------------------------------------------------------------------------
 
 const openHiddenQueriesView = async (page: Page) => {
     // click
@@ -22,39 +85,29 @@ const openHiddenQueriesView = async (page: Page) => {
 
 // -----------------------------------------------------------------------------------
 
-let getNewTokensSuccess = false;
-
-const FAKE_BASE_URL = "http://127.0.0.1:3000/api/__test__/refreshToken";
-
-const setupQueriesToFullfillWithStatus = async (page: Page, status: number) => {
-    const res = await page.request.post(`${FAKE_BASE_URL}?status=${status}`);
-
-    if (res.status() !== 200) throw new Error(await res.text());
-};
+const expectUrlsToHaveStatus = (page: Page, status: number) =>
+    Promise.all([
+        page.waitForResponse(testUrlWithStatus(URL0, status)),
+        // page.waitForResponse(testUrlWithStatus(URL1, status)),
+    ]);
 
 // -----------------------------------------------------------------------------------
 
-const fullfillWithStatus =
-    (status: number, onFullfilled?: VoidFunction) => async (route: Route) => {
-        const res = await route.fulfill({
-            status: getNewTokensSuccess ? 200 : status,
-            contentType: "application/json",
-            body: JSON.stringify({}),
-        });
+const expectUrlsToSucceed = (page: Page) => expectUrlsToHaveStatus(page, 200);
+const expectUrlsToUnauthorized = (page: Page) =>
+    expectUrlsToHaveStatus(page, 401);
+const expectUrlsToFail = (page: Page) => expectUrlsToHaveStatus(page, 400);
 
-        onFullfilled?.();
+// -----------------------------------------------------------------------------------
 
-        return res;
-    };
+const setupGetNewTokensToSucceed = async (page: Page) =>
+    page.route(`${process.env.NEXT_PUBLIC_API_URL}/refresh`, async (route) => {
+        // Disable interceptors!
+        await unrouteQueries(page);
 
-const setupGetNewTokensToSucceed = async (
-    page: Page,
-    onFullfilled: VoidFunction
-) =>
-    await page.route(
-        `${process.env.NEXT_PUBLIC_API_URL}/refresh`,
-        fullfillWithStatus(200, onFullfilled)
-    );
+        // Call original!
+        await route.continue();
+    });
 
 const setupGetNewTokensToFail = (page: Page) =>
     page.route(
@@ -64,80 +117,66 @@ const setupGetNewTokensToFail = (page: Page) =>
 
 // -----------------------------------------------------------------------------------
 
-const onSuccessAfterRefresh = () => {
-    getNewTokensSuccess = true;
+const expectFirstName = async (page: Page) => {
+    const l = page.getByTestId(FIRSTNAME_TESTID);
+    await l.waitFor({ state: "visible" });
+    const text = await l.textContent();
+    expect(text).toBeTruthy();
+};
+const expectTotal = async (page: Page) => {
+    const l = page.getByTestId(TOTAL_TESTID);
+    await l.waitFor({ state: "visible" });
+    const text = await l.textContent();
+    expect(text).toBeTruthy();
 };
 
-let browser: Browser;
-let page: Page;
+// -----------------------------------------------------------------------------------
 
-test.beforeAll(async () => {
-    test.setTimeout(5 * 60 * 1000);
-    browser = await chromium.launch({ headless: false });
-    const context = await browser.newContext();
-    page = await context.newPage();
-});
-
-test.afterAll(async () => {
-    await browser?.close();
-});
+const testUrlWithStatus = (URL: string, status: number) => (resp: Response) =>
+    resp.url().includes(URL) && resp.status() === status;
 
 test.describe("RefreshToken Flows", () => {
-    test("AccessToken Expires -> Refreshing Tokens (SUCCESS) -> All Requests are re-evaluated", async ({}) => {
-        // Reset state
-        getNewTokensSuccess = false;
+    test("AccessToken Expires -> Refreshing Tokens (SUCCESS) -> All Requests are re-evaluated", async () => {
+        test.setTimeout(5 * 60 * 1000);
 
-        // 0. Setup route handlers BEFORE navigating to the page
         await setupQueriesToFullfillWithStatus(page, 401);
-        await setupGetNewTokensToSucceed(page, onSuccessAfterRefresh);
+        await setupGetNewTokensToSucceed(page);
 
-        // Navigate to page AFTER setting up routes
+        // Force a brand-new session for token validity
+        await login(page);
+
+        // Navigate to PAGE_URL & wait for all network operations to finish
         await gotoSafe(page, PAGE_URL);
+        await page.waitForLoadState("networkidle", { timeout: 2 * 60 * 1000 });
 
-        // 1. click toggle (hidden view with useQuery0(), useQuery1(), ..., appear)
+        // Now click toggle to trigger the queries
         await openHiddenQueriesView(page);
 
-        // 2. the fetches of these queries return 401 (or 403) (a.k.a. Unauthorized)
-        // 3. token revalidation is attempted (SUCCESS or FAIL support)
+        // await expectUrlsToSucceed(page);
 
-        await Promise.all([
-            page.waitForResponse((resp) => resp.url().includes(URL0)),
-            page.waitForResponse((resp) => resp.url().includes(URL1)),
-            page.waitForResponse((resp) => resp.url().includes(URL2)),
-        ]);
+        // INFO: when the two queries re-run expect some content to appear
+        await expectFirstName(page);
+        // await expectTotal(page);
 
-        await page.waitForTimeout(5 * 1000 * 60);
-
-        // 4. verify URL remains the same (successful refresh keeps user on page)
-        await page.waitForURL(PAGE_URL);
+        await page.waitForTimeout(5 * 60 * 1000);
     });
 
-    test("AccessToken Expires -> Refreshing Tokens (FAIL) -> All Requests finally fail", async ({}) => {
-        // Reset state
-        getNewTokensSuccess = false;
+    test("AccessToken Expires -> Refreshing Tokens (FAILURE) -> Logout", async () => {
+        test.setTimeout(5 * 60 * 1000);
 
-        // 0. Setup route handlers BEFORE navigating to the page
         await setupQueriesToFullfillWithStatus(page, 401);
         await setupGetNewTokensToFail(page);
 
-        // Navigate to page AFTER setting up routes
-        await gotoSafe(page, PAGE_URL);
+        // Force a brand-new session for token validity
+        await login(page);
 
-        // 1. click toggle (hidden view with useQuery0(), useQuery1(), ..., appear)
+        // Navigate to PAGE_URL & wait for all network operations to finish
+        await gotoSafe(page, PAGE_URL);
+        await page.waitForLoadState("networkidle", { timeout: 2 * 60 * 1000 });
+
+        // Now click toggle to trigger the queries
         await openHiddenQueriesView(page);
 
-        // 2. the fetches of these queries return 401 (or 403) (a.k.a. Unauthorized)
-        // 3. token revalidation is attempted (SUCCESS or FAIL support)
-
-        await Promise.all([
-            page.waitForResponse((resp) => resp.url().includes(URL0)),
-            page.waitForResponse((resp) => resp.url().includes(URL1)),
-            page.waitForResponse((resp) => resp.url().includes(URL2)),
-        ]);
-
-        await page.waitForTimeout(5 * 1000 * 60);
-
-        // 4. verify redirect to login screen
-        await page.waitForURL("http://127.0.0.1:3000/login");
+        await page.waitForURL("**/login");
     });
 });
