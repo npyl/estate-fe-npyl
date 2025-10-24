@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import RHFTextField from "@/components/hook-form/RHFTextField";
-import RHFColorPicker from "./RHFColorPicker";
+import RHFColorPicker from "@/components/hook-form/RHFColorPicker";
 import Preview from "./Preview";
 import Resource from "./Resource";
 import { FC } from "react";
@@ -25,7 +25,7 @@ const Content: FC<Props> = ({ assign, isEdit }) => {
                 variant="outlined"
             />
 
-            <RHFColorPicker />
+            <RHFColorPicker name="color" />
 
             <Preview />
 

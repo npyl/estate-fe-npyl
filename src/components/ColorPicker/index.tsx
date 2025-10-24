@@ -84,4 +84,5 @@ const ColorPicker: FC<ColorPickerProps> = ({
     );
 };
 
+export type { ColorPickerProps };
 export default React.memo(ColorPicker);
