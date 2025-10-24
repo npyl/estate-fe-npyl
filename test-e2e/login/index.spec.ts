@@ -27,3 +27,8 @@ test("Login (Already Logged In)", async ({ page }) => {
         timeout: 2 * 60 * 1000,
     });
 });
+
+test.fixme(
+    "Login (Already Logged In but from different browser)",
+    async ({ page }) => {}
+);
