@@ -1,34 +1,27 @@
-import { RoleReq } from "@/types/roles";
+import { useGetRoleByIdQuery } from "@/services/roles";
+import { RoleReq, RoleToRoleReq } from "@/types/roles";
+import isFalsy from "@/utils/isFalsy";
+import preventDefault from "@/utils/preventDefault";
 import { FC, PropsWithChildren } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-const Form: FC<PropsWithChildren> = ({ children }) => {
+interface FormProps extends PropsWithChildren {
+    roleMode?: number | "create";
+}
+
+const Form: FC<FormProps> = ({ roleMode, children }) => {
+    const id = isFalsy(roleMode) || roleMode === "create" ? -1 : roleMode!;
+    const { data } = useGetRoleByIdQuery(id, { skip: id === -1 });
+
     const methods = useForm<RoleReq>({
-        values: {
-            name: "",
-            color: "",
-            description: "",
-            propertyPermissions: {
-                view: false,
-                edit: false,
-                delete: false,
-                // ...
-                allStates: false,
-                states: [],
-                // ...
-                allParentCategories: false,
-                parentCategories: [],
-                // ...
-                allCategories: false,
-                categories: [],
-                // ...
-                allUsers: false,
-                users: [],
-            },
-            users: [],
-        },
+        values: RoleToRoleReq(data),
     });
-    return <FormProvider {...methods}>{children}</FormProvider>;
+
+    return (
+        <form onSubmit={preventDefault}>
+            <FormProvider {...methods}>{children}</FormProvider>
+        </form>
+    );
 };
 
 export default Form;

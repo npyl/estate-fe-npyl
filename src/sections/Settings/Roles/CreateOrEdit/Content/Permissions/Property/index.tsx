@@ -2,9 +2,10 @@ import RHFIOSSwitch from "@/components/hook-form/RHFIOSSwitch";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
-import RHFParentCategoryMultiplePicker from "@/ui/Pickers/RHF/ParentCategoryMultiple";
-import RHFCategoryMultiplePicker from "@/ui/Pickers/RHF/CategoryMultiple";
-import RHFStateMultiplePicker from "@/ui/Pickers/RHF/StateMultiple";
+import States from "./States";
+import ParentCategories from "./ParentCategories";
+import Categories from "./Categories";
+import Divider from "@mui/material/Divider";
 
 const Triplet = () => {
     const { t } = useTranslation();
@@ -26,13 +27,11 @@ const Property = () => {
                 {t("Property")}
             </Typography>
             <Triplet />
+            <Divider />
             <Stack spacing={2} pt={1}>
-                <RHFStateMultiplePicker name="states" />
-                <RHFParentCategoryMultiplePicker name="parentCategories" />
-                <RHFCategoryMultiplePicker
-                    name="categories"
-                    parentCategoriesName="parentCategories"
-                />
+                <States />
+                <ParentCategories />
+                <Categories />
             </Stack>
 
             {/* <Users /> */}

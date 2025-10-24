@@ -1,5 +1,5 @@
-import { KeyValue } from "./KeyValue";
-import { IUserMini } from "./user";
+import { KeyValue } from "@/types/KeyValue";
+import { IUserMini } from "@/types/user";
 
 interface RolePropertyPermissions {
     view: boolean;

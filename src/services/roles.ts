@@ -1,5 +1,5 @@
 import { getAccessToken } from "@/contexts/tokens";
-import { RoleMini, RoleReq } from "@/types/roles";
+import { Role, RoleMini, RoleReq } from "@/types/roles";
 import isFalsy from "@/utils/isFalsy";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -20,11 +20,19 @@ export const roles = createApi({
             providesTags: ["Roles"],
         }),
 
+        getRoleById: builder.query<Role, number>({
+            query: (id) => `/${id}`,
+            providesTags: ["RoleById"],
+        }),
+
         createOrUpdateRole: builder.mutation<RoleMini, RoleReq>({
             query: ({ id, ...body }) => ({
                 url: isFalsy(id) ? "" : `/${id}`,
                 method: isFalsy(id) ? "POST" : "PUT",
                 body: JSON.stringify(body),
+                headers: {
+                    "Content-Type": "application/json",
+                },
             }),
             invalidatesTags: ["Roles", "RoleById"],
         }),
@@ -39,4 +47,8 @@ export const roles = createApi({
     }),
 });
 
-export const { useGetAllRolesQuery, useCreateOrUpdateRoleMutation } = roles;
+export const {
+    useGetAllRolesQuery,
+    useGetRoleByIdQuery,
+    useCreateOrUpdateRoleMutation,
+} = roles;

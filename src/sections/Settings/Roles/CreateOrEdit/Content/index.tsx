@@ -9,7 +9,7 @@ import Stack from "@mui/material/Stack";
 const Content = () => {
     const { t } = useTranslation();
     return (
-        <Stack spacing={1} p={2}>
+        <Stack spacing={1}>
             <Grid container spacing={2}>
                 <Grid
                     xs={12}
@@ -18,6 +18,8 @@ const Content = () => {
                     display="flex"
                     flexDirection="column"
                     gap={1}
+                    // ...
+                    px={0} // INFO: why is this required?
                 >
                     <RHFTextField name="name" label={t("Name")} />
                     <RHFMultilineTextField
@@ -26,7 +28,7 @@ const Content = () => {
                         rows={5}
                     />
                 </Grid>
-                <Grid xs={12} sm={2} p={3}>
+                <Grid xs={12} sm={2} px={3}>
                     <RHFColorPicker name="color" />
                 </Grid>
             </Grid>
