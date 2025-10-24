@@ -4,12 +4,38 @@ import { useTranslation } from "react-i18next";
 import { useGlobals } from "@/sections/useGlobals";
 import { KeyValue } from "src/types/KeyValue";
 import Select, { SelectChangeEvent, SelectProps } from "@/components/Select";
+import { TranslationType } from "@/types/translation";
 
 // TODO: move into @/ui/Pickers
 // Replace respective CategoryPicker to support:
 //  - 1) single
 //  - 2) multiple
 //  - w/ or w/o checkbox
+
+// ------------------------------------------------------------------------------
+
+const getOption =
+    (parentCategory: string, value: string[]) => (o: KeyValue) => (
+        <MenuItem key={`${parentCategory}_${o.key}`} value={o.key}>
+            <Checkbox checked={value.includes(o.key)} />
+            {o.value}
+        </MenuItem>
+    );
+
+// ------------------------------------------------------------------------------
+
+const getSection =
+    (t: TranslationType, subCategoriesMap: any, value: string[]) =>
+    (parentCategory: string) => [
+        <ListSubheader key={`header_${parentCategory}`}>
+            {t(parentCategory)}
+        </ListSubheader>,
+        ...subCategoriesMap[parentCategory].map(
+            getOption(parentCategory, value)
+        ),
+    ];
+
+// ------------------------------------------------------------------------------
 
 interface CategoryPickerProps extends Omit<SelectProps, "value" | "onChange"> {
     parentCategories: string[];
@@ -19,8 +45,8 @@ interface CategoryPickerProps extends Omit<SelectProps, "value" | "onChange"> {
 }
 
 const CategoryPicker: FC<CategoryPickerProps> = ({
-    parentCategories,
-    value,
+    parentCategories = [],
+    value = [],
     onChange: _onChange,
 }) => {
     const { t } = useTranslation();
@@ -65,7 +91,7 @@ const CategoryPicker: FC<CategoryPickerProps> = ({
         <Select
             multiple
             disabled={isDisabled}
-            value={value ?? []}
+            value={value}
             onChange={handleChange}
             formControlProps={{
                 sx: { minWidth: "160px", maxWidth: "190px" },
@@ -79,17 +105,7 @@ const CategoryPicker: FC<CategoryPickerProps> = ({
             label={t("Category")}
             MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
         >
-            {parentCategories.map((parentCategory) => [
-                <ListSubheader key={`header_${parentCategory}`}>
-                    {t(parentCategory)}
-                </ListSubheader>,
-                ...subCategoriesMap[parentCategory].map(({ key, value }) => (
-                    <MenuItem key={`${parentCategory}_${key}`} value={key}>
-                        <Checkbox checked={value.includes(key)} />
-                        {value}
-                    </MenuItem>
-                )),
-            ])}
+            {parentCategories.map(getSection(t, subCategoriesMap, value))}
         </Select>
     );
 };
