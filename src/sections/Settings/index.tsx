@@ -24,7 +24,7 @@ const getTab = ({ id, label }: TTab) => <Tab key={id} label={label} />;
 const getView =
     (value: number) =>
     ({ id, View }: TTab) => (
-        <TabPanel value={value} index={id}>
+        <TabPanel key={id} value={value} index={id}>
             <View />
         </TabPanel>
     );
