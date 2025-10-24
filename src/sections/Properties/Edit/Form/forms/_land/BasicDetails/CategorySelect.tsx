@@ -1,5 +1,5 @@
 import { useWatch } from "react-hook-form";
-import PPCategorySelect from "@/ui/Pickers/RHFCategory";
+import PPCategorySelect from "@/ui/Pickers/RHF/Category";
 
 const CategorySelect = () => {
     const parentCategory = useWatch({ name: "parentCategory" }) || "";

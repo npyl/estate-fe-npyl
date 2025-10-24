@@ -1,25 +1,24 @@
 import { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import ParentCategoryPicker, {
-    ParentCategoryPickerProps,
-} from "./_ParentCategory";
+import ParentCategoryMultiplePicker, {
+    ParentCategoryMultiplePickerProps,
+} from "@/ui/Pickers/ParentCategoryMultiple";
 
-interface RHFParentCategoryPickerProps
-    extends Omit<ParentCategoryPickerProps, "value" | "onChange"> {
+interface RHFParentCategoryMultiplePickerProps
+    extends Omit<ParentCategoryMultiplePickerProps, "value" | "onChange"> {
     name: string;
 }
 
-const RHFParentCategoryPicker: FC<RHFParentCategoryPickerProps> = ({
-    name,
-    ...props
-}) => {
+const RHFParentCategoryMultiplePicker: FC<
+    RHFParentCategoryMultiplePickerProps
+> = ({ name, ...props }) => {
     const { control } = useFormContext();
     return (
         <Controller
             control={control}
             name={name}
             render={({ field: { value, onChange } }) => (
-                <ParentCategoryPicker
+                <ParentCategoryMultiplePicker
                     value={value}
                     onChange={onChange}
                     {...props}
@@ -29,4 +28,4 @@ const RHFParentCategoryPicker: FC<RHFParentCategoryPickerProps> = ({
     );
 };
 
-export default RHFParentCategoryPicker;
+export default RHFParentCategoryMultiplePicker;

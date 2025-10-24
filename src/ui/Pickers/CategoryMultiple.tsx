@@ -6,12 +6,6 @@ import { KeyValue } from "src/types/KeyValue";
 import Select, { SelectChangeEvent, SelectProps } from "@/components/Select";
 import { TranslationType } from "@/types/translation";
 
-// TODO: move into @/ui/Pickers
-// Replace respective CategoryPicker to support:
-//  - 1) single
-//  - 2) multiple
-//  - w/ or w/o checkbox
-
 // ------------------------------------------------------------------------------
 
 const getOption =
@@ -37,14 +31,15 @@ const getSection =
 
 // ------------------------------------------------------------------------------
 
-interface CategoryPickerProps extends Omit<SelectProps, "value" | "onChange"> {
+interface CategoryMultiplePickerProps
+    extends Omit<SelectProps, "value" | "onChange"> {
     parentCategories: string[];
 
     value: string[];
     onChange: (s: string[]) => void;
 }
 
-const CategoryPicker: FC<CategoryPickerProps> = ({
+const CategoryMultiplePicker: FC<CategoryMultiplePickerProps> = ({
     parentCategories = [],
     value = [],
     onChange: _onChange,
@@ -52,9 +47,7 @@ const CategoryPicker: FC<CategoryPickerProps> = ({
     const { t } = useTranslation();
 
     const data = useGlobals();
-
     const propertyEnums = data?.property;
-
     const subCategoriesMap: {
         [key: string]: KeyValue[];
     } = useMemo(
@@ -110,5 +103,5 @@ const CategoryPicker: FC<CategoryPickerProps> = ({
     );
 };
 
-export type { CategoryPickerProps };
-export default CategoryPicker;
+export type { CategoryMultiplePickerProps };
+export default CategoryMultiplePicker;

@@ -1,7 +1,7 @@
 import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { KeyValue } from "@/types/KeyValue";
-import { Select } from "src/components/hook-form";
+import { Select } from "@/components/hook-form";
 import { useGlobals } from "@/sections/useGlobals";
 
 interface Props {

@@ -5,12 +5,6 @@ import Select, { SelectChangeEvent, SelectProps } from "@/components/Select";
 import { FC } from "react";
 import { KeyValue } from "@/types/KeyValue";
 
-// TODO: move into @/ui/Pickers
-// Replace respective CategoryPicker to support:
-//  - 1) single
-//  - 2) multiple
-//  - w/ or w/o checkbox
-
 // ------------------------------------------------------------------------------
 
 const getOption = (value?: string[]) => (o: KeyValue) => (
@@ -22,12 +16,13 @@ const getOption = (value?: string[]) => (o: KeyValue) => (
 
 // ------------------------------------------------------------------------------
 
-interface StatePickerProps extends Omit<SelectProps, "value" | "onChange"> {
+interface StateMultiplePickerProps
+    extends Omit<SelectProps, "value" | "onChange"> {
     value: string[];
     onChange: (s: string[]) => void;
 }
 
-const StatePicker: FC<StatePickerProps> = ({
+const StateMultiplePicker: FC<StateMultiplePickerProps> = ({
     value = [],
     onChange: _onChange,
     ...props
@@ -69,5 +64,5 @@ const StatePicker: FC<StatePickerProps> = ({
     );
 };
 
-export type { StatePickerProps };
-export default StatePicker;
+export type { StateMultiplePickerProps };
+export default StateMultiplePicker;

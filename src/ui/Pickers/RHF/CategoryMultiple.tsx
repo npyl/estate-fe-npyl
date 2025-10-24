@@ -1,15 +1,18 @@
 import { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import CategoryPicker, { CategoryPickerProps } from "./_Category";
+import CategoryMultiplePicker, {
+    CategoryMultiplePickerProps,
+} from "@/ui/Pickers/CategoryMultiple";
 
 type OmitList = "parentCategories" | "value" | "onChange";
 
-interface RHFCategoryPickerProps extends Omit<CategoryPickerProps, OmitList> {
+interface RHFCategoryMultiplePickerProps
+    extends Omit<CategoryMultiplePickerProps, OmitList> {
     parentCategoriesName: string;
     name: string;
 }
 
-const RHFCategoryPicker: FC<RHFCategoryPickerProps> = ({
+const RHFCategoryMultiplePicker: FC<RHFCategoryMultiplePickerProps> = ({
     parentCategoriesName,
     name,
     ...props
@@ -24,7 +27,7 @@ const RHFCategoryPicker: FC<RHFCategoryPickerProps> = ({
                     control={control}
                     name={name}
                     render={({ field: { value, onChange } }) => (
-                        <CategoryPicker
+                        <CategoryMultiplePicker
                             parentCategories={parentCategories}
                             // ...
                             value={value}
@@ -38,4 +41,4 @@ const RHFCategoryPicker: FC<RHFCategoryPickerProps> = ({
     );
 };
 
-export default RHFCategoryPicker;
+export default RHFCategoryMultiplePicker;
