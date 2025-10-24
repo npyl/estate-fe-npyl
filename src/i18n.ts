@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            PERMISSIONS_Roles: "Roles",
+
             COPY_TO_CLIPBOARD_SUCCESS: "Copied",
 
             "Date Range": "Date Range",
@@ -1420,6 +1422,8 @@ const resources = {
     },
     el: {
         translation: {
+            PERMISSIONS_Roles: "Ρόλοι",
+
             COPY_TO_CLIPBOARD_SUCCESS: "Αντιγράφηκε",
 
             Sort: "Ταξινόμηση",
