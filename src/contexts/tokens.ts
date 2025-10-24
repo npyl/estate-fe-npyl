@@ -1,5 +1,6 @@
 import { accessTokenKey, refreshTokenKey, chatTokenKey } from "@/constants";
 import { TokenResponse } from "@/types/auth";
+import sleep from "@/utils/sleep";
 
 // ---------------------------------------------------------------------------------------------
 // Helpers
@@ -41,6 +42,16 @@ const setTokens = (t: TokenResponse) => {
     setRefreshToken(refreshToken);
 };
 
+const setTokens_safe = async (t0: TokenResponse) => {
+    setTokens(t0);
+
+    let t1 = getTokens();
+    while (t1.accessToken !== t0.token || t1.refreshToken !== t0.refreshToken) {
+        t1 = getTokens();
+        await sleep(50);
+    }
+};
+
 const removeTokens = () => {
     removeAccessToken();
     removeRefreshToken();
@@ -62,5 +73,6 @@ export {
     // ...
     getTokens,
     setTokens,
+    setTokens_safe,
     removeTokens,
 };
