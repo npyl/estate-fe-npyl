@@ -6,82 +6,59 @@ import {
     isRejectedWithValue,
 } from "@reduxjs/toolkit";
 import getNewTokens from "@/services/auth/getNewTokens";
+import { Mutex } from "async-mutex";
 
 // ---------------------------------------------------------------------------------------------
 
-interface QueuedRequest {
-    resolve: (value: { token: string | null; action: any }) => void;
-    reject: (reason?: any) => void;
-    action: any;
-}
-
-let isRefreshing = false; // INFO: prevent simultaneous requests
-let failedQueue: QueuedRequest[] = [];
-
-const processQueue = (error: any, token: string | null = null) => {
-    for (const { resolve, reject, action } of failedQueue) {
-        if (error) {
-            reject(error);
-        } else {
-            resolve({ token, action });
-        }
-    }
-
-    failedQueue = [];
-};
+// Create a new mutex to protect token refresh operations
+const mutex = new Mutex();
 
 // ---------------------------------------------------------------------------------------------
 
 const doExpiryLogic = async (api: MiddlewareAPI, action: any): Promise<any> => {
-    try {
-        // If we're already refreshing, queue this request
-        if (isRefreshing) {
-            return new Promise<{ token: string | null; action: any }>(
-                (resolve, reject) => {
-                    console.log("Adding to queue action: ", action);
-                    failedQueue.push({ resolve, reject, action });
-                }
-            ).then((result) => {
-                console.log("Resolving action: ", result.action);
+    // Wait until the mutex is available without locking it
+    await mutex.waitForUnlock();
 
-                // The token has been refreshed, now retry the original request
-                // For RTK Query, we need to dispatch the original thunk again
-                if (result.action?.meta?.arg)
-                    return api.dispatch(result.action.meta.arg);
+    // Check if mutex is already locked (another refresh is in progress)
+    if (!mutex.isLocked()) {
+        // Acquire the mutex lock
+        const release = await mutex.acquire();
 
-                return null;
-            });
+        try {
+            // Attempt to refresh the token
+            const newToken = await getNewTokens();
+            if (!newToken) throw new Error("Token refresh failed");
+
+            // Store the new token
+            setTokens(newToken);
+
+            // Retry the original request
+            // For RTK Query, we need to dispatch the original query/mutation again
+            if (action.meta?.arg) {
+                return api.dispatch(action.meta.arg);
+            }
+
+            return null;
+        } catch (error) {
+            // Handle refresh error
+            removeAccessToken();
+            globalThis.location.replace("/login");
+            errorToast("_END_OF_SESSION_");
+            throw error;
+        } finally {
+            // Always release the mutex, even if an error occurs
+            release();
+        }
+    } else {
+        // Mutex is locked, wait for it to be released
+        await mutex.waitForUnlock();
+
+        // Token has been refreshed by another request, retry this one
+        if (action.meta?.arg) {
+            return api.dispatch(action.meta.arg);
         }
 
-        // Set refreshing flag
-        isRefreshing = true;
-
-        // Attempt to refresh the token
-        const newToken = await getNewTokens();
-        if (!newToken) throw new Error("Token refresh failed");
-
-        // Store the new token
-        setTokens(newToken);
-
-        // Token refresh successful
-        processQueue(null, newToken.token);
-
-        // Retry the original request
-        // For RTK Query, we need to dispatch the original query/mutation again
-        if (action.meta?.arg) return api.dispatch(action.meta.arg);
-
         return null;
-    } catch (error) {
-        // Handle refresh error
-        processQueue(error, null);
-
-        removeAccessToken();
-        globalThis.location.replace("/login");
-        errorToast("_END_OF_SESSION_");
-        throw error;
-    } finally {
-        // Always reset the flag, even if an error occurs
-        isRefreshing = false;
     }
 };
 
