@@ -25,6 +25,7 @@ import { messages } from "@/services/messages";
 import { logout } from "@/services/logout";
 import { emails } from "@/services/email";
 import { blog } from "@/services/blog";
+import { roles } from "@/services/roles";
 
 export const rootReducer = combineReducers({
     [location.reducerPath]: location.reducer,
@@ -59,4 +60,5 @@ export const rootReducer = combineReducers({
     // ...
     [emails.reducerPath]: emails.reducer,
     [blog.reducerPath]: blog.reducer,
+    [roles.reducerPath]: roles.reducer,
 });

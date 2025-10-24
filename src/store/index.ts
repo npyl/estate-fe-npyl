@@ -32,6 +32,7 @@ import { messages } from "@/services/messages";
 import { logout } from "@/services/logout";
 import { emails } from "@/services/email";
 import { blog } from "@/services/blog";
+import { roles } from "@/services/roles";
 import { rootReducer } from "./root-reducer";
 
 const services = [
@@ -65,6 +66,7 @@ const services = [
     logout,
     emails,
     blog,
+    roles,
 ];
 
 export const clearAllApiCaches = () =>

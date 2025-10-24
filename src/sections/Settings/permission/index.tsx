@@ -1,13 +1,10 @@
-import { Grid } from "@mui/material";
+import Roles from "./Roles";
 import SeparatePermissions from "./SeparatePermissions";
 
 const PermissionPage = () => (
     <>
+        <Roles />
         <SeparatePermissions />
-        {/* Right PermissionsTable */}
-        <Grid item xs={12} lg={10}>
-            REMOVED
-        </Grid>
     </>
 );
 

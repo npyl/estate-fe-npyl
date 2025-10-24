@@ -439,10 +439,6 @@ export const {
     useEditLocationDisplayMutation,
     useGetOwnersMutation,
 
-    // check
-    useLazyCheckCodeExistsQuery,
-    useLazyCheckKeyCodeExistsQuery,
-
     // attributes
     useGetPropertyLabelsQuery,
 
