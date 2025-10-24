@@ -5,12 +5,16 @@ interface RolePropertyPermissions {
     view: boolean;
     edit: boolean;
     delete: boolean;
+    // ...
     allStates: boolean;
     states: KeyValue[];
+    // ...
     allParentCategories: boolean;
     parentCategories: KeyValue[];
+    // ...
     allCategories: boolean;
     categories: KeyValue[];
+    // ...
     allUsers: false;
     users: IUserMini[];
 }

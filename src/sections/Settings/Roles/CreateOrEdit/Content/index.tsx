@@ -3,7 +3,7 @@ import RHFMultilineTextField from "@/components/hook-form/RHFTextFieldMultiline"
 import RHFColorPicker from "@/components/hook-form/RHFColorPicker";
 import Stack from "@mui/material/Stack";
 import { useTranslation } from "react-i18next";
-import Typography from "@mui/material/Typography";
+import Permissions from "./Permissions";
 
 const Content = () => {
     const { t } = useTranslation();
@@ -17,7 +17,7 @@ const Content = () => {
             />
             <RHFColorPicker name="color" />
 
-            <Typography variant="h6">{t("Permissions")}</Typography>
+            <Permissions />
         </Stack>
     );
 };
