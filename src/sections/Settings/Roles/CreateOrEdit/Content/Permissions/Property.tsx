@@ -28,7 +28,10 @@ const Property = () => {
             <Stack direction="row" spacing={1} pt={1}>
                 {/* <States /> */}
                 <RHFParentCategoryPicker name="parentCategories" />
-                <RHFCategoryPicker name="categories" parentCategories={[]} />
+                <RHFCategoryPicker
+                    name="categories"
+                    parentCategoriesName="parentCategories"
+                />
             </Stack>
 
             {/* <Users /> */}

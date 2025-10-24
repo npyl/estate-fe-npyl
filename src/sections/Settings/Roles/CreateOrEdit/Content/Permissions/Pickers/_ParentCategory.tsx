@@ -3,6 +3,24 @@ import { useTranslation } from "react-i18next";
 import { useGlobals } from "@/sections/useGlobals";
 import Select, { SelectChangeEvent, SelectProps } from "@/components/Select";
 import { FC, useCallback } from "react";
+import { KeyValue } from "@/types/KeyValue";
+
+// TODO: move into @/ui/Pickers
+// Replace respective CategoryPicker to support:
+//  - 1) single
+//  - 2) multiple
+//  - w/ or w/o checkbox
+
+// -------------------------------------------------------------------------------------
+
+const getOption = (value?: string[]) => (o: KeyValue) => (
+    <MenuItem key={`ParentCategory_${o.key}`} value={o.key}>
+        <Checkbox checked={value?.includes(o.key)} />
+        {o.value}
+    </MenuItem>
+);
+
+// -------------------------------------------------------------------------------------
 
 interface ParentCategoryPickerProps
     extends Omit<SelectProps, "value" | "onChange"> {
@@ -12,6 +30,7 @@ interface ParentCategoryPickerProps
 
 const ParentCategoryPicker: FC<ParentCategoryPickerProps> = ({
     onChange: _onChange,
+    value = [],
     ...props
 }) => {
     const { t } = useTranslation();
@@ -47,7 +66,7 @@ const ParentCategoryPicker: FC<ParentCategoryPickerProps> = ({
     return (
         <Select
             multiple
-            value={props.value ?? []}
+            value={value}
             onChange={handleChange}
             formControlProps={{
                 sx: { minWidth: "200px", maxWidth: "200px" },
@@ -56,18 +75,7 @@ const ParentCategoryPicker: FC<ParentCategoryPickerProps> = ({
             label={t("Parent Category")}
             MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
         >
-            {parentCategoryEnums.map(({ key, value }) => (
-                <MenuItem key={key} value={key}>
-                    <Checkbox
-                        checked={
-                            props.value &&
-                            props.value.length > 0 &&
-                            props.value.includes(key)
-                        }
-                    />
-                    {value}
-                </MenuItem>
-            ))}
+            {parentCategoryEnums.map(getOption(value))}
         </Select>
     );
 };
