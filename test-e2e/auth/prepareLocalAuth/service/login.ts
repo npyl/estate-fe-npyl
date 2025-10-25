@@ -19,7 +19,7 @@ const login = async (credentials: TCredential) => {
         if (!("token" in data))
             throw new Error("Bad content in login response");
 
-        return data.token ?? "";
+        return data;
     } catch (ex) {
         console.log(ex);
         return "";
