@@ -14,8 +14,10 @@ interface ScriptData {
     accessToken: string;
 }
 
-const initScript = ({ accessTokenKey, accessToken }: ScriptData) =>
-    localStorage.setItem(accessTokenKey, accessToken);
+const initScript = ({ accessTokenKey, accessToken }: ScriptData) => {
+    // IMPORTANT: this call is supposed to run on the browser; therefore, setItem() needs to run on globalThis.window.locaStorage! If you write just localStorage it will not work!
+    globalThis.window.localStorage.setItem(accessTokenKey, accessToken);
+};
 
 // ------------------------------------------------------------------------
 
