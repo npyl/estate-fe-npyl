@@ -1,21 +1,12 @@
-import { getAccessToken } from "@/contexts/tokens";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { IDashboard } from "src/types/dashboard";
+import getBaseQueryWithReauth from "./_util/getBaseQueryWithReauth";
 
 export const dashboard = createApi({
     reducerPath: "dashboard",
-    baseQuery: fetchBaseQuery({
-        baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/dashboard`,
-        prepareHeaders: (headers) => {
-            headers.set("Authorization", `Bearer  ${getAccessToken()}`);
-            headers.set(
-                "Accept-Language",
-                `${localStorage.getItem("language") ?? "el"}`
-            );
-            return headers;
-        },
-    }),
-
+    baseQuery: getBaseQueryWithReauth(
+        `${process.env.NEXT_PUBLIC_API_URL}/dashboard`
+    ),
     endpoints: (builder) => ({
         getDashboard: builder.query<IDashboard, void>({
             query: () => "",

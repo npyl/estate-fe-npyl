@@ -16,7 +16,6 @@ import { tasks } from "@/services/tasks";
 import { auth } from "../services/auth";
 import { customers } from "../services/customers";
 import { dashboard } from "../services/dashboard";
-import { rtkQueryErrorLogger } from "../services/error";
 import { location } from "../services/location";
 import { properties } from "../services/properties";
 import { user } from "../services/user";
@@ -84,10 +83,7 @@ export const createStore = (
                     ignoredActions: [],
                     ignoredActionPaths: ["payload", "meta"],
                 },
-            }).concat(
-                ...services.map((api) => api.middleware),
-                rtkQueryErrorLogger
-            ),
+            }).concat(...services.map((api) => api.middleware)),
         ...options,
     });
 
