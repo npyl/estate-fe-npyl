@@ -10,7 +10,6 @@ import { getOptionTestId as getSelectOptionTestId } from "../../../src/component
 import { getOptionTestId as getAutocompleteOptionTestId } from "../../../src/ui/Autocompletes/Manager/constant";
 import getBoard from "../../_service/getBoard";
 import getProfile from "../../_service/getProfile";
-import clickLoadingButton from "../../_util/clickLoadingButton";
 
 // --------------------------------------------------------------------------------
 
@@ -104,7 +103,7 @@ const createEvent = async (
     await onBeforeSubmit?.();
 
     // Submit
-    await clickLoadingButton(page, TASK.SUBMIT_ID);
+    await page.getByTestId(TASK.SUBMIT_ID).click();
 
     expect(requestData).not.toBe(null);
 

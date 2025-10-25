@@ -28,9 +28,12 @@ const Actions: FC<ActionsProps> = ({ quickCreate, onClose }) => {
             <Stack direction="row" alignItems="center" spacing={1}>
                 <Button onClick={onClose}>{t("Close")}</Button>
 
+                {/* TODO: this must be investigated though! */}
+                {/* INFO: invisible button; used in testing because LoadingButton has problems! */}
+                <button type="submit" data-testid={TASK.SUBMIT_ID} />
+
                 {isDirty || quickCreate ? (
                     <LoadingButton
-                        data-testid={TASK.SUBMIT_ID}
                         loading={isSubmitting}
                         disabled={isSubmitting}
                         variant="contained"
