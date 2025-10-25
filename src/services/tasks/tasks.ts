@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import {
     BoardFiltersReq,
     IKanbanAttachment,
@@ -31,6 +31,7 @@ import { errorToast } from "@/components/Toaster";
 import { ILabel } from "@/types/label";
 import { createRemoveTabAwareHook as rt } from "@/services/_util";
 import { getAccessToken } from "@/contexts/tokens";
+import getBaseQueryWithReauth from "../_util/getBaseQueryWithReauth";
 
 /**
  * Prepare a unique tag that will get invalidated *ONLY* when the specific card's labels change
@@ -47,15 +48,8 @@ const getCardByIdLabelsTag = (cardId: number): any =>
 
 export const tasks = createApi({
     reducerPath: "tasks",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/kanban`,
-        prepareHeaders: (headers) => {
-            // By default, if we have a token in the store, let's use that for authenticated requests
-
-            headers.set("Authorization", `Bearer  ${getAccessToken()}`);
-
-            return headers;
-        },
     }),
 
     tagTypes: ["Board", "Card", "Comments", "Attachments", "AssigneeHistory"],

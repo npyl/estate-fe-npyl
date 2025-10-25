@@ -1,17 +1,10 @@
-import { getAccessToken } from "@/contexts/tokens";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import getBaseQueryWithReauth from "./_util/getBaseQueryWithReauth";
 
 export const logout = createApi({
     reducerPath: "logout",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/logout`,
-        prepareHeaders: (headers) => {
-            // By default, if we have a token in the store, let's use that for authenticated requests
-
-            headers.set("Authorization", `Bearer  ${getAccessToken()}`);
-
-            return headers;
-        },
     }),
     endpoints: (builder) => ({
         logout: builder.mutation<void, void>({

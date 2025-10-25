@@ -1,4 +1,3 @@
-import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     IProperties,
     IPropertyCodeRes,
@@ -24,6 +23,7 @@ import {
     createLanguageAwareHook as la,
     createRemoveTabAwareHook as rt,
 } from "@/services/_util";
+import getBaseQueryWithReauth from "../_util/getBaseQueryWithReauth";
 
 interface ICreatePropertyParams {
     parentCategory: string;
@@ -79,7 +79,7 @@ const getBulkEditInvalidateTags = (_0: any, _1: any, body: BulkEditRequest) => {
 
 export const properties = apiWithTranslation({
     reducerPath: "properties",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/property`,
     }),
     tagTypes: [

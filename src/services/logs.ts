@@ -1,7 +1,7 @@
-import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ILog, ILogFilterPOST } from "src/types/logs";
 import IPage from "src/types/page";
 import { apiWithTranslation, createLanguageAwareHook as la } from "./_util";
+import getBaseQueryWithReauth from "./_util/getBaseQueryWithReauth";
 
 export interface ILogsParams {
     id?: number;
@@ -16,7 +16,7 @@ interface ILogFilterProps extends ILogsParams {
 
 export const logs = apiWithTranslation({
     reducerPath: "logs",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/logs`,
     }),
     tagTypes: ["Logs", "CustomerByIdLogs", "PropertyByIdLogs"],

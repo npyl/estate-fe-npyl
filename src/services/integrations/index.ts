@@ -1,18 +1,12 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { GetImagesOrderReq, UpdateImagesOrderReq } from "./types";
 import { ImagesOrderRes } from "@/types/integrations";
-import { getAccessToken } from "@/contexts/tokens";
-
-// TODO: optimistic
+import getBaseQueryWithReauth from "../_util/getBaseQueryWithReauth";
 
 export const integrations = createApi({
     reducerPath: "integrations",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: `/api/integrations`,
-        prepareHeaders: (headers) => {
-            headers.set("Authorization", `Bearer ${getAccessToken()}`);
-            return headers;
-        },
     }),
 
     tagTypes: ["IntegrationOrderedImages"],

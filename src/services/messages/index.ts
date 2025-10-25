@@ -1,6 +1,7 @@
 import { getChatToken } from "@/contexts/tokens";
 import { IConversation, IMessageRes } from "@/types/messages";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import getBaseQueryWithReauth from "../_util/getBaseQueryWithReauth";
 
 const baseUrl = process.env.NEXT_PUBLIC_MESSAGES_API;
 
@@ -30,12 +31,8 @@ interface IConversationRes {
 
 export const messages = createApi({
     reducerPath: "messages",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl,
-        prepareHeaders: (headers) => {
-            headers.set("Authorization", `Bearer ${getChatToken()}`);
-            return headers;
-        },
     }),
     tagTypes: ["Conversations", "Messages"],
     endpoints: (builder) => ({

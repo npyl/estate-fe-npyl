@@ -1,17 +1,12 @@
-import { getAccessToken } from "@/contexts/tokens";
 import { Role, RoleMini, RoleReq } from "@/types/roles";
 import isFalsy from "@/utils/isFalsy";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import getBaseQueryWithReauth from "./_util/getBaseQueryWithReauth";
 
 export const roles = createApi({
     reducerPath: "roles",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/roles`,
-        prepareHeaders: (headers) => {
-            // By default, if we have a token in the store, let's use that for authenticated requests
-            headers.set("Authorization", `Bearer ${getAccessToken()}`);
-            return headers;
-        },
     }),
     tagTypes: ["Roles", "RoleById"],
     endpoints: (builder) => ({

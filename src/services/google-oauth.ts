@@ -1,11 +1,12 @@
 import useDialog from "@/hooks/useDialog";
 import { IsAuthenticatedRes } from "@/types/calendar/google";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { calendar } from "./calendar";
 import { errorToast } from "@/components/Toaster";
 import { getAccessToken } from "@/contexts/tokens";
+import getBaseQueryWithReauth from "./_util/getBaseQueryWithReauth";
 
 type UserId = number;
 
@@ -13,7 +14,7 @@ const baseUrl = `${process.env.NEXT_PUBLIC_PROXY_API}/google`;
 
 export const googleOAuth = createApi({
     reducerPath: "googleOAuth",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl,
     }),
 

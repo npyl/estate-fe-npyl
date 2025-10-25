@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { ILabels } from "@/types/label";
 import {
     DeleteLabelProps,
@@ -9,17 +9,12 @@ import {
     LabelForResourceProps,
 } from "./types";
 import { optimisticDelete } from "./optimistic";
-import { getAccessToken } from "@/contexts/tokens";
+import getBaseQueryWithReauth from "../_util/getBaseQueryWithReauth";
 
 export const labels = createApi({
     reducerPath: "labels",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/labels`,
-        prepareHeaders: (headers) => {
-            // By default, if we have a token in the store, let's use that for authenticated requests
-            headers.set("Authorization", `Bearer  ${getAccessToken()}`);
-            return headers;
-        },
     }),
 
     tagTypes: ["Labels"],
