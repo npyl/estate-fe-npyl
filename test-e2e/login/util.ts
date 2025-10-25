@@ -1,9 +1,9 @@
 import { Page, Route } from "@playwright/test";
+import { BE_API_URL, URL0, URL1 } from "./constants";
 import {
     HIDDEN_VIEW_TESTID,
     OPEN_VIEW_BUTTON_TESTID,
-} from "../../../src/sections/__test__/RefreshToken/constants";
-import { BE_API_URL, URL0, URL1 } from "./constants";
+} from "../../src/sections/__test__/RefreshToken/constants";
 
 // ---------------------------------------------------------------------------------------------------------
 
@@ -66,9 +66,17 @@ const setupGetNewTokensToFail = (page: Page) =>
 
 // -----------------------------------------------------------------------------------
 
-const responses400: string[] = [];
-const responses401: string[] = [];
-const responses200: string[] = [];
+let responses400: string[] = [];
+let responses401: string[] = [];
+let responses200: string[] = [];
+
+const getResponses = () => ({ responses400, responses401, responses200 });
+
+const clearResponses = () => {
+    responses400 = [];
+    responses401 = [];
+    responses200 = [];
+};
 
 const monitorResponses = async (page: Page) => {
     page.on("response", (response) => {
@@ -99,7 +107,6 @@ export {
     setupGetNewTokensToFail,
     // ...
     monitorResponses,
-    responses400,
-    responses401,
-    responses200,
+    getResponses,
+    clearResponses,
 };
