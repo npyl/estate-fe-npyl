@@ -49,23 +49,36 @@ const getBaseQueryWithReauth = (args: FetchBaseQueryArgs) => {
 
                 try {
                     const newToken = await getNewTokens();
+                    if (!newToken) throw new Error("Failed to refresh tokens");
 
-                    if (newToken) {
-                        await setTokens_safe(newToken);
+                    await setTokens_safe(newToken);
 
-                        // Retry the initial query
-                        result = await baseQuery(args, api, extraOptions);
-                    } else {
-                        removeAccessToken();
-                        globalThis.location.replace("/login");
-                    }
-                } finally {
+                    // Retry the initial query
+                    result = await baseQuery(args, api, extraOptions);
+
+                    const status = result.meta?.response?.status;
+                    if (status === 401 || status === 403)
+                        throw new Error(
+                            "Did not actually succeed with refresh!"
+                        );
+
+                    // INFO: release !ONLY! if unauthorized does not re-occur!
                     release();
+                } catch (err) {
+                    console.log("GOT ERROR: ", err);
+                    removeAccessToken();
+                    globalThis.location.replace("/login");
                 }
             } else {
                 // Wait for the refresh to complete
                 await mutex.waitForUnlock();
                 result = await baseQuery(args, api, extraOptions);
+
+                const status = result.meta?.response?.status;
+                if (status === 401 || status === 403) {
+                    removeAccessToken();
+                    globalThis.location.replace("/login");
+                }
             }
         }
 

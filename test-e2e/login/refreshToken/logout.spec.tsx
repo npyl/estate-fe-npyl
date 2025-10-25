@@ -101,7 +101,7 @@ test.describe("RefreshToken Flows (Logout)", () => {
 
         // Test lengths
         expect(responses401.length).toBe(2);
-        expect(responses200?.length).toBe(0);
         expect(responses400.length).toBe(1);
+        expect(responses200.length).toBe(0);
     });
 });
