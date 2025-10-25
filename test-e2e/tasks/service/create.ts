@@ -10,6 +10,7 @@ import { getOptionTestId as getSelectOptionTestId } from "../../../src/component
 import { getOptionTestId as getAutocompleteOptionTestId } from "../../../src/ui/Autocompletes/Manager/constant";
 import getBoard from "../../_service/getBoard";
 import getProfile from "../../_service/getProfile";
+import clickLoadingButton from "../../_util/clickLoadingButton";
 
 // --------------------------------------------------------------------------------
 
@@ -31,7 +32,7 @@ const fillAndExpectTitle = async (page: Page) => {
 const getColumnSelectFirstOption = async (page: Page) => {
     const board = await getBoard(page);
     const columnId = board?.columns?.at(0)?.id ?? -1;
-    if (columnId === -1) throw "Bad columnId";
+    if (columnId === -1) throw new Error("Bad columnId");
     return columnId.toString();
 };
 
@@ -49,7 +50,7 @@ const selectColumn = async (page: Page) => {
 const getAssigneeSelectFirstOption = async (page: Page) => {
     const user = await getProfile(page);
     const assigneeId = user?.id ?? -1;
-    if (assigneeId === -1) throw "Bad assigneeId";
+    if (assigneeId === -1) throw new Error("Bad assigneeId");
     return assigneeId;
 };
 
@@ -103,7 +104,7 @@ const createEvent = async (
     await onBeforeSubmit?.();
 
     // Submit
-    await page.getByTestId(TASK.SUBMIT_ID).click();
+    await clickLoadingButton(page, TASK.SUBMIT_ID);
 
     expect(requestData).not.toBe(null);
 
