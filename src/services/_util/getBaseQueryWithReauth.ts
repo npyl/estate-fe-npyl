@@ -11,14 +11,20 @@ import {
     removeAccessToken,
     getAccessToken,
 } from "@/contexts/tokens";
+import { FetchBaseQueryArgs } from "@reduxjs/toolkit/dist/query/fetchBaseQuery";
 
 const mutex = new Mutex();
 
-const getBaseQueryWithReauth = (baseUrl: string) => {
+const getBaseQueryWithReauth = (args: FetchBaseQueryArgs) => {
     const baseQuery = fetchBaseQuery({
-        baseUrl,
-        prepareHeaders: (h) => {
+        ...args,
+        prepareHeaders: (h, api) => {
+            // INFO: apply any headers from parent
+            if (args.prepareHeaders) args.prepareHeaders(h, api);
+
+            // IMPORTANT: Apply token!
             h.set("Authorization", `Bearer ${getAccessToken()}`);
+
             return h;
         },
     });

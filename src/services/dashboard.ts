@@ -4,9 +4,9 @@ import getBaseQueryWithReauth from "./_util/getBaseQueryWithReauth";
 
 export const dashboard = createApi({
     reducerPath: "dashboard",
-    baseQuery: getBaseQueryWithReauth(
-        `${process.env.NEXT_PUBLIC_API_URL}/dashboard`
-    ),
+    baseQuery: getBaseQueryWithReauth({
+        baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/dashboard`,
+    }),
     endpoints: (builder) => ({
         getDashboard: builder.query<IDashboard, void>({
             query: () => "",

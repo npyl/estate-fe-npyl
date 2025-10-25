@@ -25,9 +25,9 @@ interface IResetPasswordReq {
 
 export const user = apiWithTranslation({
     reducerPath: "user",
-    baseQuery: getBaseQueryWithReauth(
-        `${process.env.NEXT_PUBLIC_API_URL}/users`
-    ),
+    baseQuery: getBaseQueryWithReauth({
+        baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/users`,
+    }),
     tagTypes: ["Users", "User", "UserActive"],
     endpoints: (builder) => ({
         getProfile: builder.query<IUser, void>({
