@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test";
+import { Page, expect } from "@playwright/test";
 import gotoSafe from "../../_util/gotoSafe";
 import { TASK } from "../../../src/constants/tests";
 import uuidv4 from "../../../src/utils/uuidv4";
@@ -46,23 +46,6 @@ const selectColumn = async (page: Page) => {
 
 // --------------------------------------------------------------------------------
 
-const submitAndInterceptRequest = async (page: Page) => {
-    // INFO: first register interceptor; *then* actually wait for response
-    const p = page.waitForRequest(
-        (req) => req.url().includes("/api/tasks") && req.method() === "POST"
-    );
-
-    // Then click the button
-    await page.getByTestId(TASK.SUBMIT_ID).click();
-
-    // Now wait for the request
-    const request = await p;
-
-    return request.postDataJSON() as ICreateOrUpdateTaskReq;
-};
-
-// --------------------------------------------------------------------------------
-
 const getAssigneeSelectFirstOption = async (page: Page) => {
     const user = await getProfile(page);
     const assigneeId = user?.id ?? -1;
@@ -90,6 +73,14 @@ const createEvent = async (
     page: Page,
     onBeforeSubmit?: () => Promise<void>
 ) => {
+    let requestData: ICreateOrUpdateTaskReq | null = null;
+
+    page.on("request", (req) => {
+        if (req.url().includes("/api/tasks") && req.method() === "POST") {
+            requestData = req.postDataJSON() as ICreateOrUpdateTaskReq;
+        }
+    });
+
     await gotoSafe(page, "http://127.0.0.1:3000/tasks");
 
     // INFO: click Fab
@@ -112,9 +103,11 @@ const createEvent = async (
     await onBeforeSubmit?.();
 
     // Submit
-    const request = await submitAndInterceptRequest(page);
+    await page.getByTestId(TASK.SUBMIT_ID).click();
 
-    return [request, { columnId, title, assigneeId }] as const;
+    expect(requestData).not.toBe(null);
+
+    return [requestData!, { columnId, title, assigneeId }] as const;
 };
 
 export { createEvent };
