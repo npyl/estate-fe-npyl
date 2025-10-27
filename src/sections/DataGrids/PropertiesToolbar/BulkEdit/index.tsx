@@ -13,6 +13,7 @@ import Exclusive from "./Exclusive";
 import { DefaultValues } from "react-hook-form";
 import Integrations from "./Integrations";
 import { BulkEditRequest } from "@/types/properties";
+import EditExtras from "./Extras";
 
 interface BulkEditProps<State extends object> {
     DEFAULT_VALUES: DefaultValues<State>;
@@ -41,6 +42,7 @@ const BulkEdit = <State extends object>({
         <EditLabels variant="property" />
         <EditBedrooms />
         <EditState />
+        <EditExtras />
         <Active />
         <Integrations />
         <Exclusive />

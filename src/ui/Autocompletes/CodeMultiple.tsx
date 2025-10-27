@@ -84,7 +84,6 @@ const CodeAutocompleteMultiple = forwardRef<
         renderTags={RenderTags}
         renderInput={(other) => (
             <MultilineTextField
-                multiline
                 label={label}
                 {...other}
                 sx={inputSx}

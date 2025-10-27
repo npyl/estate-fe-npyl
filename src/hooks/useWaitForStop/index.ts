@@ -8,11 +8,11 @@ const useTimeout = (CHANGE_DELAY: number) => {
     const t = useRef<number>();
     const clear = useCallback(() => {
         if (!t.current) return;
-        window.clearTimeout(t.current);
+        globalThis.window.clearTimeout(t.current);
         t.current = undefined;
     }, []);
     const set = useCallback((onTimeout: VoidFunction) => {
-        t.current = window.setTimeout(onTimeout, CHANGE_DELAY);
+        t.current = globalThis.window.setTimeout(onTimeout, CHANGE_DELAY);
     }, []);
     return { set, clear };
 };

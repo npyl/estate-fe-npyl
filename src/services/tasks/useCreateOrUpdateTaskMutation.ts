@@ -8,9 +8,9 @@ import { calendar } from "@/services/calendar";
 import { properties } from "@/services/properties";
 import { customers } from "@/services/customers";
 import { errorToast } from "@/components/Toaster";
-import { getAccessToken } from "@/contexts/accessToken";
+import { getAccessToken } from "@/contexts/tokens";
 
-const baseUrl = `${process.env.NEXT_PUBLIC_PROXY_API}/google`;
+const baseUrl = process.env.NEXT_PUBLIC_PROXY_API;
 
 const useCreateOrUpdateTaskMutation = () => {
     const { user } = useAuth();
@@ -25,7 +25,7 @@ const useCreateOrUpdateTaskMutation = () => {
             startLoading();
 
             try {
-                const res = await fetch(`${baseUrl}/${userId}/tasks`, {
+                const res = await fetch(`${baseUrl}/tasks/${userId}`, {
                     headers: {
                         Authorization: `Bearer  ${getAccessToken()}`,
                     },

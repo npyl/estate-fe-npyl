@@ -10,7 +10,6 @@ import {
 import Content from "./Content";
 import Actions from "./Actions";
 import { FormProvider } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import schema from "./schema";
 import {
     useCreateOrUpdateTaskMutation,
@@ -21,6 +20,7 @@ import TaskTitle from "./TaskTitle";
 import useFormPersist from "@/components/hook-form/useFormPersist";
 import useCookieKey from "./useCookieKey";
 import { TASK } from "@/constants/tests";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // ------------------------------------------------------------------------------------------
 
@@ -41,7 +41,7 @@ const Details: FC<DetailsProps> = ({ quickCreate = false, task, onClose }) => {
     const [methods, { PersistNotice, persistChanges }] =
         useFormPersist<ICreateOrUpdateTaskReq>(cookieKey, onClose, {
             dialog: true,
-            resolver: yupResolver(schema),
+            resolver: zodResolver(schema),
             values: getValues(task),
         });
 

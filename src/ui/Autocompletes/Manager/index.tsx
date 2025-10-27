@@ -1,5 +1,5 @@
 import { MenuItem, SxProps, TextField, Theme, Typography } from "@mui/material";
-import { useAllUsersQuery } from "src/services/user";
+import { useAllUsersQuery } from "@/services/user";
 import { IUser } from "@/types/user";
 import { FC, forwardRef, useMemo } from "react";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";

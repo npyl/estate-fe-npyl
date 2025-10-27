@@ -1,7 +1,7 @@
-import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IView } from "@/types/publicDashboard";
 import { IProperties } from "@/types/properties";
 import { apiWithTranslation, createLanguageAwareHook as la } from "./_util";
+import getBaseQueryWithReauth from "./_util/getBaseQueryWithReauth";
 
 type TTimeFrame = "ALL_TIME" | "CUSTOM" | "DAY" | "MONTH" | "WEEK" | "YEAR";
 
@@ -29,15 +29,8 @@ interface TotalPropertyViews {
 
 export const publicDashboard = apiWithTranslation({
     reducerPath: "publicDashboard",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/public-dashboard`,
-        prepareHeaders: (headers) => {
-            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-            headers.set("Time-Zone", timeZone);
-
-            return headers;
-        },
     }),
 
     endpoints: (builder) => ({

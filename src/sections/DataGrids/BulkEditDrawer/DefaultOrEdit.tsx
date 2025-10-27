@@ -1,10 +1,17 @@
-import { InputLabel, Stack } from "@mui/material";
+import { InputLabel, Stack, SxProps, Theme } from "@mui/material";
 import React, { useState } from "react";
 import { StyledButton } from "@/sections/DataGrids/BulkEditDrawer/style";
 import CheckIcon from "@mui/icons-material/Check";
 import { Close } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
+
+const ContainerSx: SxProps<Theme> = {
+    ".MuiOutlinedInput-root": {
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+    },
+};
 
 interface DefaultOrEditProps {
     name: string;
@@ -39,7 +46,7 @@ const DefaultOrEdit = ({ name, label, children }: DefaultOrEditProps) => {
     };
 
     return (
-        <Stack>
+        <Stack sx={ContainerSx}>
             <InputLabel>{label}</InputLabel>
             <StyledButton
                 variant="outlined"
@@ -49,7 +56,7 @@ const DefaultOrEdit = ({ name, label, children }: DefaultOrEditProps) => {
                 {t("Default Value")}
             </StyledButton>
 
-            {!checked ? children : null}
+            {checked ? null : children}
         </Stack>
     );
 };

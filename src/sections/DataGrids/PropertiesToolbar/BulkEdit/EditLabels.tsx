@@ -1,10 +1,10 @@
-import { StyledOutlinedInput } from "@/sections/DataGrids/BulkEditDrawer/style";
 import { MenuItem, Checkbox, Select, SelectChangeEvent } from "@mui/material";
 import { Label } from "@/components/Label";
 import { useGetLabelsQuery } from "@/services/labels";
 import DefaultOrEdit from "../../BulkEditDrawer/DefaultOrEdit";
 import { useTranslation } from "react-i18next";
 import useValueChange from "@/sections/DataGrids/BulkEditDrawer/useValueChange";
+import { useCallback } from "react";
 
 type Variant = "property" | "customer";
 
@@ -37,6 +37,11 @@ const EditLabels = ({ variant }: EditLabelsProps) => {
     const renderValue = (selected: number[]) =>
         selected.map((id) => nameForId(id)).join(", ");
 
+    const isChecked = useCallback(
+        (id: number) => (value as number[]).includes(id),
+        [value]
+    );
+
     return (
         <DefaultOrEdit label={t("Labels")} name="labels">
             <Select
@@ -44,11 +49,10 @@ const EditLabels = ({ variant }: EditLabelsProps) => {
                 value={value}
                 onChange={handleChange}
                 renderValue={renderValue}
-                input={<StyledOutlinedInput />}
             >
                 {labelOptions.map((option) => (
                     <MenuItem key={option.id} value={option.id}>
-                        <Checkbox checked={value.indexOf(option.id) > -1} />
+                        <Checkbox checked={isChecked(option.id)} />
                         <Label color={option.color} name={option.name} />
                     </MenuItem>
                 ))}

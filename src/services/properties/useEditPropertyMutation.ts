@@ -3,7 +3,7 @@ import { IPropertyReq } from "@/types/properties";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { properties } from "./properties";
-import { getAccessToken } from "@/contexts/accessToken";
+import { getAccessToken } from "@/contexts/tokens";
 
 const baseUrl = `/api/properties`;
 

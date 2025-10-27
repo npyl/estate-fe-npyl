@@ -1,7 +1,10 @@
-import path from "path";
-import fs from "fs";
+import path from "node:path";
+import fs from "node:fs";
 
-const privFile = path.join(global.projectRoot, "playwright/.auth/priv.json");
+const privFile = path.join(
+    (global as any).projectRoot,
+    "playwright/.auth/priv.json"
+);
 
 const CREDENTIALS_ERROR =
     "Username or password not found in credentials file! Please fill-in credentials in playwright/.auth/priv.json";
@@ -37,5 +40,5 @@ const getGoogleOAuthCredentials = (): TCredential => {
     return { username, password };
 };
 
-export type { TCredential };
+export type { TCredential, TCredentials };
 export { getLocalCredentials, getGoogleOAuthCredentials };

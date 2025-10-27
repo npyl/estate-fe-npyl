@@ -15,7 +15,7 @@ import Tester, {
 } from "./index.comp";
 import clickAndExpectOrg from "@/test/clickAndExpect";
 import { screen } from "@testing-library/dom";
-import "@testing-library/jest-dom";
+
 import { render } from "@testing-library/react";
 
 const clearLocalStorage = () => {

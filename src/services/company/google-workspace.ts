@@ -1,5 +1,5 @@
-import { getAccessToken } from "@/contexts/accessToken";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import getBaseQueryWithReauth from "../_util/getBaseQueryWithReauth";
 
 interface IIsIntegratedRes {
     isIntegrated: boolean;
@@ -16,12 +16,8 @@ const baseUrl = `${process.env.NEXT_PUBLIC_PROXY_API}/google/workspace`;
 
 export const googleWorkspaceApi = createApi({
     reducerPath: "googleWorkspace",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl,
-        prepareHeaders: (headers) => {
-            headers.set("Authorization", `Bearer ${getAccessToken()}`);
-            return headers;
-        },
     }),
     tagTypes: ["GoogleWorkspace"],
     endpoints: (builder) => ({

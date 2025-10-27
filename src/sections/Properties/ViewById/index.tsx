@@ -133,7 +133,6 @@ const PropertyById: FC<Props> = ({ archived = false }) => {
     return (
         <>
             <ViewHeader
-                isProperty
                 isArchived={archived}
                 // ...
                 onArchive={handleArchive}

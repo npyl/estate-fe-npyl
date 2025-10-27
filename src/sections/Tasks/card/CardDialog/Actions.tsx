@@ -30,11 +30,11 @@ const Actions: FC<ActionsProps> = ({ quickCreate, onClose }) => {
 
                 {isDirty || quickCreate ? (
                     <LoadingButton
-                        data-testid={TASK.SUBMIT_ID}
                         loading={isSubmitting}
                         disabled={isSubmitting}
                         variant="contained"
                         type="submit"
+                        data-testid={TASK.SUBMIT_ID}
                     >
                         {t("Save")}
                     </LoadingButton>

@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import useFilteredRows from "./useFilteredRows";
 import { IPropertyFilterParams } from "@/services/properties";
 import { useAllFilters } from "../../FiltersContext";
+import JSONParseSafe from "@/utils/JSONParseSafe";
 const Toolbar = dynamic(() => import("@/sections/DataGrids/PropertiesToolbar"));
 
 interface ViewAllProps {
@@ -41,7 +42,7 @@ const ViewAll = ({ archived = false, sortBy, direction }: ViewAllProps) => {
         );
 
         if (storedPagination) {
-            const parsedPagination = JSON.parseSafe(storedPagination);
+            const parsedPagination = JSONParseSafe<any>(storedPagination);
             if (!parsedPagination) return;
 
             if (page !== parsedPagination.page) {

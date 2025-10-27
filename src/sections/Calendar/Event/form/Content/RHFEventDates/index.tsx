@@ -1,22 +1,21 @@
-import { FC } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, FieldValues, Path, useFormContext } from "react-hook-form";
 import EventDates, { EventDatesProps } from "./EventDates";
 
-interface RHFEventDatesProps
+interface RHFEventDatesProps<T extends FieldValues>
     extends Omit<
         EventDatesProps,
         "startDate" | "endDate" | "onStartDateChange" | "onEndDateChange"
     > {
-    startDateName: string;
-    endDateName: string;
+    startDateName: Path<T>;
+    endDateName: Path<T>;
 }
 
-const RHFEventDates: FC<RHFEventDatesProps> = ({
+const RHFEventDates = <T extends FieldValues>({
     startDateName,
     endDateName,
     ...props
-}) => {
-    const { control } = useFormContext();
+}: RHFEventDatesProps<T>) => {
+    const { control } = useFormContext<T>();
 
     return (
         <Controller

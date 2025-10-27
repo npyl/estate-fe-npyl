@@ -5,7 +5,7 @@ import {
     IntegrationSite,
 } from "@/types/integrations";
 import { IUserMini } from "@/types/user";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import {
     CompanyImageType,
     ICompany,
@@ -13,7 +13,7 @@ import {
     IPublicSiteReq,
     IPublicSitesRes,
 } from "@/types/company";
-import { getAccessToken } from "@/contexts/accessToken";
+import getBaseQueryWithReauth from "../_util/getBaseQueryWithReauth";
 
 interface IUploadCompanyImage {
     contentType: string;
@@ -35,12 +35,8 @@ const INTEGRATION_SITES: IIntegration[] = [
 
 export const company = createApi({
     reducerPath: "company",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/company`,
-        prepareHeaders: (headers) => {
-            headers.set("Authorization", `Bearer ${getAccessToken()}`);
-            return headers;
-        },
     }),
 
     tagTypes: [

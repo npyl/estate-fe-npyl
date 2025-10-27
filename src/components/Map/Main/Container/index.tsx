@@ -19,39 +19,29 @@ const useMutualLoad = (onReady?: (m: google.maps.Map) => void) => {
         contentRef.current?.load();
 
         onReady?.(mapRef.current!);
-
-        console.log("MUTUAL_LOAD!");
     }, [onReady]);
 
     const onMapRef = useCallback((map: google.maps.Map) => {
-        map.getDiv().setAttribute("data-testid", MAP_ID);
+        map.getDiv().dataset.testid = MAP_ID;
 
         // map
         mapRef.current = map;
 
         // geocoder
-        geocoderRef.current = new window.google.maps.Geocoder();
-
-        console.log("EDW 1!");
+        geocoderRef.current = new globalThis.window.google.maps.Geocoder();
 
         // attempt mutual load
         if (!contentRef.current) return;
         onMutualLoad();
-
-        console.log("EDW 1.1!");
     }, []);
 
     const onContentRef = useCallback((c: ContentRef | null) => {
         if (!c) return;
         contentRef.current = c;
 
-        console.log("EDW 2!");
-
         // attempt mutual load
         if (!mapRef.current) return;
         onMutualLoad();
-
-        console.log("EDW 2.1!");
     }, []);
 
     useLayoutEffect(() => {

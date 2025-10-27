@@ -1,17 +1,15 @@
 import { Button, Stack } from "@mui/material";
 import MuiPopover from "@mui/material/Popover";
-import OpenIn from "./OpenIn";
 import dynamic from "next/dynamic";
 import ControlPointDuplicateOutlinedIcon from "@mui/icons-material/ControlPointDuplicateOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import RestoreButton from "./RestoreButton";
 import DeleteOrArchiveButton from "./DeleteOrArchiveButton";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
-import toNumberSafe from "@/utils/toNumberSafe";
-import { FC, useCallback } from "react";
+import { FC, useCallback, useRef } from "react";
 const PropertyTaskButton = dynamic(() => import("./PropertyTaskButton"));
 const CustomerTaskButton = dynamic(() => import("./CustomerTaskButton"));
+const OpenIn = dynamic(() => import("./OpenIn"));
 
 interface PopoverProps {
     anchorEl: HTMLElement;
@@ -19,6 +17,7 @@ interface PopoverProps {
 
     isProperty: boolean;
     isArchived: boolean;
+    isCustomer: boolean;
     onEdit: VoidFunction;
     onDelete: VoidFunction;
     onArchive?: VoidFunction;
@@ -31,6 +30,7 @@ const Popover: FC<PopoverProps> = ({
     // ...
     isProperty,
     isArchived,
+    isCustomer,
     onEdit,
     onDelete,
     onArchive,
@@ -38,9 +38,7 @@ const Popover: FC<PopoverProps> = ({
 }) => {
     const { t } = useTranslation();
 
-    const router = useRouter();
-    const { customerId } = router.query;
-    const isCustomer = toNumberSafe(customerId) !== -1;
+    const paperRef = useRef<HTMLDivElement>(null);
 
     const handleEdit = useCallback(() => {
         onClose();
@@ -72,6 +70,7 @@ const Popover: FC<PopoverProps> = ({
                 vertical: "top",
                 horizontal: "left",
             }}
+            slotProps={{ paper: { ref: paperRef } }}
         >
             <Stack
                 alignItems="center"
@@ -80,7 +79,9 @@ const Popover: FC<PopoverProps> = ({
                 spacing={1}
                 sx={{ minWidth: 150 }}
             >
-                {isProperty && <OpenIn />}
+                {isProperty && paperRef.current ? (
+                    <OpenIn menuAnchor={paperRef.current} />
+                ) : null}
 
                 {!isArchived && onClone ? (
                     <Button

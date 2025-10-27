@@ -1,18 +1,15 @@
-import { Stack, StackProps, Typography } from "@mui/material";
+import { Stack, StackProps } from "@mui/material";
 import { FC } from "react";
-import { RHFDatePicker } from "@/components/hook-form";
-import RHFTimePicker from "@/components/hook-form/RHFTimePicker";
-import AllDayPicker from "./AllDayPicker";
+import { DatePicker, StartHourPicker, EndHourPicker } from "./Pickers";
 import { isAllDay } from "@/components/Calendar/util";
 import AllDayCheckbox from "./AllDayCheckbox";
 import {
     DATEPICKER_TESTID,
+    ALL_DAY_CHECKBOX_TESTID,
     END_TIME_PICKER_TESTID,
     START_TIME_PICKER_TESTID,
-    // ...
-    ALL_DAY_CHECKBOX_TESTID,
-    ALL_DAY_DATEPICKER_TESTID,
 } from "./constants";
+import useSafeChange from "./useSafeChange";
 
 // ----------------------------------------------------------------------
 
@@ -21,65 +18,59 @@ interface EventDatesProps extends StackProps {
     endDate: string;
     onStartDateChange: (d: string) => void;
     onEndDateChange: (d: string) => void;
-
-    // INFO: make this component reusable in many hook-form setups
-    startDateKey?: string;
-    endDateKey?: string;
 }
 
 const EventDates: FC<EventDatesProps> = ({
     startDate,
     endDate,
-    onStartDateChange,
-    onEndDateChange,
-    // ...
-    startDateKey = "startDate",
-    endDateKey = "endDate",
+    onStartDateChange: _onStartDateChange,
+    onEndDateChange: _onEndDateChange,
     // ...
     ...props
 }) => {
     const allDay = isAllDay(startDate, endDate);
 
+    const { onStartDateChange, onEndDateChange } = useSafeChange(
+        startDate,
+        endDate,
+        _onStartDateChange,
+        _onEndDateChange
+    );
+
     return (
         <Stack spacing={1} {...props}>
             <Stack direction="row" spacing={1} alignItems="center">
-                {allDay ? (
-                    <AllDayPicker
-                        data-testid={ALL_DAY_DATEPICKER_TESTID}
-                        startDateKey={startDateKey}
-                        onEndDateChange={onEndDateChange}
-                    />
-                ) : null}
-
-                {!allDay ? (
-                    <RHFDatePicker
-                        data-testid={DATEPICKER_TESTID}
-                        name={startDateKey}
-                    />
-                ) : null}
+                <DatePicker
+                    data-testid={DATEPICKER_TESTID}
+                    startDate={startDate}
+                    endDate={endDate}
+                    onStartDateChange={_onStartDateChange}
+                    onEndDateChange={_onEndDateChange}
+                />
 
                 <AllDayCheckbox
                     data-testid={ALL_DAY_CHECKBOX_TESTID}
                     allDay={allDay}
                     startDate={startDate}
-                    onStartDateChange={onStartDateChange}
-                    onEndDateChange={onEndDateChange}
+                    onStartDateChange={_onStartDateChange}
+                    onEndDateChange={_onEndDateChange}
                 />
             </Stack>
 
-            {!allDay ? (
+            {allDay ? null : (
                 <Stack direction="row" spacing={1} alignItems="center">
-                    <RHFTimePicker
+                    <StartHourPicker
                         data-testid={START_TIME_PICKER_TESTID}
-                        name={startDateKey}
+                        value={startDate}
+                        onChange={onStartDateChange}
                     />
-                    <Typography>-</Typography>
-                    <RHFTimePicker
+                    <EndHourPicker
                         data-testid={END_TIME_PICKER_TESTID}
-                        name={endDateKey}
+                        value={endDate}
+                        onChange={onEndDateChange}
                     />
                 </Stack>
-            ) : null}
+            )}
         </Stack>
     );
 };

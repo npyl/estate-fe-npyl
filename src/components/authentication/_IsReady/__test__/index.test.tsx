@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { useRouter } from "next/router";
 import Tester, { DIV_TESTID } from "./index.comp";
-import "@testing-library/jest-dom";
 
 // ----------------------------------------------------------------------------------------------
 

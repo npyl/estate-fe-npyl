@@ -1,8 +1,9 @@
-import { generateHTML } from "@tiptap/core";
+import { generateHTML, JSONContent } from "@tiptap/core";
 import { extensions } from "./config";
 import debugLog from "@/_private/debugLog";
 import { FC, useMemo } from "react";
 import Box, { BoxProps } from "@mui/material/Box";
+import JSONParseSafe from "@/utils/JSONParseSafe";
 
 const renderTipTapHTML = (json: any) => {
     try {
@@ -16,7 +17,7 @@ const renderTipTapHTML = (json: any) => {
 const isTipTapJson = (input: string | undefined): [boolean, any] => {
     if (!input) return [false, undefined] as const;
 
-    const parsed = JSON.parseSafe(input);
+    const parsed = JSONParseSafe<JSONContent>(input);
     if (!parsed) return [false, undefined] as const;
 
     const isValid = parsed?.type === "doc" && Array.isArray(parsed?.content);

@@ -19,6 +19,7 @@ const getProfileId = async (accessToken: string): Promise<number> => {
 
         return data.id ?? -1;
     } catch (ex) {
+        console.log(ex);
         return -1;
     }
 };

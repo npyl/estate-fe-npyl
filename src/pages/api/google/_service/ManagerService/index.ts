@@ -18,7 +18,7 @@ type TWorkspaceDomain = string;
 
 class ManagerService {
     private readonly domains: Map<TUserId, TWorkspaceDomain>;
-    private readonly workspaces: Map<TWorkspaceDomain, AuthService>;
+    protected readonly workspaces: Map<TWorkspaceDomain, AuthService>;
 
     constructor() {
         this.domains = new Map();
@@ -28,7 +28,38 @@ class ManagerService {
     // ------------------------------------------------------------------------------------------------------
     // INTERNAL
 
-    private authServiceFor(userId: number) {
+    private _dropGoogleWorkspace(s: AuthService) {
+        return s.dropGoogleWorkspace();
+    }
+
+    protected async _updateKeys(
+        Authorization: string,
+        keys: GoogleWorkspaceKeys,
+        onOldWorkspaceDrop?: () => Promise<void>
+    ) {
+        const res = await getCredentialsForUser(Authorization);
+        if (!res) return null;
+
+        const { domain } = res;
+
+        // Get authService for domain
+        const s = this.workspaces.get(domain);
+        if (!s) return;
+
+        // 0: drop (disconnect users & remove tokens) existing workspace
+        await this._dropGoogleWorkspace(s);
+
+        await onOldWorkspaceDrop?.();
+
+        // 1: update with new keys
+        s.setOauth2ClientForKeys(keys);
+
+        // Rename
+        this.workspaces.set(keys.domain, s);
+        this.workspaces.delete(domain);
+    }
+
+    protected authServiceFor(userId: number) {
         const domain = this.domains.get(userId);
         if (!domain) return;
         return this.workspaces.get(domain);
@@ -51,7 +82,7 @@ class ManagerService {
      * @param Authorization `Bearer ${...}`
      * @returns Receive google workspace credentials from backend
      */
-    private async initialise(userId: number, Authorization: string) {
+    protected async initialise(userId: number, Authorization: string) {
         const keys = await getCredentialsForUser(Authorization);
         if (!keys) return null;
 
@@ -110,20 +141,17 @@ class ManagerService {
     // WORKSPACE
 
     getWorkspaceDomain(userId: number) {
-        return this.authServiceFor(userId)?.WORKSPACE_DOMAIN;
+        return this.authServiceFor(userId)?.getWorkspaceDomain();
     }
 
     async dropGoogleWorkspace(userId: number) {
-        return await this.authServiceFor(userId)?.dropGoogleWorkspace();
+        const s = this.authServiceFor(userId);
+        if (!s) return;
+        return await this._dropGoogleWorkspace(s);
     }
 
-    async updateKeys(Authorization: string, keys: GoogleWorkspaceKeys) {
-        const res = await getCredentialsForUser(Authorization);
-        if (!res) return null;
-
-        const { domain } = res;
-
-        this.workspaces.get(domain)?.setOauth2ClientForKeys(keys);
+    updateKeys(...args: Parameters<typeof this._updateKeys>) {
+        return this._updateKeys(...args);
     }
 }
 
@@ -145,4 +173,5 @@ if (process.env.NODE_ENV !== "production")
 
 // ------------------------------------------------------------------------------
 
+export { ManagerService };
 export default managerService;

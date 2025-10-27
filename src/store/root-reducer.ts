@@ -12,7 +12,6 @@ import { customers } from "@/services/customers";
 import { global } from "@/services/global";
 import { location } from "@/services/location";
 import { properties } from "@/services/properties";
-import { security } from "@/services/security";
 import { user } from "@/services/user";
 import { translation } from "@/services/translate";
 import { publicDashboard } from "@/services/publicDashboard";
@@ -26,6 +25,7 @@ import { messages } from "@/services/messages";
 import { logout } from "@/services/logout";
 import { emails } from "@/services/email";
 import { blog } from "@/services/blog";
+import { roles } from "@/services/roles";
 
 export const rootReducer = combineReducers({
     [location.reducerPath]: location.reducer,
@@ -37,7 +37,6 @@ export const rootReducer = combineReducers({
     [note.reducerPath]: note.reducer,
     [labels.reducerPath]: labels.reducer,
     [notification.reducerPath]: notification.reducer,
-    [security.reducerPath]: security.reducer,
     [tasks.reducerPath]: tasks.reducer,
     [logs.reducerPath]: logs.reducer,
     [dashboard.reducerPath]: dashboard.reducer,
@@ -61,4 +60,5 @@ export const rootReducer = combineReducers({
     // ...
     [emails.reducerPath]: emails.reducer,
     [blog.reducerPath]: blog.reducer,
+    [roles.reducerPath]: roles.reducer,
 });

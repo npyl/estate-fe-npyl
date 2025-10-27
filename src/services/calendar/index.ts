@@ -1,7 +1,7 @@
 import { TCalendarColor, TCalendarEvent } from "@/components/Calendar/types";
 import { useAuth } from "@/sections/use-auth";
 import { GUserMini } from "@/types/user";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import {
     useAuthenticateMutation,
     useIsAuthenticatedQuery,
@@ -16,10 +16,11 @@ import {
 import { optimisticDelete, optimisticUpdate } from "./optimistic";
 import { useMemo } from "react";
 import { primary } from "@/theme/light-theme-options";
+import getBaseQueryWithReauth from "../_util/getBaseQueryWithReauth";
 
 export const calendar = createApi({
     reducerPath: "calendar",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: `${process.env.NEXT_PUBLIC_PROXY_API}/calendar`,
     }),
 

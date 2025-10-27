@@ -19,7 +19,6 @@ import { act } from "react";
 import { formatThousands } from "@/utils/formatNumber";
 import toNumberSafe from "@/utils/toNumberSafe";
 import { CHANGE_DELAY } from "../Pane/DebouncedInput";
-import "@testing-library/jest-dom";
 
 // --------------------------------------------------------------------------------
 //                              Basics

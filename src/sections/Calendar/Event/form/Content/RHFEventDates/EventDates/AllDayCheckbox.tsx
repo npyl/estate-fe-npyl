@@ -23,7 +23,7 @@ const getDates = (
 
     if (b) {
         return getAllDayStartEnd(calculated);
-    } else if (!b) {
+    } else {
         const start = new Date(calculated);
         const end = new Date(start.getTime() + 60 * 60 * 1000); // Add 1 hour
         return [calculated, end.toISOString()];

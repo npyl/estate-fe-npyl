@@ -12,8 +12,6 @@ import { KeyValue } from "@/types/KeyValue";
 import plainTextToJSON from "@/components/Editor/util/plainText2JSON";
 import MenuItem from "@mui/material/MenuItem";
 
-import "@/_private/JSON";
-
 // --------------------------------------------------------------------------------------
 
 const DYNAMIC_LITERAL = "Dynamic";

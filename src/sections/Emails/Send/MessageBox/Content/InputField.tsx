@@ -13,7 +13,6 @@ const InputField = forwardRef<
 >(({ sx, ...props }, ref) => (
     <MultilineTextField
         ref={ref}
-        multiline
         variant="standard"
         sx={{ ...InputFieldSx, ...sx }}
         {...props}

@@ -1,9 +1,10 @@
 import { BuildingInsights } from "@/sections/Properties/ViewById/(tabs)/Green/types";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import getBaseQueryWithReauth from "../_util/getBaseQueryWithReauth";
 
 export const solar = createApi({
     reducerPath: "solar",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: `https://solar.googleapis.com/v1`,
     }),
 

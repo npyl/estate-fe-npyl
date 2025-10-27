@@ -3,7 +3,7 @@ import Tester from "./index.comp";
 import plainTextToJSON from "../util/plainText2JSON";
 import { TESTS } from "../util/plainText2JSON/__test__/constants";
 import { EDITOR_CONTENT_ID, EditorProps } from "@/components/Editor";
-import "@testing-library/jest-dom";
+
 import sleep from "@/utils/sleep";
 
 // ----------------------------------------------------------------------------------

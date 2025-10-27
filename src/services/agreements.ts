@@ -5,12 +5,12 @@ import {
     IAgreementShort,
 } from "@/types/agreements";
 import IPage from "@/types/page";
-import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     apiWithTranslation,
     createLanguageAwareHook as la,
     createRemoveTabAwareHook as rt,
 } from "./_util";
+import getBaseQueryWithReauth from "./_util/getBaseQueryWithReauth";
 
 interface IAgreementSearchParams {
     search: string;
@@ -20,7 +20,7 @@ interface IAgreementSearchParams {
 
 export const agreements = apiWithTranslation({
     reducerPath: "agreements",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/agreements`,
     }),
 

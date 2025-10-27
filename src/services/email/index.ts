@@ -5,9 +5,10 @@ import {
     TThreadMessageReq,
     TThreadRes,
 } from "@/types/email";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { optimisticMarkThreadRead } from "./optimistic";
 import { IEmailFilterReq, IThreadReq, WithId } from "./types";
+import getBaseQueryWithReauth from "../_util/getBaseQueryWithReauth";
 
 interface ISendMailReq {
     body: TThreadMessageReq;
@@ -15,7 +16,7 @@ interface ISendMailReq {
 
 export const emails = createApi({
     reducerPath: "emails",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: "/api/emails",
     }),
 

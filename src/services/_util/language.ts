@@ -1,4 +1,4 @@
-import { getAccessToken } from "@/contexts/accessToken";
+import { getAccessToken } from "@/contexts/tokens";
 import { reactHooksModule } from "@reduxjs/toolkit/dist/query/react";
 import {
     EndpointDefinitions,

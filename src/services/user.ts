@@ -2,6 +2,7 @@ import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IUser, IUserPOST } from "src/types/user";
 import { apiWithTranslation, createLanguageAwareHook as la } from "./_util";
 import { TTaskVisibility } from "@/types/roles";
+import getBaseQueryWithReauth from "./_util/getBaseQueryWithReauth";
 
 interface UploadAvatarReq {
     userId: number;
@@ -24,7 +25,7 @@ interface IResetPasswordReq {
 
 export const user = apiWithTranslation({
     reducerPath: "user",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/users`,
     }),
     tagTypes: ["Users", "User", "UserActive"],

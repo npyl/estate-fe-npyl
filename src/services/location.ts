@@ -1,8 +1,6 @@
-// src/services/location.ts
-
-import { getAccessToken } from "@/contexts/accessToken";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { IGeoLocation } from "src/types/geolocation";
+import getBaseQueryWithReauth from "./_util/getBaseQueryWithReauth";
 
 interface IGetClosestParams {
     longitude: number;
@@ -11,13 +9,8 @@ interface IGetClosestParams {
 
 export const location = createApi({
     reducerPath: "location",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/geography/`,
-        prepareHeaders: (headers) => {
-            // By default, if we have a token in the store, let's use that for authenticated requests
-            headers.set("Authorization", `Bearer ${getAccessToken()}`);
-            return headers;
-        },
     }),
     endpoints: (builder) => ({
         getRegions: builder.query<IGeoLocation[], void>({

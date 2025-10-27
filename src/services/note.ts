@@ -1,18 +1,11 @@
-import { getAccessToken } from "@/contexts/accessToken";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { INote, AddNoteReq } from "@/types/note";
+import getBaseQueryWithReauth from "./_util/getBaseQueryWithReauth";
 
 export const note = createApi({
     reducerPath: "note",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/notes`,
-        prepareHeaders: (headers) => {
-            // By default, if we have a token in the store, let's use that for authenticated requests
-
-            headers.set("Authorization", `Bearer  ${getAccessToken()}`);
-
-            return headers;
-        },
     }),
     tagTypes: ["Notes"],
     endpoints: (builder) => ({

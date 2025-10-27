@@ -1,15 +1,10 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { BlogFilters, BlogPostRes, BlogPostShort } from "@/types/company";
 import IPage from "@/types/page";
-import { getAccessToken } from "@/contexts/accessToken";
 import useCreateOrUpdateBlogPostMutation from "./useCreateOrUpdateBlogPostMutation";
+import getBaseQueryWithReauth from "../_util/getBaseQueryWithReauth";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/blog`;
-
-interface RemoveImage {
-    postId: number;
-    id: number;
-}
 
 interface IImageReq {
     postId: number;
@@ -18,12 +13,8 @@ interface IImageReq {
 
 export const blog = createApi({
     reducerPath: "blog",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: "/api/blog",
-        prepareHeaders: (headers) => {
-            headers.set("Authorization", `Bearer ${getAccessToken()}`);
-            return headers;
-        },
     }),
 
     tagTypes: ["BlogPosts", "BlogPostById"],

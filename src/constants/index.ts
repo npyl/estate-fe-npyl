@@ -1,3 +1,6 @@
-const tokenKey = "accessToken";
+const accessTokenKey = "accessToken";
+const refreshTokenKey = "refreshToken";
 
-export { tokenKey };
+const chatTokenKey = "chatToken";
+
+export { accessTokenKey, refreshTokenKey, chatTokenKey };

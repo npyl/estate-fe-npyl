@@ -3,9 +3,9 @@ import {
     INotificationShort,
 } from "@/types/notification/notification";
 import IPage from "@/types/page";
-import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ContactNotificationExtended } from "src/types/notification";
 import { apiWithTranslation, createLanguageAwareHook as la } from "./_util";
+import getBaseQueryWithReauth from "./_util/getBaseQueryWithReauth";
 
 interface INotificationFilterParams {
     filter: INotificationFilter;
@@ -24,7 +24,7 @@ interface NotViewedContactNotifications {
 
 export const notification = apiWithTranslation({
     reducerPath: "contactNotification",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/contact/notification`,
     }),
     tagTypes: ["Notifications", "NotificationById"],

@@ -1,111 +1,87 @@
-import { test, expect, Page } from "@playwright/test";
-import gotoSafe from "../_util/gotoSafe";
-import { TASK } from "../../src/constants/tests";
-import uuidv4 from "../../src/utils/uuidv4";
-import _fillAndExpect from "../_util/fillAndExpect";
+import { test, expect } from "@playwright/test";
+import { createEvent } from "./service/create";
+import { WITH_CALENDAR_SWITCH_TESTID } from "../../src/sections/Tasks/card/CardDialog/Content/_WithCalendar/Section/WithCalendarSwitch/constants";
+import { ALL_DAY_CHECKBOX_TESTID } from "../../src/sections/Calendar/Event/form/Content/RHFEventDates/EventDates/constants";
 import { ICreateOrUpdateTaskReq } from "../../src/types/tasks";
-import clickSelectOptions from "../_util/select/clickOptions";
-import clickAutocompleteOptions from "../_util/autocomplete/clickOptions";
-import { getOptionTestId as getSelectOptionTestId } from "../../src/components/hook-form/Select/constants";
-import { getOptionTestId as getAutocompleteOptionTestId } from "../../src/ui/Autocompletes/Manager/constant";
-import getBoard from "../_service/getBoard";
-import getAllUsers from "../_service/getAllUsers";
+import { START_HOUR, END_HOUR } from "../../src/constants/calendar";
 
-// --------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------
 
-const DEEPER = true;
+const expectHours = (
+    request: ICreateOrUpdateTaskReq,
+    startHour: number,
+    endHour: number
+) => {
+    const due0 = request.due?.at(0);
+    const due1 = request.due?.at(1);
 
-const fillAndExpect = (page: Page, FIELD_ID: string, value: string) =>
-    _fillAndExpect(page, FIELD_ID, value, DEEPER);
+    const startDate = due0 ? new Date(due0) : undefined;
+    const endDate = due1 ? new Date(due1) : undefined;
 
-// --------------------------------------------------------------------------------
-
-const fillAndExpectTitle = async (page: Page) => {
-    const title = uuidv4();
-    await fillAndExpect(page, TASK.TITLE_ID, title);
-    return title;
+    expect(startDate?.getHours()).toBe(startHour);
+    expect(endDate?.getHours()).toBe(endHour);
 };
 
-// --------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------
 
-const getColumnSelectFirstOption = async (page: Page) => {
-    const board = await getBoard(page);
-    const columnId = board?.columns?.at(0)?.id ?? -1;
-    if (columnId === -1) throw "Bad columnId";
-    return columnId.toString();
-};
+test.describe("create", () => {
+    test.setTimeout(2 * 60 * 1000);
 
-const NO_CHAINING = false;
+    test("Simple", async ({ page }) => {
+        const [request, { columnId, title, assigneeId }] =
+            await createEvent(page);
 
-const selectColumn = async (page: Page) => {
-    const key = await getColumnSelectFirstOption(page);
-    const OPTION_ID = getSelectOptionTestId(key);
-    await clickSelectOptions(page, TASK.COLUMN_ID, [OPTION_ID], NO_CHAINING);
-    return key;
-};
+        expect(request.columnId.toString()).toBe(columnId);
+        expect(request.name).toBe(title);
+        expect(request.userIds?.at(0)).toBe(assigneeId);
+    });
 
-// --------------------------------------------------------------------------------
+    test.describe("w/ Calendar Flows", () => {
+        test("default dates", async ({ page }) => {
+            let currentHour = -1;
 
-const submitAndInterceptRequest = async (page: Page) => {
-    const [request] = await Promise.all([
-        page.waitForRequest(
-            (req) =>
-                req.url().includes("/api/google") && req.method() === "POST"
-        ),
+            const onBeforeSubmit = async () => {
+                // 1. click calendar switch
+                await page.getByTestId(WITH_CALENDAR_SWITCH_TESTID).click();
 
-        page.getByTestId(TASK.SUBMIT_ID).click(),
-    ]);
+                // 2. before submitting, note down the hour we set the <RHFEventDates /> (by default value)
+                currentHour = new Date().getHours();
+            };
 
-    return request.postDataJSON() as ICreateOrUpdateTaskReq;
-};
+            const [request] = await createEvent(page, onBeforeSubmit);
 
-// --------------------------------------------------------------------------------
+            expectHours(request, currentHour, currentHour + 1);
+        });
 
-const getAssigneeSelectFirstOption = async (page: Page) => {
-    const users = await getAllUsers(page);
-    const assigneeId = users?.at(0)?.id ?? -1;
-    if (assigneeId === -1) throw "Bad assigneeId";
-    return assigneeId;
-};
+        test("default dates -> all day", async ({ page }) => {
+            const onBeforeSubmit = async () => {
+                // 1. click calendar switch
+                await page.getByTestId(WITH_CALENDAR_SWITCH_TESTID).click();
 
-const selectAssignee = async (page: Page) => {
-    const key = await getAssigneeSelectFirstOption(page);
-    const OPTION_ID = getAutocompleteOptionTestId(key);
-    await clickAutocompleteOptions(
-        page,
-        TASK.ASSIGNEE_ID,
-        [OPTION_ID],
-        NO_CHAINING
-    );
-    return key;
-};
+                // 2. click all day checkbox (all day ON)
+                await page.getByTestId(ALL_DAY_CHECKBOX_TESTID).click();
+            };
 
-// --------------------------------------------------------------------------------
+            const [request] = await createEvent(page, onBeforeSubmit);
 
-const DELAY = 2 * 60 * 1000;
+            expectHours(request, START_HOUR, END_HOUR);
+        });
 
-test("create", async ({ page }) => {
-    await gotoSafe(page, "http://127.0.0.1:3000/tasks");
+        test("default dates -> all day -> default dates", async ({ page }) => {
+            const onBeforeSubmit = async () => {
+                // 1. click calendar switch
+                await page.getByTestId(WITH_CALENDAR_SWITCH_TESTID).click();
 
-    // INFO: click Fab
-    await page.getByTestId(TASK.CREATE_ID).first().click();
+                // 2. click all day checkbox (all day ON)
+                await page.getByTestId(ALL_DAY_CHECKBOX_TESTID).click();
 
-    await page
-        .getByTestId(TASK.DIALOG_ID)
-        .waitFor({ state: "visible", timeout: DELAY });
+                // 3. re-click all day checkbox (all day OFF)
+                await page.getByTestId(ALL_DAY_CHECKBOX_TESTID).click();
+            };
 
-    // Column
-    const columnId = await selectColumn(page);
+            const [request] = await createEvent(page, onBeforeSubmit);
 
-    // Title
-    const title = await fillAndExpectTitle(page);
-
-    // Assignee
-    const assigneeId = await selectAssignee(page);
-
-    // Submit
-    const request = await submitAndInterceptRequest(page);
-    expect(request.columnId.toString()).toBe(columnId);
-    expect(request.name).toBe(title);
-    expect(request.userIds?.at(0)).toBe(assigneeId);
+            expectHours(request, START_HOUR, START_HOUR + 1);
+        });
+    });
 });

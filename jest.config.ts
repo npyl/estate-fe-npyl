@@ -30,6 +30,8 @@ const config: Config = {
         "^@/test/(.*)$": "<rootDir>/test/$1",
         "^@/(.*)$": "<rootDir>/src/$1",
     },
+
+    setupFilesAfterEnv: ["./jest.setup.ts"],
 };
 
 export default config;

@@ -44,8 +44,6 @@ const useMouseMove = (
 
             // Update DOM element position
             eventElement.style.left = `${newLeft}px`;
-
-            return isAdequeteMovement;
         },
         []
     );
@@ -86,11 +84,7 @@ const useMouseMove = (
             if (!eventElement) return;
 
             // Calculate Horizontal Movement
-            const res = moveHorizontally(e.clientX, eventElement);
-
-            // INFO: if there was horizontal movement prevent vertical (=> prevent jumps + performance)
-            if (res) return;
-
+            moveHorizontally(e.clientX, eventElement);
             moveVertically(e.clientY, eventElement);
         },
         [moveHorizontally, moveVertically]

@@ -1,15 +1,13 @@
 import MenuItem from "@mui/material/MenuItem";
 import { useTranslation } from "react-i18next";
-import {
-    StyledOnlyNumbersInput,
-    StyledSelect,
-} from "@/sections/DataGrids/BulkEditDrawer/style";
 import DefaultOrEdit from "../../BulkEditDrawer/DefaultOrEdit";
 import { useGlobals } from "@/sections/useGlobals";
 import ManagerAutocomplete from "@/ui/Autocompletes/Manager";
 import toNumberSafe from "@/utils/toNumberSafe";
 import CustomerAutocomplete from "@/ui/Autocompletes/Customer";
 import useValueChange from "@/sections/DataGrids/BulkEditDrawer/useValueChange";
+import OnlyNumbersInput from "@/components/OnlyNumbers";
+import Select from "@/components/Select";
 
 export const EditManager = () => {
     const { t } = useTranslation();
@@ -46,7 +44,7 @@ export const EditZipCode = () => {
 
     return (
         <DefaultOrEdit label={t("Zip Code")} name="zipCode">
-            <StyledOnlyNumbersInput
+            <OnlyNumbersInput
                 label=""
                 separateThousands={false}
                 value={value}
@@ -63,7 +61,7 @@ export const EditArea = () => {
 
     return (
         <DefaultOrEdit label={t("Living Space")} name="area">
-            <StyledOnlyNumbersInput
+            <OnlyNumbersInput
                 value={value}
                 onChange={onChange}
                 adornment="m²"
@@ -79,7 +77,7 @@ export const EditBedrooms = () => {
 
     return (
         <DefaultOrEdit label={t("Bedrooms")} name="bedrooms">
-            <StyledOnlyNumbersInput
+            <OnlyNumbersInput
                 type="number"
                 placeholder="1,2,3..."
                 value={value}
@@ -99,7 +97,7 @@ export const EditState = () => {
 
     return (
         <DefaultOrEdit label={t("State")} name="state">
-            <StyledSelect
+            <Select
                 value={value}
                 onChange={(e) => onChange(e.target.value as string)}
             >
@@ -108,7 +106,7 @@ export const EditState = () => {
                         {value}
                     </MenuItem>
                 ))}
-            </StyledSelect>
+            </Select>
         </DefaultOrEdit>
     );
 };

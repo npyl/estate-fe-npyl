@@ -15,7 +15,7 @@ export default function RHFCode({ name, ...other }: RHFTextFieldProps) {
     const { property } = useGetProperty();
 
     const debouncedCodeValidation = useDebouncedCallback(async (value) => {
-        const result = await codeIsUnique(property?.code || null, value);
+        const result = await codeIsUnique(property?.code, value);
 
         if (result !== true) {
             setError("code", {

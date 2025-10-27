@@ -1,16 +1,8 @@
-import {
-    Drawer,
-    Stack,
-    Button,
-    Typography,
-    DrawerProps,
-    Divider,
-} from "@mui/material";
+import { Drawer, Stack, Button, Typography, DrawerProps } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import Actions from "./Actions";
 import { DefaultValues, FormProvider, useForm } from "react-hook-form";
 import { useCallback } from "react";
-import getBorderColor from "@/theme/borderColor";
 
 interface BulkEditDrawerProps<State extends object, BulkEditReq>
     extends Omit<DrawerProps, "variant"> {

@@ -40,7 +40,7 @@ function createRemoveTabAwareHook<T>(
         >
     >
 ) {
-    return function () {
+    const useWrapped = () => {
         const { removeTabs } = useTabsContext();
         const [originalMutation, originalResult] = mutationHook();
 
@@ -59,6 +59,8 @@ function createRemoveTabAwareHook<T>(
 
         return [tabAwareMutation, originalResult] as const;
     };
+
+    return useWrapped;
 }
 
 export { createRemoveTabAwareHook };

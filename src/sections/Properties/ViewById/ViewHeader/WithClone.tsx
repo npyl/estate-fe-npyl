@@ -10,7 +10,9 @@ import { useTranslation } from "react-i18next";
 type ViewHeader = ComponentType<ViewHeaderProps>;
 
 const WithClone = (Cell: ViewHeader) => {
-    const WrappedComponent = (props: Omit<ViewHeaderProps, "onClone">) => {
+    const WrappedComponent = (
+        props: Omit<ViewHeaderProps, "isProperty" | "isCustomer" | "onClone">
+    ) => {
         const { t } = useTranslation();
 
         const [cloneProperty] = useClonePropertyMutation();
@@ -31,7 +33,7 @@ const WithClone = (Cell: ViewHeader) => {
 
         return (
             <>
-                <Cell {...props} onClone={open} />
+                <Cell isProperty {...props} onClone={open} />
 
                 {isOpen ? (
                     <ConfirmDialog

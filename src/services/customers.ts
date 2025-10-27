@@ -16,6 +16,7 @@ import {
     createLanguageAwareHook as la,
     createRemoveTabAwareHook as rt,
 } from "./_util";
+import getBaseQueryWithReauth from "./_util/getBaseQueryWithReauth";
 
 export interface BulkEditRequest {
     customerIds: number[];
@@ -68,7 +69,7 @@ const propertiesBaseUrl = `${process.env.NEXT_PUBLIC_API_URL}/property`;
 
 export const customers = apiWithTranslation({
     reducerPath: "customers",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl,
     }),
     tagTypes: [

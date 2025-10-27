@@ -13,6 +13,16 @@ type ObjectWithId = { id: number };
 
 const getId = ({ id }: ObjectWithId) => id;
 
+/**
+ * INFO: Due to our new zod schema, validation has become stricter, so make sure this is actually valid
+ */
+const getValidDue = (due?: [string | undefined, string | undefined]) => {
+    if (!due) return;
+    if (!due?.at(0) || !due?.at(1)) return;
+    if (due.length !== 2) return;
+    return due;
+};
+
 const IKanbanCardRes2Req = (
     task: IKanbanCard | undefined
 ): ICreateOrUpdateTaskReq => {
@@ -21,7 +31,7 @@ const IKanbanCardRes2Req = (
         priority,
         name,
         description,
-        due, // INFO: we are ok with undefined when `withCalendar` is false
+        due,
         properties,
         customers,
         assignees,
@@ -37,7 +47,7 @@ const IKanbanCardRes2Req = (
         priority: priority || 0,
         name: name || "",
         description: description || "",
-        due,
+        due: getValidDue(due),
         attachments: [],
         properties: properties?.map(getId) || [],
         customers: customers?.map(getId) || [],

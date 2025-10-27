@@ -1,9 +1,10 @@
 import AirQuality from "@/types/googleapi/airQuality";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import getBaseQueryWithReauth from "../_util/getBaseQueryWithReauth";
 
 export const airQuality = createApi({
     reducerPath: "airQuality",
-    baseQuery: fetchBaseQuery({
+    baseQuery: getBaseQueryWithReauth({
         baseUrl: `https://airquality.googleapis.com/v1/`,
     }),
 

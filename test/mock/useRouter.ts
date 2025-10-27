@@ -1,3 +1,4 @@
+import JSONParseSafe from "@/utils/JSONParseSafe";
 import sleep from "@/utils/sleep";
 import { useRouter } from "next/router";
 
@@ -19,15 +20,6 @@ const mockPush = jest
     .mockImplementation(() => sleep(PUSH_REDIRECT_TIMEOUT));
 
 // ----------------------------------------------------------------------------------------
-
-const JSONParseSafe = (s: string) => {
-    try {
-        return JSON.parse(s);
-    } catch (ex) {
-        // ignore...
-        return null;
-    }
-};
 
 const expectPath = (calledWith: string, href: string) => {
     const res = JSONParseSafe(calledWith);
