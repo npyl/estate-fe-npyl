@@ -8,7 +8,8 @@ import Panel from "@/components/Panel";
 import { useCallback, useMemo } from "react";
 import { RHFOnlyNumbers, Select } from "@/components/hook-form";
 import { KeyValue } from "@/types/KeyValue";
-import { IPropertyYup } from "../../hook";
+import { ADD_BALCONY_BUTTON_TESTID } from "./constants";
+import { IPropertyYup } from "../../../usePropertyForm";
 
 // --------------------------------------------------------------------------
 
@@ -101,7 +102,11 @@ const BalconiesSection = () => {
         <Panel
             label={t("Balconies")}
             endNode={
-                <IconButton disabled={disabled} onClick={addBalcony}>
+                <IconButton
+                    data-testid={ADD_BALCONY_BUTTON_TESTID}
+                    disabled={disabled}
+                    onClick={addBalcony}
+                >
                     <AddCircle />
                 </IconButton>
             }
@@ -110,4 +115,5 @@ const BalconiesSection = () => {
         </Panel>
     );
 };
+
 export default BalconiesSection;

@@ -5,11 +5,12 @@ import { useGlobals } from "@/sections/useGlobals";
 import { IGlobalPropertyDetails } from "src/types/global";
 import { useTranslation } from "react-i18next";
 import { useFieldArray, useWatch } from "react-hook-form";
-import Panel from "src/components/Panel";
+import Panel from "@/components/Panel";
 import { useCallback, useMemo } from "react";
-import { RHFOnlyNumbers, Select } from "src/components/hook-form";
-import { KeyValue } from "src/types/KeyValue";
-import { IPropertyYup } from "../../hook";
+import { RHFOnlyNumbers, Select } from "@/components/hook-form";
+import { KeyValue } from "@/types/KeyValue";
+import { IPropertyYup } from "../../../usePropertyForm";
+import { ADD_PARKING_TESTID } from "./constants";
 
 // ---------------------------------------------------------------------
 
@@ -107,7 +108,11 @@ const ParkingSection: React.FC = () => {
         <Panel
             label={t("Parkings")}
             endNode={
-                <IconButton disabled={disabled} onClick={addParking}>
+                <IconButton
+                    data-testid={ADD_PARKING_TESTID}
+                    disabled={disabled}
+                    onClick={addParking}
+                >
                     <AddCircle />
                 </IconButton>
             }
