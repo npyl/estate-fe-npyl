@@ -5,7 +5,7 @@ const Notes = () => {
     const router = useRouter();
     const { propertyId } = router.query;
     if (!propertyId) return null;
-    return <NoteSection chip resource="property" resourceId={+propertyId!} />;
+    return <NoteSection chip resource="property" resourceId={+propertyId} />;
 };
 
 export default Notes;
