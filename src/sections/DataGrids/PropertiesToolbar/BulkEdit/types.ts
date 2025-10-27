@@ -8,6 +8,7 @@ type StateType = {
     labels: number[];
     bedrooms: string;
     state: string;
+    extras: string[];
     exclusive: boolean;
     publicSites: number[];
     integrations: IntegrationSite[];
