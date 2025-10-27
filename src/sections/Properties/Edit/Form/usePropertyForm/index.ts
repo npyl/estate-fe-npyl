@@ -1,18 +1,14 @@
 import { useMemo } from "react";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { LocationDisplay } from "src/types/enums";
-import * as Yup from "yup";
 import dayjs from "dayjs";
-import {
-    codeIsUnique,
-    keyCodeIsUnique,
-} from "@/sections/Properties/validators";
 import { DescriptionEntry, DescriptionEntryPOST } from "@/types/description";
 import useFormPersist from "@/components/hook-form/useFormPersist";
 import toNumberSafe from "@/utils/toNumberSafe";
 import { useRouter } from "next/router";
 import useFormPersistStorageKey from "@/ui/useFormPersistStorageKey";
+import { zodResolver } from "@hookform/resolvers/zod";
+import getSchema from "./getSchema";
 
 type OmitList = "managerId" | "ownerId";
 
@@ -24,28 +20,6 @@ interface Overrides {
 }
 
 export type IPropertyYup = Partial<Omit<IPropertiesPOST, OmitList>> & Overrides;
-
-const getLoginSchema = (
-    initialCode: string | null,
-    initialKeyCode: string | null
-) =>
-    Yup.object().shape({
-        code: Yup.string()
-            .test(
-                "codeIsUnique",
-                "Code already exists",
-                async (value) =>
-                    (await codeIsUnique(initialCode, value)) === true
-            )
-            .required(),
-        keyCode: Yup.string().test(
-            "keyCodeIsUnique",
-            "Key Code already exists",
-            async (value) =>
-                (await keyCodeIsUnique(initialKeyCode, value)) === true
-        ),
-        state: Yup.string().required(),
-    });
 
 const getEnumKey = (key?: string) => key || null;
 
@@ -345,11 +319,11 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => {
             withinCityPlan: notNot(property?.features?.withinCityPlan),
             loadingDock: notNot(property?.features?.loadingDock),
         },
-        labelIDs: property?.labels
-            .filter(({ id }) => id !== null)
-            .map(({ id }) => id!),
+        labelIDs: property?.labels.map(({ id }) => id),
     };
 };
+
+const storageKey = "PPPropertyForm";
 
 const usePropertyForm = (
     property?: IProperties,
@@ -359,17 +333,14 @@ const usePropertyForm = (
     const { propertyId } = router.query;
     const iPropertyId = toNumberSafe(propertyId);
 
-    const cookieKey = useFormPersistStorageKey("PPPropertyForm", iPropertyId);
+    const cookieKey = useFormPersistStorageKey(storageKey, iPropertyId);
 
     const values = useMemo(() => getDefaultValues(property), [property]);
 
-    const LoginSchema = getLoginSchema(
-        property?.code || null,
-        property?.keyCode || null
-    );
+    const LoginSchema = getSchema(property?.code, property?.keyCode);
 
     return useFormPersist<IPropertyYup>(cookieKey, onSubmitSucces, {
-        resolver: yupResolver(LoginSchema),
+        resolver: zodResolver(LoginSchema),
         values,
     });
 };

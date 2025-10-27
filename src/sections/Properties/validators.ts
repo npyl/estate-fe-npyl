@@ -3,8 +3,8 @@ import { properties } from "@/services/properties";
 
 // Custom validation function
 const codeIsUnique = async (
-    initialCode: string | null,
-    code?: string
+    initialCode: string | undefined,
+    code: string | undefined
 ): Promise<boolean | string> => {
     if (!code) return true;
     if (initialCode === code) return true;
@@ -24,8 +24,8 @@ const codeIsUnique = async (
 
 // Custom validation function
 const keyCodeIsUnique = async (
-    initialKeyCode: string | null,
-    keyCode?: string
+    initialKeyCode: string | undefined,
+    keyCode: string | undefined
 ): Promise<boolean | string> => {
     if (!keyCode) return true;
     if (initialKeyCode === keyCode) return true;

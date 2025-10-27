@@ -1,8 +1,8 @@
-import usePropertyForm from "./hook";
+import usePropertyForm from "./usePropertyForm";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
 import { FormProvider } from "react-hook-form";
 import dynamic from "next/dynamic";
-import { useCallback, useMemo, useRef } from "react";
+import { FC, useCallback, useMemo, useRef } from "react";
 import { GenerateCheckboxRef } from "./BottomBar/GenerateCheckbox";
 import BottomBar from "./BottomBar";
 import toast from "react-hot-toast";
@@ -21,7 +21,7 @@ interface IFormProps {
     onSubmit: (b: IPropertiesPOST, generate: boolean) => Promise<boolean>;
 }
 
-function Form({ property, onSubmit, onSubmitSuccess }: IFormProps) {
+const Form: FC<IFormProps> = ({ property, onSubmit, onSubmitSuccess }) => {
     const { t } = useTranslation();
     const [methods, { PersistNotice }] = usePropertyForm(
         property,
@@ -99,6 +99,6 @@ function Form({ property, onSubmit, onSubmitSuccess }: IFormProps) {
             {haveError ? <ErrorWatcher /> : null}
         </>
     );
-}
+};
 
 export default Form;
