@@ -3,6 +3,7 @@ import type {
     BaseQueryFn,
     FetchArgs,
     FetchBaseQueryError,
+    FetchBaseQueryMeta,
 } from "@reduxjs/toolkit/query";
 import { Mutex } from "async-mutex";
 import getNewTokens from "@/services/auth/getNewTokens";
@@ -32,7 +33,9 @@ const getBaseQueryWithReauth = (args: FetchBaseQueryArgs) => {
     const baseQueryWithReauth: BaseQueryFn<
         string | FetchArgs,
         unknown,
-        FetchBaseQueryError
+        FetchBaseQueryError,
+        {},
+        FetchBaseQueryMeta // Add this type parameter
     > = async (args, api, extraOptions) => {
         // Wait until the mutex is available
         await mutex.waitForUnlock();
