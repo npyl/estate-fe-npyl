@@ -15,7 +15,7 @@ export default function RHFKeyCode({ name, ...other }: RHFTextFieldProps) {
     const { property } = useGetProperty();
 
     const debouncedKeyCodeValidation = useDebouncedCallback(async (value) => {
-        const result = await keyCodeIsUnique(property?.keyCode || null, value);
+        const result = await keyCodeIsUnique(property?.keyCode, value);
         if (result !== true) {
             setError("keyCode", {
                 type: "manual",
