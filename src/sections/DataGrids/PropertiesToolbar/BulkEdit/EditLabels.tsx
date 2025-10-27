@@ -1,4 +1,3 @@
-import { StyledOutlinedInput } from "@/sections/DataGrids/BulkEditDrawer/style";
 import { MenuItem, Checkbox, Select, SelectChangeEvent } from "@mui/material";
 import { Label } from "@/components/Label";
 import { useGetLabelsQuery } from "@/services/labels";
@@ -44,7 +43,6 @@ const EditLabels = ({ variant }: EditLabelsProps) => {
                 value={value}
                 onChange={handleChange}
                 renderValue={renderValue}
-                input={<StyledOutlinedInput />}
             >
                 {labelOptions.map((option) => (
                     <MenuItem key={option.id} value={option.id}>
