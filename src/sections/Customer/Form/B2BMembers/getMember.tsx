@@ -6,6 +6,7 @@ import { nameKey } from "./constants";
 import { SpaceBetween } from "@/components/styled";
 import EditOpener from "./EditOpener";
 import { B2BMemberReq } from "@/types/customer";
+import { ICustomerYup } from "../types";
 
 interface MemberProps {
     index: number;
@@ -16,7 +17,9 @@ interface MemberProps {
 const Member = ({ index, onEdit, onRemove: _onRemove }: MemberProps) => {
     const onRemove = useCallback(() => _onRemove(index), [index]);
 
-    const m = useWatch({ name: `${nameKey}[${index}]` }) as B2BMemberReq;
+    const m = useWatch<ICustomerYup>({
+        name: `${nameKey}.${index}`,
+    });
     const { position, firstName, lastName, email } = m || {};
     const fullname = `${firstName || ""} ${lastName || ""}`;
 

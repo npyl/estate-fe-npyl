@@ -1,17 +1,18 @@
 import { Checkbox, MenuItem } from "@mui/material";
 import { useCallback } from "react";
 import { KeyValue } from "src/types/KeyValue";
-import { useWatch } from "react-hook-form";
+import { Path, useWatch } from "react-hook-form";
 import RHFSelect from "@/components/hook-form/dynamic/RHFSelect";
+import { ICustomerYup } from "@/sections/Customer/Form/types";
 
 interface MultiSelectProps {
-    name: string;
+    name: Path<ICustomerYup>;
     label: string;
     options: KeyValue[];
 }
 
 const MultiSelect = ({ name, label, options }: MultiSelectProps) => {
-    const values = (useWatch({ name }) as string[]) || [];
+    const values = (useWatch<ICustomerYup>({ name }) as string[]) || [];
 
     const renderValue = useCallback(
         (selected: string[]) =>

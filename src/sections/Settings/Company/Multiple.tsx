@@ -1,6 +1,6 @@
 import { RHFTextField } from "@/components/hook-form";
 import Stack from "@mui/material/Stack";
-import { useFormContext, useWatch } from "react-hook-form";
+import { Path, useFormContext, useWatch } from "react-hook-form";
 import {
     Button,
     IconButton,
@@ -10,10 +10,11 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/AddCircleRounded";
 import RemoveIcon from "@mui/icons-material/RemoveCircleRounded";
-import { useCallback, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useDialog from "@/hooks/useDialog";
 import { RHFTextFieldProps } from "@/components/hook-form/RHFTextField";
+import { ICompanyPOST } from "@/types/company";
 
 // ------------------------------------------------------------------------------------
 
@@ -63,13 +64,13 @@ const RemovableRHFTextField: React.FC<RemovableProps> = ({
 
 interface MultipleProps {
     label: string;
-    name: string;
+    name: Path<ICompanyPOST>;
 }
 
-const Multiple = ({ label, name }: MultipleProps) => {
+const Multiple: FC<MultipleProps> = ({ label, name }) => {
     const { watch, setValue } = useFormContext();
 
-    const values = (useWatch({ name }) as string[]) || [];
+    const values = (useWatch<ICompanyPOST>({ name }) as string[]) || [];
 
     const [wantNew, openNew, closeNew] = useDialog();
     const handleAddNew = useCallback((v: string) => {

@@ -9,7 +9,6 @@ import {
 } from "@/services/location";
 import AutoCenter from "./auto";
 import { demandName, filterName } from "../util";
-import debugLog from "@/_private/debugLog";
 import dynamic from "next/dynamic";
 import { TShape } from "@/types/shape";
 import RHFShapeMap from "./RHFShapeMap";
@@ -17,6 +16,8 @@ import RHFRegions from "./RHFRegions";
 import RHFNeighbour from "./RHFNeighbour";
 import RHFMunicips from "./RHFMunicips";
 import { patrasLatLng, ZOOM_LEVELS } from "@/components/Map/constants";
+import { ICustomerYup } from "@/sections/Customer/Form/types";
+import isFalsy from "@/utils/isFalsy";
 const NextShapeCenter = dynamic(() => import("./center"));
 
 interface Props {
@@ -37,11 +38,14 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
         [index]
     );
 
-    const regions = (useWatch({ name: regionsName }) as string[]) || [];
-    const cities = (useWatch({ name: citiesName }) as string[]) || [];
+    const regions =
+        (useWatch<ICustomerYup>({ name: regionsName }) as string[]) || [];
+    const cities =
+        (useWatch<ICustomerYup>({ name: citiesName }) as string[]) || [];
 
     // current demand's decoded shapes
-    const shapeList = (useWatch({ name: shapesName }) as TShape[]) || [];
+    const shapeList =
+        (useWatch<ICustomerYup>({ name: shapesName }) as TShape[]) || [];
 
     const [getClosestQuery] = useLazyGetClosestQuery();
     const [getHierarchy] = useLazyGetHierarchyByAreaIdQuery();
@@ -75,15 +79,13 @@ const AreaOfPreference: FC<Props> = ({ index }) => {
                 setValue(citiesName, [municipId.toString()]);
 
                 // For region
-                getHierarchy(municipId)
-                    .unwrap()
-                    .then((municipHierarchy) => {
-                        const regionId = municipHierarchy.parentID;
-                        if (!regionId) return;
+                const res = await getHierarchy(municipId);
+                if ("error" in res) return;
 
-                        setValue(regionsName, [regionId.toString()]);
-                    })
-                    .catch(debugLog);
+                const regionId = res?.data?.parentID;
+                if (isFalsy(regionId)) return;
+
+                setValue(regionsName, [regionId!.toString()]);
             }
         },
         [regionsName, citiesName, complexesName]
