@@ -11,6 +11,7 @@ const defaultValues: StateType = {
     exclusive: false,
     publicSites: [],
     integrations: [],
+    extras: [],
 };
 
 export { defaultValues };

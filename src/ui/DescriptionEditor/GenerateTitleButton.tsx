@@ -5,8 +5,8 @@ import useOpenAIDetails from "./UpperRightButtons/useOpenAIDetails";
 import { FC, useCallback } from "react";
 import { Language } from "@/components/LanguageButton/types";
 import { useFormContext } from "react-hook-form";
-import { IPropertyYup } from "../../sections/Properties/Edit/Form/hook";
 import { TABS } from "./constants";
+import { IPropertyYup } from "@/sections/Properties/Edit/Form/usePropertyForm";
 
 interface Props {
     lang: Language;

@@ -56,7 +56,7 @@ const DefaultOrEdit = ({ name, label, children }: DefaultOrEditProps) => {
                 {t("Default Value")}
             </StyledButton>
 
-            {!checked ? children : null}
+            {checked ? null : children}
         </Stack>
     );
 };

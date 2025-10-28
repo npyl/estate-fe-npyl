@@ -26,6 +26,7 @@ interface BulkEditRequest {
     labels?: number[];
     bedrooms?: number;
     state?: string;
+    extras?: string[];
     exclusive?: boolean;
 
     publicSites?: number[];
