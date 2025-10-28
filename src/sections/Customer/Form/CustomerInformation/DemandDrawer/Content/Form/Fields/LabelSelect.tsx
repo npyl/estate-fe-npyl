@@ -6,6 +6,7 @@ import { Label } from "@/components/Label";
 import { useGetLabelsQuery } from "src/services/labels";
 import { filterName } from "../util";
 import RHFSelect from "@/components/hook-form/dynamic/RHFSelect";
+import { ICustomerYup } from "@/sections/Customer/Form/types";
 
 interface Props {
     index: number;
@@ -15,7 +16,7 @@ const LabelSelect: FC<Props> = ({ index }) => {
     const { t } = useTranslation();
 
     const name = filterName("labels", index);
-    const labels = (useWatch({ name }) as number[]) || [];
+    const labels = (useWatch<ICustomerYup>({ name }) as number[]) || [];
 
     const { data } = useGetLabelsQuery();
     const labelOptions = data?.propertyLabels || [];

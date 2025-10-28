@@ -35,7 +35,7 @@ const getBaseQueryWithReauth = (args: FetchBaseQueryArgs) => {
         unknown,
         FetchBaseQueryError,
         {},
-        FetchBaseQueryMeta // Add this type parameter
+        FetchBaseQueryMeta
     > = async (args, api, extraOptions) => {
         // Wait until the mutex is available
         await mutex.waitForUnlock();

@@ -14,6 +14,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { withoutGwEmailAndNonCustomer } from "@/types/calendar/mapper";
 import Customers from "./Customers";
 import dynamic from "next/dynamic";
+import { CalendarEventReq } from "@/types/calendar";
 const Add = dynamic(() => import("./Add"));
 
 // -------------------------------------------------------------------------
@@ -59,7 +60,9 @@ const getPerson = (p: TCalendarEventPerson) => (
 
 const useTourPeople = () => {
     const people =
-        (useWatch({ name: peopleKey }) as TCalendarEventPerson[]) || [];
+        (useWatch<CalendarEventReq>({
+            name: peopleKey,
+        }) as TCalendarEventPerson[]) || [];
     const filtered = useMemo(
         () => people.filter(withoutGwEmailAndNonCustomer),
         [people]

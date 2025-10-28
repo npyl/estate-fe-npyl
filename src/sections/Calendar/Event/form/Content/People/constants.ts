@@ -1,2 +1,2 @@
-const peopleKey = "people";
+const peopleKey = "people" as const;
 export { peopleKey };
