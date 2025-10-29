@@ -1,2 +1,3 @@
-const PERMISSIONS_TAB_ID = 3;
-export { PERMISSIONS_TAB_ID };
+const ROLE_TAB_ID = 3;
+
+export { ROLE_TAB_ID };

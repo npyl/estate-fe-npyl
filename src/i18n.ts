@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            USERS_AND_PERMISSIONS: "Users & Permissions",
+
             CreateRole: "Create Role",
             EditRole: "Edit Role",
             PERMISSIONS_Roles: "Roles",
@@ -1424,6 +1426,8 @@ const resources = {
     },
     el: {
         translation: {
+            USERS_AND_PERMISSIONS: "Χρήστες & Δικαιώματα",
+
             EditRole: "Επεξεργασία Ρόλου",
             CreateRole: "Δημιουργία Ρόλου",
             PERMISSIONS_Roles: "Ρόλοι",

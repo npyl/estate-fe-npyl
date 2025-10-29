@@ -6,20 +6,24 @@ import Tabs, { useCurrentTab } from "@/components/Tabs";
 import dynamic from "next/dynamic";
 import CompanyInformation from "@/sections/Settings/Company";
 import { TranslationType } from "@/types/translation";
-import { PERMISSIONS_TAB_ID } from "./constant";
+import { ROLE_TAB_ID } from "./constant";
 const Integrations = dynamic(() => import("@/sections/Settings/Integrations"));
-const UserPage = dynamic(() => import("@/sections/Settings/user"));
-const PermissionPage = dynamic(() => import("@/sections/Settings/permission"));
 const RolesTab = dynamic(() => import("@/sections/Settings/Roles"));
+const UsersAndPermissions = dynamic(
+    () => import("@/sections/Settings/UsersAndPermissions")
+);
 
 type TTab = { id: number; label: string; View: ComponentType };
 
 const getTABS = (t: TranslationType): TTab[] => [
     { id: 0, label: t("Company Information"), View: CompanyInformation },
     { id: 1, label: t("Integrations"), View: Integrations },
-    { id: 2, label: t("Users"), View: UserPage },
-    { id: PERMISSIONS_TAB_ID, label: t("Permissions"), View: PermissionPage },
-    { id: 4, label: t("PERMISSIONS_Roles"), View: RolesTab },
+    {
+        id: 2,
+        label: t("USERS_AND_PERMISSIONS"),
+        View: UsersAndPermissions,
+    },
+    { id: ROLE_TAB_ID, label: t("PERMISSIONS_Roles"), View: RolesTab },
 ];
 
 const getTab = ({ id, label }: TTab) => <Tab key={id} label={label} />;
