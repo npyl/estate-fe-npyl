@@ -10,28 +10,13 @@ const Content = () => {
     const { t } = useTranslation();
     return (
         <Stack spacing={1}>
-            <Grid container spacing={2}>
-                <Grid
-                    xs={12}
-                    sm={10}
-                    // ...
-                    display="flex"
-                    flexDirection="column"
-                    gap={1}
-                    // ...
-                    px={0} // INFO: why is this required?
-                >
-                    <RHFTextField name="name" label={t("Name")} />
-                    <RHFMultilineTextField
-                        name="description"
-                        label={t("Description")}
-                        rows={5}
-                    />
-                </Grid>
-                <Grid xs={12} sm={2} px={3}>
-                    <RHFColorPicker name="color" />
-                </Grid>
-            </Grid>
+            <RHFTextField name="name" label={t("Name")} />
+            <RHFMultilineTextField
+                name="description"
+                label={t("Description")}
+                rows={5}
+            />
+            <RHFColorPicker name="color" />
             <Permissions />
         </Stack>
     );

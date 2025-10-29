@@ -15,7 +15,8 @@ interface RoleProps extends Omit<LabelProps, "color" | "name" | "onClick"> {
 
 const Role: FC<RoleProps> = ({ r, onClick, ...props }) => (
     <Label
-        color={"#eee"}
+        opaque
+        color={r.color || "primary"}
         name={r.name}
         onClick={() => onClick(r.id)}
         {...props}

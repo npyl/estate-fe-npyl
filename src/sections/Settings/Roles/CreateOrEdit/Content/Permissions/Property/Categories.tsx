@@ -4,7 +4,10 @@ import WithAll from "./WithAll";
 import RHFCategoryMultiplePicker from "@/ui/Pickers/RHF/CategoryMultiple";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-const Picker = WithAll(RHFCategoryMultiplePicker, "allCategories");
+
+const allName = "propertyPermissions.allCategories";
+
+const Picker = WithAll(RHFCategoryMultiplePicker, allName);
 
 const Categories = () => {
     const { t } = useTranslation();
@@ -14,10 +17,10 @@ const Categories = () => {
                 <Typography>{t("Categories")}</Typography>
             </Grid>
             <Grid xs={10.5}>
-                <RHFCheckbox label={t("All")} name="allCategories" />
+                <RHFCheckbox label={t("All")} name={allName} />
                 <Picker
                     name="categories"
-                    parentCategoriesName="parentCategories"
+                    parentCategoriesName="propertyPermissions.parentCategories"
                 />
             </Grid>
         </Grid>

@@ -11,9 +11,12 @@ const Triplet = () => {
     const { t } = useTranslation();
     return (
         <Stack direction="row" spacing={5}>
-            <RHFIOSSwitch name="view" label={t("View")} />
-            <RHFIOSSwitch name="edit" label={t("Edit")} />
-            <RHFIOSSwitch name="delete" label={t("Delete")} />
+            <RHFIOSSwitch name="propertyPermissions.view" label={t("View")} />
+            <RHFIOSSwitch name="propertyPermissions.edit" label={t("Edit")} />
+            <RHFIOSSwitch
+                name="propertyPermissions.delete"
+                label={t("Delete")}
+            />
         </Stack>
     );
 };
