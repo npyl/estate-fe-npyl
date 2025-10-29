@@ -119,8 +119,9 @@ const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
             </TableRow>
 
             <TableRow sx={{ bgcolor: "neutral.100" }}>
-                <TableCell sx={{ py: 0, border: 0 }} colSpan={4}>
+                <TableCell sx={{ py: 0, border: 0 }} colSpan={5}>
                     <Collapse in={isOpen} timeout="auto" unmountOnExit>
+                        <Roles />
                         <SeparatePermissions user={user} />
                     </Collapse>
                 </TableCell>

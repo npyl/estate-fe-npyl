@@ -6,7 +6,6 @@ import Tabs, { useCurrentTab } from "@/components/Tabs";
 import dynamic from "next/dynamic";
 import CompanyInformation from "@/sections/Settings/Company";
 import { TranslationType } from "@/types/translation";
-import { ROLE_TAB_ID } from "./constant";
 const Integrations = dynamic(() => import("@/sections/Settings/Integrations"));
 const RolesTab = dynamic(() => import("@/sections/Settings/Roles"));
 const UsersAndPermissions = dynamic(
@@ -18,12 +17,12 @@ type TTab = { id: number; label: string; View: ComponentType };
 const getTABS = (t: TranslationType): TTab[] => [
     { id: 0, label: t("Company Information"), View: CompanyInformation },
     { id: 1, label: t("Integrations"), View: Integrations },
+    { id: 2, label: t("PERMISSIONS_Roles"), View: RolesTab },
     {
-        id: 2,
+        id: 3,
         label: t("USERS_AND_PERMISSIONS"),
         View: UsersAndPermissions,
     },
-    { id: ROLE_TAB_ID, label: t("PERMISSIONS_Roles"), View: RolesTab },
 ];
 
 const getTab = ({ id, label }: TTab) => <Tab key={id} label={label} />;

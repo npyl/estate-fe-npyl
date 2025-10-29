@@ -45,9 +45,7 @@ const UsersAndPermissions = () => {
                             </TableCell>
                             <TableCell>{t("State")}</TableCell>
                             <TableCell>{t("Active_Musculine")}</TableCell>
-                            <TableCell align="right">
-                                {t("Permissions")}
-                            </TableCell>
+                            <TableCell align="right">{t("Access")}</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>{data?.map(getRow(activeStatuses))}</TableBody>
