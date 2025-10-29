@@ -1,17 +1,15 @@
 import { useGetRoleByIdQuery } from "@/services/roles";
 import { RoleReq, RoleToRoleReq } from "@/types/roles";
-import isFalsy from "@/utils/isFalsy";
 import preventDefault from "@/utils/preventDefault";
 import { FC, PropsWithChildren } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 interface FormProps extends PropsWithChildren {
-    roleMode?: number | "create";
+    roleId?: number;
 }
 
-const Form: FC<FormProps> = ({ roleMode, children }) => {
-    const id = isFalsy(roleMode) || roleMode === "create" ? -1 : roleMode!;
-    const { data } = useGetRoleByIdQuery(id, { skip: id === -1 });
+const Form: FC<FormProps> = ({ roleId = -1, children }) => {
+    const { data } = useGetRoleByIdQuery(roleId, { skip: roleId === -1 });
 
     const methods = useForm<RoleReq>({
         values: RoleToRoleReq(data),

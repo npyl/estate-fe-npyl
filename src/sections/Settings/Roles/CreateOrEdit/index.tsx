@@ -6,12 +6,12 @@ import Title from "./Title";
 import { FC } from "react";
 
 interface CreateOrEditProps {
-    roleMode?: number | "create";
+    roleId?: number;
     onCancel: VoidFunction;
 }
 
-const CreateOrEdit: FC<CreateOrEditProps> = ({ roleMode, onCancel }) => (
-    <Form roleMode={roleMode}>
+const CreateOrEdit: FC<CreateOrEditProps> = ({ roleId, onCancel }) => (
+    <Form roleId={roleId}>
         <Box p={2}>
             <Title />
             <Box mt={3} />
