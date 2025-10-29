@@ -7,6 +7,7 @@ import ParentCategories from "./ParentCategories";
 import Categories from "./Categories";
 import Divider from "@mui/material/Divider";
 import { SxProps, Theme } from "@mui/material";
+import RHFManagerMultipleAutocomplete from "@/ui/Autocompletes/RHFManagerMultiple";
 
 const SwitchSx: SxProps<Theme> = {
     display: "flex",
@@ -52,8 +53,10 @@ const Property = () => {
                 <ParentCategories />
                 <Categories />
             </Stack>
-
-            {/* <Users /> */}
+            <RHFManagerMultipleAutocomplete
+                name="users"
+                label={t<string>("Managers")}
+            />
         </Stack>
     );
 };
