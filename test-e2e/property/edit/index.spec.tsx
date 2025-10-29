@@ -66,9 +66,9 @@ test.describe("edit", () => {
         await expectSuccessfulSubmit(page, code, state);
     });
 
-    describe("balconies & parkings", () => {
-        describe("balconies", () => {
-            describe("1", () => {
+    test.describe("balconies & parkings", () => {
+        test.describe("balconies", () => {
+            test.describe("1", () => {
                 test("complete", async ({ page }) => {
                     await createProperty(page);
                     await addBalconyComplete();
@@ -83,7 +83,7 @@ test.describe("edit", () => {
                 });
             });
 
-            describe("1+", () => {
+            test.describe("1+", () => {
                 test("complete", async ({ page }) => {
                     await createProperty(page);
                     await addBalconyComplete();
@@ -102,8 +102,8 @@ test.describe("edit", () => {
             });
         });
 
-        describe("parkings", () => {
-            describe("1", () => {
+        test.describe("parkings", () => {
+            test.describe("1", () => {
                 test("complete", async ({ page }) => {
                     await createProperty(page);
                     await addParkingComplete();
@@ -118,7 +118,7 @@ test.describe("edit", () => {
                 });
             });
 
-            describe("1+", () => {
+            test.describe("1+", () => {
                 test("complete", async ({ page }) => {
                     await createProperty(page);
                     await addParkingComplete();
