@@ -8,7 +8,11 @@ import Panel from "@/components/Panel";
 import { useCallback, useMemo } from "react";
 import { RHFOnlyNumbers, Select } from "@/components/hook-form";
 import { KeyValue } from "@/types/KeyValue";
-import { ADD_BALCONY_BUTTON_TESTID } from "./constants";
+import {
+    ADD_BALCONY_BUTTON_TESTID,
+    getAreaTestId,
+    getBalconySideTestId,
+} from "./constants";
 import { IPropertyYup } from "../../../usePropertyForm";
 
 // --------------------------------------------------------------------------
@@ -24,6 +28,7 @@ const Balcony = ({ options, index, onRemove }: BalconyProps) => {
     return (
         <Stack direction="row" spacing={1.5}>
             <Select
+                data-testid={getBalconySideTestId(index)}
                 fullWidth
                 name={`details.balconies[${index}].side`}
                 label={t("Side")}
@@ -31,6 +36,7 @@ const Balcony = ({ options, index, onRemove }: BalconyProps) => {
             />
 
             <RHFOnlyNumbers
+                data-testid={getAreaTestId(index)}
                 label={t("Living Space")}
                 name={`details.balconies[${index}].area`}
             />
