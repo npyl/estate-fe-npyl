@@ -2,7 +2,7 @@ import usePropertyForm from "./usePropertyForm";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
 import { FormProvider } from "react-hook-form";
 import dynamic from "next/dynamic";
-import { FC, useCallback, useMemo, useRef } from "react";
+import { FC, useCallback, useRef } from "react";
 import { GenerateCheckboxRef } from "./BottomBar/GenerateCheckbox";
 import BottomBar from "./BottomBar";
 import toast from "react-hot-toast";
@@ -13,7 +13,7 @@ const Commercial = dynamic(() => import("./forms/Commercial"));
 const Land = dynamic(() => import("./forms/Land"));
 const Other = dynamic(() => import("./forms/Other"));
 // Watchers
-const ErrorWatcher = dynamic(() => import("./ErrorWatcher"));
+import ErrorWatcher from "./ErrorWatcher";
 
 interface IFormProps {
     property?: IProperties;
@@ -26,11 +26,6 @@ const Form: FC<IFormProps> = ({ property, onSubmit, onSubmitSuccess }) => {
     const [methods, { PersistNotice }] = usePropertyForm(
         property,
         onSubmitSuccess
-    );
-
-    const haveError = useMemo(
-        () => Object.keys(methods.formState.errors).length > 0,
-        [methods.formState.errors]
     );
 
     const checkboxRef = useRef<GenerateCheckboxRef>(null);
@@ -66,38 +61,36 @@ const Form: FC<IFormProps> = ({ property, onSubmit, onSubmitSuccess }) => {
         [handleSubmit]
     );
     return (
-        <>
-            <form
-                onSubmit={methods.handleSubmit((data) =>
-                    handleSubmit(
-                        data as IPropertiesPOST,
-                        checkboxRef.current?.getGenerate() || false,
-                        true
-                    )
-                )}
-            >
-                <FormProvider {...methods}>
-                    {pc === "RESIDENTIAL" ? <Residential /> : null}
-                    {pc === "COMMERCIAL" ? <Commercial /> : null}
-                    {pc === "LAND" ? <Land /> : null}
-                    {pc === "OTHER" ? <Other /> : null}
+        <form
+            onSubmit={methods.handleSubmit((data) =>
+                handleSubmit(
+                    data as IPropertiesPOST,
+                    checkboxRef.current?.getGenerate() || false,
+                    true
+                )
+            )}
+        >
+            <FormProvider {...methods}>
+                {pc === "RESIDENTIAL" ? <Residential /> : null}
+                {pc === "COMMERCIAL" ? <Commercial /> : null}
+                {pc === "LAND" ? <Land /> : null}
+                {pc === "OTHER" ? <Other /> : null}
 
-                    <BottomBar
-                        checkboxRef={checkboxRef}
-                        PersistNotice={PersistNotice}
-                        onSubmitWithoutRedirect={() =>
-                            handleSubmitWithoutRedirect(
-                                methods.getValues() as IPropertiesPOST,
-                                checkboxRef.current?.getGenerate() || false
-                            )
-                        }
-                    />
-                </FormProvider>
-            </form>
+                <BottomBar
+                    checkboxRef={checkboxRef}
+                    PersistNotice={PersistNotice}
+                    onSubmitWithoutRedirect={() =>
+                        handleSubmitWithoutRedirect(
+                            methods.getValues() as IPropertiesPOST,
+                            checkboxRef.current?.getGenerate() || false
+                        )
+                    }
+                />
 
-            {/* Watchers w/ effects */}
-            {haveError ? <ErrorWatcher /> : null}
-        </>
+                {/* Watchers w/ effects */}
+                <ErrorWatcher />
+            </FormProvider>
+        </form>
     );
 };
 
