@@ -13,13 +13,13 @@ const Categories = () => {
     const { t } = useTranslation();
     return (
         <Grid container display="flex" alignItems="center">
-            <Grid xs={1.5}>
+            <Grid xs={3}>
                 <Typography>{t("Categories")}</Typography>
             </Grid>
-            <Grid xs={10.5}>
+            <Grid xs={9}>
                 <RHFCheckbox label={t("All")} name={allName} />
                 <Picker
-                    name="categories"
+                    name="propertyPermissions.categories"
                     parentCategoriesName="propertyPermissions.parentCategories"
                 />
             </Grid>

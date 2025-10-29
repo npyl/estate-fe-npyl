@@ -6,16 +6,32 @@ import States from "./States";
 import ParentCategories from "./ParentCategories";
 import Categories from "./Categories";
 import Divider from "@mui/material/Divider";
+import { SxProps, Theme } from "@mui/material";
+
+const SwitchSx: SxProps<Theme> = {
+    display: "flex",
+    flexDirection: "row-reverse",
+    gap: 1,
+};
 
 const Triplet = () => {
     const { t } = useTranslation();
     return (
         <Stack direction="row" spacing={5}>
-            <RHFIOSSwitch name="propertyPermissions.view" label={t("View")} />
-            <RHFIOSSwitch name="propertyPermissions.edit" label={t("Edit")} />
+            <RHFIOSSwitch
+                name="propertyPermissions.view"
+                label={t("View")}
+                sx={SwitchSx}
+            />
+            <RHFIOSSwitch
+                name="propertyPermissions.edit"
+                label={t("Edit")}
+                sx={SwitchSx}
+            />
             <RHFIOSSwitch
                 name="propertyPermissions.delete"
                 label={t("Delete")}
+                sx={SwitchSx}
             />
         </Stack>
     );

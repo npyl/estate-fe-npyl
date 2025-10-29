@@ -19,6 +19,7 @@ const Role: FC<RoleProps> = ({ r, onClick, ...props }) => (
         color={r.color || "primary"}
         name={r.name}
         onClick={() => onClick(r.id)}
+        sx={{ cursor: "pointer" }}
         {...props}
     />
 );
@@ -36,7 +37,7 @@ const List = () => {
 
     return (
         <>
-            <Stack direction="row" spacing={1} p={1}>
+            <Stack direction="row" p={1} flexWrap="wrap" gap={1}>
                 {data?.map(getRole(setRoleId))}
             </Stack>
 

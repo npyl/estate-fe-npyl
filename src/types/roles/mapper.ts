@@ -17,13 +17,13 @@ const RolePropertyPermissionsToReq = (
     edit: p?.edit ?? false,
     delete: p?.delete ?? false,
     // ...
-    allStates: p?.allStates ?? false,
+    allStates: p?.allStates ?? true,
     states: p?.states?.map(getKey) ?? [],
     // ...
-    allParentCategories: p?.allParentCategories ?? false,
+    allParentCategories: p?.allParentCategories ?? true,
     parentCategories: p?.parentCategories?.map(getKey) ?? [],
     // ...
-    allCategories: p?.allCategories ?? false,
+    allCategories: p?.allCategories ?? true,
     categories: p?.categories?.map(getKey) ?? [],
     // ...
     allUsers: p?.allUsers ?? false,
