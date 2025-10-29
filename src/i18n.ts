@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Active_Musculine: "Active",
             USERS_AND_PERMISSIONS: "Users & Permissions",
 
             CreateRole: "Create Role",
@@ -1426,6 +1427,7 @@ const resources = {
     },
     el: {
         translation: {
+            Active_Musculine: "Ενεργός",
             USERS_AND_PERMISSIONS: "Χρήστες & Δικαιώματα",
 
             EditRole: "Επεξεργασία Ρόλου",

@@ -14,6 +14,7 @@ import ToggleActiveButton from "./ToggleActiveButton";
 import SeparatePermissions from "./SeparatePermissions";
 import useToggle from "@/hooks/useToggle";
 import Roles from "./Roles";
+import Actions from "./Actions";
 
 // -------------------------------------------------------------------------------------------------------
 
@@ -45,7 +46,7 @@ const ResponsiveSx: SxProps<Theme> = {
 
 const UserCellSx: SxProps<Theme> = {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: { xs: "column", md: "row" },
     alignItems: "center",
     gap: 1,
 };
@@ -65,7 +66,7 @@ const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
     return (
         <>
             <TableRow sx={getRowSx(isOpen)}>
-                <TableCell sx={UserCellSx}>
+                <TableCell sx={UserCellSx} width="fit-content">
                     <AvatarLarge
                         src={avatar}
                         firstName={firstName}
@@ -84,11 +85,15 @@ const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
                     ) : null}
                 </TableCell>
 
-                <TableCell sx={ResponsiveSx}>
+                <TableCell sx={ResponsiveSx} align="left">
                     <Roles />
                 </TableCell>
 
                 <TableCell align="right">
+                    <Actions user={user} activeStatuses={activeStatuses} />
+                </TableCell>
+
+                <TableCell>
                     {user.isAdmin ? null : (
                         <ToggleActiveButton
                             activeStatuses={activeStatuses}

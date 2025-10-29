@@ -1,8 +1,8 @@
-import { IconButton } from "@mui/material";
 import { FC, MouseEvent, useCallback } from "react";
 import useDialog from "@/hooks/useDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
 import dynamic from "next/dynamic";
+import RoundIconButton from "@/components/RoundIconButton";
 const DeleteDialog = dynamic(() => import("./Dialog"));
 
 interface DeleteButtonProps {
@@ -18,9 +18,9 @@ const DeleteButton: FC<DeleteButtonProps> = ({ userId }) => {
 
     return (
         <>
-            <IconButton size="small" onClick={onClick}>
+            <RoundIconButton size="small" onClick={onClick}>
                 <DeleteIcon fontSize="small" />
-            </IconButton>
+            </RoundIconButton>
 
             {isOpen ? <DeleteDialog userId={userId} onClose={close} /> : null}
         </>

@@ -37,11 +37,14 @@ const UsersAndPermissions = () => {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>{t("User")}</TableCell>
-                            <TableCell sx={ResponsiveSx}>
+                            <TableCell width="fit-content">
+                                {t("User")}
+                            </TableCell>
+                            <TableCell sx={ResponsiveSx} align="left">
                                 {t("PERMISSIONS_Roles")}
                             </TableCell>
-                            <TableCell align="right">{t("State")}</TableCell>
+                            <TableCell>{t("State")}</TableCell>
+                            <TableCell>{t("Active_Musculine")}</TableCell>
                             <TableCell align="right">
                                 {t("Permissions")}
                             </TableCell>

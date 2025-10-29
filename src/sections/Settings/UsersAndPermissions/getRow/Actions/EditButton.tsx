@@ -1,10 +1,10 @@
 import EditIcon from "@mui/icons-material/Edit";
-import { IconButton } from "@mui/material";
 import { FC, MouseEvent, useCallback } from "react";
 const UserForm = dynamic(() => import("@/sections/User/Form"));
 import dynamic from "next/dynamic";
 import useDialog from "@/hooks/useDialog";
 import { IUser } from "@/types/user";
+import RoundIconButton from "@/components/RoundIconButton";
 
 interface EditButtonProps {
     user: IUser;
@@ -20,9 +20,9 @@ const EditButton: FC<EditButtonProps> = ({ user }) => {
 
     return (
         <>
-            <IconButton size="small" onClick={onClick}>
+            <RoundIconButton size="small" onClick={onClick}>
                 <EditIcon fontSize="small" />
-            </IconButton>
+            </RoundIconButton>
 
             {isOpen ? <UserForm user={user} onClose={close} /> : null}
         </>

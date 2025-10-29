@@ -1,5 +1,3 @@
-import { FormGroup } from "@mui/material";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import React, { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import IOSSwitch from "@/components/iOSSwitch";
@@ -38,19 +36,12 @@ const ToggleActiveButton: FC<ToggleActiveButtonProps> = ({
     );
 
     return (
-        <FormGroup>
-            <FormControlLabel
-                control={
-                    <IOSSwitch
-                        checked={isChecked} // fallback to 'false' if the id is not yet in the state
-                        onChange={toggle}
-                        onClick={stopPropagation}
-                        sx={{ m: 1 }}
-                    />
-                }
-                label={t("Active")}
-            />
-        </FormGroup>
+        <IOSSwitch
+            checked={isChecked} // fallback to 'false' if the id is not yet in the state
+            onChange={toggle}
+            onClick={stopPropagation}
+            sx={{ m: 1 }}
+        />
     );
 };
 

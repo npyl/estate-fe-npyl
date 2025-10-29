@@ -1,8 +1,8 @@
-import IconButton from "@mui/material/IconButton";
 import { MouseEvent, FC, useCallback } from "react";
 import KeyIcon from "@mui/icons-material/Key";
 import useDialog from "@/hooks/useDialog";
 import dynamic from "next/dynamic";
+import RoundIconButton from "@/components/RoundIconButton";
 const ResetDialog = dynamic(() => import("./Dialog"));
 
 interface Props {
@@ -17,9 +17,9 @@ const ResetPasswordButton: FC<Props> = ({ userId }) => {
     }, []);
     return (
         <>
-            <IconButton size="small" onClick={onClick}>
+            <RoundIconButton size="small" onClick={onClick}>
                 <KeyIcon fontSize="small" />
-            </IconButton>
+            </RoundIconButton>
 
             {isOpen ? <ResetDialog userId={userId} onClose={close} /> : null}
         </>
