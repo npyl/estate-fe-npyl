@@ -1,6 +1,11 @@
 import { useSetTaskViewMutation } from "@/services/user";
 import { TTaskVisibility } from "@/types/roles";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import {
+    Stack,
+    ToggleButton,
+    ToggleButtonGroup,
+    Typography,
+} from "@mui/material";
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -31,18 +36,22 @@ const TaskView: FC<TaskViewProps> = ({ userId, value }) => {
     );
 
     return (
-        <ToggleButtonGroup
-            exclusive
-            disabled={isLoading}
-            value={value}
-            onChange={handleChange}
-        >
-            {BUTTONS.map(({ key, label }) => (
-                <ToggleButton key={key} value={key}>
-                    {t(label)}
-                </ToggleButton>
-            ))}
-        </ToggleButtonGroup>
+        <Stack direction="row" alignItems="center" gap={1} ml={-1.5}>
+            <Typography>{t("Tasks")}</Typography>
+
+            <ToggleButtonGroup
+                exclusive
+                disabled={isLoading}
+                value={value}
+                onChange={handleChange}
+            >
+                {BUTTONS.map(({ key, label }) => (
+                    <ToggleButton key={key} value={key}>
+                        {t(label)}
+                    </ToggleButton>
+                ))}
+            </ToggleButtonGroup>
+        </Stack>
     );
 };
 

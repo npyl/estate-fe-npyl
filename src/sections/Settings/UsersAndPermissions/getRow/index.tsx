@@ -9,15 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { ChevronDown } from "@/assets/icons/chevron-down";
 import RoundIconButton from "@/components/RoundIconButton";
-import {
-    Collapse,
-    StackProps,
-    SxProps,
-    Table,
-    TableBody,
-    TableHead,
-    Theme,
-} from "@mui/material";
+import { Collapse, StackProps, SxProps, Theme } from "@mui/material";
 import ToggleActiveButton from "./ToggleActiveButton";
 import SeparatePermissions from "./SeparatePermissions";
 import useToggle from "@/hooks/useToggle";
@@ -106,35 +98,25 @@ const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
                 </TableCell>
 
                 <TableCell align="right">
-                    <RoundIconButton size="small" onClick={toggleOpen}>
-                        <ChevronDown
-                            style={{
-                                transform: isOpen
-                                    ? "rotate(180deg)"
-                                    : "rotate(0deg)",
-                                transition: "transform 0.3s",
-                            }}
-                        />
-                    </RoundIconButton>
+                    {user.isAdmin ? null : (
+                        <RoundIconButton size="small" onClick={toggleOpen}>
+                            <ChevronDown
+                                style={{
+                                    transform: isOpen
+                                        ? "rotate(180deg)"
+                                        : "rotate(0deg)",
+                                    transition: "transform 0.3s",
+                                }}
+                            />
+                        </RoundIconButton>
+                    )}
                 </TableCell>
             </TableRow>
 
-            <TableRow>
+            <TableRow sx={{ bgcolor: "neutral.100" }}>
                 <TableCell sx={{ py: 0, border: 0 }} colSpan={4}>
                     <Collapse in={isOpen} timeout="auto" unmountOnExit>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>{t("Notifications")}</TableCell>
-                                    <TableCell>{t("Tasks")}</TableCell>
-                                    <TableCell>{t("Agreements")}</TableCell>
-                                    <TableCell>{t("Messages")}</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                <SeparatePermissions user={user} />
-                            </TableBody>
-                        </Table>
+                        <SeparatePermissions user={user} />
                     </Collapse>
                 </TableCell>
             </TableRow>

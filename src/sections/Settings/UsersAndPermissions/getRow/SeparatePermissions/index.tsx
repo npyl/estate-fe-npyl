@@ -1,5 +1,5 @@
 import { IUser } from "@/types/user";
-import { TableCell, TableRow } from "@mui/material";
+import { Stack } from "@mui/material";
 import { FC } from "react";
 import {
     ToggleAgreements,
@@ -24,23 +24,22 @@ const SeparatePermissions: FC<RowProps> = ({ user }) => {
     } = user;
 
     return (
-        <TableRow>
-            <TableCell>
-                <ToggleNotifications
-                    userId={id}
-                    notificationsEnabled={notificationsEnabled}
-                />
-            </TableCell>
-            <TableCell>
-                <TaskView userId={id} value={tasksEnabled} />
-            </TableCell>
-            <TableCell>
-                <ToggleAgreements userId={id} enabled={agreementsEnabled} />
-            </TableCell>
-            <TableCell>
-                <ToggleMessages userId={id} enabled={messagingEnabled} />
-            </TableCell>
-        </TableRow>
+        <Stack
+            direction={{ xs: "column", md: "row" }}
+            justifyContent={{ xs: "", md: "center" }}
+            alignItems={{ xs: "start", md: "center" }}
+            width={1}
+            gap={{ xs: 3, md: 5, lg: 10 }}
+            p={2}
+        >
+            <ToggleNotifications
+                userId={id}
+                notificationsEnabled={notificationsEnabled}
+            />
+            <TaskView userId={id} value={tasksEnabled} />
+            <ToggleAgreements userId={id} enabled={agreementsEnabled} />
+            <ToggleMessages userId={id} enabled={messagingEnabled} />
+        </Stack>
     );
 };
 
