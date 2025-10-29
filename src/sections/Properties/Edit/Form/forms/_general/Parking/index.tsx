@@ -10,7 +10,7 @@ import { useCallback, useMemo } from "react";
 import { RHFOnlyNumbers, Select } from "@/components/hook-form";
 import { KeyValue } from "@/types/KeyValue";
 import { IPropertyYup } from "../../../usePropertyForm";
-import { ADD_PARKING_TESTID } from "./constants";
+import { ADD_PARKING_BUTTON_TESTID } from "./constants";
 
 // ---------------------------------------------------------------------
 
@@ -109,7 +109,7 @@ const ParkingSection: React.FC = () => {
             label={t("Parkings")}
             endNode={
                 <IconButton
-                    data-testid={ADD_PARKING_TESTID}
+                    data-testid={ADD_PARKING_BUTTON_TESTID}
                     disabled={disabled}
                     onClick={addParking}
                 >
