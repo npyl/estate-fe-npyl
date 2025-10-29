@@ -153,6 +153,25 @@ const expectSpotsMissing = (page: Page) => expectParkingError(page, "spots");
 
 // ------------------------------------------------------------------------
 
+const getBalconyErrors = async (page: Page) => {
+    const j = await getFormErrors(page);
+    return j.details?.balconies ?? [];
+};
+
+const expectBalconyError = async (page: Page, field: "side" | "area") => {
+    const p = await getBalconyErrors(page);
+    const c = p?.find((err: any) => {
+        if (!err) return false;
+        return typeof err === "object" && field in err;
+    });
+    expect(c).not.toBe(undefined);
+};
+
+const expectSideMissing = (page: Page) => expectBalconyError(page, "side");
+const expectAreaMissing = (page: Page) => expectBalconyError(page, "area");
+
+// ------------------------------------------------------------------------
+
 test.describe("edit", () => {
     test("basic", async ({ page }) => {
         const { code, state } = await basicEdit(page);
@@ -160,48 +179,52 @@ test.describe("edit", () => {
     });
 
     test.describe("balconies & parkings", () => {
-        // test.describe("balconies", () => {
-        //     test.describe("1", () => {
-        //         test("complete", async ({ page }) => {
-        //             const { code, state } = await basicEdit(page);
-        //             await addBalconyComplete(page, 0);
-        //             await submitAndInterceptRequest(page);
-        //             await expectSuccessfulSubmit(page, code, state);
-        //         });
-        //         test("in-complete (no side)", async ({ page }) => {
-        //             await basicEdit(page);
-        //             await addBalconyInComplete(page, 0, "side");
-        //             await clickSubmit(page);
-        //         });
-        //         test("in-complete (no area)", async ({ page }) => {
-        //             await basicEdit(page);
-        //             await addBalconyInComplete(page, 0, "area");
-        //             await clickSubmit(page);
-        //         });
-        //     });
+        test.describe("balconies", () => {
+            test.describe("1", () => {
+                test("complete", async ({ page }) => {
+                    const { code, state } = await basicEdit(page);
+                    await addBalconyComplete(page, 0);
+                    await submitAndInterceptRequest(page);
+                    await expectSuccessfulSubmit(page, code, state);
+                });
+                test("in-complete (no side)", async ({ page }) => {
+                    await basicEdit(page);
+                    await addBalconyInComplete(page, 0, "side");
+                    await clickSubmit(page);
+                    await expectSideMissing(page);
+                });
+                test("in-complete (no area)", async ({ page }) => {
+                    await basicEdit(page);
+                    await addBalconyInComplete(page, 0, "area");
+                    await clickSubmit(page);
+                    await expectAreaMissing(page);
+                });
+            });
 
-        //     test.describe("1+", () => {
-        //         test("complete", async ({ page }) => {
-        //             const { code, state } = await basicEdit(page);
-        //             await addBalconyComplete(page, 0);
-        //             await addBalconyComplete(page, 1);
-        //             await submitAndInterceptRequest(page);
-        //             await expectSuccessfulSubmit(page, code, state);
-        //         });
-        //         test("in-complete (no side)", async ({ page }) => {
-        //             await basicEdit(page);
-        //             await addBalconyComplete(page, 0);
-        //             await addBalconyInComplete(page, 1, "side");
-        //             await clickSubmit(page);
-        //         });
-        //         test("in-complete (no area)", async ({ page }) => {
-        //             await basicEdit(page);
-        //             await addBalconyComplete(page, 0);
-        //             await addBalconyInComplete(page, 1, "area");
-        //             await clickSubmit(page);
-        //         });
-        //     });
-        // });
+            test.describe("1+", () => {
+                test("complete", async ({ page }) => {
+                    const { code, state } = await basicEdit(page);
+                    await addBalconyComplete(page, 0);
+                    await addBalconyComplete(page, 1);
+                    await submitAndInterceptRequest(page);
+                    await expectSuccessfulSubmit(page, code, state);
+                });
+                test("in-complete (no side)", async ({ page }) => {
+                    await basicEdit(page);
+                    await addBalconyComplete(page, 0);
+                    await addBalconyInComplete(page, 1, "side");
+                    await clickSubmit(page);
+                    await expectSideMissing(page);
+                });
+                test("in-complete (no area)", async ({ page }) => {
+                    await basicEdit(page);
+                    await addBalconyComplete(page, 0);
+                    await addBalconyInComplete(page, 1, "area");
+                    await clickSubmit(page);
+                    await expectAreaMissing(page);
+                });
+            });
+        });
 
         test.describe("parkings", () => {
             test.describe("1", () => {
