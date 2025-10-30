@@ -20,6 +20,8 @@ const IUserToReq = (user?: IUser): IUserPOST => ({
     gemh: user?.gemh || "",
     status: "Active",
     preferredLanguage: user?.preferredLanguage?.key || "ENGLISH",
+
+    assignedRoles: user?.assignedRoles?.map(({ id }) => id) ?? [],
 });
 
 export { IUserToReq };

@@ -67,6 +67,8 @@ interface IUserPOST {
     gemh?: string;
     status?: string;
     preferredLanguage?: string; // TODO: yup validator doesn't accept custom string type but should be PreferredLanguageType
+
+    assignedRoles: number[];
 }
 
 const isIUser = (u: any) => "preferredLanguage" in u;

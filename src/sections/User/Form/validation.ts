@@ -1,5 +1,5 @@
 import isFalsy from "@/utils/isFalsy";
-import { string, object, StringSchema } from "yup";
+import { string, object, StringSchema, array, number } from "yup";
 
 const numberString = (label: string): StringSchema =>
     string().test("is-number", `${label} must be a number`, (value) =>
@@ -52,4 +52,6 @@ export const Schema = object().shape({
     status: string().oneOf(["Active", "Inactive"]),
 
     preferredLanguage: string().oneOf(["ENGLISH", "GREEK"]),
+
+    assignedRoles: array().of(number().required()).required(),
 });

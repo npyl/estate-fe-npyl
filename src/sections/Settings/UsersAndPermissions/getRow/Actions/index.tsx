@@ -7,11 +7,10 @@ import { IUser } from "@/types/user";
 
 interface ActionsProps {
     user: IUser;
-    activeStatuses: boolean[];
 }
 
-const Actions: FC<ActionsProps> = ({ user, activeStatuses }) => (
-    <Stack direction="row" spacing={1}>
+const Actions: FC<ActionsProps> = ({ user }) => (
+    <Stack direction="row" spacing={1} alignItems="center">
         <ResetPasswordButton userId={user.id} />
         <EditButton user={user} />
         <DeleteButton userId={user.id} />

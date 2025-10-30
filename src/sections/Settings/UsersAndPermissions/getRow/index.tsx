@@ -42,9 +42,11 @@ const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
 
     return (
         <>
-            <SpaceBetween
+            <Stack
                 p={1}
                 spacing={5}
+                direction="row"
+                justifyContent="space-between"
                 alignItems="center"
                 //
                 borderBottom={isOpen ? undefined : "1px solid"}
@@ -85,7 +87,7 @@ const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
                 </Stack>
 
                 <Stack direction="row" spacing={5} alignItems="center">
-                    <Actions user={user} activeStatuses={activeStatuses} />
+                    <Actions user={user} />
 
                     {user.isAdmin ? (
                         <Box width={43} />
@@ -111,7 +113,7 @@ const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
                         </RoundIconButton>
                     )}
                 </Stack>
-            </SpaceBetween>
+            </Stack>
 
             <Stack bgcolor="neutral.100">
                 <Collapse in={isOpen} timeout="auto" unmountOnExit>
