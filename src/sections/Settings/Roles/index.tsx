@@ -1,31 +1,24 @@
-import { Label, LabelProps } from "@/components/Label";
 import { useGetAllRolesQuery } from "@/services/roles";
 import { RoleMini } from "@/types/roles";
 import { FC, useCallback, useState } from "react";
 import Stack from "@mui/material/Stack";
 import CreateFab from "./CreateFab";
 import CreateOrEdit from "./CreateOrEdit";
+import Role, { RoleProps } from "@/ui/Role";
+import useActionsDialog from "./ActionsPopover/useActionsPopover";
 
 // --------------------------------------------------------------------------------------
 
-interface RoleProps extends Omit<LabelProps, "color" | "name" | "onClick"> {
-    r: RoleMini;
-    onClick: (id: number) => void;
+interface RoleWithActions extends Omit<RoleProps, "onClick"> {
+    onClick: 
 }
 
-const Role: FC<RoleProps> = ({ r, onClick, ...props }) => (
-    <Label
-        opaque
-        color={r.color || "primary"}
-        name={r.name}
-        onClick={() => onClick(r.id)}
-        sx={{ cursor: "pointer" }}
-        {...props}
-    />
-);
+const RoleWithActions: FC<RoleProps> = ({ onClick, ...props }) => {
+    return <Role {...props} />;
+};
 
 const getRole = (onClick: (id: number) => void) => (r: RoleMini) => (
-    <Role key={r.id} r={r} onClick={onClick} />
+    <RoleWithActions key={r.id} r={r} onEdit={onEdit} />
 );
 
 // --------------------------------------------------------------------------------------
@@ -34,6 +27,8 @@ const List = () => {
     const { data } = useGetAllRolesQuery();
     const [roleId, setRoleId] = useState<number>();
     const clear = useCallback(() => setRoleId(undefined), []);
+
+    const {  } = useActionsDialog();
 
     return (
         <>
