@@ -1,11 +1,10 @@
 import { useTranslation } from "react-i18next";
-import { RHFCheckbox } from "@/components/hook-form";
-import WithAll from "./WithAll";
+import WithAll from "../WithAll";
 import RHFCategoryMultiplePicker from "@/ui/Pickers/RHF/CategoryMultiple";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Unstable_Grid2";
 import Typography from "@mui/material/Typography";
-
-const allName = "propertyPermissions.allCategories";
+import AllWithFillCheckbox from "./AllWithFillCheckbox";
+import { allName } from "./constants";
 
 const Picker = WithAll(RHFCategoryMultiplePicker, allName);
 
@@ -17,7 +16,7 @@ const Categories = () => {
                 <Typography>{t("Categories")}</Typography>
             </Grid>
             <Grid xs={9}>
-                <RHFCheckbox label={t("All")} name={allName} />
+                <AllWithFillCheckbox />
                 <Picker
                     name="propertyPermissions.categories"
                     parentCategoriesName="propertyPermissions.parentCategories"

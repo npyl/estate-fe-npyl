@@ -1,4 +1,3 @@
-import RHFIOSSwitch from "@/components/hook-form/RHFIOSSwitch";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
@@ -6,37 +5,8 @@ import States from "./States";
 import ParentCategories from "./ParentCategories";
 import Categories from "./Categories";
 import Divider from "@mui/material/Divider";
-import { SxProps, Theme } from "@mui/material";
 import RHFManagerMultipleAutocomplete from "@/ui/Autocompletes/RHFManagerMultiple";
-
-const SwitchSx: SxProps<Theme> = {
-    display: "flex",
-    flexDirection: "row-reverse",
-    gap: 1,
-};
-
-const Triplet = () => {
-    const { t } = useTranslation();
-    return (
-        <Stack direction="row" spacing={5}>
-            <RHFIOSSwitch
-                name="propertyPermissions.view"
-                label={t("View")}
-                sx={SwitchSx}
-            />
-            <RHFIOSSwitch
-                name="propertyPermissions.edit"
-                label={t("Edit")}
-                sx={SwitchSx}
-            />
-            <RHFIOSSwitch
-                name="propertyPermissions.delete"
-                label={t("Delete")}
-                sx={SwitchSx}
-            />
-        </Stack>
-    );
-};
+import Triplet from "./Triplet";
 
 const Property = () => {
     const { t } = useTranslation();
