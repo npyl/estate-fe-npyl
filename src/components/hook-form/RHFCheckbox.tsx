@@ -32,7 +32,7 @@ const Render: FC<RenderProps> = ({
             _onChange0?.(e, b);
             _onChange(b);
         },
-        []
+        [_onChange0, _onChange]
     );
 
     return (
@@ -54,7 +54,7 @@ interface RHFCheckboxProps extends Omit<CheckboxProps, "label"> {
     labelPlacement?: FormControlLabelProps["labelPlacement"];
 }
 
-const RHFCheckbox = ({ name, label = "", ...other }: RHFCheckboxProps) => {
+const RHFCheckbox: FC<RHFCheckboxProps> = ({ name, label = "", ...other }) => {
     const { control } = useFormContext();
 
     return (
