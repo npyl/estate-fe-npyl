@@ -23,7 +23,7 @@ const AvatarLarge = forwardRef<HTMLDivElement, AvatarLargeProps>(
             >
                 <Avatar ref={ref} {...props} />
                 <Stack className={PPAvatarLargeContentRightCN} spacing={-0.5}>
-                    <Typography variant="body1" fontWeight="bold">
+                    <Typography noWrap variant="body1" fontWeight="bold">
                         {fullname}
                     </Typography>
                     <Typography color="text.secondary">{email}</Typography>

@@ -15,7 +15,7 @@ interface RolesProps {
 
 const Roles: FC<RolesProps> = ({ roles }) => {
     return (
-        <Stack gap={1} flexWrap="wrap">
+        <Stack direction="row" gap={1} flexWrap="wrap">
             {roles?.map(getRole)}
         </Stack>
     );

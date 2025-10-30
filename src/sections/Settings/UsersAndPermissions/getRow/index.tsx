@@ -5,24 +5,15 @@ import { IUser } from "@/types/user";
 import AvatarLarge, {
     PPAvatarLargeContentRightCN,
 } from "@/components/Avatar/Large";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
 import { ChevronDown } from "@/assets/icons/chevron-down";
 import RoundIconButton from "@/components/RoundIconButton";
-import { Box, Collapse, StackProps, SxProps, Theme } from "@mui/material";
+import { Box, Collapse, Stack, StackProps } from "@mui/material";
 import ToggleActiveButton from "./ToggleActiveButton";
 import SeparatePermissions from "./SeparatePermissions";
 import useToggle from "@/hooks/useToggle";
 import Roles from "./Roles";
 import Actions from "./Actions";
-
-// -------------------------------------------------------------------------------------------------------
-
-const getRowSx = (isOpen: boolean): SxProps => ({
-    ".MuiTableCell-root": {
-        border: isOpen ? 0 : undefined,
-    },
-});
+import { SpaceBetween } from "@/components/styled";
 
 // -------------------------------------------------------------------------------------------------------
 
@@ -31,24 +22,10 @@ const AvatarContainerProps: StackProps = {
         [`& .${PPAvatarLargeContentRightCN}`]: {
             display: {
                 xs: "none",
-                md: "flex",
+                sm: "flex",
             },
         },
     },
-};
-
-const ResponsiveSx: SxProps<Theme> = {
-    display: {
-        xs: "none",
-        md: "table-cell",
-    },
-};
-
-const UserCellSx: SxProps<Theme> = {
-    display: "flex",
-    flexDirection: { xs: "column", md: "row" },
-    alignItems: "center",
-    gap: 1,
 };
 
 interface UserRowProps {
@@ -65,8 +42,21 @@ const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
 
     return (
         <>
-            <TableRow sx={getRowSx(isOpen)}>
-                <TableCell sx={UserCellSx} width="fit-content">
+            <SpaceBetween
+                p={1}
+                spacing={5}
+                alignItems="center"
+                //
+                borderBottom={isOpen ? undefined : "1px solid"}
+                borderColor="divider"
+                boxShadow={isOpen ? 15 : undefined}
+            >
+                <Stack
+                    width="fit-content"
+                    direction={{ xs: "column", sm: "row" }}
+                    alignItems={{ xs: "left", sm: "center" }}
+                    spacing={1}
+                >
                     <AvatarLarge
                         src={avatar}
                         firstName={firstName}
@@ -83,27 +73,32 @@ const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
                             width="fit-content"
                         />
                     ) : null}
-                </TableCell>
+                </Stack>
 
-                <TableCell sx={ResponsiveSx} align="left">
+                <Stack
+                    width={1}
+                    direction="row"
+                    justifyContent="left"
+                    display={{ xs: "none", md: "flex" }}
+                >
                     <Roles roles={user.assignedRoles} />
-                </TableCell>
+                </Stack>
 
-                <TableCell align="right">
+                <Stack direction="row" spacing={5} alignItems="center">
                     <Actions user={user} activeStatuses={activeStatuses} />
-                </TableCell>
 
-                <TableCell>
-                    {user.isAdmin ? null : (
+                    {user.isAdmin ? (
+                        <Box width={43} />
+                    ) : (
                         <ToggleActiveButton
                             activeStatuses={activeStatuses}
                             userId={user.id}
                         />
                     )}
-                </TableCell>
 
-                <TableCell align="right">
-                    {user.isAdmin ? null : (
+                    {user.isAdmin ? (
+                        <Box width={34} />
+                    ) : (
                         <RoundIconButton size="small" onClick={toggleOpen}>
                             <ChevronDown
                                 style={{
@@ -115,20 +110,26 @@ const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
                             />
                         </RoundIconButton>
                     )}
-                </TableCell>
-            </TableRow>
+                </Stack>
+            </SpaceBetween>
 
-            <TableRow sx={{ bgcolor: "neutral.100" }}>
-                <TableCell sx={{ py: 0, border: 0 }} colSpan={5}>
-                    <Collapse in={isOpen} timeout="auto" unmountOnExit>
+            <Stack bgcolor="neutral.100">
+                <Collapse in={isOpen} timeout="auto" unmountOnExit>
+                    <Stack
+                        px={1}
+                        py={2}
+                        spacing={3}
+                        borderBottom={isOpen ? "1px solid" : undefined}
+                        borderColor="divider"
+                    >
                         <Box display={{ xs: "block", md: "none" }}>
                             <Roles roles={user.assignedRoles} />
                         </Box>
 
                         <SeparatePermissions user={user} />
-                    </Collapse>
-                </TableCell>
-            </TableRow>
+                    </Stack>
+                </Collapse>
+            </Stack>
         </>
     );
 };
