@@ -17,6 +17,8 @@ interface BlogPostShort {
     updatedAt: string;
     viewCounter: number;
     sites: IPublicSitesRes[];
+
+    descriptions: Record<string, DescriptionEntry>;
 }
 
 /**
