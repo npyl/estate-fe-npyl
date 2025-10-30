@@ -2,13 +2,13 @@ import { useMemo } from "react";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
 import { LocationDisplay } from "src/types/enums";
 import dayjs from "dayjs";
-import { DescriptionEntry, DescriptionEntryPOST } from "@/types/description";
 import useFormPersist from "@/components/hook-form/useFormPersist";
 import toNumberSafe from "@/utils/toNumberSafe";
 import { useRouter } from "next/router";
 import useFormPersistStorageKey from "@/ui/useFormPersistStorageKey";
 import { zodResolver } from "@hookform/resolvers/zod";
 import getSchema from "./getSchema";
+import { descriptionsToDescriptionsReq } from "@/types/description/mapper";
 
 type OmitList = "managerId" | "ownerId";
 
@@ -25,43 +25,6 @@ const getEnumKey = (key?: string) => key || null;
 
 const notNot = (bool?: boolean) => !!bool;
 
-const DEFAULT_DESCRIPTION_EL: DescriptionEntryPOST = {
-    description: "",
-    descriptionText: "",
-    title: "",
-    language: "el",
-};
-
-const DEFAULT_DESCRIPTION_EN: DescriptionEntryPOST = {
-    description: "",
-    descriptionText: "",
-    title: "",
-    language: "en",
-};
-
-const DEFAULT_DESCRIPTIONS = [DEFAULT_DESCRIPTION_EL, DEFAULT_DESCRIPTION_EN];
-
-const getDescriptions = (
-    descriptions?: Record<string, DescriptionEntry>
-): DescriptionEntryPOST[] => {
-    if (!descriptions) return DEFAULT_DESCRIPTIONS;
-
-    return [
-        {
-            description: descriptions["el"]?.description || "",
-            descriptionText: "",
-            title: descriptions["el"]?.title || "",
-            language: "el",
-        },
-        {
-            description: descriptions["en"]?.description || "",
-            descriptionText: "",
-            title: descriptions["en"]?.title || "",
-            language: "en",
-        },
-    ];
-};
-
 // INFO: prevent undefined values (react considers them uncontrolled)
 // TODO: currently, `any` is used to avoid type pollution, but it is necessary to allow non-undefined value
 const getNumber = (n?: number) => (n ?? "") as any;
@@ -74,7 +37,7 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => {
         code: property?.code || "",
         state: property?.state?.key || "",
         keyCode: property?.keyCode || "",
-        descriptions: getDescriptions(property?.descriptions),
+        descriptions: descriptionsToDescriptionsReq(property?.descriptions),
         managerId: property?.manager?.id || "",
         ownerId: property?.owner?.id || "",
         area: getNumber(property?.area),

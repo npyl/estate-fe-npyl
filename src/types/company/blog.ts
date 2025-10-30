@@ -1,4 +1,4 @@
-import { DescriptionEntry } from "../description";
+import { DescriptionEntry, DescriptionEntryPOST } from "../description";
 import { IPropertyFileMini } from "../file";
 import { KeyValue } from "../KeyValue";
 import { IUser, IUserMini } from "../user";
@@ -36,7 +36,7 @@ interface BlogPostShort {
 interface BlogPostReq {
     id?: number;
     images: File[];
-    descriptions: Record<string, DescriptionEntry>;
+    descriptions: DescriptionEntryPOST[];
     publicSites: number[];
     categories: TCategory[];
 }
