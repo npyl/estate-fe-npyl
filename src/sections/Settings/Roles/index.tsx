@@ -1,42 +1,48 @@
 import { useGetAllRolesQuery } from "@/services/roles";
 import { RoleMini } from "@/types/roles";
-import { FC, useCallback, useState } from "react";
+import { FC, MouseEvent, useCallback } from "react";
 import Stack from "@mui/material/Stack";
 import CreateFab from "./CreateFab";
-import CreateOrEdit from "./CreateOrEdit";
-import Role, { RoleProps } from "@/ui/Role";
+import Role from "@/ui/Role";
 import useActionsDialog from "./ActionsPopover/useActionsPopover";
+import ActionsPopover from "./ActionsPopover";
+import { TClickCb } from "./ActionsPopover/types";
 
 // --------------------------------------------------------------------------------------
 
-interface RoleWithActions extends Omit<RoleProps, "onClick"> {
-    onClick: 
+interface RoleWithActionsProps {
+    r: RoleMini;
+    onClick: TClickCb;
 }
 
-const RoleWithActions: FC<RoleProps> = ({ onClick, ...props }) => {
-    return <Role {...props} />;
+const RoleWithActions: FC<RoleWithActionsProps> = ({
+    r,
+    onClick: _onClick,
+}) => {
+    const onClick = useCallback(
+        (e: MouseEvent<HTMLDivElement>) => _onClick(e, r.id),
+        [_onClick, r.id]
+    );
+    return <Role onClick={onClick} r={r} />;
 };
 
-const getRole = (onClick: (id: number) => void) => (r: RoleMini) => (
-    <RoleWithActions key={r.id} r={r} onEdit={onEdit} />
+const getRole = (onClick: TClickCb) => (r: RoleMini) => (
+    <RoleWithActions key={r.id} r={r} onClick={onClick} />
 );
 
 // --------------------------------------------------------------------------------------
 
 const List = () => {
     const { data } = useGetAllRolesQuery();
-    const [roleId, setRoleId] = useState<number>();
-    const clear = useCallback(() => setRoleId(undefined), []);
-
-    const {  } = useActionsDialog();
+    const { ref, open } = useActionsDialog();
 
     return (
         <>
             <Stack direction="row" p={1} flexWrap="wrap" gap={1}>
-                {data?.map(getRole(setRoleId))}
+                {data?.map(getRole(open))}
             </Stack>
 
-            {roleId ? <CreateOrEdit roleId={roleId} onCancel={clear} /> : null}
+            <ActionsPopover ref={ref} />
         </>
     );
 };
