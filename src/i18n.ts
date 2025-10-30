@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Access: "Access",
             States: "States",
 
             View_Permission: "View",
@@ -1431,6 +1432,7 @@ const resources = {
     },
     el: {
         translation: {
+            Access: "Πρόσβαση",
             View_Permission: "Θέαση",
 
             Active_Musculine: "Ενεργός",

@@ -4,6 +4,8 @@ import preventDefault from "@/utils/preventDefault";
 import { FC, PropsWithChildren } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import useValues from "./useValues";
+import { zodResolver } from "@hookform/resolvers/zod";
+import schema from "./schema";
 
 interface FormProps extends PropsWithChildren {
     roleId?: number;
@@ -14,7 +16,7 @@ const Form: FC<FormProps> = ({ roleId = -1, children }) => {
 
     const values = useValues(data);
 
-    const methods = useForm<RoleReq>({ values });
+    const methods = useForm<RoleReq>({ values, resolver: zodResolver(schema) });
 
     return (
         <form onSubmit={preventDefault}>

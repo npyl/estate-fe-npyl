@@ -23,7 +23,7 @@ export const roles = createApi({
         createOrUpdateRole: builder.mutation<RoleMini, RoleReq>({
             query: ({ id, ...body }) => ({
                 url: isFalsy(id) ? "" : `/${id}`,
-                method: isFalsy(id) ? "POST" : "PUT",
+                method: "POST",
                 body: JSON.stringify(body),
                 headers: {
                     "Content-Type": "application/json",

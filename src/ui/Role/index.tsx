@@ -1,19 +1,28 @@
-import { Label, LabelProps } from "@/components/Label";
 import { RoleMini } from "@/types/roles";
+import Box, { BoxProps } from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import { FC } from "react";
 
-interface RoleProps extends Omit<LabelProps, "color" | "name"> {
+interface RoleProps extends Omit<BoxProps, "color" | "children"> {
     r: RoleMini;
 }
 
 const Role: FC<RoleProps> = ({ r, ...props }) => (
-    <Label
-        opaque
-        color={r.color || "primary"}
-        name={r.name}
-        sx={{ cursor: "pointer" }}
+    <Box
+        px={2}
+        py={0.75}
+        borderRadius={2}
+        bgcolor={r.color}
+        sx={{
+            color: (theme) => theme.palette.getContrastText(r.color),
+            cursor: "pointer",
+        }}
         {...props}
-    />
+    >
+        <Typography variant="body2" noWrap fontWeight={500}>
+            {r.name}
+        </Typography>
+    </Box>
 );
 
 export type { RoleProps };
