@@ -1,5 +1,6 @@
 import { FC } from "react";
 import PPDeleteDialog from "@/ui/Dialog/Delete";
+import { useDeleteRoleMutation } from "@/services/roles";
 
 // --------------------------------------------------------------------------
 
@@ -9,17 +10,16 @@ interface DeleteDialogProps {
 }
 
 const DeleteDialog: FC<DeleteDialogProps> = ({ roleId, onClose }) => {
-    // const [deleteForResource, { isLoading }] =
-    //     useDeleteLabelForResourceMutation();
+    const [deleteRole, { isLoading }] = useDeleteRoleMutation();
 
     const onDelete = async () => {
-        // await deleteForResource({ roleId });
+        await deleteRole(roleId);
         onClose();
     };
 
     return (
         <PPDeleteDialog
-            // loading={isLoading}
+            loading={isLoading}
             onDelete={onDelete}
             onClose={onClose}
         />

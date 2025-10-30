@@ -46,4 +46,5 @@ export const {
     useGetAllRolesQuery,
     useGetRoleByIdQuery,
     useCreateOrUpdateRoleMutation,
+    useDeleteRoleMutation,
 } = roles;
