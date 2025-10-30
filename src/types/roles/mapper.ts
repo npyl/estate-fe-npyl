@@ -38,7 +38,7 @@ const RoleToRoleReq = (data?: Role): RoleReq => ({
     propertyPermissions: RolePropertyPermissionsToReq(
         data?.propertyPermissions
     ),
-    users: [],
+    users: data?.assignedUsers?.map(getId) || [],
 });
 
 export { RoleToRoleReq, RolePropertyPermissionsToReq };

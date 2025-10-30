@@ -1,6 +1,6 @@
 import { KeyValue } from "@/types/KeyValue";
 import { PreferredLanguageType } from "@/types/enums";
-import { TTaskVisibility } from "@/types/roles";
+import { RoleMini, TTaskVisibility } from "@/types/roles";
 
 interface IUser {
     id: number;
@@ -33,6 +33,8 @@ interface IUser {
     agreementsEnabled: boolean;
     messagingEnabled: boolean;
     tasksEnabled: TTaskVisibility;
+
+    assignedRoles: RoleMini[];
 }
 
 interface IUserMini {

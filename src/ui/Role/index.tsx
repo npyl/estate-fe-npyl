@@ -9,6 +9,7 @@ interface RoleProps extends Omit<BoxProps, "color" | "children"> {
 
 const Role: FC<RoleProps> = ({ r, ...props }) => (
     <Box
+        width="fit-content"
         px={2}
         py={0.75}
         borderRadius={2}

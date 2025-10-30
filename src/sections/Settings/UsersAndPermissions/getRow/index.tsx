@@ -9,7 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { ChevronDown } from "@/assets/icons/chevron-down";
 import RoundIconButton from "@/components/RoundIconButton";
-import { Collapse, StackProps, SxProps, Theme } from "@mui/material";
+import { Box, Collapse, StackProps, SxProps, Theme } from "@mui/material";
 import ToggleActiveButton from "./ToggleActiveButton";
 import SeparatePermissions from "./SeparatePermissions";
 import useToggle from "@/hooks/useToggle";
@@ -86,7 +86,7 @@ const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
                 </TableCell>
 
                 <TableCell sx={ResponsiveSx} align="left">
-                    <Roles />
+                    <Roles roles={user.assignedRoles} />
                 </TableCell>
 
                 <TableCell align="right">
@@ -121,7 +121,10 @@ const UserRow: FC<UserRowProps> = ({ user, activeStatuses }) => {
             <TableRow sx={{ bgcolor: "neutral.100" }}>
                 <TableCell sx={{ py: 0, border: 0 }} colSpan={5}>
                     <Collapse in={isOpen} timeout="auto" unmountOnExit>
-                        <Roles />
+                        <Box display={{ xs: "block", md: "none" }}>
+                            <Roles roles={user.assignedRoles} />
+                        </Box>
+
                         <SeparatePermissions user={user} />
                     </Collapse>
                 </TableCell>
