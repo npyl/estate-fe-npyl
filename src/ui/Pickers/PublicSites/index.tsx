@@ -1,5 +1,5 @@
 import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectChangeEvent } from "@/components/Select";
+import Select, { SelectChangeEvent, SelectProps } from "@/components/Select";
 import { FC, useCallback } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import { useGetPublicSitesQuery } from "@/services/company";
@@ -21,17 +21,24 @@ const getOption =
 
 // ---------------------------------------------------------------------------
 
-interface PublicSitesPickerProps {
+type OmitList =
+    | "multiple"
+    | "defaultValue"
+    | "value"
+    | "onChange"
+    | "renderValue";
+
+interface PublicSitesPickerProps extends Omit<SelectProps, OmitList> {
     sites: number[];
     onChange: (s: number[]) => void;
-
-    label?: string;
 }
 
 const PublicSitesPicker: FC<PublicSitesPickerProps> = ({
     sites,
     onChange: _onChange,
     label,
+    sx,
+    ...props
 }) => {
     const { data } = useGetPublicSitesQuery();
 
@@ -58,7 +65,8 @@ const PublicSitesPicker: FC<PublicSitesPickerProps> = ({
             value={sites as any}
             renderValue={renderValue as any}
             onChange={onChange}
-            sx={{ width: "150px" }}
+            sx={{ width: "150px", ...sx }}
+            {...props}
         >
             {data?.map(getOption(sites))}
         </Select>
