@@ -1,8 +1,8 @@
 import { Grid } from "@mui/material";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import Panel from "src/components/Panel";
-import { RHFCheckbox } from "src/components/hook-form";
+import Panel from "@/components/Panel";
+import { RHFCheckbox } from "@/components/hook-form";
 
 const SuitableFor: React.FC<any> = (props) => {
     const { t } = useTranslation();

@@ -1,11 +1,11 @@
-import { MenuItem, SxProps, TextField, Theme, Typography } from "@mui/material";
+import { SxProps, TextField, Theme } from "@mui/material";
 import { useAllUsersQuery } from "@/services/user";
-import { IUser } from "@/types/user";
-import { FC, forwardRef, useMemo } from "react";
+import { IUser, IUserMini } from "@/types/user";
+import { forwardRef, useMemo } from "react";
 import Autocomplete, { AutocompleteProps } from "@/components/Autocomplete";
 import { useTranslation } from "react-i18next";
 import Avatar from "@/components/Avatar";
-import { getOptionTestId } from "./constant";
+import getRenderOption, { RenderOption } from "./getRenderOption";
 
 // ------------------------------------------------------------------
 
@@ -21,57 +21,13 @@ const AvatarSx: SxProps<Theme> = {
 
 // ------------------------------------------------------------------
 
-const getOptionLabel = (o: IUser | number) =>
+const getOptionLabel = (o: IUserMini | number) =>
     typeof o === "number" ? "" : `${o?.firstName} ${o?.lastName}`;
 
 // ----------------------------------------------------------------------------
 
-const OptionSx: SxProps<Theme> = {
-    display: "flex",
-    flexDirection: "row",
-    gap: 0.5,
-    width: "100%",
-};
-
-interface RenderOptionProps extends React.HTMLAttributes<HTMLLIElement> {
-    option: IUser;
-}
-
-const RenderOption: FC<RenderOptionProps> = (props) => {
-    const { option, ...otherProps } = props;
-
-    const { id, avatar, firstName, lastName } = option;
-    const fullname = `${firstName || ""} ${lastName || ""}`;
-
-    return (
-        <MenuItem
-            data-testid={getOptionTestId(id)}
-            sx={OptionSx}
-            {...otherProps}
-        >
-            <Avatar
-                src={avatar}
-                firstName={firstName}
-                lastName={lastName}
-                sx={{ width: 22, height: 22 }}
-            />
-            <Typography>{fullname}</Typography>
-        </MenuItem>
-    );
-};
-
-const getRenderOption = (
-    props: React.HTMLAttributes<HTMLLIElement> & { key: any },
-    option: IUser
-) => {
-    const { key, ...other } = props;
-    return <RenderOption key={key} option={option} {...other} />;
-};
-
-// ----------------------------------------------------------------------------
-
 type ManagerAutocompleteProps = Omit<
-    AutocompleteProps<IUser, false, true>,
+    AutocompleteProps<IUserMini, false, true>,
     "options" | "renderOption" | "renderInput"
 > & {
     optionFilter?: (u: IUser) => boolean;
@@ -132,6 +88,6 @@ const ManagerAutocomplete = forwardRef<
 
 ManagerAutocomplete.displayName = "ManagerAutocomplete";
 
-export { RenderOption };
+export { getOptionLabel, RenderOption };
 export type { ManagerAutocompleteProps };
 export default ManagerAutocomplete;

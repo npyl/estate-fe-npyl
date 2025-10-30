@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next/types";
 import { BlogPostReq } from "@/types/company";
 import removeAllImages from "./_service/removeAllImages";
 import createOrUpdate from "./_service/createOrUpdate";
+import isFalsy from "@/utils/isFalsy";
 
 export default async function handler(
     req: NextApiRequest,
@@ -24,6 +25,7 @@ export default async function handler(
         //  Run create or update
         //
         const id = await createOrUpdate(Authorization, d);
+        if (isFalsy(id)) throw new Error("Some kind of error.");
 
         res.status(200).send(id);
     } catch (error) {

@@ -2,9 +2,9 @@ import { Grid, GridProps } from "@mui/material";
 import * as React from "react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import Panel from "src/components/Panel";
-import { RHFCheckbox } from "src/components/hook-form";
-import { TranslationType } from "src/types/translation";
+import Panel from "@/components/Panel";
+import { RHFCheckbox } from "@/components/hook-form";
+import { TranslationType } from "@/types/translation";
 
 interface ICheckboxItemProps extends GridProps {
     label: string;

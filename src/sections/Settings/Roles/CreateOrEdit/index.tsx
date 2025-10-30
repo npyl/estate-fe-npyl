@@ -4,20 +4,35 @@ import Content from "./Content";
 import Form from "./Form";
 import Title from "./Title";
 import { FC } from "react";
+import Dialog from "@/components/Dialog";
+import styled from "@emotion/styled";
+import { DialogContent } from "@mui/material";
+import isFalsy from "@/utils/isFalsy";
+
+const StyledDialogContent = styled(DialogContent)({
+    padding: 0,
+});
 
 interface CreateOrEditProps {
-    roleMode?: number | "create";
+    roleId?: number;
     onCancel: VoidFunction;
 }
 
-const CreateOrEdit: FC<CreateOrEditProps> = ({ roleMode, onCancel }) => (
-    <Form roleMode={roleMode}>
-        <Box p={2}>
-            <Title />
-            <Box mt={3} />
-            <Content />
-            <Actions onCancel={onCancel} />
-        </Box>
+const CreateOrEdit: FC<CreateOrEditProps> = ({ roleId, onCancel }) => (
+    <Form roleId={roleId}>
+        <Dialog
+            onClose={onCancel}
+            hideTitle
+            DialogContentComponent={StyledDialogContent}
+            content={
+                <Box p={2}>
+                    <Title />
+                    <Box mt={3} />
+                    <Content />
+                </Box>
+            }
+            actions={<Actions isCreate={isFalsy(roleId)} onCancel={onCancel} />}
+        />
     </Form>
 );
 

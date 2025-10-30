@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Panel from "@/components/Panel";
-import { RHFCheckbox } from "@/components/hook-form/RHFCheckbox";
+import RHFCheckbox from "@/components/hook-form/RHFCheckbox";
 import { TranslationType } from "@/types/translation";
 
 const getFEATURES = (t: TranslationType) => [

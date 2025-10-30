@@ -17,8 +17,8 @@ const getProfile = async (page: Page): Promise<IUser | undefined> => {
         });
         if (!res.ok) throw await res.json();
         return await res.json();
-    } catch (ex) {
-        console.log(ex);
+    } catch {
+        console.log("Could not get profile; Disconnected?");
     }
 };
 

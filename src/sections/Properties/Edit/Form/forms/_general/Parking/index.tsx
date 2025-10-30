@@ -10,7 +10,11 @@ import { useCallback, useMemo } from "react";
 import { RHFOnlyNumbers, Select } from "@/components/hook-form";
 import { KeyValue } from "@/types/KeyValue";
 import { IPropertyYup } from "../../../usePropertyForm";
-import { ADD_PARKING_TESTID } from "./constants";
+import {
+    ADD_PARKING_BUTTON_TESTID,
+    getParkingTypeSelectTestId,
+    getSpotsTestId,
+} from "./constants";
 
 // ---------------------------------------------------------------------
 
@@ -25,6 +29,7 @@ const Parking = ({ options, index, onRemove }: ParkingProps) => {
     return (
         <Stack direction="row" spacing={1.5}>
             <Select
+                data-testid={getParkingTypeSelectTestId(index)}
                 fullWidth
                 name={`details.parkings[${index}].parkingType`}
                 label={t("Parking Type")}
@@ -32,6 +37,7 @@ const Parking = ({ options, index, onRemove }: ParkingProps) => {
             />
 
             <RHFOnlyNumbers
+                data-testid={getSpotsTestId(index)}
                 label={t("Spots")}
                 name={`details.parkings[${index}].spots`}
             />
@@ -109,7 +115,7 @@ const ParkingSection: React.FC = () => {
             label={t("Parkings")}
             endNode={
                 <IconButton
-                    data-testid={ADD_PARKING_TESTID}
+                    data-testid={ADD_PARKING_BUTTON_TESTID}
                     disabled={disabled}
                     onClick={addParking}
                 >

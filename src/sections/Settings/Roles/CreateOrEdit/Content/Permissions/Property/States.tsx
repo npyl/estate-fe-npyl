@@ -4,18 +4,21 @@ import RHFStateMultiplePicker from "@/ui/Pickers/RHF/StateMultiple";
 import { RHFCheckbox } from "@/components/hook-form";
 import WithAll from "./WithAll";
 import Typography from "@mui/material/Typography";
-const WithAllPicker = WithAll(RHFStateMultiplePicker, "allStates");
+
+const allName = "propertyPermissions.allStates";
+
+const WithAllPicker = WithAll(RHFStateMultiplePicker, allName);
 
 const States = () => {
     const { t } = useTranslation();
     return (
         <Grid container display="flex" alignItems="center">
-            <Grid xs={1.5}>
+            <Grid xs={3}>
                 <Typography>{t("States")}</Typography>
             </Grid>
-            <Grid xs={10.5}>
-                <RHFCheckbox label={t("All")} name="allStates" />
-                <WithAllPicker name="states" />
+            <Grid xs={9}>
+                <RHFCheckbox label={t("All")} name={allName} />
+                <WithAllPicker name="propertyPermissions.states" />
             </Grid>
         </Grid>
     );

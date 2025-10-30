@@ -1,77 +1,59 @@
-import { Label, LabelProps } from "@/components/Label";
 import { useGetAllRolesQuery } from "@/services/roles";
 import { RoleMini } from "@/types/roles";
-import React, { FC, useCallback, useState } from "react";
-import Grid from "@mui/material/Unstable_Grid2";
+import { FC, MouseEvent, useCallback } from "react";
 import Stack from "@mui/material/Stack";
-import CreateOrEdit from "./CreateOrEdit";
-import CreateFab from "@/ui/CreateFab";
+import CreateFab from "./CreateFab";
+import Role from "@/ui/Role";
+import useActionsDialog from "./ActionsPopover/useActionsPopover";
+import ActionsPopover from "./ActionsPopover";
+import { TClickCb } from "./ActionsPopover/types";
 
 // --------------------------------------------------------------------------------------
 
-interface RoleProps extends Omit<LabelProps, "color" | "name" | "onClick"> {
+interface RoleWithActionsProps {
     r: RoleMini;
-    onClick: (id: number) => void;
+    onClick: TClickCb;
 }
 
-const Role: FC<RoleProps> = ({ r, onClick, ...props }) => (
-    <Label
-        color={"#eee"}
-        name={r.name}
-        onClick={() => onClick(r.id)}
-        {...props}
-    />
-);
-
-const getRole = (onClick: (id: number) => void) => (r: RoleMini) => (
-    <Role key={r.id} r={r} onClick={onClick} />
-);
-
-// --------------------------------------------------------------------------------------
-
-const DO_NOT_RERENDER = () => false;
-
-interface SidebarProps {
-    onRoleClick: (id: number) => void;
-}
-
-const Sidebar: FC<SidebarProps> = React.memo(({ onRoleClick }) => {
-    const { data } = useGetAllRolesQuery();
-    return (
-        <Stack spacing={1} p={1}>
-            {data?.map(getRole(onRoleClick))}
-        </Stack>
+const RoleWithActions: FC<RoleWithActionsProps> = ({
+    r,
+    onClick: _onClick,
+}) => {
+    const onClick = useCallback(
+        (e: MouseEvent<HTMLDivElement>) => _onClick(e, r.id),
+        [_onClick, r.id]
     );
-}, DO_NOT_RERENDER);
+    return <Role onClick={onClick} r={r} />;
+};
+
+const getRole = (onClick: TClickCb) => (r: RoleMini) => (
+    <RoleWithActions key={r.id} r={r} onClick={onClick} />
+);
 
 // --------------------------------------------------------------------------------------
 
-const Roles = () => {
-    const [roleMode, setRoleMode] = useState<number | "create">();
-    const setCreate = useCallback(() => setRoleMode("create"), []);
-    const onClear = useCallback(() => setRoleMode(undefined), []);
+const List = () => {
+    const { data } = useGetAllRolesQuery();
+    const { ref, open } = useActionsDialog();
 
     return (
         <>
-            <Grid container>
-                <Grid
-                    xs={12}
-                    sm={1.5}
-                    borderRight="1px solid"
-                    borderColor="divider"
-                    maxHeight="100vh"
-                    overflow="hidden auto"
-                >
-                    <Sidebar onRoleClick={setRoleMode} />
-                </Grid>
-                <Grid xs={12} sm={10.5}>
-                    <CreateOrEdit roleMode={roleMode} onCancel={onClear} />
-                </Grid>
-            </Grid>
+            <Stack direction="row" p={1} flexWrap="wrap" gap={1}>
+                {data?.map(getRole(open))}
+            </Stack>
 
-            <CreateFab onClick={setCreate} />
+            <ActionsPopover ref={ref} />
         </>
     );
 };
+
+// --------------------------------------------------------------------------------------
+
+const Roles = () => (
+    <>
+        <List />
+        <CreateFab />
+    </>
+);
 
 export default Roles;

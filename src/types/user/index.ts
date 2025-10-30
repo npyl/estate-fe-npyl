@@ -1,6 +1,6 @@
 import { KeyValue } from "@/types/KeyValue";
 import { PreferredLanguageType } from "@/types/enums";
-import { TTaskVisibility } from "@/types/roles";
+import { RoleMini, TTaskVisibility } from "@/types/roles";
 
 interface IUser {
     id: number;
@@ -33,6 +33,8 @@ interface IUser {
     agreementsEnabled: boolean;
     messagingEnabled: boolean;
     tasksEnabled: TTaskVisibility;
+
+    assignedRoles: RoleMini[];
 }
 
 interface IUserMini {
@@ -65,6 +67,8 @@ interface IUserPOST {
     gemh?: string;
     status?: string;
     preferredLanguage?: string; // TODO: yup validator doesn't accept custom string type but should be PreferredLanguageType
+
+    assignedRoles: number[];
 }
 
 const isIUser = (u: any) => "preferredLanguage" in u;

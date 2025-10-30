@@ -8,6 +8,10 @@ import Typography from "@mui/material/Typography";
 import { SxProps, Theme } from "@mui/material";
 import { SpaceBetween } from "@/components/styled";
 import Avatar from "@/components/Avatar";
+import { useTranslation } from "react-i18next";
+import { DescriptionEntry, getTitleSafe } from "@/types/description";
+
+// ------------------------------------------------------------------------------
 
 interface CreatedAtProps {
     createdAt: string;
@@ -31,7 +35,23 @@ const CreatedAt: FC<CreatedAtProps> = ({ createdAt }) => {
     );
 };
 
-// -------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+
+interface TitleProps {
+    descriptions?: Record<string, DescriptionEntry>;
+}
+
+const Title: FC<TitleProps> = ({ descriptions }) => {
+    const { i18n } = useTranslation();
+    const title = getTitleSafe(i18n.language, descriptions);
+    return (
+        <Typography variant="h6" textAlign="center">
+            {title}
+        </Typography>
+    );
+};
+
+// ------------------------------------------------------------------------------
 
 const LinkSx: SxProps<Theme> = {
     display: "flex",
@@ -49,9 +69,7 @@ const PropertyCard: FC<PropertyCardProps> = ({
     children,
     ...props
 }) => {
-    const { id, url, createdAt, user } = item || {};
-
-    const title = "TEMP";
+    const { id, url, createdAt, user, descriptions } = item || {};
 
     return (
         <StyledLink
@@ -66,9 +84,7 @@ const PropertyCard: FC<PropertyCardProps> = ({
             />
 
             <Stack width={1} p={2} justifyContent="space-between">
-                <Typography variant="h6" textAlign="center">
-                    {title}
-                </Typography>
+                <Title descriptions={descriptions} />
 
                 <SpaceBetween>
                     <Stack direction="row" alignItems="center" spacing={1}>

@@ -2,6 +2,7 @@ import { Role, RoleMini, RoleReq } from "@/types/roles";
 import isFalsy from "@/utils/isFalsy";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import getBaseQueryWithReauth from "./_util/getBaseQueryWithReauth";
+import { user } from "@/services/user";
 
 export const roles = createApi({
     reducerPath: "roles",
@@ -23,12 +24,17 @@ export const roles = createApi({
         createOrUpdateRole: builder.mutation<RoleMini, RoleReq>({
             query: ({ id, ...body }) => ({
                 url: isFalsy(id) ? "" : `/${id}`,
-                method: isFalsy(id) ? "POST" : "PUT",
+                method: "POST",
                 body: JSON.stringify(body),
                 headers: {
                     "Content-Type": "application/json",
                 },
             }),
+            // INFO: also invalidate tags for users because each has the `assignedRoles` field
+            async onQueryStarted(_, { dispatch, queryFulfilled }) {
+                await queryFulfilled;
+                dispatch(user.util.invalidateTags(["Users"]));
+            },
             invalidatesTags: ["Roles", "RoleById"],
         }),
 
@@ -46,4 +52,5 @@ export const {
     useGetAllRolesQuery,
     useGetRoleByIdQuery,
     useCreateOrUpdateRoleMutation,
+    useDeleteRoleMutation,
 } = roles;

@@ -8,6 +8,7 @@ import GoogleWorkspaceEmail from "./GoogleWorkspaceEmail";
 import { useAuth } from "@/sections/use-auth";
 import useToggle from "@/hooks/useToggle";
 import isFalsy from "@/utils/isFalsy";
+import RHFRolesMultipleAutocomplete from "@/ui/Autocompletes/RHFRolesMultiple";
 
 const PasswordField = () => {
     const { t } = useTranslation();
@@ -137,6 +138,12 @@ const Content: FC<ContentProps> = ({ user }) => {
                         <MenuItem value="GREEK">{t("Greek")}</MenuItem>
                     </RHFSelect>
                 </Grid>
+            </Grid>
+            <Grid xs={12} mt={1}>
+                <RHFRolesMultipleAutocomplete
+                    name="assignedRoles"
+                    label={t<string>("PERMISSIONS_Roles")}
+                />
             </Grid>
         </Grid>
     );

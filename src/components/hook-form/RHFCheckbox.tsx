@@ -1,27 +1,60 @@
 // form
-import { Controller, useFormContext } from "react-hook-form";
+import {
+    Controller,
+    ControllerRenderProps,
+    FieldValues,
+    Path,
+    useFormContext,
+} from "react-hook-form";
 // @mui
 import {
     Checkbox,
+    CheckboxProps,
     FormControlLabel,
     FormControlLabelProps,
-    FormGroup,
 } from "@mui/material";
 import { DefaultTFuncReturn } from "i18next";
+import { ChangeEvent, FC, useCallback } from "react";
 
 // ----------------------------------------------------------------------
 
-interface RHFCheckboxProps
-    extends Omit<FormControlLabelProps, "control" | "label"> {
+type RenderProps<T extends FieldValues = FieldValues> = CheckboxProps & {
+    field: ControllerRenderProps<T, Path<T>>;
+};
+
+const Render: FC<RenderProps> = ({
+    onChange: _onChange0,
+    field: { value, onChange: _onChange, ...field },
+    ...props
+}) => {
+    const onChange = useCallback(
+        (e: ChangeEvent<HTMLInputElement>, b: boolean) => {
+            _onChange0?.(e, b);
+            _onChange(b);
+        },
+        [_onChange0, _onChange]
+    );
+
+    return (
+        <Checkbox
+            {...field}
+            checked={value}
+            onChange={onChange}
+            sx={{ alignSelf: "start" }}
+            {...props}
+        />
+    );
+};
+
+// ----------------------------------------------------------------------
+
+interface RHFCheckboxProps extends Omit<CheckboxProps, "label"> {
     name: string;
     label?: string | DefaultTFuncReturn;
+    labelPlacement?: FormControlLabelProps["labelPlacement"];
 }
 
-export const RHFCheckbox = ({
-    name,
-    label = "",
-    ...other
-}: RHFCheckboxProps) => {
+const RHFCheckbox: FC<RHFCheckboxProps> = ({ name, label = "", ...other }) => {
     const { control } = useFormContext();
 
     return (
@@ -30,75 +63,12 @@ export const RHFCheckbox = ({
             control={control}
             render={({ field }) => (
                 <FormControlLabel
-                    control={
-                        <Checkbox
-                            {...field}
-                            checked={field.value}
-                            sx={{ alignSelf: "start" }}
-                        />
-                    }
+                    control={<Render field={field} {...other} />}
                     label={label}
-                    {...other}
                 />
             )}
         />
     );
 };
 
-// ----------------------------------------------------------------------
-
-interface RHFMultiCheckboxProps
-    extends Omit<FormControlLabelProps, "control" | "label"> {
-    name: string;
-    options: {
-        label: string;
-        value: any;
-    }[];
-}
-
-export const RHFMultiCheckbox = ({
-    name,
-    options,
-    ...other
-}: RHFMultiCheckboxProps) => {
-    const { control } = useFormContext();
-
-    return (
-        <Controller
-            name={name}
-            control={control}
-            render={({ field }) => {
-                const onSelected = (option: string) =>
-                    field.value.includes(option)
-                        ? field.value.filter(
-                              (value: string) => value !== option
-                          )
-                        : [...field.value, option];
-
-                return (
-                    <FormGroup>
-                        {options.map((option) => (
-                            <FormControlLabel
-                                key={option.value}
-                                control={
-                                    <Checkbox
-                                        checked={field.value.includes(
-                                            option.value
-                                        )}
-                                        onChange={() =>
-                                            field.onChange(
-                                                onSelected(option.value)
-                                            )
-                                        }
-                                    />
-                                }
-                                label={option.label}
-                                {...other}
-                            />
-                        ))}
-                    </FormGroup>
-                );
-            }}
-        />
-    );
-};
+export default RHFCheckbox;

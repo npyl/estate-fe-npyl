@@ -4,6 +4,14 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Access: "Access",
+            States: "States",
+
+            View_Permission: "View",
+
+            Active_Musculine: "Active",
+            USERS_AND_PERMISSIONS: "Users & Permissions",
+
             CreateRole: "Create Role",
             EditRole: "Edit Role",
             PERMISSIONS_Roles: "Roles",
@@ -1424,6 +1432,12 @@ const resources = {
     },
     el: {
         translation: {
+            Access: "Πρόσβαση",
+            View_Permission: "Θέαση",
+
+            Active_Musculine: "Ενεργός",
+            USERS_AND_PERMISSIONS: "Χρήστες & Δικαιώματα",
+
             EditRole: "Επεξεργασία Ρόλου",
             CreateRole: "Δημιουργία Ρόλου",
             PERMISSIONS_Roles: "Ρόλοι",
@@ -2057,6 +2071,7 @@ const resources = {
             Owner: "Ιδιοκτήτης",
             Manager: "Διαχειριστής",
             State: "Κατάσταση",
+            States: "Καταστάσεις",
             Sale: "Πωλείται",
             Rent: "Ενοικιάζεται",
             Sold: "Πωλήθηκε",

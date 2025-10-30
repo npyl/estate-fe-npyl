@@ -1,4 +1,5 @@
 import { BlogPostReq, BlogPostRes } from "@/types/company/blog";
+import { descriptionsToDescriptionsReq } from "@/types/description/mapper";
 import preventDefault from "@/utils/preventDefault";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FC, PropsWithChildren } from "react";
@@ -9,13 +10,12 @@ const BlogPostResToReq = (d?: BlogPostRes): BlogPostReq => ({
     id: d?.id,
     publicSites: d?.sites?.map(({ id }) => id) ?? [],
     categories: d?.categories?.map(({ key }) => key) || [],
-    descriptions: d?.descriptions ?? {},
+    descriptions: descriptionsToDescriptionsReq(d?.descriptions),
     images: [], // INFO: will be filled-in by <ImagesPicker />
 });
 
 const schema = z
     .object({
-        // content: z.string().nonempty(),
         // categories: z.array(z.string()),
     })
     .passthrough();
