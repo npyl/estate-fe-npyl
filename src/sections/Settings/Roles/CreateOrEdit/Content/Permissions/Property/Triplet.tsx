@@ -15,7 +15,7 @@ const Triplet = () => {
         <Stack direction="row" spacing={5}>
             <RHFIOSSwitch
                 name="propertyPermissions.view"
-                label={t("View")}
+                label={t("View_Permission")}
                 sx={SwitchSx}
             />
             <RHFIOSSwitch
