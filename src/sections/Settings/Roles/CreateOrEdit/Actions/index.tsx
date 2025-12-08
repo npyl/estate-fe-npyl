@@ -7,15 +7,16 @@ import SubmitButton from "./SubmitButton";
 interface Props {
     isCreate: boolean;
     onCancel: VoidFunction;
+    onClose: VoidFunction;
 }
 
-const Actions: FC<Props> = ({ isCreate, onCancel }) => {
+const Actions: FC<Props> = ({ isCreate, onCancel, onClose }) => {
     const { t } = useTranslation();
 
     return (
         <Stack direction="row" justifyContent="end" spacing={1}>
             <Button onClick={onCancel}>{t("Cancel")}</Button>
-            <SubmitButton isCreate={isCreate} />
+            <SubmitButton isCreate={isCreate} onClose={onClose} />
         </Stack>
     );
 };

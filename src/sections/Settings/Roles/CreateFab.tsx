@@ -8,7 +8,7 @@ const CreateFab = () => {
     return (
         <>
             <PPCreateFab onClick={open} />
-            {isOpen ? <CreateOrEdit onCancel={close} /> : null}
+            {isOpen ? <CreateOrEdit onCancel={close} onClose={close} /> : null}
         </>
     );
 };
