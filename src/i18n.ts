@@ -4,6 +4,9 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            All_Feminine: "All",
+            All_Musculine: "All",
+
             Access: "Access",
             States: "States",
 
@@ -1432,6 +1435,9 @@ const resources = {
     },
     el: {
         translation: {
+            All_Feminine: "Όλες",
+            All_Musculine: "Όλοι",
+
             Access: "Πρόσβαση",
             View_Permission: "Θέαση",
 

@@ -29,4 +29,5 @@ const RHFManagerMultipleAutocomplete: FC<
     );
 };
 
+export type { RHFManagerMultipleAutocompleteProps };
 export default RHFManagerMultipleAutocomplete;

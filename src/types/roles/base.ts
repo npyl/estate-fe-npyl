@@ -15,7 +15,7 @@ interface RolePropertyPermissions {
     allCategories: boolean;
     categories: KeyValue[];
     // ...
-    allUsers: false;
+    allUsers: boolean;
     users: IUserMini[];
 }
 

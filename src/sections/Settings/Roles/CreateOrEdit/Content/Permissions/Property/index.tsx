@@ -1,10 +1,8 @@
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
-import States from "./States";
-import ParentCategories from "./ParentCategories";
-import Categories from "./Categories";
 import Triplet from "./Triplet";
+import Fields from "./Fields";
 
 const Property = () => {
     const { t } = useTranslation();
@@ -16,9 +14,7 @@ const Property = () => {
             </Typography>
             <Triplet />
             <Stack spacing={2} pt={1}>
-                <States />
-                <ParentCategories />
-                <Categories />
+                <Fields />
             </Stack>
         </Stack>
     );

@@ -12,7 +12,13 @@ const AllWithFillCheckbox = () => {
     }) as string[];
     const disabled = parentCategories.length === 0;
 
-    return <RHFCheckbox disabled={disabled} label={t("All")} name={allName} />;
+    return (
+        <RHFCheckbox
+            disabled={disabled}
+            label={t("All_Feminine")}
+            name={allName}
+        />
+    );
 };
 
 export default AllWithFillCheckbox;

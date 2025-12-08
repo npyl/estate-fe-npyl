@@ -26,7 +26,7 @@ const RolePropertyPermissionsToReq = (
     allCategories: p?.allCategories ?? true,
     categories: p?.categories?.map(getKey) ?? [],
     // ...
-    allUsers: p?.allUsers ?? false,
+    allUsers: p?.allUsers ?? true,
     users: p?.users?.map(getId) ?? [],
 });
 

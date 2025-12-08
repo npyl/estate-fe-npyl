@@ -17,7 +17,7 @@ const States = () => {
                 <Typography>{t("States")}</Typography>
             </Grid>
             <Grid xs={9}>
-                <RHFCheckbox label={t("All")} name={allName} />
+                <RHFCheckbox label={t("All_Feminine")} name={allName} />
                 <WithAllPicker name="propertyPermissions.states" />
             </Grid>
         </Grid>
