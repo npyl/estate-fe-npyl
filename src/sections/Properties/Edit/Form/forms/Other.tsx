@@ -11,7 +11,6 @@ import {
     Notes,
 } from "./_general";
 
-// TODO: is this wrong?
 import { HeatingAndEnergy } from "./_commercial";
 
 import {
@@ -29,37 +28,35 @@ import GoogleEarth from "./_general/GoogleEarth";
 
 const OtherFormSection: React.FC = () => {
     return (
-        <>
-            <Grid container spacing={1}>
-                <Grid item xs={12} sm={6} order={"row"}>
-                    <Stack spacing={1}>
-                        <BasicDetails />
+        <Grid container spacing={1}>
+            <Grid item xs={12} sm={6} order={"row"}>
+                <Stack spacing={1}>
+                    <BasicDetails />
 
-                        <ROISection />
+                    <ROISection />
 
-                        <Description />
-                        <Construction />
-                        <Features />
-                        <SuitableFor />
-                        <Blueprints />
-                        <Documents />
-                        <GoogleEarth />
-                        <VideoLink />
-                        <Notes />
-                    </Stack>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <Stack spacing={1}>
-                        <Images />
-                        <LocationSection />
-                        <HeatingAndEnergy />
-                        <TechnicalFeaturesAndInterior />
-                        <DescriptionEditor />
-                        <Public />
-                    </Stack>
-                </Grid>
+                    <Description />
+                    <Construction />
+                    <Features />
+                    <SuitableFor />
+                    <Blueprints />
+                    <Documents />
+                    <GoogleEarth />
+                    <VideoLink />
+                    <Notes />
+                </Stack>
             </Grid>
-        </>
+            <Grid item xs={12} sm={6}>
+                <Stack spacing={1}>
+                    <Images />
+                    <LocationSection />
+                    <HeatingAndEnergy />
+                    <TechnicalFeaturesAndInterior />
+                    <DescriptionEditor />
+                    <Public />
+                </Stack>
+            </Grid>
+        </Grid>
     );
 };
 export default OtherFormSection;

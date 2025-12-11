@@ -29,43 +29,41 @@ import GoogleEarth from "./_general/GoogleEarth";
 
 const ResidentialFormSection: React.FC = () => {
     return (
-        <>
-            <Grid container spacing={1}>
-                <Grid item xs={12} md={6}>
-                    <Stack spacing={1}>
-                        <BasicDetails />
+        <Grid container spacing={1}>
+            <Grid item xs={12} md={6}>
+                <Stack spacing={1}>
+                    <BasicDetails />
 
-                        <ROISection />
+                    <ROISection />
 
-                        <Description />
-                        <Construction />
-                        <Areas />
-                        <Blueprints />
-                        <Documents />
-                        <GoogleEarth />
-                        <VideoLink />
-                        <Notes />
-                    </Stack>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <Stack spacing={1}>
-                        <Images />
-                        <LocationSection />
-                        <HeatingAndEnergy />
-                        <Parking />
-                        <Balconies />
-                        <TechnicalFeaturesAndInterior />
-                        <SuitableFor />
-                        <DescriptionEditor />
-                        <Public />
-                    </Stack>
-                </Grid>
-
-                <Grid item xs={12}>
-                    <Features />
-                </Grid>
+                    <Description />
+                    <Construction />
+                    <Areas />
+                    <Blueprints />
+                    <Documents />
+                    <GoogleEarth />
+                    <VideoLink />
+                    <Notes />
+                </Stack>
             </Grid>
-        </>
+            <Grid item xs={12} md={6}>
+                <Stack spacing={1}>
+                    <Images />
+                    <LocationSection />
+                    <HeatingAndEnergy />
+                    <Parking />
+                    <Balconies />
+                    <TechnicalFeaturesAndInterior />
+                    <SuitableFor />
+                    <DescriptionEditor />
+                    <Public />
+                </Stack>
+            </Grid>
+
+            <Grid item xs={12}>
+                <Features />
+            </Grid>
+        </Grid>
     );
 };
 export default ResidentialFormSection;
