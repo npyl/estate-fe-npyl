@@ -6,7 +6,7 @@ import useMETHODS from "./useMETHODS";
 import useInvalidateTags from "./useInvalidateTags";
 import reportToast from "@/ui/useGeneralUploader/reportToast";
 
-const STRIP_METADATA = true;
+const STRIP_METADATA = false;
 
 const usePropertyUpload = (
     variant: TFileVariant,
