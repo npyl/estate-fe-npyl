@@ -1,7 +1,7 @@
 import { Stack, StackProps } from "@mui/material";
 import { TUploadFile, UploadVariant } from "@/components/upload/types";
 import { ComponentType, FC } from "react";
-import getItem, { Item, ItemProps } from "./getItem";
+import getItem, { ItemProps } from "./getItem";
 
 interface MultiFilePreviewProps<T extends ItemProps = ItemProps>
     extends StackProps {
