@@ -90,18 +90,16 @@ const Item: FC<ItemProps> = ({
                     )}
                 </Stack>
 
-                <Stack direction="row" spacing={1} alignItems="center">
-                    {onRemove && file.url && (
-                        <IconButton
-                            edge="end"
-                            size="small"
-                            disabled={disabled}
-                            onClick={handleRemove}
-                        >
-                            <DeleteIcon />
-                        </IconButton>
-                    )}
-                </Stack>
+                {onRemove && file.url ? (
+                    <IconButton
+                        edge="end"
+                        size="small"
+                        disabled={disabled}
+                        onClick={handleRemove}
+                    >
+                        <DeleteIcon />
+                    </IconButton>
+                ) : null}
             </SpaceBetween>
 
             {variant === "document" && file.url ? (
