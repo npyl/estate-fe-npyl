@@ -31,7 +31,7 @@ const GoogleEarth = () => {
                 variant="googleEarth"
                 disabled={disabled}
                 accept={{
-                    kmz: ["kmz"],
+                    "application/vnd.google-earth.kmz": [".kmz"],
                 }}
                 files={files}
                 onDrop={uploadFiles}
