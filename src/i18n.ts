@@ -547,7 +547,6 @@ const resources = {
             //Notes
             NOTE: "NOTE",
             Notes: "Notes",
-            "Upload Images": "Upload Images",
 
             //Location
             Prefecture: "Prefecture",
@@ -2376,7 +2375,6 @@ const resources = {
             NOTE: "Σημείωση",
             Notes: "Σημειώσεις",
             "Write a note...": "Γράψτε μια σημείωση...",
-            "Upload Images": "Ανέβασμα Εικόνων",
             "Remove all": "Αφαίρεση όλων",
             "The price for this property is hidden on the public site":
                 "Η τιμή για αυτό το ακίνητο δεν είναι ορατή στο site",
