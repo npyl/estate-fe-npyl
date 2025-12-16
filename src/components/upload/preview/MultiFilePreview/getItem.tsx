@@ -13,12 +13,11 @@ import DocumentIcon from "../DocumentIcon";
 import GoogleEarthIcon from "@/assets/logo/GoogleEarth";
 import { SpaceBetween } from "@/components/styled";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { ComponentType, FC } from "react";
+import { ComponentType, FC, useCallback } from "react";
 
 const ItemSx: SxProps<Theme> = {
-    px: 1,
-    py: 0.75,
-    borderRadius: 0.75,
+    p: 1,
+    borderRadius: 1,
     border: "1px solid",
     borderColor: "divider",
     cursor: "pointer",
@@ -45,57 +44,53 @@ const Item: FC<ItemProps> = ({
     sx,
     ...props
 }) => {
-    const handleRemove = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        onRemove?.(file.key);
-    };
-    const handleClick = () => {
-        onClick?.(file?.url || "");
-    };
+    const handleRemove = useCallback(
+        (e: React.MouseEvent<HTMLButtonElement>) => {
+            e.stopPropagation();
+            onRemove?.(file.key);
+        },
+        [file.key]
+    );
+    const handleClick = useCallback(
+        () => onClick?.(file?.url || ""),
+        [file?.url]
+    );
 
     return (
-        <SpaceBetween
-            alignItems="center"
+        <Stack
             sx={{ ...ItemSx, ...(sx as any) }}
             onClick={handleClick}
+            gap={1}
             {...props}
         >
-            <Stack direction="row" spacing={1} alignItems="center">
-                {variant === "image" && !compact ? (
-                    <FileThumbnail file={file} />
-                ) : null}
+            <SpaceBetween alignItems="center">
+                <Stack direction="row" spacing={1} alignItems="center">
+                    {variant === "image" && !compact ? (
+                        <FileThumbnail file={file} />
+                    ) : null}
 
-                {variant === "document" || compact ? (
-                    <DocumentIcon
-                        isPreview={!file.url}
-                        sx={{
-                            width: 50,
-                            height: 50,
-                        }}
-                    />
-                ) : null}
+                    {variant === "document" || compact ? (
+                        <DocumentIcon
+                            isPreview={!file.url}
+                            sx={{
+                                width: 50,
+                                height: 50,
+                            }}
+                        />
+                    ) : null}
 
-                {variant === "googleEarth" ? (
-                    <GoogleEarthIcon width={50} height={50} />
-                ) : null}
+                    {variant === "googleEarth" ? (
+                        <GoogleEarthIcon width={50} height={50} />
+                    ) : null}
 
-                {"filename" in file && (
-                    <Typography ml={1} variant="subtitle2">
-                        {file.filename}
-                    </Typography>
-                )}
-            </Stack>
+                    {"filename" in file && (
+                        <Typography ml={1} variant="subtitle2">
+                            {file.filename}
+                        </Typography>
+                    )}
+                </Stack>
 
-            <Stack direction="row" spacing={1} alignItems="center">
-                {variant === "document" && file.url ? (
-                    <LabelSection
-                        variant="document"
-                        resourceId={file.id}
-                        disabled={disabled}
-                    />
-                ) : null}
-
-                {onRemove && file.url && (
+                {onRemove && file.url ? (
                     <IconButton
                         edge="end"
                         size="small"
@@ -104,9 +99,18 @@ const Item: FC<ItemProps> = ({
                     >
                         <DeleteIcon />
                     </IconButton>
-                )}
-            </Stack>
-        </SpaceBetween>
+                ) : null}
+            </SpaceBetween>
+
+            {variant === "document" && file.url ? (
+                <LabelSection
+                    variant="document"
+                    resourceId={file.id}
+                    disabled={disabled}
+                    border="1px dotted"
+                />
+            ) : null}
+        </Stack>
     );
 };
 

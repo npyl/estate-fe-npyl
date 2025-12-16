@@ -16,9 +16,10 @@ const StyledDialogContent = styled(DialogContent)({
 interface CreateOrEditProps {
     roleId?: number;
     onCancel: VoidFunction;
+    onClose: VoidFunction;
 }
 
-const CreateOrEdit: FC<CreateOrEditProps> = ({ roleId, onCancel }) => (
+const CreateOrEdit: FC<CreateOrEditProps> = ({ roleId, onCancel, onClose }) => (
     <Form roleId={roleId}>
         <Dialog
             onClose={onCancel}
@@ -31,7 +32,13 @@ const CreateOrEdit: FC<CreateOrEditProps> = ({ roleId, onCancel }) => (
                     <Content />
                 </Box>
             }
-            actions={<Actions isCreate={isFalsy(roleId)} onCancel={onCancel} />}
+            actions={
+                <Actions
+                    isCreate={isFalsy(roleId)}
+                    onCancel={onCancel}
+                    onClose={onClose}
+                />
+            }
         />
     </Form>
 );

@@ -90,7 +90,7 @@ const ImagesSection = () => {
             <ImageOperationsProvider>
                 <IntegrationsOperationsProvider>
                     <Panel
-                        label={t("Upload Images")}
+                        label={t("Images")}
                         endNode={
                             <SeeMoreButton
                                 setLightboxImage={setLightboxImage}

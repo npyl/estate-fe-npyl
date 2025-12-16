@@ -7,16 +7,19 @@ import { useTranslation } from "react-i18next";
 
 interface Props {
     isCreate: boolean;
+    onClose: VoidFunction;
 }
 
-const SubmitButton: FC<Props> = ({ isCreate }) => {
+const SubmitButton: FC<Props> = ({ isCreate, onClose }) => {
     const { t } = useTranslation();
 
     const [createOrUpdate, { isLoading }] = useCreateOrUpdateRoleMutation();
 
     const methods = useFormContext<RoleReq>();
     const handleSubmit = useCallback(async (d: RoleReq) => {
-        await createOrUpdate(d);
+        const res = await createOrUpdate(d);
+        if ("error" in res) return;
+        onClose();
     }, []);
     const onSubmit = useCallback(
         (e: MouseEvent<HTMLButtonElement>) => {

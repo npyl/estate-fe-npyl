@@ -28,7 +28,7 @@ const useDownloadImages = () => {
 
                 const res = await fetch(
                     `${baseUrl}/${propertyId}/downloadImages?hidden=${
-                        !hidden ? "0" : "1"
+                        hidden ? "1" : "0"
                     }`,
                     {
                         method: "GET",

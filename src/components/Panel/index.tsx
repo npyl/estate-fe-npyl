@@ -32,7 +32,7 @@ const Panel: FC<PanelProps> = ({
             p={1.5}
             direction="row"
             alignItems="center"
-            justifyContent={Boolean(endNode) ? "space-between" : "left"}
+            justifyContent={endNode ? "space-between" : "left"}
             sx={headerSx}
         >
             <Typography variant="h6">{label}</Typography>

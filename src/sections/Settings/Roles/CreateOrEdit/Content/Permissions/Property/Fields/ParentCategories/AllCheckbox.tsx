@@ -26,7 +26,13 @@ const AllCheckbox = () => {
         [parentCategories]
     );
 
-    return <RHFCheckbox label={t("All")} name={allName} onChange={onChange} />;
+    return (
+        <RHFCheckbox
+            label={t("All_Feminine")}
+            name={allName}
+            onChange={onChange}
+        />
+    );
 };
 
 export default AllCheckbox;

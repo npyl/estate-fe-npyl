@@ -9,6 +9,7 @@ const useValues = (data?: Role): RoleReq => {
 
     return {
         ...mapped,
+        color: mapped?.color || "#aee",
         propertyPermissions: {
             ...mapped.propertyPermissions,
 

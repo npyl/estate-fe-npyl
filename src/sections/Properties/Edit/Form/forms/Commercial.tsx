@@ -27,39 +27,37 @@ import GoogleEarth from "./_general/GoogleEarth";
 
 const CommercialFormSection: React.FC<any> = () => {
     return (
-        <>
-            <Grid container spacing={1}>
-                <Grid item xs={12} md={6}>
-                    <Stack spacing={1}>
-                        <BasicDetails />
-                        <ROISection />
-                        <Description />
-                        <HeatingAndEnergy />
-                        <Areas />
-                        <Blueprints />
-                        <Documents />
-                        <GoogleEarth />
-                        <VideoLink />
-                        <Notes />
-                    </Stack>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <Stack spacing={1}>
-                        <Images />
-                        <LocationSection />
-                        <SuitableFor />
-                        <Construction />
-                        <TechnicalFeaturesAndInterior />
-                        <DescriptionEditor />
-                        <Public />
-                    </Stack>
-                </Grid>
-
-                <Grid item xs={12}>
-                    <Features />
-                </Grid>
+        <Grid container spacing={1}>
+            <Grid item xs={12} md={6}>
+                <Stack spacing={1}>
+                    <BasicDetails />
+                    <ROISection />
+                    <Description />
+                    <HeatingAndEnergy />
+                    <Areas />
+                    <Blueprints />
+                    <Documents />
+                    <GoogleEarth />
+                    <VideoLink />
+                    <Notes />
+                </Stack>
             </Grid>
-        </>
+            <Grid item xs={12} md={6}>
+                <Stack spacing={1}>
+                    <Images />
+                    <LocationSection />
+                    <SuitableFor />
+                    <Construction />
+                    <TechnicalFeaturesAndInterior />
+                    <DescriptionEditor />
+                    <Public />
+                </Stack>
+            </Grid>
+
+            <Grid item xs={12}>
+                <Features />
+            </Grid>
+        </Grid>
     );
 };
 export default CommercialFormSection;

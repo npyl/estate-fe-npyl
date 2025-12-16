@@ -1,8 +1,9 @@
-import React, { useState, MouseEvent, useCallback, FC } from "react";
+import React, { useState, MouseEvent, useCallback, FC, useMemo } from "react";
 import { ColorPickerWrapper, ColorSlider, SliderHandle } from "./styled";
 import SegmentPicker from "./SegmentPicker";
 import { BoxProps } from "@mui/material";
 import { getColorFromPosition, getPositionFromColor } from "./utils";
+import { getSafeHexColor } from "@/theme/colors";
 
 interface ColorPickerProps extends BoxProps {
     color?: string;
@@ -10,11 +11,12 @@ interface ColorPickerProps extends BoxProps {
 }
 
 const ColorPicker: FC<ColorPickerProps> = ({
-    color = "#eeee",
+    color: _color,
     onColorChange,
     ...props
 }) => {
-    const initialPosition = getPositionFromColor(color);
+    const color = useMemo(() => getSafeHexColor(_color), [_color]);
+    const initialPosition = useMemo(() => getPositionFromColor(color), [color]);
 
     const [handlePosition, setHandlePosition] = useState(initialPosition);
     const [baseColor, setBaseColor] = useState(color);

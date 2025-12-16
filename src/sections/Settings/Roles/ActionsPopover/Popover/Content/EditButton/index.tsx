@@ -31,7 +31,11 @@ const EditButton: FC<EditButtonProps> = ({ roleId, onClose: _onClose }) => {
             </RoundIconButton>
 
             {isOpen ? (
-                <CreateOrEdit roleId={roleId} onCancel={onClose} />
+                <CreateOrEdit
+                    roleId={roleId}
+                    onCancel={onClose}
+                    onClose={onClose}
+                />
             ) : null}
         </>
     );

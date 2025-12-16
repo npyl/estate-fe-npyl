@@ -82,7 +82,7 @@ export const optimisticAddFile: OptimisticAddFileCb = async (
         ...body,
         url: null,
         key: null,
-        id: -1,
+        id: Math.random(),
         // Document
         // TODO: fix this any...
         ...((variant === "document" ? { labels: [] } : {}) as any),
