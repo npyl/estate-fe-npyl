@@ -1,6 +1,6 @@
-import { Children } from "react";
-import Document, { Html, Head, Main, NextScript } from "next/document";
 import createEmotionServer from "@emotion/server/create-instance";
+import Document, { Head, Html, Main, NextScript } from "next/document";
+import { Children } from "react";
 import { createEmotionCache } from "../utils/create-emotion-cache";
 
 class CustomDocument extends Document {
@@ -30,7 +30,7 @@ class CustomDocument extends Document {
                         sizes="180x180"
                         href="/apple-touch-icon.png"
                     />
-                    <link rel="icon" href="/favicon.ico" />
+                    <link rel="icon" href="/favicon-logo.ico" />
                     <link
                         rel="icon"
                         type="image/png"
@@ -61,14 +61,13 @@ CustomDocument.getInitialProps = async (ctx) => {
 
     ctx.renderPage = () =>
         originalRenderPage({
-            enhanceApp: (App) => (props) =>
-                (
-                    <App
-                        // @ts-ignore
-                        emotionCache={cache}
-                        {...props}
-                    />
-                ),
+            enhanceApp: (App) => (props) => (
+                <App
+                    // @ts-ignore
+                    emotionCache={cache}
+                    {...props}
+                />
+            ),
         });
 
     const initialProps = await Document.getInitialProps(ctx);
