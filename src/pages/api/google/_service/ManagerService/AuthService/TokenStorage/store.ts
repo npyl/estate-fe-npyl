@@ -2,7 +2,6 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { TOKEN_FILE_PATH } from "./constants";
 import { Store } from "./types";
-import logger from "@/pino";
 import JSONParseSafe from "@/utils/JSONParseSafe";
 
 const storeCreate = async () => {
@@ -11,7 +10,7 @@ const storeCreate = async () => {
         await fs.mkdir(directory, { recursive: true });
         return await storeWrite({});
     } catch (ex) {
-        logger.error(ex, "storeCreate");
+        console.log(ex, "storeCreate");
         return false;
     }
 };
@@ -21,7 +20,7 @@ const storeExists = async () => {
         await fs.access(TOKEN_FILE_PATH);
         return true;
     } catch {
-        logger.info("storeExists: NO!");
+        console.log("storeExists: NO!");
         return false;
     }
 };
@@ -33,7 +32,7 @@ const storeRead = async (): Promise<Store> => {
         if (!res) throw new Error("Parsing store fail");
         return res;
     } catch (ex) {
-        logger.error(ex, "storeRead");
+        console.log(ex, "storeRead");
         return {};
     }
 };
@@ -43,7 +42,7 @@ const storeWrite = async (data: Store) => {
         await fs.writeFile(TOKEN_FILE_PATH, JSON.stringify(data, null, 2));
         return true;
     } catch (ex) {
-        logger.error(ex, "storeWrite");
+        console.log(ex, "storeWrite");
         return false;
     }
 };

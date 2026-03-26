@@ -1,8 +1,7 @@
 import { storeCreate, storeExists, storeRead, storeWrite } from "./store";
 import { Store, StoredToken } from "./types";
-import { getServiceLogger } from "@/pino";
 
-const storageLog = getServiceLogger("TokenStorage");
+const storageLog = (...args: any[]) => console.log("[TokenStorage]: ", ...args);
 
 interface GetAllTokensRes {
     tokens: StoredToken[];
@@ -25,7 +24,7 @@ class TokenStorage {
             const tokens = store?.[domain] ?? [];
             return { tokens, store };
         } catch (ex) {
-            storageLog.error(ex, "getAllTokens");
+            storageLog(ex, "getAllTokens");
             return { tokens: [], store: {} };
         }
     }
@@ -59,7 +58,7 @@ class TokenStorage {
 
             return await storeWrite(newStore);
         } catch (ex) {
-            storageLog.error(ex, "saveToken");
+            storageLog(ex, "saveToken");
             return false;
         }
     }
@@ -74,7 +73,7 @@ class TokenStorage {
 
             return await storeWrite(newStore);
         } catch (ex) {
-            storageLog.error(ex, "deleteToken");
+            storageLog(ex, "deleteToken");
             return false;
         }
     }

@@ -107,8 +107,6 @@
         "zod": "^3.24.2"
     },
     "devDependencies": {
-        "pino": "^10.1.0",
-        "pino-pretty": "^13.1.2",
         "@babel/preset-env": "^7.28.3",
         "@babel/preset-react": "^7.27.1",
         "@babel/preset-typescript": "^7.27.1",
