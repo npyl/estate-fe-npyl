@@ -31,17 +31,28 @@ const getMsg = (service: string, method?: string) =>
  * authLogger.error('Connection failed', 'connectDatabase');
  * // Logs: [AuthService]: connectDatabase Connection failed
  */
-const getServiceLogger = (service: string) => ({
-    ...logger,
-    info: (arg: object | string, method?: string) =>
-        logger.info(arg, getMsg(service, method)),
-    error: (arg: object | string, method?: string) =>
-        logger.error(arg, getMsg(service, method)),
-    warn: (arg: object | string, method?: string) =>
-        logger.warn(arg, getMsg(service, method)),
-    debug: (arg: object | string, method?: string) =>
-        logger.debug(arg, getMsg(service, method)),
-});
+const getServiceLogger = (service: string) => {
+    if (process.env.NODE_ENV === "production") {
+        return {
+            info: () => {},
+            error: () => {},
+            warn: () => {},
+            debug: () => {},
+        };
+    }
+
+    return {
+        ...logger,
+        info: (arg: object | string, method?: string) =>
+            logger.info(arg, getMsg(service, method)),
+        error: (arg: object | string, method?: string) =>
+            logger.error(arg, getMsg(service, method)),
+        warn: (arg: object | string, method?: string) =>
+            logger.warn(arg, getMsg(service, method)),
+        debug: (arg: object | string, method?: string) =>
+            logger.debug(arg, getMsg(service, method)),
+    };
+};
 
 export { getServiceLogger };
 export default logger;
