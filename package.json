@@ -81,10 +81,7 @@
         "next": "^16.2.1",
         "nprogress": "^0.2.0",
         "nuqs": "^2.4.0",
-        "pino": "^10.1.0",
-        "pino-pretty": "^13.1.2",
-        "prosemirror-state": "^1.4.4",
-        "react": "^19.2.4",
+        "react": "^18.3.1",
         "react-apexcharts": "^1.4.0",
         "react-chartjs-2": "^5.2.0",
         "react-cookie": "^7.2.2",
@@ -111,6 +108,8 @@
         "zod": "^3.24.2"
     },
     "devDependencies": {
+        "pino": "^10.1.0",
+        "pino-pretty": "^13.1.2",
         "@babel/preset-env": "^7.28.3",
         "@babel/preset-react": "^7.27.1",
         "@babel/preset-typescript": "^7.27.1",
