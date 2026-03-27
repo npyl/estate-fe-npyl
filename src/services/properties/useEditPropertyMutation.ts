@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { properties } from "./properties";
 import { getAccessToken } from "@/contexts/tokens";
 
-const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/properties`;
+const baseUrl = `/api/properties`;
 
 const useEditPropertyMutation = () => {
     const dispatch = useDispatch();
