@@ -1,35 +1,52 @@
 {
-    "compilerOptions": {
-        "baseUrl": ".",
-        "target": "es6",
-        "lib": ["dom", "dom.iterable", "esnext"],
-        "allowJs": true,
-        "skipLibCheck": true,
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
-        "noFallthroughCasesInSwitch": true,
-        "useUnknownInCatchVariables": false,
-        "module": "esnext",
-        "moduleResolution": "node",
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "noEmit": true,
-        "jsx": "preserve",
-        "incremental": true,
-        "plugins": [
-            {
-                "name": "next"
-            }
-        ],
-        "paths": {
-            "@/*": ["./src/*"],
-            "@/test/*": ["./test/*"],
-            "@/test-e2e/*": ["./test-e2e/*"],
-            "public/*": ["./public/*"]
-        }
-    },
-    "include": ["src", "test"],
-    "exclude": ["node_modules"]
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es6",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "useUnknownInCatchVariables": false,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@/test/*": [
+        "./test/*"
+      ],
+      "@/test-e2e/*": [
+        "./test-e2e/*"
+      ],
+      "public/*": [
+        "./public/*"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "test"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
