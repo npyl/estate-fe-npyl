@@ -1,0 +1,1 @@
+$env:GITLAB_NPM_TOKEN="glpat-Q5nNvGBRHOBnMzTSbhI5B286MQp1OjhhYzR3Cw.01.120fzmdcd"; npm install
