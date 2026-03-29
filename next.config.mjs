@@ -22,8 +22,6 @@ const config = {
         optimizePackageImports: ["@mui/material", "@mui/icons-material"],
     },
 
-    serverExternalPackages: ["pino", "pino-pretty"],
-
     devIndicators: false,
 };
 
